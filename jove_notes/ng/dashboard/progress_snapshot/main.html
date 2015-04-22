@@ -1,0 +1,40 @@
+<div class="table-responsive">
+    <table class="table tree table-hover table-condensed">
+    	<thead>
+    		<tr>
+    			<th>Chapter
+        			<button type="button" class="btn btn-default btn-xs">
+      					<span class="glyphicon glyphicon-resize-full"></span>
+    				</button>
+        			<button type="button" class="btn btn-default btn-xs">
+      					<span class="glyphicon glyphicon-resize-small"></span>
+    				</button>
+    			</th>
+    			<th class="text-center">Meter</th>
+                <th class="text-right"><span class="badge"> T  </span></th>
+                <th class="text-right"><span class="badge" style="background-color:#D0D0D0"> NS </span></th>
+                <th class="text-right"><span class="badge" style="background-color:#FF0000"> 0 </span></th>
+                <th class="text-right"><span class="badge" style="background-color:#FF7F2A"> 1 </span></th>
+                <th class="text-right"><span class="badge" style="background-color:#FFFF7F"> 2 </span></th>
+                <th class="text-right"><span class="badge" style="background-color:#AAFFAA"> 3 </span></th>
+    			<th class="text-right"><span class="badge" style="background-color:#00FF00"> M  </span></th>
+    		</tr>	
+    	</thead>	
+    	<tbody>
+    		<tr ng-repeat="rowData in progressSnapshot" 
+    		    ng-class="getTreeRowClass( rowData )"
+                on-render-complete 
+                on-row-render>
+                <td> {{rowData.name}} </td>
+                <td class="text-center"><canvas width='200' height='20' id='canvas-{{rowData.rowNum}}'></canvas></td>
+                <td class="text-right"> {{rowData.totalCards      }} </td>
+                <td class="text-right"> {{rowData.notStartedCards }} </td>
+                <td class="text-right"> {{rowData.l0Cards         }} </td>
+                <td class="text-right"> {{rowData.l1Cards         }} </td>
+                <td class="text-right"> {{rowData.l2Cards         }} </td>
+                <td class="text-right"> {{rowData.l3Cards         }} </td>
+                <td class="text-right"> {{rowData.masteredCards   }} </td>
+    		</tr>	
+    	</tbody>
+    </table>
+</div>

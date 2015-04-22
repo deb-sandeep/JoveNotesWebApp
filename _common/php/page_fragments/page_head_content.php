@@ -1,0 +1,15 @@
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title><?php echo $pageConfig[ "tab_title" ]; ?></title>
+
+    <link rel='stylesheet' href='/lib-ext/fonts/Open_Sans/opensans.css'>
+    <link rel="stylesheet" href="/lib-ext/bootstrap-3.3.4/css/bootstrap.css">
+
+    <link rel="stylesheet" href="/lib-app/style/app_fw_main.css"></style>
+    <link rel="stylesheet" href="/apps/_common/style/main.css"></style>
+
+    <script src="/lib-ext/jquery/jquery-2.1.1.min.js"></script>
+    <script src="/lib-ext/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+	<script src="/lib-ext/angular/angular.min.js"></script>
+	<script src="/lib-ext/angular/angular-route.min.js"></script>
