@@ -1,0 +1,336 @@
+[  
+  {  
+    "syllabusName":"Class-8",
+    "subjects":[  
+      {
+        "subjectName" : "Biology",
+        "chapters" : [ 
+          {
+              "chapterName" : "Nutrition in Plants and Animals",
+              "isNotesAuthorized" : false,
+              "isFlashcardAuthorized" : true,
+              "isStatisticsAuthorized" : false,
+              "totalCards" : 171,
+              "notStartedCards" : 10,
+              "l0Cards" : 10,
+              "l1Cards" : 10,
+              "l2Cards" : 40,
+              "l3Cards" : 50,
+              "masteredCards" : 51
+          },
+          {
+              "chapterName" : "Nutrition - Matching Questions",
+              "isNotesAuthorized" : true,
+              "isFlashcardAuthorized" : false,
+              "isStatisticsAuthorized" : true,
+              "totalCards" : 8,
+              "notStartedCards" : 0,
+              "l0Cards" : 0,
+              "l1Cards" : 0,
+              "l2Cards" : 0,
+              "l3Cards" : 0,
+              "masteredCards" : 8
+          },
+          {
+              "chapterName" : "Digestion, absorption, assimilation",
+              "isNotesAuthorized" : true,
+              "isFlashcardAuthorized" : true,
+              "isStatisticsAuthorized" : false,
+              "totalCards" : 62,
+              "notStartedCards" : 5,
+              "l0Cards" : 30,
+              "l1Cards" : 5,
+              "l2Cards" : 0,
+              "l3Cards" : 10,
+              "masteredCards" : 12
+          },
+          {
+              "chapterName" : "Respiration",
+              "isNotesAuthorized" : true,
+              "isFlashcardAuthorized" : true,
+              "isStatisticsAuthorized" : true,
+              "totalCards" : 34,
+              "notStartedCards" : 5,
+              "l0Cards" : 5,
+              "l1Cards" : 5,
+              "l2Cards" : 5,
+              "l3Cards" : 10,
+              "masteredCards" : 4
+          },
+          {
+              "chapterName" : "Excretion",
+              "isNotesAuthorized" : true,
+              "isFlashcardAuthorized" : true,
+              "isStatisticsAuthorized" : true,
+              "totalCards" : 32,
+              "notStartedCards" : 0,
+              "l0Cards" : 0,
+              "l1Cards" : 0,
+              "l2Cards" : 0,
+              "l3Cards" : 0,
+              "masteredCards" : 32
+          }
+        ]
+      },
+      {
+        "subjectName" : "Chemistry",
+        "chapters" : [ 
+          {
+            "chapterName" : "Acid Bases and Salts",
+            "isNotesAuthorized" : true,
+            "isFlashcardAuthorized" : true,
+            "isStatisticsAuthorized" : true,
+            "totalCards" : 145,
+            "notStartedCards" : 0,
+            "l0Cards" : 0,
+            "l1Cards" : 0,
+            "l2Cards" : 0,
+            "l3Cards" : 0,
+            "masteredCards" : 145
+          },
+          {
+            "chapterName" : "Useful Compounds and Mixtures",
+            "isNotesAuthorized" : true,
+            "isFlashcardAuthorized" : true,
+            "isStatisticsAuthorized" : true,
+            "totalCards" : 111,
+            "notStartedCards" : 0,
+            "l0Cards" : 0,
+            "l1Cards" : 0,
+            "l2Cards" : 0,
+            "l3Cards" : 0,
+            "masteredCards" : 111
+          },
+          {
+            "chapterName" : "Water",
+            "isNotesAuthorized" : true,
+            "isFlashcardAuthorized" : true,
+            "isStatisticsAuthorized" : true,
+            "totalCards" : 44,
+            "notStartedCards" : 0,
+            "l0Cards" : 0,
+            "l1Cards" : 0,
+            "l2Cards" : 0,
+            "l3Cards" : 0,
+            "masteredCards" : 44
+          },
+          {
+            "chapterName" : "Chemical Compounds",
+            "isNotesAuthorized" : true,
+            "isFlashcardAuthorized" : true,
+            "isStatisticsAuthorized" : true,
+            "totalCards" : 216,
+            "notStartedCards" : 0,
+            "l0Cards" : 0,
+            "l1Cards" : 0,
+            "l2Cards" : 0,
+            "l3Cards" : 0,
+            "masteredCards" : 216
+          }
+        ]
+      },
+      {
+        "subjectName" : "Civics",
+        "chapters" : [ 
+          {
+              "chapterName" : "An organ for Governance - The Executive",
+              "isNotesAuthorized" : true,
+              "isFlashcardAuthorized" : true,
+              "isStatisticsAuthorized" : true,
+              "totalCards" : 57,
+              "notStartedCards" : 0,
+              "l0Cards" : 0,
+              "l1Cards" : 0,
+              "l2Cards" : 0,
+              "l3Cards" : 0,
+              "masteredCards" : 57
+          },
+          {
+              "chapterName" : "The Judiciary",
+              "isNotesAuthorized" : true,
+              "isFlashcardAuthorized" : true,
+              "isStatisticsAuthorized" : true,
+              "totalCards" : 24,
+              "notStartedCards" : 0,
+              "l0Cards" : 0,
+              "l1Cards" : 0,
+              "l2Cards" : 0,
+              "l3Cards" : 0,
+              "masteredCards" : 24
+          }
+        ]
+      },
+      {
+        "subjectName" : "Computers",
+        "chapters" : [ 
+          {
+              "chapterName" : "CPP Library Functions",
+              "isNotesAuthorized" : true,
+              "isFlashcardAuthorized" : true,
+              "isStatisticsAuthorized" : true,
+              "totalCards" : 10,
+              "notStartedCards" : 0,
+              "l0Cards" : 0,
+              "l1Cards" : 0,
+              "l2Cards" : 0,
+              "l3Cards" : 0,
+              "masteredCards" : 10
+          },
+          {
+              "chapterName" : "Turbo CPP Key Strokes",
+              "isNotesAuthorized" : true,
+              "isFlashcardAuthorized" : true,
+              "isStatisticsAuthorized" : true,
+              "totalCards" : 38,
+              "notStartedCards" : 0,
+              "l0Cards" : 0,
+              "l1Cards" : 0,
+              "l2Cards" : 0,
+              "l3Cards" : 0,
+              "masteredCards" : 38
+          },
+          {
+              "chapterName" : "CPP Language Constructs",
+              "isNotesAuthorized" : true,
+              "isFlashcardAuthorized" : true,
+              "isStatisticsAuthorized" : true,
+              "totalCards" : 8,
+              "notStartedCards" : 0,
+              "l0Cards" : 0,
+              "l1Cards" : 0,
+              "l2Cards" : 0,
+              "l3Cards" : 0,
+              "masteredCards" : 8
+          },
+          {
+              "chapterName" : "Inputting and Outputting",
+              "isNotesAuthorized" : true,
+              "isFlashcardAuthorized" : true,
+              "isStatisticsAuthorized" : true,
+              "totalCards" : 8,
+              "notStartedCards" : 0,
+              "l0Cards" : 0,
+              "l1Cards" : 0,
+              "l2Cards" : 0,
+              "l3Cards" : 0,
+              "masteredCards" : 8
+          },
+          {
+              "chapterName" : "Decisions",
+              "isNotesAuthorized" : true,
+              "isFlashcardAuthorized" : true,
+              "isStatisticsAuthorized" : true,
+              "totalCards" : 14,
+              "notStartedCards" : 0,
+              "l0Cards" : 0,
+              "l1Cards" : 0,
+              "l2Cards" : 0,
+              "l3Cards" : 0,
+              "masteredCards" : 14
+          },
+          {
+              "chapterName" : "Switch case",
+              "isNotesAuthorized" : true,
+              "isFlashcardAuthorized" : true,
+              "isStatisticsAuthorized" : true,
+              "totalCards" : 3,
+              "notStartedCards" : 0,
+              "l0Cards" : 0,
+              "l1Cards" : 0,
+              "l2Cards" : 0,
+              "l3Cards" : 0,
+              "masteredCards" : 3
+          }
+        ]
+      }
+    ]
+  },
+  {  
+    "syllabusName":"Class-9",
+    "subjects":[  
+      {
+        "subjectName" : "Geography",
+        "chapters" : [ 
+          {
+            "chapterName" : "South America - The Land",
+            "isNotesAuthorized" : true,
+            "isFlashcardAuthorized" : true,
+            "isStatisticsAuthorized" : true,
+            "totalCards" : 78,
+            "notStartedCards" : 0,
+            "l0Cards" : 0,
+            "l1Cards" : 0,
+            "l2Cards" : 0,
+            "l3Cards" : 0,
+            "masteredCards" : 78
+          },
+          {
+            "chapterName" : "South America - Map Work",
+            "isNotesAuthorized" : true,
+            "isFlashcardAuthorized" : true,
+            "isStatisticsAuthorized" : true,
+            "totalCards" : 15,
+            "notStartedCards" : 0,
+            "l0Cards" : 0,
+            "l1Cards" : 0,
+            "l2Cards" : 0,
+            "l3Cards" : 0,
+            "masteredCards" : 15
+          },
+          {
+            "chapterName" : "South America - Climate and Vegetation",
+            "isNotesAuthorized" : true,
+            "isFlashcardAuthorized" : true,
+            "isStatisticsAuthorized" : true,
+            "totalCards" : 60,
+            "notStartedCards" : 0,
+            "l0Cards" : 0,
+            "l1Cards" : 0,
+            "l2Cards" : 0,
+            "l3Cards" : 0,
+            "masteredCards" : 60
+          },
+          {
+            "chapterName" : "South America - Natural Resources",
+            "isNotesAuthorized" : true,
+            "isFlashcardAuthorized" : true,
+            "isStatisticsAuthorized" : true,
+            "totalCards" : 79,
+            "notStartedCards" : 0,
+            "l0Cards" : 0,
+            "l1Cards" : 0,
+            "l2Cards" : 0,
+            "l3Cards" : 0,
+            "masteredCards" : 79
+          },
+          {
+            "chapterName" : "Coffee Fazendas in Brazil",
+            "isNotesAuthorized" : true,
+            "isFlashcardAuthorized" : true,
+            "isStatisticsAuthorized" : true,
+            "totalCards" : 30,
+            "notStartedCards" : 0,
+            "l0Cards" : 0,
+            "l1Cards" : 0,
+            "l2Cards" : 0,
+            "l3Cards" : 0,
+            "masteredCards" : 30
+          },
+          {
+            "chapterName" : "Pastoral Industry",
+            "isNotesAuthorized" : true,
+            "isFlashcardAuthorized" : true,
+            "isStatisticsAuthorized" : true,
+            "totalCards" : 15,
+            "notStartedCards" : 0,
+            "l0Cards" : 0,
+            "l1Cards" : 0,
+            "l2Cards" : 0,
+            "l3Cards" : 0,
+            "masteredCards" : 15
+          }
+        ]        
+      }
+    ]
+  }
+]

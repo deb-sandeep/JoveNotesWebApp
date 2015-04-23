@@ -1,4 +1,4 @@
-var dashboardApp = angular.module( 'dashboardApp', [ 'ngRoute' ] ) ;
+var dashboardApp = angular.module( 'dashboardApp', [ 'ngRoute', 'ui.bootstrap' ] ) ;
 
 dashboardApp.config(['$routeProvider',
 
