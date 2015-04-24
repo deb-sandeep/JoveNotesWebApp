@@ -8,8 +8,10 @@
 
     <link rel="stylesheet" href="/lib-app/style/app_fw_main.css"></style>
     <link rel="stylesheet" href="/apps/_common/style/main.css"></style>
+    <link rel="stylesheet" href="<?php echo APP_MAIN_CSS_PATH ?>"></style>
 
     <script src="/lib-ext/jquery/jquery-2.1.1.min.js"></script>
+    <script src="/lib-ext/jquery/jquery.cookie.js"></script>
     <script src="/lib-ext/bootstrap-3.3.4/js/bootstrap.min.js"></script>
 	<script src="/lib-ext/angular/angular.min.js"></script>
     <script src="/lib-ext/angular/angular-route.min.js"></script>

@@ -1,0 +1,15 @@
+{
+	"syllabusName"     : "Class-8",
+	"subjectName"      : "Biology",
+	"chapterNumber"    : 3,
+	"subChapterNumber" : 0,
+	"chapterName"      : "Digestion, absorption, assimilation",
+
+	"questions" : [
+		{
+			"questionType" : "word_meaning",
+			"word"         : "Cat",
+			"meaning"      : "A feline animal"
+		}
+	]
+}

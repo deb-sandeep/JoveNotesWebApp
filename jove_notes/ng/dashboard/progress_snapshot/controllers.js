@@ -29,6 +29,9 @@ function RowData( rowType, name, rowNum, parentRowNum ) {
 	}
 }
 
+$scope.$parent.pageTitle = "Progress Dashboard" ;
+$scope.$parent.currentReport = 'ProgressSnapshot' ;
+
 $scope.progressSnapshot = null ;
 
 refreshData() ;

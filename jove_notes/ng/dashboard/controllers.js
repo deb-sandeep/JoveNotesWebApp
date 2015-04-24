@@ -1,7 +1,8 @@
 dashboardApp.controller( 'DashboardController', function( $scope ) {
 
-	$scope.currentReport = 'ProgressSnapshot' ;
-	
+	$scope.currentReport = '' ;
+	$scope.pageTitle     = '' ;
+
 	$scope.alerts = [] ;
 
 	$scope.addErrorAlert = function( msgString ) {

@@ -1,4 +1,7 @@
 dashboardApp.controller( 'StudyPerDayController', function( $scope ) {
 
-	$scope.message = "From StudyPerDayController" ;
+	$scope.$parent.pageTitle = "Study per day" ;
+	$scope.$parent.currentReport = 'StudyPerDay' ;
+
+
 } ) ;

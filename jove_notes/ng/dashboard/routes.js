@@ -13,6 +13,10 @@ dashboardApp.config(['$routeProvider',
             templateUrl: '/apps/jove_notes/ng/dashboard/study_per_day/main.html',
             controller: 'StudyPerDayController'
         })
+        .when('/ChapterProgressSnapshot/:chapterId', {
+            templateUrl: '/apps/jove_notes/ng/dashboard/chapter_progress_snapshot/main.html',
+            controller: 'ChapterProgressSnapshotController'
+        })
         .otherwise({
             redirectTo: '/ProgressSnapshot'
         });
