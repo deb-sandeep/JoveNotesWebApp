@@ -1,0 +1,24 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;
+    <span class="panel-title"><b>Word Meanings</b></span>
+  </div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table table-condensed table-striped table-hover">
+        <thead>
+            <tr class="default">
+                <th>Word</th>
+                <th>Meaning</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="wm in wordMeanings">
+                <td class="text-primary">{{wm.word}}</td>
+                <td>{{wm.meaning}}</td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> 

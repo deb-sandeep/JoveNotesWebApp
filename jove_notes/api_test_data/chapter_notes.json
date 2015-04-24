@@ -10,6 +10,26 @@
 			"questionType" : "word_meaning",
 			"word"         : "Cat",
 			"meaning"      : "A feline animal"
+		},
+		{
+			"questionType" : "question_answer",
+			"question"     : "What is the answer to life?",
+			"answer"       : "42"
+		},
+		{
+			"questionType" : "word_meaning",
+			"word"         : "Dog",
+			"meaning"      : "An animal who barks"
+		},
+		{
+			"questionType" : "word_meaning",
+			"word"         : "Vi",
+			"meaning"      : "Visual Editor"
+		},
+		{
+			"questionType" : "question_answer",
+			"question"     : "What is a movie?",
+			"answer"       : "A movie is something that we should watch\nFriday nights"
 		}
 	]
 }
