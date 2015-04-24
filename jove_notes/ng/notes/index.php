@@ -22,7 +22,7 @@ define( "QA_TEMPLATE_PATH",    NOTES_TEMPLATE_PATH . "/qa_template.html" ) ;
 <body ng-controller="NotesController">
     <?php include( SCROLL_NAVBAR_FILE ) ; ?>
     <?php include( ALERT_DIV_FILE ) ; ?>
-
+    <p>
     <div ng-if="wordMeanings.length">
         <div ng-include="'<?php echo WM_TEMPLATE_PATH ?>'">
         </div>

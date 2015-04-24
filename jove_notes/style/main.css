@@ -3,15 +3,11 @@ body {
 	font-size: 13px;
 }
 
-.nav { 
-	padding-top: 0px !important;
-	padding-bottom: 0px !important;
-	max-height:20px;
-	min-height: 20px;
+.nav_element {
+	max-height: 40px;
+	min-height: 40px;
+	line-height: 40px;
+	background-color: #4B4B4B;
+	color: #E6E6E6;
 }
 
-.navbar-header { 
-	padding-top: 0px !important;
-	padding-bottom: 0px !important;
-	max-height:20px; 
-}

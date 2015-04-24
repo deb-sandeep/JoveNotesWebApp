@@ -11,7 +11,7 @@ $pageConfig = array(
     <?php include( HEAD_CONTENT_FILE ); ?>
     <style>
       body {
-        padding-top: 55px ;
+        padding-top: 45px ;
         padding-left: 10px ;
         padding-right: 10px ;
       }
@@ -33,7 +33,6 @@ $pageConfig = array(
 <body ng-controller="DashboardController">
     <?php include( FIXED_NAVBAR_FILE ) ; ?>
     <?php include( ALERT_DIV_FILE ) ; ?>
-
     <a type="button" class="btn btn-default btn-md" 
        href="#ProgressSnapshot"
        ng-class="getBtnActiveClass( 'ProgressSnapshot' )"
