@@ -60,6 +60,28 @@
 				"learningEfficiency" : 55,
 				"currentLevel"       : "MAS"
 			}
+		},
+		{
+			"questionType"    : "fib",
+			"question"        : "The {0} of India is {1}.",
+			"answers"         : [ "capital", "Delhi" ],
+			"difficultyLevel" : 10,
+			"learningStats"   : {
+				"numAttempts"        : 2,
+				"learningEfficiency" : 95,
+				"currentLevel"       : "L3"
+			}
+		},
+		{
+			"questionType"    : "fib",
+			"question"        : "The shortcut for copy is {0} and that of paste is {1}.",
+			"answers"         : [ "ctrl-c", "ctrl-v" ],
+			"difficultyLevel" : 10,
+			"learningStats"   : {
+				"numAttempts"        : 3,
+				"learningEfficiency" : 99,
+				"currentLevel"       : "L3"
+			}
 		}
 	]
 }

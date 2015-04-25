@@ -1,7 +1,8 @@
 dashboardApp.controller( 'NotesController', function( $scope, $http ) {
 // -----------------------------------------------------------------------------
-var QT_WM = "word_meaning" ;
-var QT_QA = "question_answer" ;
+var QT_WM  = "word_meaning" ;
+var QT_QA  = "question_answer" ;
+var QT_FIB = "fib" ;
 
 function FilterCriteria() {
 
@@ -76,6 +77,7 @@ var rawData = null ;
 // These are the arrays that hold the questions which match the filter criteria
 $scope.wordMeanings    = [] ;
 $scope.questionAnswers = [] ;
+$scope.fibs            = [] ;
 
 $scope.filterCriteria.deserialize() ;
 refreshData() ;
@@ -131,6 +133,7 @@ function filterAndCategorizeQuestions( questions ) {
 
 	$scope.wordMeanings.length    = 0 ;
 	$scope.questionAnswers.length = 0 ;
+	$scope.fibs.length            = 0 ;
 
 	for( index=0; index<questions.length; index++ ) {
 
@@ -148,7 +151,28 @@ function filterAndCategorizeQuestions( questions ) {
 			else if( type == QT_QA ) {
 				$scope.questionAnswers.push( question ) ;
 			}
+			else if( type == QT_FIB ) {
+				injectFIBFormattedText( question ) ;
+				$scope.fibs.push( question ) ;
+			}
 		}
+	}
+}
+
+function injectFIBFormattedText( question ) {
+
+	if( !question.hasOwnProperty( 'formattedText' ) ) {
+		
+		var formattedText = "&ctdot;&nbsp;" + question.question ;
+		var numBlanks = question.answers.length ;
+
+		for( i=0; i<numBlanks; i++ ) {
+			var strToReplace = "{" + i + "}" ;
+			var replacedText = "<code>" + question.answers[i] + "</code>" ;
+
+			formattedText = formattedText.replace( strToReplace, replacedText ) ;
+		}
+		question.formattedText = formattedText ;
 	}
 }
 

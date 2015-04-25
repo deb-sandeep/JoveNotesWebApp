@@ -1,2 +1,2 @@
-var dashboardApp = angular.module( 'notesApp', [ 'ui.bootstrap' ] ) ;
+var dashboardApp = angular.module( 'notesApp', [ 'ui.bootstrap', 'ngSanitize' ] ) ;
 

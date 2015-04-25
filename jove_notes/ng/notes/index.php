@@ -8,6 +8,7 @@ $pageConfig = array(
 define( "HTML_FRAGMENT_PATH",   "/apps/jove_notes/ng/notes/html_fragments" ) ;
 define( "WM_FRAGMENT_PATH",     HTML_FRAGMENT_PATH . "/wm_template.html" ) ;
 define( "QA_FRAGMENT_PATH",     HTML_FRAGMENT_PATH . "/qa_template.html" ) ;
+define( "FIB_FRAGMENT_PATH",    HTML_FRAGMENT_PATH . "/fib_template.html" ) ;
 define( "FILTER_FRAGMENT_PATH", HTML_FRAGMENT_PATH . "/filter_template.html" ) ;
 
 define( "PHP_FRAGMENT_PATH",    DOCUMENT_ROOT . "/apps/jove_notes/ng/notes/php_fragments" ) ;
@@ -30,6 +31,11 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
     <p>
     <div ng-if="wordMeanings.length">
         <div ng-include="'<?php echo WM_FRAGMENT_PATH ?>'">
+        </div>
+    </div>
+
+    <div ng-if="fibs.length">
+        <div ng-include="'<?php echo FIB_FRAGMENT_PATH ?>'">
         </div>
     </div>
 
