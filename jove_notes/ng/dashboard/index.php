@@ -4,6 +4,10 @@ require_once( $_SERVER[ "DOCUMENT_ROOT" ] . "/apps/jove_notes/php/app_bootstrap.
 $pageConfig = array(
 	"tab_title"  => "Dashboard"
 ) ;
+
+define( "PHP_FRAGMENT_PATH",    DOCUMENT_ROOT . "/apps/jove_notes/ng/dashboard/php_fragments" ) ;
+define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
+
 ?>
 <!DOCTYPE html>
 <html ng-app="dashboardApp">
@@ -31,7 +35,7 @@ $pageConfig = array(
     <script src="/apps/jove_notes/ng/dashboard/chapter_progress_snapshot/controllers.js"></script>    
 </head>
 <body ng-controller="DashboardController">
-    <?php include( FIXED_NAVBAR_FILE ) ; ?>
+    <?php include( NAVBAR_FRAGMENT_PATH ) ; ?>
     <?php include( ALERT_DIV_FILE ) ; ?>
     <a type="button" class="btn btn-default btn-md" 
        href="#ProgressSnapshot"

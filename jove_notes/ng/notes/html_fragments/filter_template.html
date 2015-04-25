@@ -1,0 +1,17 @@
+<div class="container-fluid well">
+  <div class="row">
+
+    <div class="col-sm-3 form-group">
+		<label for="currentLevelFilter">Current level:</label>
+		<select id="currentLevelFilter" 
+		        class="form-control" multiple="true" 
+		        ng-model="filterCriteria.currentLevelFilters"
+		        ng-options="obj.id as obj.name for obj in filterCriteria.currentLevelOptions">
+		</select>
+    </div>
+
+    <div class="col-sm-9">
+    </div>
+
+  </div>
+</div>

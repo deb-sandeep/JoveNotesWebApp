@@ -10,12 +10,18 @@
             <tr class="default">
                 <th>Word</th>
                 <th>Meaning</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="wm in wordMeanings">
-                <td class="text-primary">{{wm.word}}</td>
-                <td>{{wm.meaning}}</td>
+            <tr ng-repeat="question in wordMeanings">
+                <td class="text-primary">{{question.word}}</td>
+                <td>{{question.meaning}}</td>
+                <td>
+                  <div class="pull-right" 
+                       ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
+                  </div>
+                </td>
             </tr>
         </tbody>
       </table>

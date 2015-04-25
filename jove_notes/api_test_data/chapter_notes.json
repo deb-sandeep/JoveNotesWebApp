@@ -7,29 +7,59 @@
 
 	"questions" : [
 		{
-			"questionType" : "word_meaning",
-			"word"         : "Cat",
-			"meaning"      : "A feline animal"
+			"questionType"    : "word_meaning",
+			"word"            : "Cat",
+			"meaning"         : "A feline animal",
+			"difficultyLevel" : 25,
+			"learningStats"   : {
+				"numAttempts"        : 10,
+				"learningEfficiency" : 95,
+				"currentLevel"       : "L2"
+			}
 		},
 		{
-			"questionType" : "question_answer",
-			"question"     : "What is the answer to life?",
-			"answer"       : "42"
+			"questionType"    : "question_answer",
+			"question"        : "What is the answer to life?",
+			"answer"          : "42",
+			"difficultyLevel" : 40,
+			"learningStats"   : {
+				"numAttempts"        : 10,
+				"learningEfficiency" : 85,
+				"currentLevel"       : "L0"
+			}
 		},
 		{
-			"questionType" : "word_meaning",
-			"word"         : "Dog",
-			"meaning"      : "An animal who barks"
+			"questionType"    : "word_meaning",
+			"word"            : "Dog",
+			"meaning"         : "An animal who barks",
+			"difficultyLevel" : 70,
+			"learningStats"   : {
+				"numAttempts"        : 10,
+				"learningEfficiency" : 75,
+				"currentLevel"       : "L1"
+			}
 		},
 		{
-			"questionType" : "word_meaning",
-			"word"         : "Vi",
-			"meaning"      : "Visual Editor"
+			"questionType"    : "word_meaning",
+			"word"            : "Vi",
+			"meaning"         : "Visual Editor",
+			"difficultyLevel" : 85,
+			"learningStats"   : {
+				"numAttempts"        : 10,
+				"learningEfficiency" : 65,
+				"currentLevel"       : "L3"
+			}
 		},
 		{
-			"questionType" : "question_answer",
-			"question"     : "What is a movie?",
-			"answer"       : "A movie is something that we should watch\nFriday nights"
+			"questionType"    : "question_answer",
+			"question"        : "What is a movie?",
+			"answer"          : "A movie is something that we should watch\nFriday nights",
+			"difficultyLevel" : 95,
+			"learningStats"   : {
+				"numAttempts"        : 10,
+				"learningEfficiency" : 55,
+				"currentLevel"       : "MAS"
+			}
 		}
 	]
 }

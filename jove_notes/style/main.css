@@ -11,3 +11,86 @@ body {
 	color: #E6E6E6;
 }
 
+.NS {
+	background-color: #D0D0D0 !important;
+}
+
+.L0 {
+	background-color: #FF0000 !important;
+}
+
+.L1 {
+	background-color: #FF7F2A !important;
+}
+
+.L2 {
+	background-color: #FFFF7F !important;
+}
+
+.L3 {
+	background-color: #AAFFAA !important;
+}
+
+.MAS {
+	background-color: #00FF00 !important;
+}
+
+.VE {
+	background-color: #07FD00 !important;
+	min-width: 30px;
+}
+
+.E {
+	background-color: #9FF79D !important;
+	min-width: 30px;
+}
+
+.M {
+	background-color: #FDFFB7 !important;
+	min-width: 30px;
+}
+
+.H {
+	background-color: #FFBF46 !important;
+	min-width: 30px;
+}
+
+.VH {
+	background-color: #FF6A4E !important;
+	min-width: 30px;
+}
+
+.muted {
+	background-color: #B4B4B4 !important;	
+	min-width: 30px;
+}
+
+.A1 {
+	background-color: #00FB2B !important;
+}
+
+.A2 {
+	background-color: #FFC600 !important;
+}
+
+.B1 {
+	background-color: #FF7000 !important;
+}
+
+.B2 {
+	background-color: #FF0000 !important;
+}
+
+.C1 {
+	background-color: #FF0000 !important;
+}
+
+.C2 {
+	background-color: #FF0000 !important;
+}
+
+.D {
+	background-color: #FF0000 !important;
+}
+
+

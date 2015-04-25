@@ -5,10 +5,13 @@ $pageConfig = array(
 	"tab_title"  => "Chapter Notes"
 ) ;
 
-define( "NOTES_TEMPLATE_PATH", "/apps/jove_notes/ng/notes/templates" ) ;
-define( "WM_TEMPLATE_PATH",    NOTES_TEMPLATE_PATH . "/wm_template.html" ) ;
-define( "QA_TEMPLATE_PATH",    NOTES_TEMPLATE_PATH . "/qa_template.html" ) ;
+define( "HTML_FRAGMENT_PATH",   "/apps/jove_notes/ng/notes/html_fragments" ) ;
+define( "WM_FRAGMENT_PATH",     HTML_FRAGMENT_PATH . "/wm_template.html" ) ;
+define( "QA_FRAGMENT_PATH",     HTML_FRAGMENT_PATH . "/qa_template.html" ) ;
+define( "FILTER_FRAGMENT_PATH", HTML_FRAGMENT_PATH . "/filter_template.html" ) ;
 
+define( "PHP_FRAGMENT_PATH",    DOCUMENT_ROOT . "/apps/jove_notes/ng/notes/php_fragments" ) ;
+define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
 ?>
 <!DOCTYPE html>
 <html ng-app="notesApp">
@@ -20,16 +23,18 @@ define( "QA_TEMPLATE_PATH",    NOTES_TEMPLATE_PATH . "/qa_template.html" ) ;
     <script src="/apps/jove_notes/ng/notes/controllers.js"></script>    
 </head>
 <body ng-controller="NotesController">
-    <?php include( SCROLL_NAVBAR_FILE ) ; ?>
+    <?php include( NAVBAR_FRAGMENT_PATH ) ; ?>
     <?php include( ALERT_DIV_FILE ) ; ?>
+    <div ng-if="showFilterForm" ng-include="'<?php echo FILTER_FRAGMENT_PATH ?>'">
+    </div>
     <p>
     <div ng-if="wordMeanings.length">
-        <div ng-include="'<?php echo WM_TEMPLATE_PATH ?>'">
+        <div ng-include="'<?php echo WM_FRAGMENT_PATH ?>'">
         </div>
     </div>
 
     <div ng-if="questionAnswers.length">
-        <div ng-include="'<?php echo QA_TEMPLATE_PATH ?>'">
+        <div ng-include="'<?php echo QA_FRAGMENT_PATH ?>'">
         </div>
     </div>
 
