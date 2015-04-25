@@ -5,8 +5,9 @@ var QT_QA = "question_answer" ;
 
 function FilterCriteria() {
 
-	this.msg = "This is the filter criteria" ;
-	this.currentLevelFilters = [ "NS", "L0", "L1", "L2", "L3", "MAS" ] ;
+	this.currentLevelFilters       = [ "NS", "L0", "L1",                   ] ;
+	this.learningEfficiencyFilters = [ "A2", "B1", "B2", "C1", "C2", "D"   ] ;
+	this.difficultyFilters =         [ "VE", "E",  "M",  "H",  "VH"        ] ;
 
 	this.currentLevelOptions = [ 
 		{ id : "NS",  name : "Not started" },
@@ -16,13 +17,58 @@ function FilterCriteria() {
 		{ id : "L3",  name : "Level 3" },
 		{ id : "MAS", name : "Mastered"}
 	] ;
+
+	this.learningEfficiencyOptions = [
+		{ id : "A1", name : "A1" },
+		{ id : "A2", name : "A2" },
+		{ id : "B1", name : "B1" },
+		{ id : "B2", name : "B2" },
+		{ id : "C1", name : "C1" },
+		{ id : "C2", name : "C2" },
+		{ id : "D" , name : "D"  }
+	] ;
+
+	this.difficultyOptions = [
+		{ id : "VE", name : "Very easy" },
+		{ id : "E",  name : "Easy" },
+		{ id : "M",  name : "Moderate" },
+		{ id : "H",  name : "Hard" },
+		{ id : "VH", name : "Very hard" }
+	] ;
+
+	this.serialize = function() {
+
+		$.cookie.json = true ;
+		$.cookie( 'currentLevelFilters', this.currentLevelFilters,
+			      { expires: 30 } ) ;
+
+		$.cookie( 'learningEfficiencyFilters', this.learningEfficiencyFilters,
+			      { expires: 30 } ) ;
+
+		$.cookie( 'difficultyFilters', this.difficultyFilters,
+			      { expires: 30 } ) ;
+	}
+
+	this.deserialize = function() {
+
+		$.cookie.json = true ;
+		if( typeof $.cookie( 'currentLevelFilters' ) != 'undefined' ) {
+			this.currentLevelFilters = $.cookie( 'currentLevelFilters' ) ;
+		} ;
+		if( typeof $.cookie( 'learningEfficiencyFilters' ) != 'undefined' ) {
+			this.learningEfficiencyFilters = $.cookie( 'learningEfficiencyFilters' ) ;
+		} ;
+		if( typeof $.cookie( 'difficultyFilters' ) != 'undefined' ) {
+			this.difficultyFilters = $.cookie( 'difficultyFilters' ) ;
+		} ;
+	}
 }
 
 // -----------------------------------------------------------------------------
 $scope.alerts             = [] ;
 $scope.pageTitle          = null ;
-$scope.showUserStatistics = true ;
-$scope.showFilterForm     = true ;
+$scope.showUserStatistics = false ;
+$scope.showFilterForm     = false ;
 $scope.filterCriteria     = new FilterCriteria() ;
 
 var rawData = null ;
@@ -31,6 +77,7 @@ var rawData = null ;
 $scope.wordMeanings    = [] ;
 $scope.questionAnswers = [] ;
 
+$scope.filterCriteria.deserialize() ;
 refreshData() ;
 
 // -----------------------------------------------------------------------------
@@ -50,22 +97,28 @@ $scope.toggleFilterForm = function() {
 	$scope.showFilterForm = !$scope.showFilterForm ;
 }
 
+$scope.applyFilter = function() {
+	$scope.filterCriteria.serialize() ;
+	$scope.toggleFilterForm() ;
+	applyFilterCriteria() ;
+}
+
 // -----------------------------------------------------------------------------
 function refreshData() {
 
 	$http.get( "/jove_notes/api/ChapterNotes" )
          .success( function( data ){
-         	prepareControllerData( data ) ;
+         	rawData = data ;
+         	applyFilterCriteria() ;
          })
          .error( function( data ){
          	$scope.addErrorAlert( "API call failed. " + data ) ;
          });
 }
 
-function prepareControllerData( data ) {
-	rawData = data ;
-	constructPageTitle( data ) ;
-	categorizeQuestions( data.questions ) ;
+function applyFilterCriteria() {
+	constructPageTitle( rawData ) ;
+	filterAndCategorizeQuestions( rawData.questions ) ;
 }
 
 function constructPageTitle( data ) {
@@ -74,22 +127,49 @@ function constructPageTitle( data ) {
 	                   data.chapterName ;
 }
 
-function categorizeQuestions( questions ) {
+function filterAndCategorizeQuestions( questions ) {
+
+	$scope.wordMeanings.length    = 0 ;
+	$scope.questionAnswers.length = 0 ;
 
 	for( index=0; index<questions.length; index++ ) {
 
 		var question = questions[ index ] ;
 		var type     = question.questionType ;
 
-		injectLabelsForValues( question ) ;
-
-		if( type == QT_WM ) {
-			$scope.wordMeanings.push( question ) ;
+		if( !question.hasOwnProperty( 'difficultyLevelLabel' ) ) {
+			injectLabelsForValues( question ) ;
 		}
-		else if( type == QT_QA ) {
-			$scope.questionAnswers.push( question ) ;
+
+		if( qualifiesFilter( question ) ) {
+			if( type == QT_WM ) {
+				$scope.wordMeanings.push( question ) ;
+			}
+			else if( type == QT_QA ) {
+				$scope.questionAnswers.push( question ) ;
+			}
 		}
 	}
+}
+
+function qualifiesFilter( question ) {
+
+	var currentLevel = question.learningStats.currentLevel ;
+	var lrnEffLabel  = question.learningEfficiencyLabel ;
+	var diffLabel    = question.difficultyLevelLabel ;
+
+	var currentLevelFilters = $scope.filterCriteria.currentLevelFilters ;
+	var lrnEffLabelFilters  = $scope.filterCriteria.learningEfficiencyFilters ;
+	var diffLabelFilters    = $scope.filterCriteria.difficultyFilters ;
+
+	if( currentLevelFilters.indexOf( currentLevel ) != -1 ) {
+		if( lrnEffLabelFilters.indexOf( lrnEffLabel ) != -1 ) {
+			if( diffLabelFilters.indexOf( diffLabel ) != -1 ) {
+				return true ;
+			}
+		}
+	}
+	return false ;
 }
 
 function injectLabelsForValues( question ) {
