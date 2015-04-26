@@ -105,6 +105,12 @@ $scope.applyFilter = function() {
 	applyFilterCriteria() ;
 }
 
+$scope.cancelFilter = function() {
+	$scope.showFilterForm = false ;
+	$scope.filterCriteria.deserialize() ;
+	$scope.digest() ;
+}
+
 // -----------------------------------------------------------------------------
 function refreshData() {
 

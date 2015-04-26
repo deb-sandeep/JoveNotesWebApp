@@ -26,7 +26,7 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
 <body ng-controller="NotesController">
     <?php include( NAVBAR_FRAGMENT_PATH ) ; ?>
     <?php include( ALERT_DIV_FILE ) ; ?>
-    <div ng-if="showFilterForm" ng-include="'<?php echo FILTER_FRAGMENT_PATH ?>'">
+    <div ng-show="showFilterForm" ng-include="'<?php echo FILTER_FRAGMENT_PATH ?>'">
     </div>
     <p>
     <div ng-if="wordMeanings.length">
