@@ -1,0 +1,34 @@
+<div class="container-fluid"
+     ng-include="'/apps/jove_notes/ng/flashcard/start_page/navbar_fragment.html'">
+</div>
+
+<div class="row">
+    <div class="col-sm-12" style="height:70px;">
+        <p>
+        <p style="padding-left:10px;padding-right:10px;">
+        <button class="btn btn-success btn-block gi-2x"
+                ng-click="cancelFilter()"
+                style="height:50px;">
+            Start Session
+            <span class="glyphicon glyphicon-play"></span>
+        </button>
+        </p>
+        <p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-4 text-center">
+        <b>Current learning level</b><p>
+        <canvas id="learningStatsPieGraph" width="250" height="250"></canvas>
+    </div>
+    <div class="col-sm-4 text-center">
+        <b>Difficulty level of cards</b><p>
+        <canvas id="difficultyStatsBarGraph" width="250" height="250"></canvas>
+    </div>
+    <div class="col-sm-4 text-center">
+        <b>Learning curve</b><p>
+        <canvas id="learningCurveGraph" width="300" height="250"></canvas>
+    </div>
+</div>
+

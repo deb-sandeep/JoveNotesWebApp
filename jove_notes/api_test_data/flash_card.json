@@ -1,0 +1,26 @@
+{
+	"learningStats" : {
+		"numCards"         : 100,
+		"numCardsNS"       :  20 ,
+		"numCardsL0"       :  20 ,
+		"numCardsL1"       :  10 ,
+		"numCardsL2"       :  10 ,
+		"numCardsL3"       :  20 ,
+		"numCardsMastered" :  20
+	},
+	"difficultyStats" : {
+		"numVE" : 20,
+		"numE"  : 10,
+		"numM"  : 10,
+		"numH"  : 25,
+		"numVH" : 25
+	},
+	"learningCurveData" : [
+        [ 100, 80, 60, 40, 20,   0 ],
+        [   0,  5, 10,  0,  0,   0 ],
+        [   0, 15, 10, 20,  0,   0 ],
+        [   0,  0, 20, 20,  0,   0 ],
+        [   0,  0,  0, 20, 30,   0 ],
+        [   0,  0,  0,  0, 50, 100 ] 
+	]
+}

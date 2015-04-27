@@ -50,10 +50,6 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
        ng-click="setActiveReport( 'StudyPerDay' )">
   	Study per Day
   	</a>
-    <alert ng-repeat="alert in alerts" type="{{alert.type}}" 
-           close="closeAlert($index)">
-    {{alert.msg}}
-    </alert>
   	<div class="ng-view"></div>	
 </body>
 </html>

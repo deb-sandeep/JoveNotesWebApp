@@ -108,7 +108,6 @@ $scope.applyFilter = function() {
 $scope.cancelFilter = function() {
 	$scope.showFilterForm = false ;
 	$scope.filterCriteria.deserialize() ;
-	$scope.digest() ;
 }
 
 // -----------------------------------------------------------------------------

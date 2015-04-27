@@ -13,9 +13,9 @@
     <script src="/lib-ext/jquery/jquery-2.1.1.min.js"></script>
     <script src="/lib-ext/jquery/jquery.cookie.js"></script>
     <script src="/lib-ext/bootstrap-3.3.4/js/bootstrap.min.js"></script>
-	<script src="/lib-ext/angular/angular.min.js"></script>
+    <script src="/lib-ext/angular/angular.min.js"></script>
     <script src="/lib-ext/angular/angular-route.min.js"></script>
     <script src="/lib-ext/angular/angular-sanitize.min.js"></script>
     <script src="/lib-ext/bootstrap-3.3.4/angular/ui-bootstrap-custom-0.12.1.min.js"></script>
-	<script src="/lib-ext/bootstrap-3.3.4/angular/ui-bootstrap-custom-tpls-0.12.1.min.js"></script>
+    <script src="/lib-ext/bootstrap-3.3.4/angular/ui-bootstrap-custom-tpls-0.12.1.min.js"></script>
 
