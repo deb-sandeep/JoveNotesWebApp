@@ -26,6 +26,7 @@ $pageConfig = array(
 
     <script>
     var userName = '<?php echo ExecutionContext::getCurrentUserName() ?>' ;
+    var chapterId = 23 ; // TODO: This needs to be done through PHP
     </script>
 </head>
 <body ng-controller="FlashCardController">

@@ -1,8 +1,79 @@
 flashCardApp.controller( 'FlashCardController', function( $scope ) {
+// -----------------------------------------------------------------------------
+function StudyCriteria() {
+    
+    this.maxCards    = -1 ;
+    this.maxTime     = -1 ;
+    this.maxNewCards = -1 ;
 
-$scope.userName = userName ;
-$scope.pageTitle = '' ;
+    this.currentLevelFilters       = [ "NS", "L0", "L1", "L2", "L3"            ] ;
+    this.learningEfficiencyFilters = [ "A1", "A2", "B1", "B2", "C1", "C2", "D" ] ;
+    this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH"            ] ;
+
+    this.strategy = "SSR" ;
+    this.push     = false ;
+
+    this.serialize = function() {
+        $.cookie.json = true ;
+        $.cookie( 'studyCriteria-' + $scope.chapterId, this, { expires: 30 } ) ;
+    }
+
+    this.deserialize = function() {
+        $.cookie.json = true ;
+        var crit = $.cookie( 'studyCriteria-' + $scope.chapterId ) ;
+        if( typeof crit != 'undefined' ) {
+            this.maxCards    = crit.maxCards ;
+            this.maxTime     = crit.maxTime ;
+            this.maxNewCards = crit.maxNewCards ;
+
+            this.currentLevelFilters       = crit.currentLevelFilters ;
+            this.learningEfficiencyFilters = crit.learningEfficiencyFilters ;
+            this.difficultyFilters         = crit.difficultyFilters ;
+
+            this.strategy = crit.strategy ;
+            this.push     = crit.push ;
+        } ;
+    }
+}
+
+function FilterCriteria() {
+
+    this.currentLevelOptions = [ 
+        { id : "NS",  name : "Not started" },
+        { id : "L0",  name : "Level 0" },
+        { id : "L1",  name : "Level 1" },
+        { id : "L2",  name : "Level 2" },
+        { id : "L3",  name : "Level 3" },
+    ] ;
+
+    this.learningEfficiencyOptions = [
+        { id : "A1", name : "A1" },
+        { id : "A2", name : "A2" },
+        { id : "B1", name : "B1" },
+        { id : "B2", name : "B2" },
+        { id : "C1", name : "C1" },
+        { id : "C2", name : "C2" },
+        { id : "D" , name : "D"  }
+    ] ;
+
+    this.difficultyOptions = [
+        { id : "VE", name : "Very easy" },
+        { id : "E",  name : "Easy" },
+        { id : "M",  name : "Moderate" },
+        { id : "H",  name : "Hard" },
+        { id : "VH", name : "Very hard" }
+    ] ;
+}
+
+// -----------------------------------------------------------------------------
+$scope.userName  = userName ;
+$scope.chapterId = chapterId ;
+
+$scope.pageTitle = 'The title will come from one of the child (route element) controllers.' ;
 $scope.alerts = [] ;
+
+$scope.studyCriteria  = new StudyCriteria() ;
+$scope.filterCriteria = new FilterCriteria() ;
 
 $scope.rawData = null ;
 
@@ -10,16 +81,20 @@ $scope.learningStats     = null ;
 $scope.difficultyStats   = null ;
 $scope.learningCurveData = null ;
 
+// -----------------------------------------------------------------------------
+$scope.studyCriteria.deserialize() ;
+
+// -----------------------------------------------------------------------------
 $scope.addErrorAlert = function( msgString ) {
-	$scope.alerts.push( { type: 'danger', msg: msgString } ) ;
+    $scope.alerts.push( { type: 'danger', msg: msgString } ) ;
 }
 
 $scope.closeAlert = function(index) {
-	$scope.alerts.splice( index, 1 ) ;
+    $scope.alerts.splice( index, 1 ) ;
 };
 
 $scope.processRawData = function( rawData ) {
-	$scope.rawData = rawData ;
+    $scope.rawData = rawData ;
     $scope.learningStats     = rawData.learningStats ;
     $scope.difficultyStats   = rawData.difficultyStats ;
     $scope.learningCurveData = rawData.learningCurveData ;
@@ -63,10 +138,10 @@ $scope.renderLearningStatsPie = function( divName ) {
     }
 
     var pie = new RGraph.Pie(divName, vals)
-        .set('gutter.left', 40 )
-        .set('gutter.right', 40 )
-        .set('gutter.top', 40 )
-        .set('gutter.bottom', 40 )
+        .set('gutter.left',   30 )
+        .set('gutter.right',  30 )
+        .set('gutter.top',    30 )
+        .set('gutter.bottom', 30 )
         .set('strokestyle', 'rgba(0,0,0,0)')
         .set('labels', labels )
         .set('colors', colors )
@@ -123,7 +198,6 @@ $scope.renderLearningCurveGraph = function( divName ) {
         }
     })
     .draw() ;
-
 }
 
 // -----------------------------------------------------------------------------

@@ -6,6 +6,9 @@ $scope.$parent.pageTitle = "Flash Card Start Page" ;
 fetchAndProcessDataFromServer() ;
 
 // -----------------------------------------------------------------------------
+$scope.applyLevel = function( level ) {
+    alert( level ) ;
+}
 
 // -----------------------------------------------------------------------------
 function fetchAndProcessDataFromServer() {

@@ -4,4 +4,9 @@ flashCardApp.controller( 'PracticePageController', function( $scope, $http, $rou
 $scope.$parent.pageTitle = "Flash Card Practice Page" ;
 
 // -----------------------------------------------------------------------------
+$scope.$parent.studyCriteria.serialize() ;
+
+// -----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
 } ) ;

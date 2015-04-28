@@ -2,33 +2,71 @@
      ng-include="'/apps/jove_notes/ng/flashcard/start_page/navbar_fragment.html'">
 </div>
 
+<!-- The "Start Session" button which spans the entire width                 -->
+<!-- ======================================================================= -->
 <div class="row">
     <div class="col-sm-12" style="height:70px;">
         <p>
         <p style="padding-left:10px;padding-right:10px;">
-        <button class="btn btn-success btn-block gi-2x"
-                ng-click="cancelFilter()"
-                style="height:50px;">
+        <a type="button" class="btn btn-success btn-block gi-2x"
+           href="#PracticePage"
+           style="height:50px;">
             Start Session
             <span class="glyphicon glyphicon-play"></span>
-        </button>
+        </a>
         </p>
         <p>
     </div>
 </div>
 
+<!-- The graphs which show the progress of the user and the chapter stats    -->
+<!-- ======================================================================= -->
 <div class="row">
+    <div class="col-sm-3 text-center">
+        <b>Difficulty level of cards</b><p>
+        <canvas id="difficultyStatsBarGraph" width="250" height="200"></canvas>
+    </div>
     <div class="col-sm-4 text-center">
         <b>Current learning level</b><p>
-        <canvas id="learningStatsPieGraph" width="250" height="250"></canvas>
+        <canvas id="learningStatsPieGraph" width="250" height="200"></canvas>
     </div>
-    <div class="col-sm-4 text-center">
-        <b>Difficulty level of cards</b><p>
-        <canvas id="difficultyStatsBarGraph" width="250" height="250"></canvas>
-    </div>
-    <div class="col-sm-4 text-center">
+    <div class="col-sm-5 text-center">
         <b>Learning curve</b><p>
-        <canvas id="learningCurveGraph" width="300" height="250"></canvas>
+        <canvas id="learningCurveGraph" width="350" height="200"></canvas>
     </div>
 </div>
 
+<!-- The input values which will influence the study session.                -->
+<!-- ======================================================================= -->
+<div class="row">
+    <div class="col-sm-3 pad-5px">
+        <div class="panel panel-info">
+          <div class="panel-heading"><b>Study Bounds</b></div>
+          <div class="panel-body pad-5px">
+            <div align="left" 
+                 ng-include="'/apps/jove_notes/ng/flashcard/start_page/study_bounds_fragment.html'">
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-sm-3 pad-5px">
+        <div class="panel panel-info">
+          <div class="panel-heading"><b>Study Strategy</b></div>
+          <div class="panel-body pad-5px">
+            <div align="left" 
+                 ng-include="'/apps/jove_notes/ng/flashcard/start_page/study_strategy_fragment.html'">
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-sm-6 pad-5px">
+        <div class="panel panel-info">
+          <div class="panel-heading"><b>Filter Criteria</b></div>
+          <div class="panel-body pad-5px">
+            <div align="center" 
+                 ng-include="'/apps/jove_notes/ng/flashcard/start_page/filter_criteria_fragment.html'">
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
