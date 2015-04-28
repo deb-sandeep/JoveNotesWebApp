@@ -25,6 +25,7 @@ body {
 
 .NS {
 	background-color: #D0D0D0 !important;
+	color: #424242 !important;
 }
 
 .L0 {
@@ -37,19 +38,23 @@ body {
 
 .L2 {
 	background-color: #FFFF7F !important;
+	color: #757575 !important;
 }
 
 .L3 {
 	background-color: #AAFFAA !important;
+	color: #757575 !important;
 }
 
 .MAS {
 	background-color: #00FF00 !important;
+	color: #757575 !important;
 }
 
 .VE {
 	background-color: #07FD00 !important;
 	min-width: 30px;
+	color: #393939;
 }
 
 .E {
@@ -73,12 +78,13 @@ body {
 }
 
 .muted {
-	background-color: #B4B4B4 !important;	
+	background-color: #737373 !important;	
 	min-width: 30px;
 }
 
 .A1 {
 	background-color: #00FB2B !important;
+	color: #393939;
 }
 
 .A2 {
@@ -105,4 +111,30 @@ body {
 	background-color: #FF0000 !important;
 }
 
+table.temporal {
+	border-collapse: separate;
+	border-spacing: 3px;
+}
 
+.temporal td {
+	padding: 1px;
+	width: 10px;
+	line-height: 12px;
+	height:12px;
+}
+
+.temporal .rating-E {
+	background-color: #00FF00;
+}
+
+.temporal .rating-A {
+	background-color: #C5FF00;
+}
+
+.temporal .rating-P {
+	background-color: #FFAB00;
+}
+
+.temporal .rating-H {
+	background-color: #FF0000;
+}

@@ -1,0 +1,88 @@
+<div class="container-fluid fixedfooter">
+    <div class="row">
+
+        <div class="col-sm-5">
+
+            <!-- The End Session button -->
+            <button type="button" 
+                    class="btn btn-danger btn-lg"
+                    ng-click="endSession()">
+                <span class="glyphicon glyphicon-off"></span>
+            </button>
+
+            <span class="glyphicon glyphicon-option-vertical"></span>
+
+            <!-- The toggle header popup -->
+            <div class="dropup" style="display:inline">
+              <button type="button" 
+                      class="btn btn-primary dropdown-toggle btn-lg" 
+                      data-toggle="dropdown">
+                <span class="glyphicon glyphicon-equalizer"></span>
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li role="presentation">
+                    <a role="menuitem" tabindex="-1" ng-click="toggleHeader('L0')">Title Header</a>
+                </li>
+                <li role="presentation">
+                    <a role="menuitem" tabindex="-1" ng-click="toggleHeader('L1')">Session Header</a>
+                </li>
+                <li role="presentation">
+                    <a role="menuitem" tabindex="-1" ng-click="toggleHeader('L2')">Card header</a>
+                </li>
+              </ul>
+            </div>
+
+            <!-- The Shuffle cards button -->
+            <button type="button" 
+                    class="btn btn-primary btn-lg"
+                    ng-click="randomizeCards()">
+                <span class="glyphicon glyphicon-random"></span>
+            </button>
+
+            <!-- The Shuffle cards button -->
+            <button type="button" 
+                    class="btn btn-warning btn-lg"
+                    ng-click="purgeCard()">
+                <span class="glyphicon glyphicon-share"></span>
+            </button>
+
+            <!-- The Mark for Edit button -->
+            <button type="button" 
+                    class="btn btn-info btn-lg"
+                    ng-click="markCardForEdit()">
+                <span class="glyphicon glyphicon-edit"></span>
+            </button>
+
+            <span class="glyphicon glyphicon-option-vertical"></span>
+        </div>
+        <div class="col-sm-7 pull-right">
+            <div class="btn-group btn-group-justified" role="group" aria-label="...">
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-danger btn-lg"
+                        ng-click="rateCard( 'H' )">
+                    Hard
+                </button>
+              </div>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-warning btn-lg"
+                        ng-click="rateCard( 'P' )">
+                    Practice
+                </button>
+              </div>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-info btn-lg"
+                        ng-click="rateCard( 'A' )">
+                    Almost
+                </button>
+              </div>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-success btn-lg"
+                        ng-click="rateCard( 'E' )">
+                    Easy
+                </button>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>

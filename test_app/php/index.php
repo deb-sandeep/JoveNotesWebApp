@@ -40,8 +40,6 @@ $pageConfig = array(
 	</script>
 </head>
 <body>
-    <?php include( NAVBAR_FILE ) ; ?>
-    
 	<?php
 	echo "<h3>User preferences</h3>" ;
 	echo "<p>" ;
@@ -65,5 +63,9 @@ $pageConfig = array(
 	<p>
 	Server Response:<p>
 	<div id="response"><?php echo ExecutionContext::getRequestType() ?></div>
+	<p>
+	<a href="<?php echo LOGOUT_SERVICE ?>">
+        <span class="glyphicon glyphicon-log-out gi-1-5x"></span>
+    </a>
 </body>
 </html>
