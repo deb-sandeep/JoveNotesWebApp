@@ -1,3 +1,38 @@
+// =============================================================================
+// =============================================================================
+function UserLearningFilterOptions() {
+
+    this.currentLevelOptions = [ 
+        { id : "NS",  name : "Not started" },
+        { id : "L0",  name : "Level 0" },
+        { id : "L1",  name : "Level 1" },
+        { id : "L2",  name : "Level 2" },
+        { id : "L3",  name : "Level 3" },
+		{ id : "MAS", name : "Mastered"}
+    ] ;
+
+    this.learningEfficiencyOptions = [
+        { id : "A1", name : "A1" },
+        { id : "A2", name : "A2" },
+        { id : "B1", name : "B1" },
+        { id : "B2", name : "B2" },
+        { id : "C1", name : "C1" },
+        { id : "C2", name : "C2" },
+        { id : "D" , name : "D"  }
+    ] ;
+
+    this.difficultyOptions = [
+        { id : "VE", name : "Very easy" },
+        { id : "E",  name : "Easy" },
+        { id : "M",  name : "Moderate" },
+        { id : "H",  name : "Hard" },
+        { id : "VH", name : "Very hard" }
+    ] ;
+}
+
+// =============================================================================
+// =============================================================================
+
 function JoveNotesUtil() {
 // -----------------------------------------------------------------------------
 
@@ -34,6 +69,8 @@ this.associateLearningStatsToQuestions = function( questions, userLearningStats 
 		injectLabelsForValues( question ) ;
 	}
 }
+
+// -----------------------------------------------------------------------------
 
 function injectLabelsForValues( question ) {
 

@@ -1,6 +1,8 @@
 <?php
 require_once( $_SERVER[ "DOCUMENT_ROOT" ] . "/apps/jove_notes/php/app_bootstrap.php" ) ;
 
+// TODO - Authorization check for chapterId
+
 $pageConfig = array(
 	"tab_title"  => "Chapter Notes"
 ) ;
@@ -20,7 +22,10 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
 
 <head>
     <?php include( HEAD_CONTENT_FILE ); ?>
+
     <script src="/apps/jove_notes/ng/_common/jove_notes_utils.js"></script>    
+    <script src="/apps/jove_notes/ng/_common/question_utils.js"></script>    
+
     <script src="/apps/jove_notes/ng/notes/routes.js"></script>    
     <script src="/apps/jove_notes/ng/notes/controllers.js"></script>    
 

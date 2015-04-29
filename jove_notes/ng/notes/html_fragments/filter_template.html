@@ -6,7 +6,7 @@
 		<select id="currentLevelFilter" 
 		        class="form-control" multiple="true" 
 		        ng-model="filterCriteria.currentLevelFilters"
-		        ng-options="obj.id as obj.name for obj in filterCriteria.currentLevelOptions">
+		        ng-options="obj.id as obj.name for obj in filterOptions.currentLevelOptions">
 		</select>
     </div>
 
@@ -15,7 +15,7 @@
 		<select id="learningEfficiencyFilter" 
 		        class="form-control" multiple="true" 
 		        ng-model="filterCriteria.learningEfficiencyFilters"
-		        ng-options="obj.id as obj.name for obj in filterCriteria.learningEfficiencyOptions">
+		        ng-options="obj.id as obj.name for obj in filterOptions.learningEfficiencyOptions">
 		</select>
     </div>
 
@@ -24,7 +24,7 @@
 		<select id="difficultyFilter" 
 		        class="form-control" multiple="true" 
 		        ng-model="filterCriteria.difficultyFilters"
-		        ng-options="obj.id as obj.name for obj in filterCriteria.difficultyOptions">
+		        ng-options="obj.id as obj.name for obj in filterOptions.difficultyOptions">
 		</select>
     </div>
 

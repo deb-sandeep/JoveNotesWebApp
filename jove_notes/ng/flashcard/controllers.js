@@ -36,35 +36,6 @@ function StudyCriteria() {
     }
 }
 
-function FilterCriteria() {
-
-    this.currentLevelOptions = [ 
-        { id : "NS",  name : "Not started" },
-        { id : "L0",  name : "Level 0" },
-        { id : "L1",  name : "Level 1" },
-        { id : "L2",  name : "Level 2" },
-        { id : "L3",  name : "Level 3" },
-    ] ;
-
-    this.learningEfficiencyOptions = [
-        { id : "A1", name : "A1" },
-        { id : "A2", name : "A2" },
-        { id : "B1", name : "B1" },
-        { id : "B2", name : "B2" },
-        { id : "C1", name : "C1" },
-        { id : "C2", name : "C2" },
-        { id : "D" , name : "D"  }
-    ] ;
-
-    this.difficultyOptions = [
-        { id : "VE", name : "Very easy" },
-        { id : "E",  name : "Easy" },
-        { id : "M",  name : "Moderate" },
-        { id : "H",  name : "Hard" },
-        { id : "VH", name : "Very hard" }
-    ] ;
-}
-
 // -----------------------------------------------------------------------------
 $scope.userName  = userName ;
 $scope.chapterId = chapterId ;
@@ -72,8 +43,8 @@ $scope.chapterId = chapterId ;
 $scope.pageTitle = 'The title will come from one of the child (route element) controllers.' ;
 $scope.alerts = [] ;
 
-$scope.studyCriteria  = new StudyCriteria() ;
-$scope.filterCriteria = new FilterCriteria() ;
+$scope.studyCriteria = new StudyCriteria() ;
+$scope.filterOptions = new UserLearningFilterOptions() ;
 
 $scope.rawData = null ;
 

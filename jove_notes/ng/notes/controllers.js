@@ -1,42 +1,11 @@
 dashboardApp.controller( 'NotesController', function( $scope, $http ) {
 
 // ---------------- Constants and inner class definition -----------------------
-var QT_WM  = "word_meaning" ;
-var QT_QA  = "question_answer" ;
-var QT_FIB = "fib" ;
-
 function FilterCriteria() {
 
 	this.currentLevelFilters       = [ "NS", "L0", "L1",                 ] ;
 	this.learningEfficiencyFilters = [ "A2", "B1", "B2", "C1", "C2", "D" ] ;
 	this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH"      ] ;
-
-	this.currentLevelOptions = [ 
-		{ id : "NS",  name : "Not started" },
-		{ id : "L0",  name : "Level 0" },
-		{ id : "L1",  name : "Level 1" },
-		{ id : "L2",  name : "Level 2" },
-		{ id : "L3",  name : "Level 3" },
-		{ id : "MAS", name : "Mastered"}
-	] ;
-
-	this.learningEfficiencyOptions = [
-		{ id : "A1", name : "A1" },
-		{ id : "A2", name : "A2" },
-		{ id : "B1", name : "B1" },
-		{ id : "B2", name : "B2" },
-		{ id : "C1", name : "C1" },
-		{ id : "C2", name : "C2" },
-		{ id : "D" , name : "D"  }
-	] ;
-
-	this.difficultyOptions = [
-		{ id : "VE", name : "Very easy" },
-		{ id : "E",  name : "Easy" },
-		{ id : "M",  name : "Moderate" },
-		{ id : "H",  name : "Hard" },
-		{ id : "VH", name : "Very hard" }
-	] ;
 
     this.serialize = function() {
         $.cookie.json = true ;
@@ -56,14 +25,17 @@ function FilterCriteria() {
 
 // ---------------- Local variables --------------------------------------------
 var jnUtil = new JoveNotesUtil() ;
+var formatter = new QuestionFormatter() ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.alerts             = [] ;
+$scope.userName           = userName ;
 $scope.chapterId          = chapterId ;
 $scope.pageTitle          = null ;
 $scope.showUserStatistics = false ;
 $scope.showFilterForm     = false ;
 $scope.filterCriteria     = new FilterCriteria() ;
+$scope.filterOptions      = new UserLearningFilterOptions() ;
 
 // The deserialized chapter data as returned by the API
 $scope.chapterData = null ;
@@ -110,18 +82,28 @@ function refreshData() {
 
 	$http.get( "/jove_notes/api/ChapterNotes" )
          .success( function( data ){
-
-         	jnUtil.associateLearningStatsToQuestions( 
-         		                    data[0].questions, data[1].learningStats ) ;
-
-         	$scope.chapterData  = data[0] ;
-			$scope.pageTitle    = jnUtil.constructPageTitle( data[0] ) ;
-
-         	applyFilterCriteria() ;
+         	processServerData( data ) ;
          })
          .error( function( data ){
          	$scope.addErrorAlert( "API call failed. " + data ) ;
          });
+}
+
+function processServerData( data ) {
+
+	if( typeof data === "string" ) {
+		$scope.addErrorAlert( "Server returned invalid data. " + data ) ;
+		return ;
+	}
+	
+ 	formatter.createAndInjectFormattedText( data[0].questions ) ;
+ 	jnUtil.associateLearningStatsToQuestions( 
+ 		                    data[0].questions, data[1].learningStats ) ;
+
+ 	$scope.chapterData  = data[0] ;
+	$scope.pageTitle    = jnUtil.constructPageTitle( data[0] ) ;
+
+ 	applyFilterCriteria() ;
 }
 
 function applyFilterCriteria() {
@@ -139,14 +121,13 @@ function applyFilterCriteria() {
 		var type     = question.questionType ;
 
 		if( qualifiesFilter( question ) ) {
-			if( type == QT_WM ) {
+			if( type == QuestionTypes.prototype.QT_WM ) {
 				$scope.wordMeanings.push( question ) ;
 			}
-			else if( type == QT_QA ) {
+			else if( type == QuestionTypes.prototype.QT_QA ) {
 				$scope.questionAnswers.push( question ) ;
 			}
-			else if( type == QT_FIB ) {
-				injectFIBFormattedText( question ) ;
+			else if( type == QuestionTypes.prototype.QT_FIB ) {
 				$scope.fibs.push( question ) ;
 			}
 		}
