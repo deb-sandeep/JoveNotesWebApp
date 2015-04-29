@@ -1,5 +1,5 @@
-flashCardApp.controller( 'FlashCardController', function( $scope ) {
-// -----------------------------------------------------------------------------
+flashCardApp.controller( 'FlashCardController', function( $scope, $http, $location ) {
+// ---------------- Constants and inner class definition -----------------------
 function StudyCriteria() {
     
     this.maxCards    = -1 ;
@@ -36,26 +36,29 @@ function StudyCriteria() {
     }
 }
 
-// -----------------------------------------------------------------------------
+// ---------------- Local variables --------------------------------------------
+var jnUtil = new JoveNotesUtil() ;
+var formatter = new QuestionFormatter() ;
+
+// ---------------- Controller variables ---------------------------------------
 $scope.userName  = userName ;
 $scope.chapterId = chapterId ;
 
-$scope.pageTitle = 'The title will come from one of the child (route element) controllers.' ;
+$scope.pageTitle = '' ;
 $scope.alerts = [] ;
 
 $scope.studyCriteria = new StudyCriteria() ;
 $scope.filterOptions = new UserLearningFilterOptions() ;
 
-$scope.rawData = null ;
-
-$scope.learningStats     = null ;
-$scope.difficultyStats   = null ;
+$scope.chapterData       = null ;
+$scope.progressStats     = null ;
 $scope.learningCurveData = null ;
 
-// -----------------------------------------------------------------------------
+// ---------------- Main logic for the controller ------------------------------
+log.debug( "Executing FlashCardController." ) ;
 $scope.studyCriteria.deserialize() ;
 
-// -----------------------------------------------------------------------------
+// ---------------- Controller methods -----------------------------------------
 $scope.addErrorAlert = function( msgString ) {
     $scope.alerts.push( { type: 'danger', msg: msgString } ) ;
 }
@@ -64,114 +67,32 @@ $scope.closeAlert = function(index) {
     $scope.alerts.splice( index, 1 ) ;
 };
 
-$scope.processRawData = function( rawData ) {
-    $scope.rawData = rawData ;
-    $scope.learningStats     = rawData.learningStats ;
-    $scope.difficultyStats   = rawData.difficultyStats ;
-    $scope.learningCurveData = rawData.learningCurveData ;
+$scope.processServerData = function( data ) {
+
+    if( typeof data === "string" ) {
+        $scope.addErrorAlert( "Server returned invalid data. " + data ) ;
+        return ;
+    }
+    
+    // We don't assign them to the scope variables directly since we are about
+    // to amalgamate them. We don't want watchers kicking in before the data
+    // merge.
+    var chapterData          = data[0] ;
+    var learningStats        = data[1] ;
+
+    $scope.progressStats     = data[2].progressStats ;
+    $scope.learningCurveData = data[2].learningCurveData ;
+
+    formatter.createAndInjectFormattedText( chapterData.questions ) ;
+    jnUtil.associateLearningStatsToQuestions( 
+                                        chapterData.questions, learningStats ) ;
+
+    $scope.chapterData  = chapterData ;
+    $scope.pageTitle    = jnUtil.constructPageTitle( data[0] ) ;
 }
+// ---------------- Private functions ------------------------------------------
 
-$scope.renderLearningStatsPie = function( divName ) {
-
-    var vals   = [] ;
-    var labels = [] ;
-    var colors = [] ;
-
-    if( $scope.learningStats.numCardsNS != 0 ) {
-        vals.push( $scope.learningStats.numCardsNS ) ;
-        labels.push( "NS-" + $scope.learningStats.numCardsNS ) ;
-        colors.push( "#D0D0D0" ) ;
-    } 
-    if( $scope.learningStats.numCardsL0 != 0 ) {
-        vals.push( $scope.learningStats.numCardsL0 ) ;
-        labels.push( "L0-" + $scope.learningStats.numCardsL0 ) ;
-        colors.push( "#FF0000" ) ;
-    } 
-    if( $scope.learningStats.numCardsL1 != 0 ) {
-        vals.push( $scope.learningStats.numCardsL1 ) ;
-        labels.push( "L1-" + $scope.learningStats.numCardsL1 ) ;
-        colors.push( "#FF7F2A" ) ;
-    }
-    if( $scope.learningStats.numCardsL2 != 0 ) {
-        vals.push( $scope.learningStats.numCardsL2 ) ;
-        labels.push( "L2-" + $scope.learningStats.numCardsL2 ) ;
-        colors.push( "#FFFF7F" ) ;
-    } 
-    if( $scope.learningStats.numCardsL3 != 0 ) {
-        vals.push( $scope.learningStats.numCardsL3 ) ;
-        labels.push( "L3-" + $scope.learningStats.numCardsL3 ) ;
-        colors.push( "#AAFFAA" ) ;
-    }
-    if( $scope.learningStats.numCardsMastered != 0 ) {
-        vals.push( $scope.learningStats.numCardsMastered ) ;
-        labels.push( "MAS-" + $scope.learningStats.numCardsMastered ) ;
-        colors.push( "#00FF00" ) ;
-    }
-
-    var pie = new RGraph.Pie(divName, vals)
-        .set('gutter.left',   30 )
-        .set('gutter.right',  30 )
-        .set('gutter.top',    30 )
-        .set('gutter.bottom', 30 )
-        .set('strokestyle', 'rgba(0,0,0,0)')
-        .set('labels', labels )
-        .set('colors', colors )
-        .draw();
-} ;
-
-$scope.renderDifficultyStatsBar = function( divName ) {
-
-    var vals   = [ 
-        $scope.difficultyStats.numVE, 
-        $scope.difficultyStats.numE, 
-        $scope.difficultyStats.numM, 
-        $scope.difficultyStats.numH, 
-        $scope.difficultyStats.numVH
-    ] ;
-
-    var bar = new RGraph.Bar( {
-        id     : divName,
-        data   : vals,
-        options: {
-            labels: [ "VE", "E", "M", "H", "VH" ],
-            colors: [ "#07FD00", "#9FF79D", "#FDFFB7", "#FFBF46", "#FF6A4E" ],
-            gutter: {
-                left   : 30,
-                right  : 30,
-                top    : 30,
-                bottom : 30
-            },
-            background: {
-                grid: true
-            }
-        }
-    })
-    .set( 'colors.sequential', true )
-    .draw();
-} ;
-
-$scope.renderLearningCurveGraph = function( divName ) {
-
-    var mline = new RGraph.Line( {
-        id: divName,
-        data: $scope.learningCurveData,
-        options: {
-            Background: {
-              grid: false 
-            },
-            ylabels: {
-              count: 4
-            },
-            colors: [ "#D0D0D0", "#FF0000", "#FF7F2A", "#FFFF7F", "#AAFFAA", "#00FF00" ],
-            filled: { self: true },
-            linewidth: 0.2,
-            tickmarks: false,
-        }
-    })
-    .draw() ;
-}
-
-// -----------------------------------------------------------------------------
+// ---------------- End of controller ------------------------------------------
 } ) ;
 
 

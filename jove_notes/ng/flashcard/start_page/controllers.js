@@ -1,21 +1,30 @@
 flashCardApp.controller( 'StartPageController', function( $scope, $http, $routeParams ) {
 // -----------------------------------------------------------------------------
 
-$scope.$parent.pageTitle = "Flash Card Start Page" ;
+// ---------------- Local variables --------------------------------------------
+var jnUtil    = new JoveNotesUtil() ;
+var formatter = new QuestionFormatter() ;
 
+// ---------------- Controller variables ---------------------------------------
+
+// ---------------- Main logic for the controller ------------------------------
+log.debug( "Executing StartPageController." ) ;
 fetchAndProcessDataFromServer() ;
 
-// -----------------------------------------------------------------------------
+// ---------------- Controller methods -----------------------------------------
 $scope.applyLevel = function( level ) {
     alert( level ) ;
 }
 
-// -----------------------------------------------------------------------------
+// ---------------- Private functions ------------------------------------------
 function fetchAndProcessDataFromServer() {
 
-    $http.get( "/jove_notes/api/FlashCard/231" )
+    log.debug( "Fetching flash card data from server." ) ;
+
+    $http.get( "/jove_notes/api/FlashCard/" + $scope.$parent.chapterId )
          .success( function( data ){
-            $scope.processRawData( data ) ;
+            log.debug( "Received response from server." ) ;
+            $scope.processServerData( data ) ;
             renderGraphs() ;
          })
          .error( function( data ){
@@ -25,10 +34,15 @@ function fetchAndProcessDataFromServer() {
 
 function renderGraphs() {
 
-    $scope.renderLearningStatsPie( 'learningStatsPieGraph' ) ;
-    $scope.renderDifficultyStatsBar( 'difficultyStatsBarGraph' ) ;
-    $scope.renderLearningCurveGraph( 'learningCurveGraph' ) ;
-}
+    log.debug( "Rendering graphs." ) ;
+    jnUtil.renderLearningProgressPie( 'learningStatsPieGraph',
+                                      $scope.$parent.progressStats ) ;
 
-// -----------------------------------------------------------------------------
+    jnUtil.renderDifficultyStatsBar ( 'difficultyStatsBarGraph',
+                                      $scope.$parent.chapterData.difficultyStats ) ;
+
+    jnUtil.renderLearningCurveGraph ( 'learningCurveGraph',
+                                      $scope.$parent.learningCurveData ) ;
+}
+// ---------------- End of controller ------------------------------------------
 } ) ;

@@ -70,6 +70,106 @@ this.associateLearningStatsToQuestions = function( questions, userLearningStats 
 	}
 }
 
+this.renderLearningProgressPie = function( divName, progressStats ) {
+
+    var vals   = [] ;
+    var labels = [] ;
+    var colors = [] ;
+
+    if( progressStats.numCardsNS != 0 ) {
+        vals.push( progressStats.numCardsNS ) ;
+        labels.push( "NS-" + progressStats.numCardsNS ) ;
+        colors.push( "#D0D0D0" ) ;
+    } 
+    if( progressStats.numCardsL0 != 0 ) {
+        vals.push( progressStats.numCardsL0 ) ;
+        labels.push( "L0-" + progressStats.numCardsL0 ) ;
+        colors.push( "#FF0000" ) ;
+    } 
+    if( progressStats.numCardsL1 != 0 ) {
+        vals.push( progressStats.numCardsL1 ) ;
+        labels.push( "L1-" + progressStats.numCardsL1 ) ;
+        colors.push( "#FF7F2A" ) ;
+    }
+    if( progressStats.numCardsL2 != 0 ) {
+        vals.push( progressStats.numCardsL2 ) ;
+        labels.push( "L2-" + progressStats.numCardsL2 ) ;
+        colors.push( "#FFFF7F" ) ;
+    } 
+    if( progressStats.numCardsL3 != 0 ) {
+        vals.push( progressStats.numCardsL3 ) ;
+        labels.push( "L3-" + progressStats.numCardsL3 ) ;
+        colors.push( "#AAFFAA" ) ;
+    }
+    if( progressStats.numCardsMastered != 0 ) {
+        vals.push( progressStats.numCardsMastered ) ;
+        labels.push( "MAS-" + progressStats.numCardsMastered ) ;
+        colors.push( "#00FF00" ) ;
+    }
+
+    var pie = new RGraph.Pie(divName, vals)
+        .set('gutter.left',   30 )
+        .set('gutter.right',  30 )
+        .set('gutter.top',    30 )
+        .set('gutter.bottom', 30 )
+        .set('strokestyle', 'rgba(0,0,0,0)')
+        .set('labels', labels )
+        .set('colors', colors )
+        .draw();
+} ;
+
+this.renderDifficultyStatsBar = function( divName, difficultyStats ) {
+
+    var vals   = [ 
+        difficultyStats.numVE, 
+        difficultyStats.numE, 
+        difficultyStats.numM, 
+        difficultyStats.numH, 
+        difficultyStats.numVH
+    ] ;
+
+    var bar = new RGraph.Bar( {
+        id     : divName,
+        data   : vals,
+        options: {
+            labels: [ "VE", "E", "M", "H", "VH" ],
+            colors: [ "#07FD00", "#9FF79D", "#FDFFB7", "#FFBF46", "#FF6A4E" ],
+            gutter: {
+                left   : 30,
+                right  : 30,
+                top    : 30,
+                bottom : 30
+            },
+            background: {
+                grid: true
+            }
+        }
+    })
+    .set( 'colors.sequential', true )
+    .draw();
+} ;
+
+this.renderLearningCurveGraph = function( divName, learningCurveData ) {
+
+    var mline = new RGraph.Line( {
+        id: divName,
+        data: learningCurveData,
+        options: {
+            Background: {
+              grid: false 
+            },
+            ylabels: {
+              count: 4
+            },
+            colors: [ "#D0D0D0", "#FF0000", "#FF7F2A", "#FFFF7F", "#AAFFAA", "#00FF00" ],
+            filled: { self: true },
+            linewidth: 0.2,
+            tickmarks: false,
+        }
+    })
+    .draw() ;
+}
+
 // -----------------------------------------------------------------------------
 
 function injectLabelsForValues( question ) {
