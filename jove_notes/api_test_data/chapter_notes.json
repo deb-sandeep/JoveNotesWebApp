@@ -1,87 +1,113 @@
-{
+[{
+	"chapterId"        : 23,
 	"syllabusName"     : "Class-8",
 	"subjectName"      : "Biology",
 	"chapterNumber"    : 3,
 	"subChapterNumber" : 0,
 	"chapterName"      : "Digestion, absorption, assimilation",
-
-	"questions" : [
+	"numCards"         : 100,
+	"difficultyStats"  : {
+		"numVE" : 20,
+		"numE"  : 10,
+		"numM"  : 10,
+		"numH"  : 25,
+		"numVH" : 25
+	},
+	"questions" : [	
 		{
+			"questionId"      : 1,
 			"questionType"    : "word_meaning",
 			"word"            : "Cat",
 			"meaning"         : "A feline animal",
-			"difficultyLevel" : 25,
-			"learningStats"   : {
-				"numAttempts"        : 10,
-				"learningEfficiency" : 95,
-				"currentLevel"       : "L2"
-			}
+			"difficultyLevel" : 25
 		},
 		{
+			"questionId"      : 2,
 			"questionType"    : "question_answer",
 			"question"        : "What is the answer to life?",
 			"answer"          : "42",
-			"difficultyLevel" : 40,
-			"learningStats"   : {
-				"numAttempts"        : 10,
-				"learningEfficiency" : 85,
-				"currentLevel"       : "L0"
-			}
+			"difficultyLevel" : 40
 		},
 		{
+			"questionId"      : 3,
 			"questionType"    : "word_meaning",
 			"word"            : "Dog",
 			"meaning"         : "An animal who barks",
-			"difficultyLevel" : 70,
-			"learningStats"   : {
-				"numAttempts"        : 10,
-				"learningEfficiency" : 75,
-				"currentLevel"       : "L1"
-			}
+			"difficultyLevel" : 70
 		},
 		{
+			"questionId"      : 4,
 			"questionType"    : "word_meaning",
 			"word"            : "Vi",
 			"meaning"         : "Visual Editor",
-			"difficultyLevel" : 85,
-			"learningStats"   : {
-				"numAttempts"        : 10,
-				"learningEfficiency" : 65,
-				"currentLevel"       : "L3"
-			}
+			"difficultyLevel" : 85
 		},
 		{
+			"questionId"      : 5,
 			"questionType"    : "question_answer",
 			"question"        : "What is a movie?",
 			"answer"          : "A movie is something that we should watch\nFriday nights",
-			"difficultyLevel" : 95,
-			"learningStats"   : {
-				"numAttempts"        : 10,
-				"learningEfficiency" : 55,
-				"currentLevel"       : "MAS"
-			}
+			"difficultyLevel" : 95
 		},
 		{
+			"questionId"      : 6,
 			"questionType"    : "fib",
 			"question"        : "The {0} of India is {1}.",
 			"answers"         : [ "capital", "Delhi" ],
-			"difficultyLevel" : 10,
-			"learningStats"   : {
-				"numAttempts"        : 2,
-				"learningEfficiency" : 95,
-				"currentLevel"       : "L3"
-			}
+			"difficultyLevel" : 10
 		},
 		{
+			"questionId"      : 7,
 			"questionType"    : "fib",
 			"question"        : "The shortcut for copy is {0} and that of paste is {1}.",
 			"answers"         : [ "ctrl-c", "ctrl-v" ],
-			"difficultyLevel" : 10,
-			"learningStats"   : {
-				"numAttempts"        : 3,
-				"learningEfficiency" : 99,
-				"currentLevel"       : "L3"
-			}
+			"difficultyLevel" : 10
 		}
 	]
-}
+},
+{
+	"learningStats" : [	
+		{
+			"questionId"         : 1,
+			"numAttempts"        : 10,
+			"learningEfficiency" : 95,
+			"currentLevel"       : "L2"
+		},
+		{
+			"questionId"         : 2,
+			"numAttempts"        : 10,
+			"learningEfficiency" : 85,
+			"currentLevel"       : "L0"
+		},
+		{
+			"questionId"         : 3,
+			"numAttempts"        : 10,
+			"learningEfficiency" : 75,
+			"currentLevel"       : "L1"
+		},
+		{
+			"questionId"         : 4,
+			"numAttempts"        : 10,
+			"learningEfficiency" : 65,
+			"currentLevel"       : "L3"
+		},
+		{
+			"questionId"         : 5,
+			"numAttempts"        : 10,
+			"learningEfficiency" : 55,
+			"currentLevel"       : "MAS"
+		},
+		{
+			"questionId"         : 6,
+			"numAttempts"        : 2,
+			"learningEfficiency" : 95,
+			"currentLevel"       : "L3"
+		},
+		{
+			"questionId"         : 7,
+			"numAttempts"        : 3,
+			"learningEfficiency" : 99,
+			"currentLevel"       : "L3"
+		}
+	]
+}]

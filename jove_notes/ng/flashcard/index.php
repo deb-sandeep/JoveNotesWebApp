@@ -7,6 +7,7 @@ $pageConfig = array(
 ?>
 <!DOCTYPE html>
 <html ng-app="flashCardApp">
+
 <head>
     <?php include( HEAD_CONTENT_FILE ); ?>
     <link rel='stylesheet' href='/apps/jove_notes/ng/flashcard/flashcard.css'>
@@ -29,8 +30,10 @@ $pageConfig = array(
     var chapterId = 23 ; // TODO: This needs to be done through PHP
     </script>
 </head>
+
 <body ng-controller="FlashCardController">
     <?php include( ALERT_DIV_FILE ) ; ?>
   	<div class="ng-view"></div>	
 </body>
+
 </html>

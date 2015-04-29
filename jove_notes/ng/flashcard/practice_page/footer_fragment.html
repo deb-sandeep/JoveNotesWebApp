@@ -1,16 +1,15 @@
 <div class="container-fluid fixedfooter">
     <div class="row">
 
-        <div class="col-sm-5">
+        <div class="col-sm-4">
 
             <!-- The End Session button -->
             <button type="button" 
                     class="btn btn-danger btn-lg"
-                    ng-click="endSession()">
+                    ng-click="endSession()"
+                    ng-show="showAuxControls">
                 <span class="glyphicon glyphicon-off"></span>
             </button>
-
-            <span class="glyphicon glyphicon-option-vertical"></span>
 
             <!-- The toggle header popup -->
             <div class="dropup" style="display:inline">
@@ -22,13 +21,16 @@
               </button>
               <ul class="dropdown-menu" role="menu">
                 <li role="presentation">
-                    <a role="menuitem" tabindex="-1" ng-click="toggleHeader('L0')">Title Header</a>
+                    <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L0-Hdr')">Title Header</a>
                 </li>
                 <li role="presentation">
-                    <a role="menuitem" tabindex="-1" ng-click="toggleHeader('L1')">Session Header</a>
+                    <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L1-Hdr')">Session Header</a>
                 </li>
                 <li role="presentation">
-                    <a role="menuitem" tabindex="-1" ng-click="toggleHeader('L2')">Card header</a>
+                    <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L2-Hdr')">Card header</a>
+                </li>
+                <li role="presentation">
+                    <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('AuxControls')">Auxillary Controls</a>
                 </li>
               </ul>
             </div>
@@ -36,27 +38,29 @@
             <!-- The Shuffle cards button -->
             <button type="button" 
                     class="btn btn-primary btn-lg"
-                    ng-click="randomizeCards()">
+                    ng-click="randomizeCards()"
+                    ng-show="showAuxControls">
                 <span class="glyphicon glyphicon-random"></span>
             </button>
 
             <!-- The Shuffle cards button -->
             <button type="button" 
-                    class="btn btn-warning btn-lg"
-                    ng-click="purgeCard()">
+                    class="btn btn-primary btn-lg"
+                    ng-click="purgeCard()"
+                    ng-show="showAuxControls">
                 <span class="glyphicon glyphicon-share"></span>
             </button>
 
             <!-- The Mark for Edit button -->
             <button type="button" 
-                    class="btn btn-info btn-lg"
-                    ng-click="markCardForEdit()">
+                    class="btn btn-primary btn-lg"
+                    ng-click="markCardForEdit()"
+                    ng-show="showAuxControls">
                 <span class="glyphicon glyphicon-edit"></span>
             </button>
-
-            <span class="glyphicon glyphicon-option-vertical"></span>
         </div>
-        <div class="col-sm-7 pull-right">
+
+        <div class="col-sm-8 pull-right">
             <div class="btn-group btn-group-justified" role="group" aria-label="...">
               <div class="btn-group" role="group">
                 <button type="button" class="btn btn-danger btn-lg"

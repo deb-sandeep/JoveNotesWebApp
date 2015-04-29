@@ -24,6 +24,8 @@ function RowData( rowType, name, rowNum, parentRowNum ) {
 	this.l3Cards         = 0 ;
 	this.masteredCards   = 0 ;
 
+	this.chapterId = 0 ;
+
 	this.isChapterRow = function() {
 		return this.rowType == this.ROW_TYPE_CHAPTER ;
 	}
@@ -151,6 +153,8 @@ function prepareDataForDisplay( rawData ) {
 				chapterRD.isNotesAuthorized      = chapter.isNotesAuthorized ;
 				chapterRD.isFlashcardAuthorized  = chapter.isFlashcardAuthorized ;
 				chapterRD.isStatisticsAuthorized = chapter.isStatisticsAuthorized ;
+
+				chapterRD.chapterId = chapter.chapterId ;
 
 				displayData.push( chapterRD ) ;
 

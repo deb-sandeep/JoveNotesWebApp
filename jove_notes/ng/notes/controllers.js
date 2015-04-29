@@ -1,14 +1,15 @@
 dashboardApp.controller( 'NotesController', function( $scope, $http ) {
-// -----------------------------------------------------------------------------
+
+// ---------------- Constants and inner class definition -----------------------
 var QT_WM  = "word_meaning" ;
 var QT_QA  = "question_answer" ;
 var QT_FIB = "fib" ;
 
 function FilterCriteria() {
 
-	this.currentLevelFilters       = [ "NS", "L0", "L1",                   ] ;
-	this.learningEfficiencyFilters = [ "A2", "B1", "B2", "C1", "C2", "D"   ] ;
-	this.difficultyFilters =         [ "VE", "E",  "M",  "H",  "VH"        ] ;
+	this.currentLevelFilters       = [ "NS", "L0", "L1",                 ] ;
+	this.learningEfficiencyFilters = [ "A2", "B1", "B2", "C1", "C2", "D" ] ;
+	this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH"      ] ;
 
 	this.currentLevelOptions = [ 
 		{ id : "NS",  name : "Not started" },
@@ -37,52 +38,46 @@ function FilterCriteria() {
 		{ id : "VH", name : "Very hard" }
 	] ;
 
-	this.serialize = function() {
+    this.serialize = function() {
+        $.cookie.json = true ;
+        $.cookie( 'notesCriteria-' + $scope.chapterId, this, { expires: 30 } ) ;
+    }
 
-		$.cookie.json = true ;
-		$.cookie( 'currentLevelFilters', this.currentLevelFilters,
-			      { expires: 30 } ) ;
-
-		$.cookie( 'learningEfficiencyFilters', this.learningEfficiencyFilters,
-			      { expires: 30 } ) ;
-
-		$.cookie( 'difficultyFilters', this.difficultyFilters,
-			      { expires: 30 } ) ;
-	}
-
-	this.deserialize = function() {
-
-		$.cookie.json = true ;
-		if( typeof $.cookie( 'currentLevelFilters' ) != 'undefined' ) {
-			this.currentLevelFilters = $.cookie( 'currentLevelFilters' ) ;
-		} ;
-		if( typeof $.cookie( 'learningEfficiencyFilters' ) != 'undefined' ) {
-			this.learningEfficiencyFilters = $.cookie( 'learningEfficiencyFilters' ) ;
-		} ;
-		if( typeof $.cookie( 'difficultyFilters' ) != 'undefined' ) {
-			this.difficultyFilters = $.cookie( 'difficultyFilters' ) ;
-		} ;
-	}
+    this.deserialize = function() {
+        $.cookie.json = true ;
+        var crit = $.cookie( 'notesCriteria-' + $scope.chapterId ) ;
+        if( typeof crit != 'undefined' ) {
+			this.currentLevelFilters       = crit.currentLevelFilters ;
+			this.learningEfficiencyFilters = crit.learningEfficiencyFilters ;
+			this.difficultyFilters         = crit.difficultyFilters ;
+        } ;
+    }
 }
 
-// -----------------------------------------------------------------------------
+// ---------------- Local variables --------------------------------------------
+var jnUtil = new JoveNotesUtil() ;
+
+// ---------------- Controller variables ---------------------------------------
 $scope.alerts             = [] ;
+$scope.chapterId          = chapterId ;
 $scope.pageTitle          = null ;
 $scope.showUserStatistics = false ;
 $scope.showFilterForm     = false ;
 $scope.filterCriteria     = new FilterCriteria() ;
 
-var rawData = null ;
+// The deserialized chapter data as returned by the API
+$scope.chapterData = null ;
 
 // These are the arrays that hold the questions which match the filter criteria
 $scope.wordMeanings    = [] ;
 $scope.questionAnswers = [] ;
 $scope.fibs            = [] ;
 
+// ---------------- Main logic for the controller ------------------------------
 $scope.filterCriteria.deserialize() ;
 refreshData() ;
 
-// -----------------------------------------------------------------------------
+// ---------------- Controller methods -----------------------------------------
 $scope.addErrorAlert = function( msgString ) {
 	$scope.alerts.push( { type: 'danger', msg: msgString } ) ;
 }
@@ -110,12 +105,18 @@ $scope.cancelFilter = function() {
 	$scope.filterCriteria.deserialize() ;
 }
 
-// -----------------------------------------------------------------------------
+// ---------------- Private functions ------------------------------------------
 function refreshData() {
 
 	$http.get( "/jove_notes/api/ChapterNotes" )
          .success( function( data ){
-         	rawData = data ;
+
+         	jnUtil.associateLearningStatsToQuestions( 
+         		                    data[0].questions, data[1].learningStats ) ;
+
+         	$scope.chapterData  = data[0] ;
+			$scope.pageTitle    = jnUtil.constructPageTitle( data[0] ) ;
+
          	applyFilterCriteria() ;
          })
          .error( function( data ){
@@ -124,18 +125,10 @@ function refreshData() {
 }
 
 function applyFilterCriteria() {
-	constructPageTitle( rawData ) ;
-	filterAndCategorizeQuestions( rawData.questions ) ;
-}
 
-function constructPageTitle( data ) {
-	$scope.pageTitle = "[" + data.subjectName + "] " +
-					   data.chapterNumber + "." + data.subChapterNumber + " - " +
-	                   data.chapterName ;
-}
+	var questions = $scope.chapterData.questions ;
 
-function filterAndCategorizeQuestions( questions ) {
-
+	// Reset all the arrrays before we fill them with filtered contents
 	$scope.wordMeanings.length    = 0 ;
 	$scope.questionAnswers.length = 0 ;
 	$scope.fibs.length            = 0 ;
@@ -144,10 +137,6 @@ function filterAndCategorizeQuestions( questions ) {
 
 		var question = questions[ index ] ;
 		var type     = question.questionType ;
-
-		if( !question.hasOwnProperty( 'difficultyLevelLabel' ) ) {
-			injectLabelsForValues( question ) ;
-		}
 
 		if( qualifiesFilter( question ) ) {
 			if( type == QT_WM ) {
@@ -201,36 +190,7 @@ function qualifiesFilter( question ) {
 	return false ;
 }
 
-function injectLabelsForValues( question ) {
-
-	question.difficultyLevelLabel = 
-		getDifficultyLevelLabel( question.difficultyLevel ) ;
-
-	question.learningEfficiencyLabel = 
-		getLearningEfficiencyLabel( question.learningStats.learningEfficiency ) ;
-}
-
-function getDifficultyLevelLabel( level ) {
-
-	if     ( level >= 0  && level < 30 ) { return "VE" ; }
-	else if( level >= 30 && level < 50 ) { return "E"  ; }
-	else if( level >= 50 && level < 70 ) { return "M"  ; }
-	else if( level >= 70 && level < 85 ) { return "H"  ; }
-	return "VH" ;
-}
-
-function getLearningEfficiencyLabel( score ) {
-
-	if      ( score >= 90 && score <= 100 ) { return "A1" ; }
-	else if ( score >= 80 && score <  90  ) { return "A2" ; }
-	else if ( score >= 70 && score <  80  ) { return "B1" ; }
-	else if ( score >= 60 && score <  70  ) { return "B2" ; }
-	else if ( score >= 50 && score <  60  ) { return "C1" ; }
-	else if ( score >= 40 && score <  50  ) { return "C2" ; }
-	else                                    { return "D"  ; }
-}
-
-// -----------------------------------------------------------------------------
+// ---------------- End of controller ------------------------------------------
 } ) ;
 
 

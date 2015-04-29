@@ -1,0 +1,16 @@
+dashboardApp.controller( '<Controller Name>', function( $scope, $http ) {
+
+// ---------------- Constants and inner class definition -----------------------
+
+// ---------------- Local variables --------------------------------------------
+
+// ---------------- Controller variables ---------------------------------------
+
+// ---------------- Main logic for the controller ------------------------------
+
+// ---------------- Controller methods -----------------------------------------
+
+// ---------------- Private functions ------------------------------------------
+
+// ---------------- End of controller ------------------------------------------
+} ) ;

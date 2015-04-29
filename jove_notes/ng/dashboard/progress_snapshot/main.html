@@ -44,14 +44,14 @@
                 <td class="text-center"><canvas width='200' height='20' id='canvas-{{rowData.rowNum}}'></canvas></td>
                 <td>
                     <a type="button" class="btn btn-default btn-xs" 
-                       href="/apps/jove_notes/ng/notes/index.php"
+                       href="/apps/jove_notes/ng/notes/index.php?chapterId={{rowData.chapterId}}"
                        ng-show="rowData.isNotesAuthorized">
                         <span class="glyphicon glyphicon-file"></span>
                     </a>
                 </td>
                 <td>
                     <a type="button" class="btn btn-default btn-xs" 
-                       href="/apps/jove_notes/ng/flashcard/index.php"
+                       href="/apps/jove_notes/ng/flashcard/index.php?chapterId={{rowData.chapterId}}"
                        ng-show="rowData.isFlashcardAuthorized">
                         <span class="glyphicon glyphicon-th"></span>
                     </a>

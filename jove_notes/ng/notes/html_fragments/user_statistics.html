@@ -2,7 +2,9 @@
 	<span class="badge {{question.learningStats.currentLevel}}">
 		{{question.learningStats.currentLevel}}
 	</span>
-	<span class="badge muted">12</span>
+	<span class="badge muted">
+		{{question.learningStats.numAttempts}}
+	</span>
 	<span class="badge" ng-class="question.difficultyLevelLabel">
 		{{question.difficultyLevelLabel}}
 	</span>

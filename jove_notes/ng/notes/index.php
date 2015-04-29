@@ -14,15 +14,22 @@ define( "FILTER_FRAGMENT_PATH", HTML_FRAGMENT_PATH . "/filter_template.html" ) ;
 define( "PHP_FRAGMENT_PATH",    DOCUMENT_ROOT . "/apps/jove_notes/ng/notes/php_fragments" ) ;
 define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
 ?>
+
 <!DOCTYPE html>
 <html ng-app="notesApp">
+
 <head>
     <?php include( HEAD_CONTENT_FILE ); ?>
-    <style>
-    </style>
+    <script src="/apps/jove_notes/ng/_common/jove_notes_utils.js"></script>    
     <script src="/apps/jove_notes/ng/notes/routes.js"></script>    
     <script src="/apps/jove_notes/ng/notes/controllers.js"></script>    
+
+    <script>
+    var userName = '<?php echo ExecutionContext::getCurrentUserName() ?>' ;
+    var chapterId = <?php echo $_REQUEST[ 'chapterId' ] ?> ;
+    </script>
 </head>
+
 <body ng-controller="NotesController">
     <?php include( NAVBAR_FRAGMENT_PATH ) ; ?>
     <?php include( ALERT_DIV_FILE ) ; ?>
@@ -43,6 +50,6 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
         <div ng-include="'<?php echo QA_FRAGMENT_PATH ?>'">
         </div>
     </div>
-
 </body>
+
 </html>

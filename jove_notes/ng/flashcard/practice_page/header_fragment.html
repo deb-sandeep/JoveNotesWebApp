@@ -7,12 +7,12 @@
         	     style="height: 20px" />
         </div>
         <div style="display:table-cell;text-align:center;">
-        	<span class="gi-1-15x">Civics :: 20 :: People and their Constitutional Rights</span>
+        	<span class="gi-1-15x">{{$parent.pageTitle}}</span>
         </div>
         <div style="display:table-cell;width:170px;">
-            <span class="badge muted">200</span>
+            <span class="badge muted">{{$parent.learningStats.numCards}}</span>
             <span class="badge muted">00:01:00</span>
-            <span class="small">[ UTUser ]</span>
+            <span class="small">[ {{$parent.userName}} ]</span>
         </div>
     </div>
 
@@ -22,12 +22,12 @@
 
         <div class="col-sm-6 small">
         	<b>Ch</b> &gg;
-        	NS - <span class="badge NS">100</span>&nbsp;.&nbsp;
-        	L0 - <span class="badge L0">100</span>&nbsp;.&nbsp;
-        	L1 - 100&nbsp;.&nbsp;
-        	L2 - 100&nbsp;.&nbsp;
-        	L3 - 100&nbsp;.&nbsp;
-        	MAS - <span class="badge MAS">100</span>
+        	NS - <span class="badge NS">{{$parent.learningStats.numCardsNS}}</span>&nbsp;.&nbsp;
+        	L0 - <span class="badge L0">{{$parent.learningStats.numCardsL0}}</span>&nbsp;.&nbsp;
+        	L1 - {{$parent.learningStats.numCardsL1}}&nbsp;.&nbsp;
+        	L2 - {{$parent.learningStats.numCardsL2}}&nbsp;.&nbsp;
+        	L3 - {{$parent.learningStats.numCardsL3}}&nbsp;.&nbsp;
+        	MAS - <span class="badge MAS">{{$parent.learningStats.numCardsMastered}}</span>
         </div>
         <div class="col-sm-6 small">
         	<b>S</b> &gg;
