@@ -5,6 +5,7 @@ flashCardApp.controller( 'PracticePageController', function( $scope, $http, $rou
 
 // ---------------- Local variables --------------------------------------------
 var currentTopPadHeight = 80 ;
+var questionsForSession = [] ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.showL0Header    = true ;
@@ -17,20 +18,24 @@ $scope.paddingTopHeight = {
 } ;
 
 // ---------------- Main logic for the controller ------------------------------
-log.debug( "Executing PracticePageController." ) ;
-if( checkInvalidLoad() ) {
-	log.debug( "Invalid refresh detected. Returning to start page." ) ;
-	return ;
+{
+	log.debug( "Executing PracticePageController." ) ;
+	if( checkInvalidLoad() ) {
+		log.debug( "Invalid refresh detected. Returning to start page." ) ;
+		return ;
+	}
+
+	log.debug( "Serializing study criteria." ) ;
+	$scope.$parent.studyCriteria.serialize() ;
+
+	log.debug( "Computing session cards." ) ;
+	computeSessionCards() ;
+
+	log.debug( "Starting timer." ) ;
+	setTimeout( handleTimerEvent, 1000 ) ;
+
+	// Show next question and after that user triggers will move the game forward.
 }
-
-log.debug( "Deserializing study criteria." ) ;
-$scope.$parent.studyCriteria.serialize() ;
-
-// Apply study criteria and filter cards that will be shown in this session
-// Start the timer
-// Parent learningStats at chapter level will undergo constant modification
-// Make scope variables for tracking session level performance
-// Make the flash card json richer
 
 // ---------------- Controller methods -----------------------------------------
 $scope.toggleDisplay = function( displayId ) {
@@ -51,7 +56,6 @@ $scope.toggleDisplay = function( displayId ) {
 		$scope.showAuxControls = !$scope.showAuxControls; 
 	}
 
-	log.debug( "currentTopPadHeight = " + currentTopPadHeight ) ;
 	$scope.paddingTopHeight.height = currentTopPadHeight + 'px' ;
 }
 
@@ -82,6 +86,42 @@ function checkInvalidLoad() {
 		return true ;
 	}
 	return false ;
+}
+
+function computeSessionCards() {
+
+	applyStudyCriteriaFilter() ;
+	sortCardsAsPerStudyStrategy() ;
+	trimCardsAsPerBounds() ;
+}
+
+function applyStudyCriteriaFilter() {
+
+	var i = 0 ;
+	for( ; i < $scope.chapterData.questions.length ; i++ ) {
+		var question = $scope.chapterData.questions[ i ] ;
+		if( $scope.studyCriteria.matchesFilter( question ) ) {
+			log.debug( "Adding question " + question.questionId ) ;
+			questionsForSession.push( question ) ;
+		}
+		else {
+			log.debug( "Filtering question " + question.questionId ) ;
+		}
+	}
+}
+
+function sortCardsAsPerStudyStrategy() {
+	log.error( "TODO: sortCardsAsPerStudyStrategy implementation." ) ;
+}
+
+function trimCardsAsPerBounds() {
+	log.error( "TODO: trimCardsAsPerBounds implementation." ) ;
+}
+
+function handleTimerEvent() {
+	log.debug( "Timer event handled." ) ;
+
+	setTimeout( handleTimerEvent, 1000 ) ;
 }
 
 // ---------------- End of controller ------------------------------------------

@@ -34,6 +34,26 @@ function StudyCriteria() {
             this.push     = crit.push ;
         } ;
     }
+
+    this.matchesFilter = function( question ) {
+
+        var currentLevel = question.learningStats.currentLevel ;
+        var lrnEffLabel  = question.learningEfficiencyLabel ;
+        var diffLabel    = question.difficultyLevelLabel ;
+
+        var currentLevelFilters = this.currentLevelFilters ;
+        var lrnEffLabelFilters  = this.learningEfficiencyFilters ;
+        var diffLabelFilters    = this.difficultyFilters ;
+
+        if( currentLevelFilters.indexOf( currentLevel ) != -1 ) {
+            if( lrnEffLabelFilters.indexOf( lrnEffLabel ) != -1 ) {
+                if( diffLabelFilters.indexOf( diffLabel ) != -1 ) {
+                    return true ;
+                }
+            }
+        }
+        return false ;
+    }
 }
 
 // ---------------- Local variables --------------------------------------------
