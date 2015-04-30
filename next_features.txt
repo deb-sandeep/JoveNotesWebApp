@@ -1,0 +1,5 @@
+. Check for end of cards and show end screen
+. Show alert if the filter did not choose any card
+. Link header display with session level values
+. Change card level header values with display of each new card.
+. Capture values like time per card, T/C etc

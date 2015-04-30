@@ -6,16 +6,20 @@ flashCardApp.controller( 'PracticePageController', function( $scope, $http, $rou
 // ---------------- Local variables --------------------------------------------
 var currentTopPadHeight = 80 ;
 var questionsForSession = [] ;
+var currentQuestion     = null ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.showL0Header    = true ;
 $scope.showL1Header    = true ;
 $scope.showL2Header    = true ;
-$scope.showAuxControls = true ;
+$scope.showAuxControls = false ;
 
-$scope.paddingTopHeight = {
-	height: currentTopPadHeight + 'px'
-} ;
+$scope.paddingTopHeight = { height: currentTopPadHeight + 'px' } ;
+
+$scope.questionText = "" ;
+$scope.answerText   = "" ;
+
+$scope.questionMode = false ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -32,9 +36,9 @@ $scope.paddingTopHeight = {
 	computeSessionCards() ;
 
 	log.debug( "Starting timer." ) ;
-	setTimeout( handleTimerEvent, 1000 ) ;
+	//setTimeout( handleTimerEvent, 1000 ) ;
 
-	// Show next question and after that user triggers will move the game forward.
+	showNextCard() ;
 }
 
 // ---------------- Controller methods -----------------------------------------
@@ -76,10 +80,29 @@ $scope.markCardForEdit = function() {
 }
 
 $scope.rateCard = function( rating ) {
-	alert( "Rating current card as " + rating )	 ;
+	log.debug( "Rating current card as " + rating )	 ;
+	// TODO: Rate @ server
+	showNextCard() ;
+}
+
+$scope.showAnswer = function() {
+
+	$scope.answerText   = currentQuestion.formattedAnswer ;
+	$scope.questionMode = false ;
 }
 
 // ---------------- Private functions ------------------------------------------
+function showNextCard() {
+
+	// TODO: Check end of session
+	currentQuestion = questionsForSession.shift() ;
+
+	$scope.questionText = currentQuestion.formattedQuestion ;
+	$scope.answerText   = '' ;
+
+	$scope.questionMode = true ;
+}
+
 function checkInvalidLoad() {
 	if( $scope.$parent.progressStats == null ) {
 		$location.path( "/StartPage" ) ;

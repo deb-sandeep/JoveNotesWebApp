@@ -1,7 +1,7 @@
 <div class="container-fluid fixedfooter">
     <div class="row">
 
-        <div class="col-sm-4">
+        <div class="col-sm-5">
 
             <!-- The End Session button -->
             <button type="button" 
@@ -60,8 +60,8 @@
             </button>
         </div>
 
-        <div class="col-sm-8 pull-right">
-            <div class="btn-group btn-group-justified" role="group" aria-label="...">
+        <div class="col-sm-7 pull-right">
+            <div class="btn-group btn-group-justified" role="group" ng-show="!questionMode">
               <div class="btn-group" role="group">
                 <button type="button" class="btn btn-danger btn-lg"
                         ng-click="rateCard( 'H' )">
@@ -84,6 +84,15 @@
                 <button type="button" class="btn btn-success btn-lg"
                         ng-click="rateCard( 'E' )">
                     Easy
+                </button>
+              </div>
+            </div>
+
+            <div class="btn-group btn-group-justified" role="group" ng-show="questionMode">
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-primary btn-lg"
+                        ng-click="showAnswer()">
+                    Show Answer
                 </button>
               </div>
             </div>

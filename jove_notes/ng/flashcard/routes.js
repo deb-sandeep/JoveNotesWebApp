@@ -1,4 +1,4 @@
-var flashCardApp = angular.module( 'flashCardApp', [ 'ngRoute', 'ui.bootstrap' ] ) ;
+var flashCardApp = angular.module( 'flashCardApp', [ 'ngRoute', 'ui.bootstrap', 'ngSanitize' ] ) ;
 
 flashCardApp.config( [ '$routeProvider',
 

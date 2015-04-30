@@ -1,8 +1,8 @@
 function QuestionTypes(){}
 
+QuestionTypes.prototype.QT_FIB = "fib" ;
 QuestionTypes.prototype.QT_WM  = "word_meaning" ;
 QuestionTypes.prototype.QT_QA  = "question_answer" ;
-QuestionTypes.prototype.QT_FIB = "fib" ;
 
 
 // =============================================================================
@@ -21,6 +21,12 @@ this.createAndInjectFormattedText = function( questions ) {
 		if( type == QuestionTypes.prototype.QT_FIB ) {
 			formatFIB( question ) ;
 		}
+		else if( type == QuestionTypes.prototype.QT_WM ) {
+			formatWM( question ) ;
+		}
+		else if( type == QuestionTypes.prototype.QT_QA ) {
+			formatQA( question ) ;
+		}
 	}
 }
 
@@ -28,17 +34,33 @@ this.createAndInjectFormattedText = function( questions ) {
 
 function formatFIB( question ) {
 
-	var formattedAnswer = "&ctdot;&nbsp;" + question.question ;
-	var numBlanks = question.answers.length ;
+	var formattedQuestion = question.question ;
+	var formattedAnswer   = "&ctdot;&nbsp;" + question.question ;
+	var numBlanks         = question.answers.length ;
 
 	var i=0 ;
 	for( ; i<numBlanks; i++ ) {
 		var strToReplace = "{" + i + "}" ;
 		var replacedText = "<code>" + question.answers[i] + "</code>" ;
 
-		formattedAnswer = formattedAnswer.replace( strToReplace, replacedText ) ;
+		formattedAnswer   = formattedAnswer.replace( strToReplace, replacedText ) ;
+		formattedQuestion = formattedQuestion.replace( strToReplace, " ______ " ) ;
 	}
-	question.formattedAnswer = formattedAnswer ;
+	
+	question.formattedAnswer   = formattedAnswer ;
+	question.formattedQuestion = formattedQuestion ;
+}
+
+function formatWM( question ) {
+
+	question.formattedQuestion = "What is the meaning of : <p><code>" + question.word + "</code>" ;
+	question.formattedAnswer   = question.meaning ;
+}
+
+function formatQA( question ) {
+
+	question.formattedQuestion = question.question ;
+	question.formattedAnswer   = question.answer ;
 }
 
 // -----------------------------------------------------------------------------
