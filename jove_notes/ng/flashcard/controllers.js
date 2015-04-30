@@ -78,10 +78,10 @@ $scope.processServerData = function( data ) {
     // to amalgamate them. We don't want watchers kicking in before the data
     // merge.
     var chapterData          = data[0] ;
-    var learningStats        = data[1] ;
+    var learningStats        = data[1].learningStats ;
 
-    $scope.progressStats     = data[2].progressStats ;
-    $scope.learningCurveData = data[2].learningCurveData ;
+    $scope.progressStats     = data[1].progressStats ;
+    $scope.learningCurveData = data[1].learningCurveData ;
 
     formatter.createAndInjectFormattedText( chapterData.questions ) ;
     jnUtil.associateLearningStatsToQuestions( 

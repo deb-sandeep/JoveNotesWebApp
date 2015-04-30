@@ -72,47 +72,59 @@
 			"questionId"         : 1,
 			"numAttempts"        : 10,
 			"learningEfficiency" : 95,
-			"currentLevel"       : "L2"
+			"currentLevel"       : "L2",
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+
 		},
 		{
 			"questionId"         : 2,
 			"numAttempts"        : 10,
 			"learningEfficiency" : 85,
-			"currentLevel"       : "L0"
+			"currentLevel"       : "L0",
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+
 		},
 		{
 			"questionId"         : 3,
 			"numAttempts"        : 10,
 			"learningEfficiency" : 75,
-			"currentLevel"       : "L1"
+			"currentLevel"       : "L1",
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+
 		},
 		{
 			"questionId"         : 4,
 			"numAttempts"        : 10,
 			"learningEfficiency" : 65,
-			"currentLevel"       : "L3"
+			"currentLevel"       : "L3",
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+
 		},
 		{
 			"questionId"         : 5,
 			"numAttempts"        : 10,
 			"learningEfficiency" : 55,
-			"currentLevel"       : "MAS"
+			"currentLevel"       : "MAS",
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+
 		},
 		{
 			"questionId"         : 6,
 			"numAttempts"        : 2,
 			"learningEfficiency" : 95,
-			"currentLevel"       : "L3"
+			"currentLevel"       : "L3",
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+
 		},
 		{
 			"questionId"         : 7,
 			"numAttempts"        : 3,
 			"learningEfficiency" : 99,
-			"currentLevel"       : "L3"
+			"currentLevel"       : "L3",
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+
 		}
-	]
-},
-{
+	],
 	"progressStats" : {
 		"numCardsNS"       :  20 ,
 		"numCardsL0"       :  20 ,
