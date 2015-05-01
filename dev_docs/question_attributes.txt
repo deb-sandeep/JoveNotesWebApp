@@ -1,0 +1,49 @@
++===============================================================================
+| Base question
++===============================================================================
+                         Type  |  Origin   |  Description
+----------------------+--------|-----------|------------------------------------
+questionId            : INT    | Server    |
+questionType          : String | Server    |
+difficultyLevel       : INT    | Server    | 0-100
+learningStats         : OBJECT | Client    | Merged at client end
+difficultyLevelLabel  : String | Client    | VE, E, M, H
+learningEfficiencyLabel:String | Client    | A[12], B[12], C[12], D
+formattedAnswer       : String | Client    |
+formattedQuestion     | String | Client    |
+
+
++===============================================================================
+| LearningStats
++===============================================================================
+                         Type  |  Origin   |  Description
+----------------------+--------|-----------|------------------------------------
+questionId            : String | Server    |
+numAttempts           : String | Server    |
+learningEfficiency    : INT    | Server    | 0-100
+currentLevel          : String | Server    | NS, L[0-3], MAS
+
++===============================================================================
+| @questionType = word_meaning
++===============================================================================
+                         Type  |  Origin   |  Description
+----------------------+--------|-----------|------------------------------------
+word                  : String | Server    | 
+meaning               : String | Server    |
+
++===============================================================================
+| @questionType = fib
++===============================================================================
+                         Type  |  Origin   |  Description
+----------------------+--------|-----------|------------------------------------
+question              : String | Server    | With {n} matching answers array
+answers               : Array  | Server    | Array of Strings
+
++===============================================================================
+| @questionType = fib
++===============================================================================
+                         Type  |  Origin   |  Description
+----------------------+--------|-----------|------------------------------------
+question              : String | Server    | 
+answer                : String | Server    | 
+

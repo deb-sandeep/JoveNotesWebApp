@@ -7,6 +7,7 @@ flashCardApp.controller( 'PracticePageController', function( $scope, $http, $rou
 var currentTopPadHeight = 80 ;
 var questionsForSession = [] ;
 var currentQuestion     = null ;
+var ratingMatrix        = new RatingMatrix() ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.showL0Header    = true ;
@@ -20,6 +21,12 @@ $scope.questionText = "" ;
 $scope.answerText   = "" ;
 
 $scope.questionMode = false ;
+
+$scope.sessionStats = {
+	numCards         : 0,
+	numCardsLeft     : 0,
+	numCardsAnswered : 0
+} ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -81,6 +88,21 @@ $scope.markCardForEdit = function() {
 
 $scope.rateCard = function( rating ) {
 	log.debug( "Rating current card as " + rating )	 ;
+
+	var curLevel  = currentQuestion.learningStats.currentLevel ;
+
+	// Compute next level
+	var nextLevel = ratingMatrix.getNextLevel( curLevel, rating ) ;
+	log.debug( "Next level = " + nextLevel ) ;
+
+	// Compute the next action - purge or re-insert
+	// var nextAction = 
+	// Process next action
+
+	// Compute the score 
+
+	// Initiate asynchronous communication with server to save ratings
+
 	// TODO: Rate @ server
 	showNextCard() ;
 }
@@ -116,6 +138,9 @@ function computeSessionCards() {
 	applyStudyCriteriaFilter() ;
 	sortCardsAsPerStudyStrategy() ;
 	trimCardsAsPerBounds() ;
+
+	$scope.sessionStats.numCards     = questionsForSession.length ;
+	$scope.sessionStats.numCardsLeft = questionsForSession.length ;
 }
 
 function applyStudyCriteriaFilter() {

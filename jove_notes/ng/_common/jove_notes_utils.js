@@ -32,6 +32,40 @@ function UserLearningFilterOptions() {
 
 // =============================================================================
 // =============================================================================
+function RatingMatrix() {
+
+    this.nextLevelMatrix = {
+        //       E      A     P     D
+        NS : [ 'L1' , 'L2', 'L0', 'L0' ],
+        L0 : [ 'L1' , 'L0', 'L0', 'L0' ],
+        L1 : [ 'L2' , 'L1', 'L0', 'L0' ],
+        L2 : [ 'L4' , 'L1', 'L1', 'L0' ],
+        L3 : [ 'MAS', 'L0', 'L0', 'L0' ]
+    } ;
+
+    this.getNextLevel = function( currentLevel, currentRating ) {
+
+        log.debug( "Getting next level for CL=" + currentLevel + 
+                   " and CR=" + currentRating ) ;
+
+        var nextLevelIndex = 0 ;
+        if      ( currentRating === 'E' ) { nextLevelIndex = 0 ; }
+        else if ( currentRating === 'A' ) { nextLevelIndex = 1 ; }
+        else if ( currentRating === 'P' ) { nextLevelIndex = 2 ; }
+        else if ( currentRating === 'H' ) { nextLevelIndex = 3 ; }
+
+        var nextLevels = this.nextLevelMatrix[ currentLevel ] ;
+        log.debug( "Next levels are " + nextLevels ) ;
+
+        var nextLevel = nextLevels[ nextLevelIndex ] ;
+        log.debug( "Next level = " + nextLevel ) ;
+
+        return nextLevel ;
+    } ;
+}
+
+// =============================================================================
+// =============================================================================
 
 function JoveNotesUtil() {
 // -----------------------------------------------------------------------------
