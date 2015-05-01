@@ -1,50 +1,52 @@
 +===============================================================================
 | Base question
 +===============================================================================
-                         Type  |  Origin   |  Description
-----------------------+--------|-----------|------------------------------------
-questionId            : INT    | Server    |
-questionType          : String | Server    |
-difficultyLevel       : INT    | Server    | 0-100
-learningStats         : OBJECT | Client    | Merged at client end
-difficultyLevelLabel  : String | Client    | VE, E, M, H
-learningEfficiencyLabel:String | Client    | A[12], B[12], C[12], D
-formattedAnswer       : String | Client    |
-formattedQuestion     | String | Client    |
+                         Type  | Origin | wC | Description
+----------------------+--------|--------|----|----------------------------------
+questionId            : INT    | Server |    |
+questionType          : String | Server |    |
+difficultyLevel       : INT    | Server |    | 0-100
+learningStats         : OBJECT | Client |    | Merged at client end
+difficultyLevelLabel  : String | Client |    | VE, E, M, H
+learningEfficiencyLabel:String | Client |    | A[12], B[12], C[12], D
+formattedAnswer       : String | Client |    | 
+formattedQuestion     | String | Client |    | 
 
 
 +===============================================================================
 | LearningStats
 +===============================================================================
-                         Type  |  Origin   |  Description
-----------------------+--------|-----------|------------------------------------
-questionId            : String | Server    |
-numAttempts           : String | Server    |
-learningEfficiency    : INT    | Server    | 0-100
-currentLevel          : String | Server    | NS, L[0-3], MAS
-temporalScores        : Array  | Server    | [H, A, P, E]
+                         Type  | Origin | wC | Description
+----------------------+--------|--------|----|----------------------------------
+questionId            : String | Server |    | 
+numAttempts           : INT    | Server |  x | 
+learningEfficiency    : INT    | Server |  x | 0-100
+currentLevel          : String | Server |  x | NS, L[0-3], MAS
+temporalScores        : Array  | Server |  x | [H, A, P, E]
+numAttemptsInSession  : INT    | Client |  x | 
+numSecondsInSession   : INT    | Client |  x | 
 
 +===============================================================================
 | @questionType = word_meaning
 +===============================================================================
-                         Type  |  Origin   |  Description
-----------------------+--------|-----------|------------------------------------
-word                  : String | Server    | 
-meaning               : String | Server    |
+                         Type  | Origin | wC | Description
+----------------------+--------|--------|----|----------------------------------
+word                  : String | Server |    | 
+meaning               : String | Server |    | 
 
 +===============================================================================
 | @questionType = fib
 +===============================================================================
-                         Type  |  Origin   |  Description
-----------------------+--------|-----------|------------------------------------
-question              : String | Server    | With {n} matching answers array
-answers               : Array  | Server    | Array of Strings
+                         Type  | Origin | wC | Description
+----------------------+--------|--------|----|----------------------------------
+question              : String | Server |    | With {n} matching answers array
+answers               : Array  | Server |    | Array of Strings
 
 +===============================================================================
 | @questionType = fib
 +===============================================================================
-                         Type  |  Origin   |  Description
-----------------------+--------|-----------|------------------------------------
-question              : String | Server    | 
-answer                : String | Server    | 
+                         Type  | Origin | wC | Description
+----------------------+--------|--------|----|----------------------------------
+question              : String | Server |    |  
+answer                : String | Server |    | 
 

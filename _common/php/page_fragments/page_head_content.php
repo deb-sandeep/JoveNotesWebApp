@@ -23,6 +23,8 @@
     <script src="/lib-ext/bootstrap-3.3.4/angular/ui-bootstrap-custom-0.12.1.min.js"></script>
     <script src="/lib-ext/bootstrap-3.3.4/angular/ui-bootstrap-custom-tpls-0.12.1.min.js"></script>
 
+    <script src="/apps/_common/scripts/common_utils.js"></script>
+
     <script type="text/javascript">
         var log      = log4javascript.getLogger( "main" ) ;
         var appender = new log4javascript.BrowserConsoleAppender() ;

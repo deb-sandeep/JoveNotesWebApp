@@ -4,18 +4,27 @@ flashCardApp.controller( 'PracticePageController', function( $scope, $http, $rou
 // ---------------- Constants and inner class definition -----------------------
 
 // ---------------- Local variables --------------------------------------------
-var currentTopPadHeight = 80 ;
-var questionsForSession = [] ;
-var currentQuestion     = null ;
 var ratingMatrix        = new RatingMatrix() ;
+var currentTopPadHeight = 100 ;
+var questionsForSession = [] ;
+
+var currentQuestionShowStartTime = 0 ;
+var durationTillNowInMillis = 0 ;
+var timePerQuestionInMillis = 0 ;
+
+var sessionStartTime    = new Date().getTime() ;
+var sessionActive       = true ;
 
 // ---------------- Controller variables ---------------------------------------
-$scope.showL0Header    = true ;
-$scope.showL1Header    = true ;
-$scope.showL2Header    = true ;
-$scope.showAuxControls = false ;
+$scope.showL0Header     = true ;
+$scope.showL1Header     = true ;
+$scope.showL2Header     = true ;
+$scope.showAuxControls  = false ;
+$scope.showFooterDropup = true ;
 
 $scope.paddingTopHeight = { height: currentTopPadHeight + 'px' } ;
+
+$scope.currentQuestion  = null ;
 
 $scope.questionText = "" ;
 $scope.answerText   = "" ;
@@ -28,6 +37,11 @@ $scope.sessionStats = {
 	numCardsAnswered : 0
 } ;
 
+$scope.sessionClockHHMMSS      = "00:00:00" ;
+$scope.timePerQuestionInHHMMSS = "00:00:00" ;
+
+$scope.windowWidth = "" ;
+
 // ---------------- Main logic for the controller ------------------------------
 {
 	log.debug( "Executing PracticePageController." ) ;
@@ -36,6 +50,9 @@ $scope.sessionStats = {
 		return ;
 	}
 
+	window.addEventListener( "resize", onWindowResize ) ;
+	onWindowResize() ;
+
 	log.debug( "Serializing study criteria." ) ;
 	$scope.$parent.studyCriteria.serialize() ;
 
@@ -43,7 +60,7 @@ $scope.sessionStats = {
 	computeSessionCards() ;
 
 	log.debug( "Starting timer." ) ;
-	//setTimeout( handleTimerEvent, 1000 ) ;
+	setTimeout( handleTimerEvent, 1000 ) ;
 
 	showNextCard() ;
 }
@@ -89,7 +106,13 @@ $scope.markCardForEdit = function() {
 $scope.rateCard = function( rating ) {
 	log.debug( "Rating current card as " + rating )	 ;
 
-	var curLevel  = currentQuestion.learningStats.currentLevel ;
+	var delta = ( new Date().getTime() - currentQuestionShowStartTime )/1000 ;
+
+	$scope.currentQuestion.learningStats.numAttempts++ ;
+	$scope.currentQuestion.learningStats.numAttemptsInSession++ ;
+    $scope.currentQuestion.learningStats.numSecondsInSession += delta ;
+
+	var curLevel  = $scope.currentQuestion.learningStats.currentLevel ;
 	log.debug( "Current level = " + curLevel ) ;
 
 	// Compute next level
@@ -100,6 +123,9 @@ $scope.rateCard = function( rating ) {
 	var nextAction = ratingMatrix.getNextAction( curLevel, rating ) ;
 	log.debug( "Next action = " + nextAction ) ;
 	processNextAction( nextAction ) ;
+
+	log.debug( "Num attmepts = " + $scope.currentQuestion.learningStats.numAttemptsInSession ) ;
+	log.debug( "Time spent   = " + $scope.currentQuestion.learningStats.numSecondsInSession ) ;
 	
 	// TODO: Compute the score 
 	// TODO: Initiate asynchronous communication with server to save ratings
@@ -111,7 +137,7 @@ $scope.rateCard = function( rating ) {
 
 $scope.showAnswer = function() {
 
-	$scope.answerText   = currentQuestion.formattedAnswer ;
+	$scope.answerText   = $scope.currentQuestion.formattedAnswer ;
 	$scope.questionMode = false ;
 }
 
@@ -126,25 +152,46 @@ function processNextAction( actionValue ) {
 
 	if( actionValue != -1 ) {
 		var newPos = questionsForSession.length * actionValue + 1 ;
-		log.debug( "\tnew index = " + newPos ) ;
-        questionsForSession.splice( newPos, 0, currentQuestion ) ;
+        questionsForSession.splice( newPos, 0, $scope.currentQuestion ) ;
 	}
 }
 
 function showNextCard() {
 
-	if( questionsForSession.length > 0 ) {
+	if( !hasSessionEnded() ) {
 
-		currentQuestion = questionsForSession.shift() ;
+		$scope.currentQuestion = questionsForSession.shift() ;
 
 		$scope.questionMode = true ;
-
-		$scope.questionText = currentQuestion.formattedQuestion ;
+		$scope.questionText = $scope.currentQuestion.formattedQuestion ;
 		$scope.answerText   = '' ;
+
+		currentQuestionShowStartTime = new Date().getTime() ;
 	}
 	else {
-		$location.path( "/EndPage" ) ;
+		endSession() ;
 	}
+}
+
+function endSession() {
+
+	sessionActive = false ;
+	$location.path( "/EndPage" ) ;
+}
+
+function hasSessionEnded() {
+
+	if( $scope.$parent.studyCriteria.maxTime != -1 ) {
+		if( durationTillNowInMillis >= $scope.$parent.studyCriteria.maxTime*60*1000 ) {
+			return true ;
+		}
+	}
+
+	if( questionsForSession.length == 0 ) {
+		return true ;
+	}
+
+	return false ;
 }
 
 function checkInvalidLoad() {
@@ -189,10 +236,62 @@ function trimCardsAsPerBounds() {
 }
 
 function handleTimerEvent() {
-	log.debug( "Timer event handled." ) ;
+	if( sessionActive ) {
+		refreshClocks() ;
+		setTimeout( handleTimerEvent, 1000 ) ;
+	}
+}
 
-	setTimeout( handleTimerEvent, 1000 ) ;
+function refreshClocks() {
+
+	durationTillNowInMillis = new Date().getTime() - sessionStartTime ;
+
+	if( $scope.sessionStats.numCardsAnswered > 0 ) {
+		timePerQuestionInMillis = durationTillNowInMillis / 
+		                          $scope.sessionStats.numCardsAnswered ;
+	}
+	$scope.timePerQuestionInHHMMSS = toHHMMSS( timePerQuestionInMillis ) ;
+
+	if( $scope.$parent.studyCriteria.maxTime != -1 ) {
+
+		var timeLeftInMillis = $scope.$parent.studyCriteria.maxTime * 60 * 1000 -
+		                       durationTillNowInMillis ;
+		if( timeLeftInMillis <= 0 ) {
+			sessionActive = false ;
+		}
+		else {
+			$scope.sessionClockHHMMSS = toHHMMSS( timeLeftInMillis ) ;
+		}
+	}
+	else {
+		$scope.sessionClockHHMMSS = toHHMMSS( durationTillNowInMillis ) ;
+	}
+	$scope.$digest() ;
+}
+
+function onWindowResize() {
+	
+	if( window.innerWidth < 700 ) {
+		$scope.showL0Header     = false ;
+		$scope.showL1Header     = false ;
+		$scope.showL2Header     = true ;
+		$scope.showAuxControls  = false ;
+		$scope.showFooterDropup = false ;
+
+		currentTopPadHeight = 30 ;
+		$scope.paddingTopHeight.height = currentTopPadHeight + 'px' ;
+	}
+	else {
+		if( !$scope.showFooterDropup ) {
+			$scope.showFooterDropup = true ;
+			$scope.showL0Header     = true ;
+			$scope.showL1Header     = true ;
+			$scope.showL2Header     = true ;
+			$scope.showAuxControls  = false ;
+			$scope.showFooterDropup = true ;
+		}
+	}
 }
 
 // ---------------- End of controller ------------------------------------------
-} ) ;
+} ) ; 

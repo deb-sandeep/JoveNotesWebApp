@@ -113,12 +113,14 @@ body {
 
 table.temporal {
 	border-collapse: separate;
-	border-spacing: 3px;
+	border-spacing: 2px;
+	display:inline-block;
+	float:right;
 }
 
 .temporal td {
-	padding: 1px;
-	width: 10px;
+	padding: 0px;
+	width: 5px;
 	line-height: 12	px;
 	height:12px;
 }

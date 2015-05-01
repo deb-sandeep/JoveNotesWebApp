@@ -1,9 +1,42 @@
 Flashcard
 --------------------------------------------------------------------------------
-. Track time studied in question
-. Track num attempts in session in question
+. Update attributes of rated cards
+	- temporal progress
+	- current level
+	- learning efficiency
+	- numAttempts
+. Update chapter level statistics for rated cards and test
+. Trim cards as per bounds
+. Implement randomizeCards
+. Implement endSession
+. Implement purgeCard
+. Implement markCardForEdit
+. Send last studied timestamp from server
+. Sort cards as per study strategy
 . End page design and implementaiton
 . Score computation
-. Sort cards as per study strategy
-. Trim cards as per bounds
-. Handle timer events
+
+
+Completed
+--------------------------------------------------------------------------------
+5/1/15 -- 
+. Track time studied in question
+. Track num attempts in session in question
+. Handle timer events - Store and update timer per clock tick. In case of time 
+  bound study, the clock should count back.
+. *Clean* responsive display across devices
+. Link current card attributes to the header display 
+. Compute and display T/Q
+
+5/2/15 --
+
+
+
+Browser resolution of devices
+--------------------------------------------------------------------------------
+Deba Tablet -  962 / 601
+iPad        - 1024 / 768
+Galaxy S4   -  640 / 360
+Galaxy Tab  - 1280 / 800 
+Galaxy Duo  -  534 / 320
+

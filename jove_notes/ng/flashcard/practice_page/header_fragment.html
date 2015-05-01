@@ -1,4 +1,5 @@
 <div class="container-fluid fixedheader">
+
     <div ng-show="showL0Header"
          style="display:table;width:100%;padding-bottom:5px">
 
@@ -9,9 +10,9 @@
         <div style="display:table-cell;text-align:center;">
         	<span class="gi-1-15x">{{$parent.pageTitle}}</span>
         </div>
-        <div style="display:table-cell;width:170px;">
+        <div style="display:table-cell;width:170px;text-align:right;">
             <span class="badge muted">{{$parent.learningStats.numCards}}</span>
-            <span class="badge muted">00:01:00</span>
+            <span class="badge muted">{{sessionClockHHMMSS}}</span>
             <span class="small">[ {{$parent.userName}} ]</span>
         </div>
     </div>
@@ -34,40 +35,28 @@
         	NC - <span class="badge muted">{{sessionStats.numCards}}</span>&nbsp;.&nbsp;
         	NL - <span class="badge muted">{{sessionStats.numCardsLeft}}</span>&nbsp;.&nbsp;
         	NA - <span class="badge muted">{{sessionStats.numCardsAnswered}}</span>&nbsp;.&nbsp;
-        	T/C - <span class="badge muted">00:00:00</span>
+        	T/C - <span class="badge muted">{{timePerQuestionInHHMMSS}}</span>
         </div>
     </div>
 
-    <div ng-show="showL2Header"
-         class="row" 
-         style="padding-bottom:5px">
+    <div class="container-fluid">
+        <div ng-show="showL2Header"
+             class="row" 
+             style="padding-bottom:5px;padding-top:5px;background-color:white;">
 
-        <div class="col-sm-6 small">
-        	<b>Cd</b> &gg;
-        	<span class="badge VE">VE</span>&nbsp;.&nbsp;
-        	<span class="badge L0">L0</span>&nbsp;.&nbsp;
-        	<span class="badge A1">A1</span>&nbsp;.&nbsp;
-        	<span class="badge muted">100</span>
-        </div>
-        <div class="col-sm-6 small">
-        	<table class="temporal">
-        		<tr>
-        			<td class="rating-A"></td>
-        			<td class="rating-A"></td>
-        			<td class="rating-E"></td>
-        			<td class="rating-E"></td>
-        			<td class="rating-P"></td>
-        			<td class="rating-H"></td>
-        			<td class="rating-E"></td>
-        			<td class="rating-A"></td>
-        			<td class="rating-A"></td>
-        			<td class="rating-E"></td>
-        			<td class="rating-E"></td>
-        			<td class="rating-P"></td>
-        			<td class="rating-H"></td>
-        			<td class="rating-E"></td>
-        		</tr>
-        	</table>
+            <div class="col-sm-12 small">
+                <span class="badge VE">{{currentQuestion.difficultyLevelLabel}}</span>
+                <span class="badge L0">{{currentQuestion.learningStats.currentLevel}}</span>
+                <span class="badge A1">{{currentQuestion.learningEfficiencyLabel}}</span>
+                <span class="badge muted">{{currentQuestion.learningStats.numAttempts}}</span>
+                <table class="temporal">
+                    <tr>
+                        <td ng-repeat="score in currentQuestion.learningStats.temporalScores track by $index"
+                            class="rating-{{score}}"></td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
+
 </div>

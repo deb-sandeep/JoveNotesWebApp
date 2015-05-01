@@ -104,25 +104,31 @@ this.constructPageTitle = function( chapterData ) {
 
 this.associateLearningStatsToQuestions = function( questions, userLearningStats ) {
 
-	var learningStats = [] ;
+	var learningStats = {} ;
+
 	for( i=0; i<userLearningStats.length; i++ ) {
 		var stat = userLearningStats[i] ;
 		learningStats[ stat.questionId ] = stat ;
 	}
 
 	for( i=0; i<questions.length; i++ ) {
+
 		var question = questions[i] ;
 		var learningStat = null ;
 
-		if( typeof learningStats[i] === 'undefined' ) {
+		if( typeof learningStats[ question.questionId ] === 'undefined' ) {
 			learningStat = {
-				numAttempts        : 10,
-				learningEfficiency : 0,
-				currentLevel       : "NS"
+				numAttempts          : -1,
+                numAttemptsInSession : 0,
+                numSecondsInSession  : 0,
+				learningEfficiency   : 0,
+				currentLevel         : "NS"
 			} ;
 		}
 		else {
-			learningStat = learningStats[i] ;
+			learningStat = learningStats[ question.questionId ] ;
+            learningStat.numAttemptsInSession = 0 ;
+            learningStat.numSecondsInSession  = 0 ;
 		}
 		question.learningStats = learningStat ;
 		injectLabelsForValues( question ) ;

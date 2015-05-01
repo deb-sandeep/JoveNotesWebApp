@@ -30,7 +30,7 @@
 			"difficultyLevel" : 40
 		},
 		{
-			"questionId"      : 3,
+			"questionId"      : 30,
 			"questionType"    : "word_meaning",
 			"word"            : "Dog",
 			"meaning"         : "An animal who barks",
@@ -70,34 +70,34 @@
 	"learningStats" : [	
 		{
 			"questionId"         : 1,
-			"numAttempts"        : 10,
+			"numAttempts"        : 2,
 			"learningEfficiency" : 95,
 			"currentLevel"       : "L2",
-			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+			"temporalScores"     : [ "H" ]
 
 		},
 		{
 			"questionId"         : 2,
-			"numAttempts"        : 10,
+			"numAttempts"        : 4,
 			"learningEfficiency" : 85,
 			"currentLevel"       : "L0",
-			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+			"temporalScores"     : [ "A", "P" ]
 
 		},
 		{
-			"questionId"         : 3,
-			"numAttempts"        : 10,
+			"questionId"         : 30,
+			"numAttempts"        : 6,
 			"learningEfficiency" : 75,
 			"currentLevel"       : "L1",
-			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+			"temporalScores"     : [ "H", "A", "P" ]
 
 		},
 		{
 			"questionId"         : 4,
-			"numAttempts"        : 10,
+			"numAttempts"        : 8,
 			"learningEfficiency" : 65,
 			"currentLevel"       : "L3",
-			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+			"temporalScores"     : [ "H", "A", "E", "P", "E" ]
 
 		},
 		{
@@ -110,7 +110,7 @@
 		},
 		{
 			"questionId"         : 6,
-			"numAttempts"        : 2,
+			"numAttempts"        : 6,
 			"learningEfficiency" : 95,
 			"currentLevel"       : "L3",
 			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
@@ -118,7 +118,7 @@
 		},
 		{
 			"questionId"         : 7,
-			"numAttempts"        : 3,
+			"numAttempts"        : 7,
 			"learningEfficiency" : 99,
 			"currentLevel"       : "L3",
 			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
