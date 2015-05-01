@@ -90,20 +90,22 @@ $scope.rateCard = function( rating ) {
 	log.debug( "Rating current card as " + rating )	 ;
 
 	var curLevel  = currentQuestion.learningStats.currentLevel ;
+	log.debug( "Current level = " + curLevel ) ;
 
 	// Compute next level
 	var nextLevel = ratingMatrix.getNextLevel( curLevel, rating ) ;
 	log.debug( "Next level = " + nextLevel ) ;
 
 	// Compute the next action - purge or re-insert
-	// var nextAction = 
-	// Process next action
+	var nextAction = ratingMatrix.getNextAction( curLevel, rating ) ;
+	log.debug( "Next action = " + nextAction ) ;
+	processNextAction( nextAction ) ;
+	
+	// TODO: Compute the score 
+	// TODO: Initiate asynchronous communication with server to save ratings
 
-	// Compute the score 
+	updateSessionStats() ;
 
-	// Initiate asynchronous communication with server to save ratings
-
-	// TODO: Rate @ server
 	showNextCard() ;
 }
 
@@ -114,15 +116,35 @@ $scope.showAnswer = function() {
 }
 
 // ---------------- Private functions ------------------------------------------
+function updateSessionStats() {
+
+	$scope.sessionStats.numCardsLeft = questionsForSession.length ;
+	$scope.sessionStats.numCardsAnswered++ ;
+}
+
+function processNextAction( actionValue ) {
+
+	if( actionValue != -1 ) {
+		var newPos = questionsForSession.length * actionValue + 1 ;
+		log.debug( "\tnew index = " + newPos ) ;
+        questionsForSession.splice( newPos, 0, currentQuestion ) ;
+	}
+}
+
 function showNextCard() {
 
-	// TODO: Check end of session
-	currentQuestion = questionsForSession.shift() ;
+	if( questionsForSession.length > 0 ) {
 
-	$scope.questionText = currentQuestion.formattedQuestion ;
-	$scope.answerText   = '' ;
+		currentQuestion = questionsForSession.shift() ;
 
-	$scope.questionMode = true ;
+		$scope.questionMode = true ;
+
+		$scope.questionText = currentQuestion.formattedQuestion ;
+		$scope.answerText   = '' ;
+	}
+	else {
+		$location.path( "/EndPage" ) ;
+	}
 }
 
 function checkInvalidLoad() {

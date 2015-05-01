@@ -1,0 +1,9 @@
+Flashcard
+--------------------------------------------------------------------------------
+. Track time studied in question
+. Track num attempts in session in question
+. End page design and implementaiton
+. Score computation
+. Sort cards as per study strategy
+. Trim cards as per bounds
+. Handle timer events

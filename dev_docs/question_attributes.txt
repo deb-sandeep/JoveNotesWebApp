@@ -22,6 +22,7 @@ questionId            : String | Server    |
 numAttempts           : String | Server    |
 learningEfficiency    : INT    | Server    | 0-100
 currentLevel          : String | Server    | NS, L[0-3], MAS
+temporalScores        : Array  | Server    | [H, A, P, E]
 
 +===============================================================================
 | @questionType = word_meaning

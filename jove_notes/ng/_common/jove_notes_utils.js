@@ -36,31 +36,56 @@ function RatingMatrix() {
 
     this.nextLevelMatrix = {
         //       E      A     P     D
-        NS : [ 'L1' , 'L2', 'L0', 'L0' ],
+        NS : [ 'L1' , 'L1', 'L0', 'L0' ],
         L0 : [ 'L1' , 'L0', 'L0', 'L0' ],
         L1 : [ 'L2' , 'L1', 'L0', 'L0' ],
-        L2 : [ 'L4' , 'L1', 'L1', 'L0' ],
+        L2 : [ 'L3' , 'L1', 'L1', 'L0' ],
         L3 : [ 'MAS', 'L0', 'L0', 'L0' ]
     } ;
 
+    this.nextActionMatrix = {
+        //       E     A      P     D
+        NS : [  -1,   -1,   0.5,   0.25 ],
+        L0 : [  -1,    1,   0.5,   0.25 ],
+        L1 : [  -1,    1,   0.5,   0.25 ],
+        L2 : [  -1,    1,   0.5,   0.25 ],
+        L3 : [  -1,    1,   0.5,   0.25 ]
+    }
+
+    function getIndexIntoMatrix( rating ) {
+
+        var index = 0 ;
+        if      ( rating === 'E' ) { index = 0 ; }
+        else if ( rating === 'A' ) { index = 1 ; }
+        else if ( rating === 'P' ) { index = 2 ; }
+        else if ( rating === 'H' ) { index = 3 ; }
+        return index ;
+    }
+
+    function getMatrixValue( matrix, level, rating ) {
+
+        log.debug( "\tLevel ="   + level + " rating =" + rating ) ;
+
+        var index  = getIndexIntoMatrix( rating ) ;
+        log.debug( "\tindex = " + index ) ;
+        
+        var values = matrix[ level ] ;
+        log.debug( "\tvalues = " + values ) ;
+
+        var value  = values[ index ] ;
+        log.debug( "\tvalue = " + value ) ;
+
+        return value ;
+    }
+
     this.getNextLevel = function( currentLevel, currentRating ) {
+        log.debug( "Getting next level" ) ;
+        return getMatrixValue( this.nextLevelMatrix, currentLevel, currentRating ) ;
+    } ;
 
-        log.debug( "Getting next level for CL=" + currentLevel + 
-                   " and CR=" + currentRating ) ;
-
-        var nextLevelIndex = 0 ;
-        if      ( currentRating === 'E' ) { nextLevelIndex = 0 ; }
-        else if ( currentRating === 'A' ) { nextLevelIndex = 1 ; }
-        else if ( currentRating === 'P' ) { nextLevelIndex = 2 ; }
-        else if ( currentRating === 'H' ) { nextLevelIndex = 3 ; }
-
-        var nextLevels = this.nextLevelMatrix[ currentLevel ] ;
-        log.debug( "Next levels are " + nextLevels ) ;
-
-        var nextLevel = nextLevels[ nextLevelIndex ] ;
-        log.debug( "Next level = " + nextLevel ) ;
-
-        return nextLevel ;
+    this.getNextAction = function( currentLevel, currentRating ) {
+        log.debug( "Getting next action" ) ;
+        return getMatrixValue( this.nextActionMatrix, currentLevel, currentRating ) ;
     } ;
 }
 
