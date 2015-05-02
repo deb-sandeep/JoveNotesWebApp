@@ -36,3 +36,8 @@
         log.addAppender( appender ) ;
     </script>
 
+    <script type="text/javascript">
+    $( '[data-toggle="tooltip"]' ).tooltip( {
+        placement : 'top'
+    } ) ;
+    </script>

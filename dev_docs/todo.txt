@@ -6,19 +6,24 @@ Flashcard
 	- learning efficiency
 	- numAttempts
 . Update chapter level statistics for rated cards and test
-. Trim cards as per bounds
-. Implement randomizeCards
-. Implement endSession
-. Implement purgeCard
-. Implement markCardForEdit
-. Send last studied timestamp from server
 . Sort cards as per study strategy
+. Trim cards as per bounds (after sort cards as per strategy)
+. Send last studied timestamp from server
 . End page design and implementaiton
 . Score computation
+. Design server communication for flash card practice actions
+. Create Dummy APIs for flash card practice communications (expand this list.)
+. Implement markCardForEdit
 
 
 Completed
 --------------------------------------------------------------------------------
+5/2/15 --
+. Implement purgeCard
+. Show tooltip in buttons on practice page and remove text for EAHP buttons
+. Implement endSession
+. Implement randomizeCards
+
 5/1/15 -- 
 . Track time studied in question
 . Track num attempts in session in question
@@ -27,9 +32,6 @@ Completed
 . *Clean* responsive display across devices
 . Link current card attributes to the header display 
 . Compute and display T/Q
-
-5/2/15 --
-
 
 
 Browser resolution of devices

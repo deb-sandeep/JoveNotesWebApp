@@ -88,15 +88,22 @@ $scope.toggleDisplay = function( displayId ) {
 }
 
 $scope.randomizeCards = function() {
-	alert( "Randomizing cards" ) ;
+	log.debug( "Randomizing remaining cards." ) ;
+	questionsForSession.shuffle() ;
 }
 
 $scope.endSession = function() {
-	alert( "Ending session" ) ;
+	log.debug( "Ending current session." ) ;
+	endSession() ;
 }
 
 $scope.purgeCard = function() {
-	alert( "Purge card" ) ;
+	log.debug( "Purging current card." ) ;
+	
+	$scope.sessionStats.numCards-- ;
+	$scope.sessionStats.numCardsLeft-- ;
+	showNextCard() ;
+
 }
 
 $scope.markCardForEdit = function() {
