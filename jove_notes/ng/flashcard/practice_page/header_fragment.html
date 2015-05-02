@@ -22,16 +22,14 @@
          style="padding-bottom:5px">
 
         <div class="col-sm-6 small">
-        	<b>Ch</b> &gg;
-        	NS - <span class="badge NS">{{$parent.progressStats.numCardsNS}}</span>&nbsp;.&nbsp;
-        	L0 - <span class="badge L0">{{$parent.progressStats.numCardsL0}}</span>&nbsp;.&nbsp;
-        	L1 - {{$parent.progressStats.numCardsL1}}&nbsp;.&nbsp;
-        	L2 - {{$parent.progressStats.numCardsL2}}&nbsp;.&nbsp;
-        	L3 - {{$parent.progressStats.numCardsL3}}&nbsp;.&nbsp;
-        	MAS - <span class="badge MAS">{{$parent.progressStats.numCardsMastered}}</span>
+        	<span class="badge NS">{{$parent.progressStats.numCardsNS}}</span>
+        	<span class="badge L0">{{$parent.progressStats.numCardsL0}}</span>
+        	<span class="badge L1">{{$parent.progressStats.numCardsL1}}</span>
+        	<span class="badge L2">{{$parent.progressStats.numCardsL2}}</span>
+        	<span class="badge L3">{{$parent.progressStats.numCardsL3}}</span>
+        	<span class="badge MAS">{{$parent.progressStats.numCardsMastered}}</span>
         </div>
-        <div class="col-sm-6 small">
-        	<b>S</b> &gg;
+        <div class="col-sm-6 small" style="text-align:right;">
         	NC - <span class="badge muted">{{sessionStats.numCards}}</span>&nbsp;.&nbsp;
         	NL - <span class="badge muted">{{sessionStats.numCardsLeft}}</span>&nbsp;.&nbsp;
         	NA - <span class="badge muted">{{sessionStats.numCardsAnswered}}</span>&nbsp;.&nbsp;

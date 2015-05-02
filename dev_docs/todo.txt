@@ -1,19 +1,17 @@
-Flashcard
+Flashcard (Practice page)
 --------------------------------------------------------------------------------
-. Update attributes of rated cards
-	- temporal progress
-	- current level
-	- learning efficiency
-	- numAttempts
-. Update chapter level statistics for rated cards and test
 . Sort cards as per study strategy
-. Trim cards as per bounds (after sort cards as per strategy)
 . Send last studied timestamp from server
+. Trim cards as per bounds (after sort cards as per strategy)
 . End page design and implementaiton
 . Score computation
 . Design server communication for flash card practice actions
 . Create Dummy APIs for flash card practice communications (expand this list.)
 . Implement markCardForEdit
+
+Flashcard (Start page)
+--------------------------------------------------------------------------------
+. Implement 'apply level to all cards' on click action
 
 
 Completed
@@ -23,6 +21,12 @@ Completed
 . Show tooltip in buttons on practice page and remove text for EAHP buttons
 . Implement endSession
 . Implement randomizeCards
+. Update attributes of rated cards
+	- temporal progress
+	- current level
+	- learning efficiency
+	- numAttempts
+. Update chapter level statistics for rated cards and test
 
 5/1/15 -- 
 . Track time studied in question

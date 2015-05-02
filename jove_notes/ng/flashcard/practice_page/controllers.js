@@ -103,7 +103,6 @@ $scope.purgeCard = function() {
 	$scope.sessionStats.numCards-- ;
 	$scope.sessionStats.numCardsLeft-- ;
 	showNextCard() ;
-
 }
 
 $scope.markCardForEdit = function() {
@@ -113,32 +112,23 @@ $scope.markCardForEdit = function() {
 $scope.rateCard = function( rating ) {
 	log.debug( "Rating current card as " + rating )	 ;
 
-	var delta = ( new Date().getTime() - currentQuestionShowStartTime )/1000 ;
-
-	$scope.currentQuestion.learningStats.numAttempts++ ;
-	$scope.currentQuestion.learningStats.numAttemptsInSession++ ;
-    $scope.currentQuestion.learningStats.numSecondsInSession += delta ;
-
-	var curLevel  = $scope.currentQuestion.learningStats.currentLevel ;
-	log.debug( "Current level = " + curLevel ) ;
-
-	// Compute next level
-	var nextLevel = ratingMatrix.getNextLevel( curLevel, rating ) ;
-	log.debug( "Next level = " + nextLevel ) ;
-
-	// Compute the next action - purge or re-insert
+	var curLevel   = $scope.currentQuestion.learningStats.currentLevel ;
+	var nextLevel  = ratingMatrix.getNextLevel( curLevel, rating ) ;
 	var nextAction = ratingMatrix.getNextAction( curLevel, rating ) ;
-	log.debug( "Next action = " + nextAction ) ;
-	processNextAction( nextAction ) ;
 
-	log.debug( "Num attmepts = " + $scope.currentQuestion.learningStats.numAttemptsInSession ) ;
-	log.debug( "Time spent   = " + $scope.currentQuestion.learningStats.numSecondsInSession ) ;
+	processNextAction( nextAction ) ;
+	updateLearningStatsForCurrentQuestion( rating, nextLevel ) ;
+	updateLearningStatsForChapter( curLevel, nextLevel ) ;
+	updateSessionStats() ;
+
+	log.debug( "Current level = " + curLevel ) ;
+	log.debug( "Next level    = " + nextLevel ) ;
+	log.debug( "Next action   = " + nextAction ) ;
+	log.debug( "Num attmepts  = " + $scope.currentQuestion.learningStats.numAttemptsInSession ) ;
+	log.debug( "Time spent    = " + $scope.currentQuestion.learningStats.numSecondsInSession ) ;
 	
 	// TODO: Compute the score 
 	// TODO: Initiate asynchronous communication with server to save ratings
-
-	updateSessionStats() ;
-
 	showNextCard() ;
 }
 
@@ -149,6 +139,23 @@ $scope.showAnswer = function() {
 }
 
 // ---------------- Private functions ------------------------------------------
+function updateLearningStatsForCurrentQuestion( rating, nextLevel ) {
+
+	var delta = ( new Date().getTime() - currentQuestionShowStartTime )/1000 ;
+
+	$scope.currentQuestion.learningStats.numAttempts++ ;
+	$scope.currentQuestion.learningStats.numAttemptsInSession++ ;
+	$scope.currentQuestion.learningStats.currentLevel = nextLevel ;
+	$scope.currentQuestion.learningStats.temporalScores.push( rating ) ;
+    $scope.currentQuestion.learningStats.numSecondsInSession += delta ;
+}
+
+function updateLearningStatsForChapter( curLevel, nextLevel ) {
+
+	$scope.$parent.progressStats[ 'numCards' + curLevel  ]-- ;
+	$scope.$parent.progressStats[ 'numCards' + nextLevel ]++ ;
+}
+
 function updateSessionStats() {
 
 	$scope.sessionStats.numCardsLeft = questionsForSession.length ;
@@ -253,10 +260,9 @@ function refreshClocks() {
 
 	durationTillNowInMillis = new Date().getTime() - sessionStartTime ;
 
-	if( $scope.sessionStats.numCardsAnswered > 0 ) {
-		timePerQuestionInMillis = durationTillNowInMillis / 
-		                          $scope.sessionStats.numCardsAnswered ;
-	}
+	timePerQuestionInMillis = durationTillNowInMillis / 
+	                          ( $scope.sessionStats.numCardsAnswered + 1 ) ;
+
 	$scope.timePerQuestionInHHMMSS = toHHMMSS( timePerQuestionInMillis ) ;
 
 	if( $scope.$parent.studyCriteria.maxTime != -1 ) {
