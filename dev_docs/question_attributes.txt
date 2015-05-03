@@ -25,6 +25,8 @@ currentLevel          : String | Server |  x | NS, L[0-3], MAS
 temporalScores        : Array  | Server |  x | [H, A, P, E]
 numAttemptsInSession  : INT    | Client |  x | 
 numSecondsInSession   : INT    | Client |  x | 
+lastAttemptTime       : LONG   | Server |    |
+_testLATLag           : INT    | Server |    | Only for testing. Num days lag in LAT
 
 +===============================================================================
 | @questionType = word_meaning

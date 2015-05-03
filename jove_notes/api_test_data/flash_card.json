@@ -73,7 +73,9 @@
 			"numAttempts"        : 2,
 			"learningEfficiency" : 95,
 			"currentLevel"       : "L2",
-			"temporalScores"     : [ "H" ]
+			"temporalScores"     : [ "H" ],
+			"lastAttemptTime"    : -1,
+			"_testLATLag"        : 2
 
 		},
 		{
@@ -81,7 +83,9 @@
 			"numAttempts"        : 4,
 			"learningEfficiency" : 85,
 			"currentLevel"       : "L0",
-			"temporalScores"     : [ "A", "P" ]
+			"temporalScores"     : [ "A", "P" ],
+			"lastAttemptTime"    : -1,
+			"_testLATLag"        : 2
 
 		},
 		{
@@ -89,7 +93,9 @@
 			"numAttempts"        : 6,
 			"learningEfficiency" : 75,
 			"currentLevel"       : "L1",
-			"temporalScores"     : [ "H", "A", "P" ]
+			"temporalScores"     : [ "H", "A", "P" ],
+			"lastAttemptTime"    : -1,
+			"_testLATLag"        : 2
 
 		},
 		{
@@ -97,7 +103,9 @@
 			"numAttempts"        : 8,
 			"learningEfficiency" : 65,
 			"currentLevel"       : "L3",
-			"temporalScores"     : [ "H", "A", "E", "P", "E" ]
+			"temporalScores"     : [ "H", "A", "E", "P", "E" ],
+			"lastAttemptTime"    : -1,
+			"_testLATLag"        : 2
 
 		},
 		{
@@ -105,7 +113,9 @@
 			"numAttempts"        : 10,
 			"learningEfficiency" : 55,
 			"currentLevel"       : "MAS",
-			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ],
+			"lastAttemptTime"    : -1,
+			"_testLATLag"        : 2
 
 		},
 		{
@@ -113,7 +123,9 @@
 			"numAttempts"        : 6,
 			"learningEfficiency" : 95,
 			"currentLevel"       : "L3",
-			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ],
+			"lastAttemptTime"    : -1,
+			"_testLATLag"        : 2
 
 		},
 		{
@@ -121,7 +133,9 @@
 			"numAttempts"        : 7,
 			"learningEfficiency" : 99,
 			"currentLevel"       : "L3",
-			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ],
+			"lastAttemptTime"    : -1,
+			"_testLATLag"        : 2
 
 		}
 	],

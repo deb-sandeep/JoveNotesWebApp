@@ -242,7 +242,24 @@ function applyStudyCriteriaFilter() {
 }
 
 function sortCardsAsPerStudyStrategy() {
-	log.error( "TODO: sortCardsAsPerStudyStrategy implementation." ) ;
+	
+	var strategy = $scope.studyCriteria.strategy ;
+
+	if( strategy == StudyStrategyTypes.prototype.SSR ) {
+		// TODO:
+	}
+	else if( strategy == StudyStrategyTypes.prototype.EFF_HARD ) {
+
+	}
+	else if( strategy == StudyStrategyTypes.prototype.EFF_EASY ) {
+
+	}
+	else if( strategy == StudyStrategyTypes.prototype.OBJECTIVE ) {
+
+	}
+	else if( strategy == StudyStrategyTypes.prototype.SUBJECTIVE ) {
+
+	} 
 }
 
 function trimCardsAsPerBounds() {

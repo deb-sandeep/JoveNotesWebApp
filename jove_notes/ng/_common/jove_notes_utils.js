@@ -122,7 +122,8 @@ this.associateLearningStatsToQuestions = function( questions, userLearningStats 
                 numAttemptsInSession : 0,
                 numSecondsInSession  : 0,
 				learningEfficiency   : 0,
-				currentLevel         : "NS"
+				currentLevel         : "NS",
+                lastAttemptTime      : -1
 			} ;
 		}
 		else {
@@ -132,6 +133,8 @@ this.associateLearningStatsToQuestions = function( questions, userLearningStats 
 		}
 		question.learningStats = learningStat ;
 		injectLabelsForValues( question ) ;
+
+        processTestDataHints( question ) ;
 	}
 }
 
@@ -266,5 +269,13 @@ function getLearningEfficiencyLabel( score ) {
 	else                                    { return "D"  ; }
 }
 
+function processTestDataHints( question ) {
+
+    if( question.learningStats.hasOwnProperty( '_testLATLag' ) ) {
+
+        var numMillisLag = question.learningStats._testLATLag * 24 * 60 * 60 * 1000 ;
+        question.learningStats.lastAttemptTime = new Date().getTime() - numMillisLag ;
+    }
+}
 // -----------------------------------------------------------------------------
 }

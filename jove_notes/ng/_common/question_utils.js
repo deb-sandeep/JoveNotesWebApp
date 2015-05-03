@@ -4,6 +4,15 @@ QuestionTypes.prototype.QT_FIB = "fib" ;
 QuestionTypes.prototype.QT_WM  = "word_meaning" ;
 QuestionTypes.prototype.QT_QA  = "question_answer" ;
 
+function StudyStrategyTypes(){}
+
+StudyStrategyTypes.prototype.SSR        = "SSR" ;
+StudyStrategyTypes.prototype.EFF_HARD   = "EFF_HARD" ;
+StudyStrategyTypes.prototype.EFF_EASY   = "EFF_EASY" ;
+StudyStrategyTypes.prototype.OBJECTIVE  = "OBJECTIVE" ;
+StudyStrategyTypes.prototype.SUBJECTIVE = "SUBJECTIVE" ;
+
+
 
 // =============================================================================
 // =============================================================================
