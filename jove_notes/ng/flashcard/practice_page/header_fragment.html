@@ -47,7 +47,7 @@
                 <span class="badge L0">{{currentQuestion.learningStats.currentLevel}}</span>
                 <span class="badge A1">{{currentQuestion.learningEfficiencyLabel}}</span>
                 <span class="badge muted">{{currentQuestion.learningStats.numAttempts}}</span>
-                <span class="badge muted">{{currentQuestion.learningStats.lastAttemptTime | date : 'd-MMM HH:mm'}}</span>
+                <span class="badge muted">{{sinceLastAttempt}}</span>
                 <table class="temporal">
                     <tr>
                         <td ng-repeat="score in currentQuestion.learningStats.temporalScores track by $index"

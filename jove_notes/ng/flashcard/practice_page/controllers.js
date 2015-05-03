@@ -28,6 +28,7 @@ $scope.currentQuestion  = null ;
 
 $scope.questionText = "" ;
 $scope.answerText   = "" ;
+$scope.sinceLastAttempt = "" ;
 
 $scope.questionMode = false ;
 
@@ -148,6 +149,7 @@ function updateLearningStatsForCurrentQuestion( rating, nextLevel ) {
 	$scope.currentQuestion.learningStats.currentLevel = nextLevel ;
 	$scope.currentQuestion.learningStats.temporalScores.push( rating ) ;
     $scope.currentQuestion.learningStats.numSecondsInSession += delta ;
+    $scope.currentQuestion.learningStats.lastAttemptTime = new Date().getTime() ;
 }
 
 function updateLearningStatsForChapter( curLevel, nextLevel ) {
@@ -179,12 +181,53 @@ function showNextCard() {
 		$scope.questionMode = true ;
 		$scope.questionText = $scope.currentQuestion.formattedQuestion ;
 		$scope.answerText   = '' ;
+		$scope.sinceLastAttempt = getFormattedSinceLastAttemptString() ;
 
 		currentQuestionShowStartTime = new Date().getTime() ;
 	}
 	else {
 		endSession() ;
 	}
+}
+
+function getFormattedSinceLastAttemptString() {
+
+	if( $scope.currentQuestion.learningStats.lastAttemptTime < 0 ) return "" ;
+
+	var str = "" ;
+	var numSecs = 0 ;
+	var millis = new Date().getTime() - $scope.currentQuestion.learningStats.lastAttemptTime ;
+
+	if( millis > 0 ) {
+	    numSecs = Math.floor( millis / 1000 ) ;
+	    var days = Math.floor( numSecs / ( 3600 * 24 ) ) ;
+
+	    numSecs = numSecs - ( days * 3600 * 24 ) ;
+	    var hours = Math.floor( numSecs / 3600 ) ;
+
+	    numSecs = numSecs - ( hours * 3600 ) ; 
+	    var minutes = Math.floor( numSecs / 60 ) ;
+
+	    var seconds = numSecs - ( minutes * 60 ) ;
+
+	    if( days > 0 ) {
+	    	str = days + " days ago" ;
+	    }
+	    else {
+	    	if( hours > 0 ) {
+	    		str = hours + " hrs ago" ;
+	    	}
+	    	else {
+	    		if( minutes > 0 ) {
+	    			str = minutes + " min ago" ;
+	    		}
+	    		else {
+	    			str = seconds + " sec ago" ;
+	    		}
+	    	}
+	    }
+	}
+	return str ;
 }
 
 function endSession() {

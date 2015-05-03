@@ -13,7 +13,6 @@ StudyStrategyTypes.prototype.OBJECTIVE  = "OBJECTIVE" ;
 StudyStrategyTypes.prototype.SUBJECTIVE = "SUBJECTIVE" ;
 
 
-
 // =============================================================================
 // =============================================================================
 
