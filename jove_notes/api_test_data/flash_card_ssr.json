@@ -1,0 +1,159 @@
+[ 
+{
+	"chapterId"        : 23,
+	"syllabusName"     : "Class-8",
+	"subjectName"      : "Biology",
+	"chapterNumber"    : 3,
+	"subChapterNumber" : 0,
+	"chapterName"      : "Digestion, absorption, assimilation",
+	"numCards"         : 100,
+	"difficultyStats"  : {
+		"numVE" : 20,
+		"numE"  : 10,
+		"numM"  : 10,
+		"numH"  : 25,
+		"numVH" : 25
+	},
+	"questions" : [	
+		{
+			"questionId"      : 1,
+			"questionType"    : "question_answer",
+			"question"        : "Q-1",
+			"answer"          : "A-1",
+			"difficultyLevel" : 50
+		},
+		{
+			"questionId"      : 2,
+			"questionType"    : "question_answer",
+			"question"        : "Q-2",
+			"answer"           : "A-2",
+			"difficultyLevel" : 50
+		},
+		{
+			"questionId"      : 30,
+			"questionType"    : "question_answer",
+			"question"        : "Q-0",
+			"answer"          : "A-0",
+			"difficultyLevel" : 50
+		},
+		{
+			"questionId"      : 4,
+			"questionType"    : "question_answer",
+			"question"        : "Q-4",
+			"answer"          : "A-4",
+			"difficultyLevel" : 50
+		},
+		{
+			"questionId"      : 5,
+			"questionType"    : "question_answer",
+			"question"        : "Q-5",
+			"answer"           : "A-5",
+			"difficultyLevel" : 50
+		},
+		{
+			"questionId"      : 6,
+			"questionType"    : "question_answer",
+			"question"        : "Q-6",
+			"answer"          : "A-6",
+			"difficultyLevel" : 50
+		},
+		{
+			"questionId"      : 7,
+			"questionType"    : "question_answer",
+			"question"        : "Q-7",
+			"answer"          : "A-7",
+			"difficultyLevel" : 50
+		}
+	]
+},
+{
+	"learningStats" : [	
+		{
+			"questionId"         : 1,
+			"numAttempts"        : 2,
+			"learningEfficiency" : 50,
+			"currentLevel"       : "L0",
+			"temporalScores"     : [ "H" ],
+			"lastAttemptTime"    : 0,
+			"_testLATLag"        : 0
+
+		},
+		{
+			"questionId"         : 2,
+			"numAttempts"        : 2,
+			"learningEfficiency" : 50,
+			"currentLevel"       : "L0",
+			"temporalScores"     : [ "A", "P" ],
+			"lastAttemptTime"    : 0,
+			"_testLATLag"        : -1
+
+		},
+		{
+			"questionId"         : 30,
+			"numAttempts"        : 2,
+			"learningEfficiency" : 50,
+			"currentLevel"       : "L0",
+			"temporalScores"     : [ "H", "A", "P" ],
+			"lastAttemptTime"    : 0,
+			"_testLATLag"        : -2
+
+		},
+		{
+			"questionId"         : 4,
+			"numAttempts"        : 2,
+			"learningEfficiency" : 50,
+			"currentLevel"       : "L1",
+			"temporalScores"     : [ "H", "A", "E", "P", "E" ],
+			"lastAttemptTime"    : 0,
+			"_testLATLag"        : 0
+
+		},
+		{
+			"questionId"         : 5,
+			"numAttempts"        : 12,
+			"learningEfficiency" : 50,
+			"currentLevel"       : "L1",
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ],
+			"lastAttemptTime"    : 0,
+			"_testLATLag"        : -1
+
+		},
+		{
+			"questionId"         : 6,
+			"numAttempts"        : 2,
+			"learningEfficiency" : 50,
+			"currentLevel"       : "L1",
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ],
+			"lastAttemptTime"    : 0,
+			"_testLATLag"        : -2
+
+		},
+		{
+			"questionId"         : 7,
+			"numAttempts"        : 2,
+			"learningEfficiency" : 50,
+			"currentLevel"       : "L1",
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ],
+			"lastAttemptTime"    : 0,
+			"_testLATLag"        : -3
+
+		}
+	],
+	"progressStats" : {
+		"numCardsNS"       :  20 ,
+		"numCardsL0"       :  20 ,
+		"numCardsL1"       :  10 ,
+		"numCardsL2"       :  10 ,
+		"numCardsL3"       :  20 ,
+		"numCardsMastered" :  20
+	},
+	"learningCurveData" : [
+        [ 100, 80, 60, 40, 20,   0 ],
+        [   0,  5, 10,  0,  0,   0 ],
+        [   0, 15, 10, 20,  0,   0 ],
+        [   0,  0, 20, 20,  0,   0 ],
+        [   0,  0,  0, 20, 30,   0 ],
+        [   0,  0,  0,  0, 50, 100 ] 
+	]
+}
+]

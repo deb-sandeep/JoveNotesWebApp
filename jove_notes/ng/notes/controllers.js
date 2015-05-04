@@ -35,7 +35,7 @@ $scope.pageTitle          = null ;
 $scope.showUserStatistics = false ;
 $scope.showFilterForm     = false ;
 $scope.filterCriteria     = new FilterCriteria() ;
-$scope.filterOptions      = new UserLearningFilterOptions() ;
+$scope.filterOptions      = new NotesFilterOptions() ;
 
 // The deserialized chapter data as returned by the API
 $scope.chapterData = null ;

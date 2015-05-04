@@ -261,8 +261,14 @@ function checkInvalidLoad() {
 
 function computeSessionCards() {
 
+	questionsForSession.length = 0 ;
+	
+	log.debug( "Computing cards for this session." ) ;
+	log.debug( "\tTotal cards in chapter = " + $scope.chapterData.questions.length ) ;
+
 	applyStudyCriteriaFilter() ;
 	sortCardsAsPerStudyStrategy() ;
+	addNSCards() ;
 	trimCardsAsPerBounds() ;
 
 	$scope.sessionStats.numCards     = questionsForSession.length ;
@@ -271,42 +277,138 @@ function computeSessionCards() {
 
 function applyStudyCriteriaFilter() {
 
-	var i = 0 ;
-	for( ; i < $scope.chapterData.questions.length ; i++ ) {
+	log.debug( "\tApplying study criteria filter." ) ;
+	for( var i=0; i < $scope.chapterData.questions.length ; i++ ) {
 		var question = $scope.chapterData.questions[ i ] ;
-		if( $scope.studyCriteria.matchesFilter( question ) ) {
-			log.debug( "Adding question " + question.questionId ) ;
+		if( $scope.$parent.studyCriteria.matchesFilter( question ) ) {
 			questionsForSession.push( question ) ;
 		}
-		else {
-			log.debug( "Filtering question " + question.questionId ) ;
-		}
 	}
+	log.debug( "\t\tTotal questions after filtering = " + questionsForSession.length ) ;
 }
 
 function sortCardsAsPerStudyStrategy() {
 	
-	var strategy = $scope.studyCriteria.strategy ;
+	if( questionsForSession.length <= 0 ) { return; }
 
+	var strategy = $scope.studyCriteria.strategy ;
 	if( strategy == StudyStrategyTypes.prototype.SSR ) {
-		// TODO:
+		log.debug( "\tFiltering cards as per SSR study strategy." ) ;
+		filterCardsForSSRStrategy() ;
+		if( questionsForSession.length > 0 ) {
+
+        	var curTime  = new Date().getTime() ;
+	        questionsForSession.sort( function( q1, q2 ){
+
+	        	var tlaCard1 = curTime - q1.learningStats.lastAttemptTime ;
+	        	var tlaCard2 = curTime - q2.learningStats.lastAttemptTime ;
+
+	            return tlaCard2 - tlaCard1 ;
+	        }) ;
+		}
 	}
 	else if( strategy == StudyStrategyTypes.prototype.EFF_HARD ) {
-
+		log.debug( "\tSorting cards as per EFF_HARD study strategy." ) ;
+        questionsForSession.sort( function( q1, q2 ){
+            return q2.learningStats.learningEfficiency - 
+                   q1.learningStats.learningEfficiency  ;
+        }) ;
 	}
 	else if( strategy == StudyStrategyTypes.prototype.EFF_EASY ) {
-
+		log.debug( "\tSorting cards as per EFF_EASY study strategy." ) ;
+        questionsForSession.sort( function( q1, q2 ){
+            return q1.learningStats.learningEfficiency - 
+                   q2.learningStats.learningEfficiency  ;
+        }) ;
 	}
 	else if( strategy == StudyStrategyTypes.prototype.OBJECTIVE ) {
-
+		log.debug( "\tSorting cards as per OBJECTIVE study strategy." ) ;
+        questionsForSession.sort( function( q1, q2 ){
+            return q1.answerLength - q2.answerLength ;
+        }) ;
 	}
 	else if( strategy == StudyStrategyTypes.prototype.SUBJECTIVE ) {
-
+		log.debug( "\tSorting cards as per SUBJECTIVE study strategy." ) ;
+        questionsForSession.sort( function( q1, q2 ){
+            return q2.answerLength - q1.answerLength ;
+        }) ;
 	} 
+
+	log.debug( "\t#cards after applying study strategy = " + questionsForSession.length ) ;
+}
+
+function filterCardsForSSRStrategy() {
+	
+	var DELTA = 24*60*60*1000 ;
+	var DELTA_2 = DELTA * 2 ;
+	var DELTA_3 = DELTA * 3 ;
+	var DELTA_4 = DELTA * 4  ;
+
+	var ssrFilteredQuestions = [] ;
+	var index = 0 ;
+
+	for( index=0; index<questionsForSession.length; index++ ) {
+		var question = questionsForSession[index] ;
+		var timeSinceLastAttempt = new Date().getTime() - 
+		                           question.learningStats.lastAttemptTime ;
+
+		if( CardLevels.prototype.L0 == question.learningStats.currentLevel ) {
+			if( timeSinceLastAttempt >= DELTA ) {
+				ssrFilteredQuestions.push( question ) ;
+			}
+		}
+		else if( CardLevels.prototype.L1 == question.learningStats.currentLevel ) {
+			if( timeSinceLastAttempt >= DELTA_2 ) {
+				ssrFilteredQuestions.push( question ) ;
+			}
+		}
+		else if( CardLevels.prototype.L2 == question.learningStats.currentLevel ) {
+			if( timeSinceLastAttempt >= DELTA_3 ) {
+				ssrFilteredQuestions.push( question ) ;
+			}
+		}
+		else if( CardLevels.prototype.L3 == question.learningStats.currentLevel ) {
+			if( timeSinceLastAttempt >= DELTA_4 ) {
+				ssrFilteredQuestions.push( question ) ;
+			}
+		}
+		else {
+			log.error( "Card " + question.questionId + " should not have been there." ) ;
+		}
+	}
+	questionsForSession = ssrFilteredQuestions ;
+}
+
+function addNSCards() {
+
+	log.debug( "\tAdding NS cards." ) ;
+	var nsQuestionsAdded = 0 ;
+	if( $scope.$parent.maxNewCards > 0 ) {
+		for( var i=0 ; i < $scope.chapterData.questions.length ; i++ ) {
+
+			var question = $scope.chapterData.questions[ i ] ;
+			if( question.learningStats.currentLevel == CardLevels.prototype.NS ) {
+
+				questionsForSession.unshift( question ) ;
+				nsQuestionsAdded++ ;
+				if( nsQuestionsAdded >= $scope.$parent.maxNewCards ) {
+					break ;
+				}
+			}
+		}
+	}
+	log.debug( "\t\tAdded " + nsQuestionsAdded + " NS questions." ) ;
 }
 
 function trimCardsAsPerBounds() {
-	log.error( "TODO: trimCardsAsPerBounds implementation." ) ;
+	
+	log.debug( "\tTrimming cards as per max cards bound. " + 
+		       $scope.$parent.studyCriteria.maxCards ) ;
+
+	while( questionsForSession.length > $scope.$parent.studyCriteria.maxCards ) {
+		questionsForSession.pop() ;		
+	}
+	log.debug( "\t\t#cards after trimming " + questionsForSession.length ) ;
 }
 
 function handleTimerEvent() {

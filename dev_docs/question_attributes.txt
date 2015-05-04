@@ -10,7 +10,8 @@ learningStats         : OBJECT | Client |    | Merged at client end
 difficultyLevelLabel  : String | Client |    | VE, E, M, H
 learningEfficiencyLabel:String | Client |    | A[12], B[12], C[12], D
 formattedAnswer       : String | Client |    | 
-formattedQuestion     | String | Client |    | 
+formattedQuestion     : String | Client |    | 
+answerLength          : INT    | Client |    | 
 
 
 +===============================================================================

@@ -1,13 +1,13 @@
 Flashcard (Practice page)
 --------------------------------------------------------------------------------
 . Sort cards as per study strategy
-. Send last studied timestamp from server
 . Trim cards as per bounds (after sort cards as per strategy)
 . End page design and implementaiton
 . Score computation
 . Design server communication for flash card practice actions
 . Create Dummy APIs for flash card practice communications (expand this list.)
 . Implement markCardForEdit
+. Implement filter for rendering time since last attempt
 
 Flashcard (Start page)
 --------------------------------------------------------------------------------
@@ -17,7 +17,8 @@ Flashcard (Start page)
 Completed
 --------------------------------------------------------------------------------
 5/3/15 --
-
+. Send last studied timestamp from server
+. Added time since last studied in the flash card practice page
 
 5/2/15 --
 . Implement purgeCard

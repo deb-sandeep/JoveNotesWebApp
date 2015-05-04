@@ -1,6 +1,6 @@
 // =============================================================================
 // =============================================================================
-function UserLearningFilterOptions() {
+function NotesFilterOptions() {
 
     this.currentLevelOptions = [ 
         { id : "NS",  name : "Not started" },
@@ -9,6 +9,38 @@ function UserLearningFilterOptions() {
         { id : "L2",  name : "Level 2" },
         { id : "L3",  name : "Level 3" },
 		{ id : "MAS", name : "Mastered"}
+    ] ;
+
+    this.learningEfficiencyOptions = [
+        { id : "A1", name : "A1" },
+        { id : "A2", name : "A2" },
+        { id : "B1", name : "B1" },
+        { id : "B2", name : "B2" },
+        { id : "C1", name : "C1" },
+        { id : "C2", name : "C2" },
+        { id : "D" , name : "D"  }
+    ] ;
+
+    this.difficultyOptions = [
+        { id : "VE", name : "Very easy" },
+        { id : "E",  name : "Easy" },
+        { id : "M",  name : "Moderate" },
+        { id : "H",  name : "Hard" },
+        { id : "VH", name : "Very hard" }
+    ] ;
+}
+
+// Note that CardsFilterOptions differ from NotesFilterOptions as cards filter
+// does not have options to choose from NS and MAS card levels. NS for cards is
+// influenced by bounds of how many new cards have to be added and MAS cards are
+// anyway not added in flash card sessions.
+function CardsFilterOptions() {
+
+    this.currentLevelOptions = [ 
+        { id : "L0",  name : "Level 0" },
+        { id : "L1",  name : "Level 1" },
+        { id : "L2",  name : "Level 2" },
+        { id : "L3",  name : "Level 3" },
     ] ;
 
     this.learningEfficiencyOptions = [
@@ -274,7 +306,7 @@ function processTestDataHints( question ) {
     if( question.learningStats.hasOwnProperty( '_testLATLag' ) ) {
 
         var numMillisLag = question.learningStats._testLATLag * 24 * 60 * 60 * 1000 ;
-        question.learningStats.lastAttemptTime = new Date().getTime() - numMillisLag ;
+        question.learningStats.lastAttemptTime = new Date().getTime() + numMillisLag ;
     }
 }
 // -----------------------------------------------------------------------------

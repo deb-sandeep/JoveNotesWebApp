@@ -1,7 +1,7 @@
 <div class="form-group pad-10px">
     <label for="maxCards">Max cards:</label>
     <select id="maxCards" class="form-control" ng-model="studyCriteria.maxCards">
-        <option value="-1" selected>Unlimited</option>
+        <option value="10000" selected>Unlimited</option>
         <option value="10">10</option>
         <option value="20">20</option>
         <option value="30">30</option>
@@ -14,7 +14,7 @@
 <div class="form-group pad-10px">
     <label for="maxTime">Max time:</label>
     <select id="maxTime" class="form-control" ng-model="studyCriteria.maxTime">
-        <option value="-1">Unlimited</option>
+        <option value="-1" selected>Unlimited</option>
         <option value="01">00:01 min</option>
         <option value="05">00:05 min</option>
         <option value="10">00:10 min</option>
@@ -27,8 +27,9 @@
 </div>
 <div class="form-group pad-10px">
     <label for="maxTime">Max new cards:</label>
-    <select id="maxTime" class="form-control" ng-model="studyCriteria.maxTime">
-        <option value="-1">Unlimited</option>
+    <select id="maxTime" class="form-control" ng-model="studyCriteria.maxNewCards">
+        <option value="10000" selected>Unlimited</option>
+        <option value="-1">None</option>
         <option value="05">05</option>
         <option value="10">10</option>
         <option value="15">15</option>
