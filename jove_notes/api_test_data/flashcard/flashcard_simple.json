@@ -1,4 +1,5 @@
-[{
+[ 
+{
 	"chapterId"        : 23,
 	"syllabusName"     : "Class-8",
 	"subjectName"      : "Biology",
@@ -26,42 +27,42 @@
 			"questionType"    : "question_answer",
 			"question"        : "What is the answer to life?",
 			"answer"          : "42",
-			"difficultyLevel" : 25
+			"difficultyLevel" : 40
 		},
 		{
 			"questionId"      : 3,
 			"questionType"    : "word_meaning",
 			"word"            : "Dog",
 			"meaning"         : "An animal who barks",
-			"difficultyLevel" : 40
+			"difficultyLevel" : 75
 		},
 		{
 			"questionId"      : 4,
 			"questionType"    : "word_meaning",
 			"word"            : "Vi",
 			"meaning"         : "Visual Editor",
-			"difficultyLevel" : 40
+			"difficultyLevel" : 80
 		},
 		{
 			"questionId"      : 5,
 			"questionType"    : "question_answer",
 			"question"        : "What is a movie?",
 			"answer"          : "A movie is something that we should watch\nFriday nights",
-			"difficultyLevel" : 60
+			"difficultyLevel" : 95
 		},
 		{
 			"questionId"      : 6,
 			"questionType"    : "fib",
 			"question"        : "The {0} of India is {1}.",
 			"answers"         : [ "capital", "Delhi" ],
-			"difficultyLevel" : 60
+			"difficultyLevel" : 10
 		},
 		{
 			"questionId"      : 7,
 			"questionType"    : "fib",
 			"question"        : "The shortcut for copy is {0} and that of paste is {1}.",
 			"answers"         : [ "ctrl-c", "ctrl-v" ],
-			"difficultyLevel" : 80
+			"difficultyLevel" : 90
 		}
 	]
 },
@@ -69,38 +70,42 @@
 	"learningStats" : [	
 		{
 			"questionId"         : 1,
-			"numAttempts"        : 10,
+			"numAttempts"        : 2,
 			"learningEfficiency" : 95,
 			"currentLevel"       : "L2",
-			"lastAttemptTime"    : 0,
-			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+			"temporalScores"     : [ "H" ],
+			"lastAttemptTime"    : -1,
+			"_testLATLag"        : -5
 
 		},
 		{
 			"questionId"         : 2,
-			"numAttempts"        : 10,
+			"numAttempts"        : 4,
 			"learningEfficiency" : 85,
 			"currentLevel"       : "L0",
-			"lastAttemptTime"    : 0,
-			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+			"temporalScores"     : [ "A", "P" ],
+			"lastAttemptTime"    : -1,
+			"_testLATLag"        : -5
 
 		},
 		{
 			"questionId"         : 3,
-			"numAttempts"        : 10,
+			"numAttempts"        : 6,
 			"learningEfficiency" : 75,
 			"currentLevel"       : "L1",
-			"lastAttemptTime"    : 0,
-			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+			"temporalScores"     : [ "H", "A", "P" ],
+			"lastAttemptTime"    : -1,
+			"_testLATLag"        : -5
 
 		},
 		{
 			"questionId"         : 4,
-			"numAttempts"        : 10,
+			"numAttempts"        : 8,
 			"learningEfficiency" : 65,
 			"currentLevel"       : "L3",
-			"lastAttemptTime"    : 0,
-			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+			"temporalScores"     : [ "H", "A", "E", "P", "E" ],
+			"lastAttemptTime"    : -1,
+			"_testLATLag"        : -5
 
 		},
 		{
@@ -108,17 +113,47 @@
 			"numAttempts"        : 10,
 			"learningEfficiency" : 55,
 			"currentLevel"       : "MAS",
-			"lastAttemptTime"    : 0,
-			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ],
+			"lastAttemptTime"    : -1,
+			"_testLATLag"        : -5
 
 		},
 		{
 			"questionId"         : 6,
-			"numAttempts"        : 2,
+			"numAttempts"        : 6,
 			"learningEfficiency" : 95,
 			"currentLevel"       : "L3",
-			"lastAttemptTime"    : 0,
-			"temporalScores"     : [ "H", "A", "P", "E", "E" ]
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ],
+			"lastAttemptTime"    : -1,
+			"_testLATLag"        : -5
+
+		},
+		{
+			"questionId"         : 7,
+			"numAttempts"        : 7,
+			"learningEfficiency" : 99,
+			"currentLevel"       : "L3",
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ],
+			"lastAttemptTime"    : -1,
+			"_testLATLag"        : -5
+
 		}
+	],
+	"progressStats" : {
+		"numCardsNS"       :  20 ,
+		"numCardsL0"       :  20 ,
+		"numCardsL1"       :  10 ,
+		"numCardsL2"       :  10 ,
+		"numCardsL3"       :  20 ,
+		"numCardsMastered" :  20
+	},
+	"learningCurveData" : [
+        [ 100, 80, 60, 40, 20,   0 ],
+        [   0,  5, 10,  0,  0,   0 ],
+        [   0, 15, 10, 20,  0,   0 ],
+        [   0,  0, 20, 20,  0,   0 ],
+        [   0,  0,  0, 20, 30,   0 ],
+        [   0,  0,  0,  0, 50, 100 ] 
 	]
-}]
+}
+]

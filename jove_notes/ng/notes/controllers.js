@@ -3,9 +3,9 @@ dashboardApp.controller( 'NotesController', function( $scope, $http ) {
 // ---------------- Constants and inner class definition -----------------------
 function FilterCriteria() {
 
-	this.currentLevelFilters       = [ "NS", "L0", "L1",                 ] ;
-	this.learningEfficiencyFilters = [ "A2", "B1", "B2", "C1", "C2", "D" ] ;
-	this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH"      ] ;
+	this.currentLevelFilters       = [ "NS", "L0", "L1", "L2", "L3", "MAS" ] ;
+	this.learningEfficiencyFilters = [ "A1", "A2", "B1", "B2", "C1", "C2", "D" ] ;
+	this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH" ] ;
 
     this.serialize = function() {
         $.cookie.json = true ;
@@ -20,6 +20,12 @@ function FilterCriteria() {
 			this.learningEfficiencyFilters = crit.learningEfficiencyFilters ;
 			this.difficultyFilters         = crit.difficultyFilters ;
         } ;
+    }
+
+    this.setDefaultCriteria = function() {
+		this.currentLevelFilters       = [ "NS", "L0", "L1", "L2", "L3", "MAS" ] ;
+		this.learningEfficiencyFilters = [ "A1", "A2", "B1", "B2", "C1", "C2", "D" ] ;
+		this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH" ] ;
     }
 }
 
@@ -41,6 +47,7 @@ $scope.filterOptions      = new NotesFilterOptions() ;
 $scope.chapterData = null ;
 
 // These are the arrays that hold the questions which match the filter criteria
+$scope.filteredQuestions = [] ;
 $scope.wordMeanings    = [] ;
 $scope.questionAnswers = [] ;
 $scope.fibs            = [] ;
@@ -111,6 +118,7 @@ function applyFilterCriteria() {
 	var questions = $scope.chapterData.questions ;
 
 	// Reset all the arrrays before we fill them with filtered contents
+	$scope.filteredQuestions.length      = 0 ;
 	$scope.wordMeanings.length    = 0 ;
 	$scope.questionAnswers.length = 0 ;
 	$scope.fibs.length            = 0 ;
@@ -121,6 +129,9 @@ function applyFilterCriteria() {
 		var type     = question.questionType ;
 
 		if( qualifiesFilter( question ) ) {
+
+			$scope.filteredQuestions.push( question ) ;
+
 			if( type == QuestionTypes.prototype.QT_WM ) {
 				$scope.wordMeanings.push( question ) ;
 			}

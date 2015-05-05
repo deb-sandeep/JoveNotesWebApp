@@ -150,12 +150,14 @@ this.associateLearningStatsToQuestions = function( questions, userLearningStats 
 
 		if( typeof learningStats[ question.questionId ] === 'undefined' ) {
 			learningStat = {
+                questionId           : question.questionId,
 				numAttempts          : -1,
-                numAttemptsInSession : 0,
-                numSecondsInSession  : 0,
 				learningEfficiency   : 0,
 				currentLevel         : "NS",
-                lastAttemptTime      : -1
+                lastAttemptTime      : -1,
+                temporalScores       : [],
+                numAttemptsInSession : 0,
+                numSecondsInSession  : 0
 			} ;
 		}
 		else {
@@ -171,6 +173,8 @@ this.associateLearningStatsToQuestions = function( questions, userLearningStats 
 }
 
 this.renderLearningProgressPie = function( divName, progressStats ) {
+
+    if( isDebug() )return ;
 
     var vals   = [] ;
     var labels = [] ;
@@ -220,6 +224,8 @@ this.renderLearningProgressPie = function( divName, progressStats ) {
 
 this.renderDifficultyStatsBar = function( divName, difficultyStats ) {
 
+    if( isDebug() )return ;
+
     var vals   = [ 
         difficultyStats.numVE, 
         difficultyStats.numE, 
@@ -250,6 +256,8 @@ this.renderDifficultyStatsBar = function( divName, difficultyStats ) {
 } ;
 
 this.renderLearningCurveGraph = function( divName, learningCurveData ) {
+
+    if( isDebug() )return ;
 
     var mline = new RGraph.Line( {
         id: divName,
@@ -308,6 +316,13 @@ function processTestDataHints( question ) {
         var numMillisLag = question.learningStats._testLATLag * 24 * 60 * 60 * 1000 ;
         question.learningStats.lastAttemptTime = new Date().getTime() + numMillisLag ;
     }
+}
+
+function isDebug() {
+    if( typeof __debug__ != 'undefined' ) {
+        return true ;
+    }
+    return false ;
 }
 // -----------------------------------------------------------------------------
 }

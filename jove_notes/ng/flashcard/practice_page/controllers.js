@@ -69,19 +69,19 @@ $scope.windowWidth = "" ;
 // ---------------- Controller methods -----------------------------------------
 $scope.toggleDisplay = function( displayId ) {
 
-	if ( displayId == "L0-Hdr" ) { 
+	if( displayId == "L0-Hdr" ) { 
 		$scope.showL0Header = !$scope.showL0Header;
 		currentTopPadHeight += ( $scope.showL0Header ) ? 25 : -25 ;
 	}
-	else if ( displayId == "L1-Hdr" ) { 
+	else if( displayId == "L1-Hdr" ) { 
 		$scope.showL1Header = !$scope.showL1Header; 
 		currentTopPadHeight += ( $scope.showL1Header ) ? 25 : -25 ;
 	}
-	else if ( displayId == "L2-Hdr" ) { 
+	else if( displayId == "L2-Hdr" ) { 
 		$scope.showL2Header = !$scope.showL2Header; 
 		currentTopPadHeight += ( $scope.showL2Header ) ? 25 : -25 ;
 	}
-	else if ( displayId == "AuxControls" ) { 
+	else if( displayId == "AuxControls" ) { 
 		$scope.showAuxControls = !$scope.showAuxControls; 
 	}
 

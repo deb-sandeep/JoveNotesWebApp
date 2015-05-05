@@ -54,10 +54,10 @@ module.exports = function(config) {
       'ng/notes/routes.js',
       'ng/notes/controllers.js',
 
-      'ng_test/*.js',
+      'ng_test/**/*.js',
 
       { 
-        pattern: 'api_test_data/*.json',
+        pattern: 'api_test_data/**/*.json',
         watched: true,
         served:  true,
         included: false

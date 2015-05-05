@@ -13,6 +13,12 @@ function StudyCriteria() {
     this.strategy = "SSR" ;
     this.push     = false ;
 
+    this.setDefaultCriteria = function() {
+        this.currentLevelFilters       = [ "L0", "L1", "L2", "L3"                  ] ;
+        this.learningEfficiencyFilters = [ "A1", "A2", "B1", "B2", "C1", "C2", "D" ] ;
+        this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH"            ] ;
+    }
+
     this.serialize = function() {
         $.cookie.json = true ;
         $.cookie( 'studyCriteria-' + $scope.chapterId, this, { expires: 30 } ) ;
@@ -50,7 +56,19 @@ function StudyCriteria() {
                 if( diffLabelFilters.indexOf( diffLabel ) != -1 ) {
                     return true ;
                 }
+                else {
+                    log.debug( "\t\tRejecting Q" + question.questionId + 
+                               " : Difficulty level filter mismatch. " + diffLabel ) ;
+                }
             }
+            else {
+                log.debug( "\t\tRejecting Q" + question.questionId + 
+                           " : Learning efficiency filter mismatch. " + lrnEffLabel ) ;
+            }
+        }
+        else {
+            log.debug( "\t\tRejecting Q" + question.questionId + 
+                       " : Current level filter mismatch. " + currentLevel ) ;
         }
         return false ;
     }
@@ -107,8 +125,8 @@ $scope.processServerData = function( data ) {
     jnUtil.associateLearningStatsToQuestions( 
                                         chapterData.questions, learningStats ) ;
 
-    $scope.chapterData  = chapterData ;
-    $scope.pageTitle    = jnUtil.constructPageTitle( data[0] ) ;
+    $scope.chapterData = chapterData ;
+    $scope.pageTitle   = jnUtil.constructPageTitle( data[0] ) ;
 }
 // ---------------- Private functions ------------------------------------------
 
