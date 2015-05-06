@@ -94,7 +94,7 @@ afterEach( function() {
 //   Questions present - 2, 3, 6, 8, 10
 //   Questions absent  - 1, 4, 5, 7, 9
 //
-//   Order of questions
+//   Order of questions - 10, 3, [8,6,2]
 it( 'Only have questions whose threshold delta >=0', function(){
 
     flashCardScope.studyCriteria.setDefaultCriteria() ;
@@ -125,7 +125,7 @@ it( 'should sort questions in descending order of threshold delta', function(){
     createPracticePgCtlr() ;
 
     expect( practicePgScope.questionsForSession )
-        .toHaveQuestionsInOrder( [ 10, 3 ] ) ;
+        .toHaveQuestionsInOrder( [ 10, 3, 8 ] ) ;
 }) ;
 
 // -----------------------------------------------------------------------------

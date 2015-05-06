@@ -26,14 +26,14 @@
 			"questionId"      : 2,
 			"questionType"    : "question_answer",
 			"question"        : "Q-2",
-			"answer"           : "A-2",
+			"answer"          : "A-2",
 			"difficultyLevel" : 50
 		},
 		{
 			"questionId"      : 3,
 			"questionType"    : "question_answer",
-			"question"        : "Q-0",
-			"answer"          : "A-0",
+			"question"        : "Q-3",
+			"answer"          : "A-3",
 			"difficultyLevel" : 50
 		},
 		{
@@ -47,7 +47,7 @@
 			"questionId"      : 5,
 			"questionType"    : "question_answer",
 			"question"        : "Q-5",
-			"answer"           : "A-5",
+			"answer"          : "A-5",
 			"difficultyLevel" : 50
 		},
 		{

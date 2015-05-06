@@ -2,6 +2,10 @@ flashCardApp.controller( 'PracticePageController', function( $scope, $http, $rou
 // -----------------------------------------------------------------------------
 
 // ---------------- Constants and inner class definition -----------------------
+var SSR_DELTA_L0 = 24*60*60*1000 ;
+var SSR_DELTA_L1 = SSR_DELTA_L0 * 2 ;
+var SSR_DELTA_L2 = SSR_DELTA_L0 * 3 ;
+var SSR_DELTA_L3 = SSR_DELTA_L0 * 4  ;
 
 // ---------------- Local variables --------------------------------------------
 var ratingMatrix        = new RatingMatrix() ;
@@ -298,13 +302,12 @@ function sortCardsAsPerStudyStrategy() {
 	if( strategy == StudyStrategyTypes.prototype.SSR ) {
 		log.debug( "\tFiltering cards as per SSR study strategy." ) ;
 		filterCardsForSSRStrategy() ;
-		if( $scope.questionsForSession.length > 0 ) {
 
-        	var curTime  = new Date().getTime() ;
+		if( $scope.questionsForSession.length > 0 ) {
 	        $scope.questionsForSession.sort( function( q1, q2 ){
 
-	        	var tlaCard1 = curTime - q1.learningStats.lastAttemptTime ;
-	        	var tlaCard2 = curTime - q2.learningStats.lastAttemptTime ;
+	        	var tlaCard1 = getSSRThresholdDelta( q1 ) ;
+	        	var tlaCard2 = getSSRThresholdDelta( q2 ) ;
 
 	            return tlaCard2 - tlaCard1 ;
 	        }) ;
@@ -343,45 +346,41 @@ function sortCardsAsPerStudyStrategy() {
 
 function filterCardsForSSRStrategy() {
 	
-	var DELTA = 24*60*60*1000 ;
-	var DELTA_2 = DELTA * 2 ;
-	var DELTA_3 = DELTA * 3 ;
-	var DELTA_4 = DELTA * 4  ;
-
 	var ssrFilteredQuestions = [] ;
 	var index = 0 ;
 
 	for( index=0; index<$scope.questionsForSession.length; index++ ) {
 		var question = $scope.questionsForSession[index] ;
-		var currentLevel = question.learningStats.currentLevel ;
-		var timeSinceLastAttempt = new Date().getTime() - 
-		                           question.learningStats.lastAttemptTime ;
+		var thresholdDelta = getSSRThresholdDelta( question ) ;
 
-		if( CardLevels.prototype.L0 == currentLevel ) {
-			if( timeSinceLastAttempt >= DELTA ) {
-				ssrFilteredQuestions.push( question ) ;
-			}
-		}
-		else if( CardLevels.prototype.L1 == currentLevel ) {
-			if( timeSinceLastAttempt >= DELTA_2 ) {
-				ssrFilteredQuestions.push( question ) ;
-			}
-		}
-		else if( CardLevels.prototype.L2 == currentLevel ) {
-			if( timeSinceLastAttempt >= DELTA_3 ) {
-				ssrFilteredQuestions.push( question ) ;
-			}
-		}
-		else if( CardLevels.prototype.L3 == currentLevel ) {
-			if( timeSinceLastAttempt >= DELTA_4 ) {
-				ssrFilteredQuestions.push( question ) ;
-			}
-		}
-		else {
-			log.error( "Card " + question.questionId + " should not be there." ) ;
+		if( thresholdDelta >= 0 ) {
+			ssrFilteredQuestions.push( question ) ;
 		}
 	}
+
 	$scope.questionsForSession = ssrFilteredQuestions ;
+}
+
+function getSSRThresholdDelta( question ) {
+
+	var currentLevel = question.learningStats.currentLevel ;
+	var timeSinceLastAttempt = new Date().getTime() - 
+	                           question.learningStats.lastAttemptTime ;
+	var delta = -1 ;
+
+	if( CardLevels.prototype.L0 == currentLevel ) {
+		delta = timeSinceLastAttempt - SSR_DELTA_L0 ;
+	}
+	else if( CardLevels.prototype.L1 == currentLevel ) {
+		delta = timeSinceLastAttempt - SSR_DELTA_L1 ;
+	}
+	else if( CardLevels.prototype.L2 == currentLevel ) {
+		delta = timeSinceLastAttempt - SSR_DELTA_L2 ;
+	}
+	else if( CardLevels.prototype.L3 == currentLevel ) {
+		delta = timeSinceLastAttempt - SSR_DELTA_L3 ;
+	}
+	return delta ;
 }
 
 function addNSCards() {
