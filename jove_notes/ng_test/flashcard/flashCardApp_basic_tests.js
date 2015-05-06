@@ -1,8 +1,3 @@
-var userName  = 'UTUser' ;
-var chapterId = 23 ;
-var log = null ;
-var __debug__ = true ;
-
 describe( 'flashCardApp basic initialization', function() {
 // -----------------------------------------------------------------------------
 
@@ -19,14 +14,6 @@ var staticPages = [
 
 beforeAll( function() {
 
-    log = log4javascript.getLogger( "main" ) ;
-    var appender = new log4javascript.BrowserConsoleAppender() ;
-    var layout   = new log4javascript.PatternLayout( "[%-5p] %m" ) ;
-
-    appender.setLayout( layout ) ;
-    appender.setThreshold( log4javascript.Level.DEBUG ) ;
-
-    log.addAppender( appender ) ;
 }) ;
 
 beforeEach( module( 'flashCardApp' ) ) ;
@@ -75,6 +62,10 @@ beforeEach( inject( function( $rootScope, $httpBackend, $controller, $route, $lo
 
     createFlashCardCtlr() ;
 } ) ) ;
+
+beforeEach( function() {
+    jasmine.addMatchers( customMatchers ) ;
+}) ;
 
 afterEach( function() {
     httpBackend.verifyNoOutstandingExpectation() ;
@@ -133,7 +124,13 @@ it( 'should initialize practice page controller', function(){
     createPracticePgCtlr() ;
 
     // Only MAS should get filtered, leaving the other 6 intact
-    expect( practicePgScope.sessionStats.numCards ).toEqual( 6 ) ;
+    expect( practicePgScope.questionsForSession.length ) .toEqual( 6 ) ;
+
+    expect( practicePgScope.questionsForSession.length )
+        .toEqual( practicePgScope.sessionStats.numCards ) ;
+
+    expect( practicePgScope.questionsForSession ).toHaveQuestion( 1 ) ;
+    expect( practicePgScope.questionsForSession ).not.toHaveQuestion( 5 ) ;
 }) ;
 
 

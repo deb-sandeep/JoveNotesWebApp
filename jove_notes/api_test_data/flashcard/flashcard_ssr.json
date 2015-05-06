@@ -30,7 +30,7 @@
 			"difficultyLevel" : 50
 		},
 		{
-			"questionId"      : 30,
+			"questionId"      : 3,
 			"questionType"    : "question_answer",
 			"question"        : "Q-0",
 			"answer"          : "A-0",
@@ -63,6 +63,27 @@
 			"question"        : "Q-7",
 			"answer"          : "A-7",
 			"difficultyLevel" : 50
+		},
+		{
+			"questionId"      : 8,
+			"questionType"    : "question_answer",
+			"question"        : "Q-8",
+			"answer"          : "A-8",
+			"difficultyLevel" : 50
+		},
+		{
+			"questionId"      : 9,
+			"questionType"    : "question_answer",
+			"question"        : "Q-9",
+			"answer"          : "A-9",
+			"difficultyLevel" : 50
+		},
+		{
+			"questionId"      : 10,
+			"questionType"    : "question_answer",
+			"question"        : "Q-10",
+			"answer"          : "A-10",
+			"difficultyLevel" : 50
 		}
 	]
 },
@@ -89,7 +110,7 @@
 
 		},
 		{
-			"questionId"         : 30,
+			"questionId"         : 3,
 			"numAttempts"        : 2,
 			"learningEfficiency" : 50,
 			"currentLevel"       : "L0",
@@ -132,11 +153,40 @@
 			"questionId"         : 7,
 			"numAttempts"        : 2,
 			"learningEfficiency" : 50,
-			"currentLevel"       : "L1",
+			"currentLevel"       : "L2",
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ],
+			"lastAttemptTime"    : 0,
+			"_testLATLag"        : -2
+
+		},
+		{
+			"questionId"         : 8,
+			"numAttempts"        : 2,
+			"learningEfficiency" : 50,
+			"currentLevel"       : "L2",
 			"temporalScores"     : [ "H", "A", "P", "E", "E" ],
 			"lastAttemptTime"    : 0,
 			"_testLATLag"        : -3
 
+		},
+		{
+			"questionId"         : 9,
+			"numAttempts"        : 2,
+			"learningEfficiency" : 50,
+			"currentLevel"       : "L3",
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ],
+			"lastAttemptTime"    : 0,
+			"_testLATLag"        : -3
+
+		},
+		{
+			"questionId"         : 10,
+			"numAttempts"        : 2,
+			"learningEfficiency" : 50,
+			"currentLevel"       : "L3",
+			"temporalScores"     : [ "H", "A", "P", "E", "E" ],
+			"lastAttemptTime"    : 0,
+			"_testLATLag"        : -6
 		}
 	],
 	"progressStats" : {

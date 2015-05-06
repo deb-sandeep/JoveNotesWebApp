@@ -32,6 +32,9 @@ module.exports = function(config) {
       '/home/sandeep/projects/source/PHPAppFramework/lib-ext/rgraph/RGraph.common.key.js',
       '/home/sandeep/projects/source/PHPAppFramework/lib-ext/rgraph/RGraph.line.js',
       '/home/sandeep/projects/source/PHPAppFramework/lib-ext/rgraph/RGraph.pie.js',
+
+      '/home/sandeep/projects/source/PHPWebApps/_common/scripts/common_utils.js',
+
       '/usr/local/lib/node_modules/angular-mocks/angular-mocks.js',
       '/usr/local/lib/node_modules/jasmine-core/lib/jasmine-jquery.js',
 
@@ -54,6 +57,8 @@ module.exports = function(config) {
       'ng/notes/routes.js',
       'ng/notes/controllers.js',
 
+      'ng_test/bootstrap.js',
+      'ng_test/custom_matchers.js',
       'ng_test/**/*.js',
 
       { 

@@ -1,7 +1,7 @@
 Flashcard (Practice page)
 --------------------------------------------------------------------------------
-. Sort cards as per study strategy
-. Trim cards as per bounds (after sort cards as per strategy)
+. Custom matchers for checking cards in flashcardApp
+. Testing using custom matchers
 . End page design and implementaiton
 . Score computation
 . Design server communication for flash card practice actions
@@ -16,6 +16,15 @@ Flashcard (Start page)
 
 Completed
 --------------------------------------------------------------------------------
+5/5/15 --
+. More test cases - notes app
+. Started testing of flashcard app
+
+5/4/15 -- 
+. Sort cards as per study strategy
+. Trim cards as per bounds (after sort cards as per strategy)
+. Incorporated Jasmine + Karma test cases
+
 5/3/15 --
 . Send last studied timestamp from server
 . Added time since last studied in the flash card practice page

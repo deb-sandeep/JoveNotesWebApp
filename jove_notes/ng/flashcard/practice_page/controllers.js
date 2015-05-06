@@ -6,7 +6,6 @@ flashCardApp.controller( 'PracticePageController', function( $scope, $http, $rou
 // ---------------- Local variables --------------------------------------------
 var ratingMatrix        = new RatingMatrix() ;
 var currentTopPadHeight = 100 ;
-var questionsForSession = [] ;
 
 var currentQuestionShowStartTime = 0 ;
 var durationTillNowInMillis = 0 ;
@@ -24,6 +23,7 @@ $scope.showFooterDropup = true ;
 
 $scope.paddingTopHeight = { height: currentTopPadHeight + 'px' } ;
 
+$scope.questionsForSession = [] ;
 $scope.currentQuestion  = null ;
 
 $scope.questionText = "" ;
@@ -90,7 +90,7 @@ $scope.toggleDisplay = function( displayId ) {
 
 $scope.randomizeCards = function() {
 	log.debug( "Randomizing remaining cards." ) ;
-	questionsForSession.shuffle() ;
+	$scope.questionsForSession.shuffle() ;
 }
 
 $scope.endSession = function() {
@@ -116,6 +116,8 @@ $scope.rateCard = function( rating ) {
 	var curLevel   = $scope.currentQuestion.learningStats.currentLevel ;
 	var nextLevel  = ratingMatrix.getNextLevel( curLevel, rating ) ;
 	var nextAction = ratingMatrix.getNextAction( curLevel, rating ) ;
+
+	$scope.questionsForSession.shift() ;
 
 	processNextAction( nextAction ) ;
 	updateLearningStatsForCurrentQuestion( rating, nextLevel ) ;
@@ -160,15 +162,15 @@ function updateLearningStatsForChapter( curLevel, nextLevel ) {
 
 function updateSessionStats() {
 
-	$scope.sessionStats.numCardsLeft = questionsForSession.length ;
+	$scope.sessionStats.numCardsLeft = $scope.questionsForSession.length ;
 	$scope.sessionStats.numCardsAnswered++ ;
 }
 
 function processNextAction( actionValue ) {
 
 	if( actionValue != -1 ) {
-		var newPos = questionsForSession.length * actionValue + 1 ;
-        questionsForSession.splice( newPos, 0, $scope.currentQuestion ) ;
+		var newPos = $scope.questionsForSession.length * actionValue + 1 ;
+        $scope.questionsForSession.splice( newPos, 0, $scope.currentQuestion ) ;
 	}
 }
 
@@ -176,7 +178,7 @@ function showNextCard() {
 
 	if( !hasSessionEnded() ) {
 
-		$scope.currentQuestion = questionsForSession.shift() ;
+		$scope.currentQuestion = $scope.questionsForSession[0] ;
 
 		$scope.questionMode = true ;
 		$scope.questionText = $scope.currentQuestion.formattedQuestion ;
@@ -196,7 +198,8 @@ function getFormattedSinceLastAttemptString() {
 
 	var str = "" ;
 	var numSecs = 0 ;
-	var millis = new Date().getTime() - $scope.currentQuestion.learningStats.lastAttemptTime ;
+	var millis = new Date().getTime() - 
+	             $scope.currentQuestion.learningStats.lastAttemptTime ;
 
 	if( millis > 0 ) {
 	    numSecs = Math.floor( millis / 1000 ) ;
@@ -244,7 +247,7 @@ function hasSessionEnded() {
 		}
 	}
 
-	if( questionsForSession.length == 0 ) {
+	if( $scope.questionsForSession.length == 0 ) {
 		return true ;
 	}
 
@@ -261,7 +264,7 @@ function checkInvalidLoad() {
 
 function computeSessionCards() {
 
-	questionsForSession.length = 0 ;
+	$scope.questionsForSession.length = 0 ;
 	
 	log.debug( "Computing cards for this session." ) ;
 	log.debug( "\tTotal cards in chapter = " + $scope.chapterData.questions.length ) ;
@@ -271,8 +274,8 @@ function computeSessionCards() {
 	addNSCards() ;
 	trimCardsAsPerBounds() ;
 
-	$scope.sessionStats.numCards     = questionsForSession.length ;
-	$scope.sessionStats.numCardsLeft = questionsForSession.length ;
+	$scope.sessionStats.numCards     = $scope.questionsForSession.length ;
+	$scope.sessionStats.numCardsLeft = $scope.questionsForSession.length ;
 }
 
 function applyStudyCriteriaFilter() {
@@ -281,24 +284,24 @@ function applyStudyCriteriaFilter() {
 	for( var i=0; i < $scope.chapterData.questions.length ; i++ ) {
 		var question = $scope.chapterData.questions[ i ] ;
 		if( $scope.$parent.studyCriteria.matchesFilter( question ) ) {
-			questionsForSession.push( question ) ;
+			$scope.questionsForSession.push( question ) ;
 		}
 	}
-	log.debug( "\t\tTotal questions after filtering = " + questionsForSession.length ) ;
+	log.debug( "\t\t#Q after filtering = " + $scope.questionsForSession.length ) ;
 }
 
 function sortCardsAsPerStudyStrategy() {
 	
-	if( questionsForSession.length <= 0 ) { return; }
+	if( $scope.questionsForSession.length <= 0 ) { return; }
 
 	var strategy = $scope.studyCriteria.strategy ;
 	if( strategy == StudyStrategyTypes.prototype.SSR ) {
 		log.debug( "\tFiltering cards as per SSR study strategy." ) ;
 		filterCardsForSSRStrategy() ;
-		if( questionsForSession.length > 0 ) {
+		if( $scope.questionsForSession.length > 0 ) {
 
         	var curTime  = new Date().getTime() ;
-	        questionsForSession.sort( function( q1, q2 ){
+	        $scope.questionsForSession.sort( function( q1, q2 ){
 
 	        	var tlaCard1 = curTime - q1.learningStats.lastAttemptTime ;
 	        	var tlaCard2 = curTime - q2.learningStats.lastAttemptTime ;
@@ -309,32 +312,33 @@ function sortCardsAsPerStudyStrategy() {
 	}
 	else if( strategy == StudyStrategyTypes.prototype.EFF_HARD ) {
 		log.debug( "\tSorting cards as per EFF_HARD study strategy." ) ;
-        questionsForSession.sort( function( q1, q2 ){
+        $scope.questionsForSession.sort( function( q1, q2 ){
             return q2.learningStats.learningEfficiency - 
                    q1.learningStats.learningEfficiency  ;
         }) ;
 	}
 	else if( strategy == StudyStrategyTypes.prototype.EFF_EASY ) {
 		log.debug( "\tSorting cards as per EFF_EASY study strategy." ) ;
-        questionsForSession.sort( function( q1, q2 ){
+        $scope.questionsForSession.sort( function( q1, q2 ){
             return q1.learningStats.learningEfficiency - 
                    q2.learningStats.learningEfficiency  ;
         }) ;
 	}
 	else if( strategy == StudyStrategyTypes.prototype.OBJECTIVE ) {
 		log.debug( "\tSorting cards as per OBJECTIVE study strategy." ) ;
-        questionsForSession.sort( function( q1, q2 ){
+        $scope.questionsForSession.sort( function( q1, q2 ){
             return q1.answerLength - q2.answerLength ;
         }) ;
 	}
 	else if( strategy == StudyStrategyTypes.prototype.SUBJECTIVE ) {
 		log.debug( "\tSorting cards as per SUBJECTIVE study strategy." ) ;
-        questionsForSession.sort( function( q1, q2 ){
+        $scope.questionsForSession.sort( function( q1, q2 ){
             return q2.answerLength - q1.answerLength ;
         }) ;
 	} 
 
-	log.debug( "\t#cards after applying study strategy = " + questionsForSession.length ) ;
+	log.debug( "\t#cards after applying study strategy = " + 
+		       $scope.questionsForSession.length ) ;
 }
 
 function filterCardsForSSRStrategy() {
@@ -347,36 +351,37 @@ function filterCardsForSSRStrategy() {
 	var ssrFilteredQuestions = [] ;
 	var index = 0 ;
 
-	for( index=0; index<questionsForSession.length; index++ ) {
-		var question = questionsForSession[index] ;
+	for( index=0; index<$scope.questionsForSession.length; index++ ) {
+		var question = $scope.questionsForSession[index] ;
+		var currentLevel = question.learningStats.currentLevel ;
 		var timeSinceLastAttempt = new Date().getTime() - 
 		                           question.learningStats.lastAttemptTime ;
 
-		if( CardLevels.prototype.L0 == question.learningStats.currentLevel ) {
+		if( CardLevels.prototype.L0 == currentLevel ) {
 			if( timeSinceLastAttempt >= DELTA ) {
 				ssrFilteredQuestions.push( question ) ;
 			}
 		}
-		else if( CardLevels.prototype.L1 == question.learningStats.currentLevel ) {
+		else if( CardLevels.prototype.L1 == currentLevel ) {
 			if( timeSinceLastAttempt >= DELTA_2 ) {
 				ssrFilteredQuestions.push( question ) ;
 			}
 		}
-		else if( CardLevels.prototype.L2 == question.learningStats.currentLevel ) {
+		else if( CardLevels.prototype.L2 == currentLevel ) {
 			if( timeSinceLastAttempt >= DELTA_3 ) {
 				ssrFilteredQuestions.push( question ) ;
 			}
 		}
-		else if( CardLevels.prototype.L3 == question.learningStats.currentLevel ) {
+		else if( CardLevels.prototype.L3 == currentLevel ) {
 			if( timeSinceLastAttempt >= DELTA_4 ) {
 				ssrFilteredQuestions.push( question ) ;
 			}
 		}
 		else {
-			log.error( "Card " + question.questionId + " should not have been there." ) ;
+			log.error( "Card " + question.questionId + " should not be there." ) ;
 		}
 	}
-	questionsForSession = ssrFilteredQuestions ;
+	$scope.questionsForSession = ssrFilteredQuestions ;
 }
 
 function addNSCards() {
@@ -389,7 +394,7 @@ function addNSCards() {
 			var question = $scope.chapterData.questions[ i ] ;
 			if( question.learningStats.currentLevel == CardLevels.prototype.NS ) {
 
-				questionsForSession.unshift( question ) ;
+				$scope.questionsForSession.unshift( question ) ;
 				nsQuestionsAdded++ ;
 				if( nsQuestionsAdded >= $scope.$parent.maxNewCards ) {
 					break ;
@@ -405,10 +410,10 @@ function trimCardsAsPerBounds() {
 	log.debug( "\tTrimming cards as per max cards bound. " + 
 		       $scope.$parent.studyCriteria.maxCards ) ;
 
-	while( questionsForSession.length > $scope.$parent.studyCriteria.maxCards ) {
-		questionsForSession.pop() ;		
+	while( $scope.questionsForSession.length > $scope.$parent.studyCriteria.maxCards ) {
+		$scope.questionsForSession.pop() ;		
 	}
-	log.debug( "\t\t#cards after trimming " + questionsForSession.length ) ;
+	log.debug( "\t\t#cards after trimming " + $scope.questionsForSession.length ) ;
 }
 
 function handleTimerEvent() {
