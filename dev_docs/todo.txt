@@ -1,13 +1,13 @@
 Flashcard (Practice page)
 --------------------------------------------------------------------------------
-. Custom matchers for checking cards in flashcardApp
-. Testing using custom matchers
+. Test rate card logic
+. Test questions with embedded images
+. Test dynamic question rendering both in notes and flash cards
 . End page design and implementaiton
 . Score computation
 . Design server communication for flash card practice actions
 . Create Dummy APIs for flash card practice communications (expand this list.)
 . Implement markCardForEdit
-. Implement filter for rendering time since last attempt
 
 Flashcard (Start page)
 --------------------------------------------------------------------------------
@@ -16,6 +16,12 @@ Flashcard (Start page)
 
 Completed
 --------------------------------------------------------------------------------
+6/5/15 --
+. Custom matchers for checking cards in flashcardApp
+. Testing using custom matchers
+. Implement filter for rendering clock timer and since last attempt time on
+  practice page
+
 5/5/15 --
 . More test cases - notes app
 . Started testing of flashcard app

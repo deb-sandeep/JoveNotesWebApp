@@ -12,7 +12,7 @@
         </div>
         <div style="display:table-cell;width:170px;text-align:right;">
             <span class="badge muted">{{$parent.learningStats.numCards}}</span>
-            <span class="badge muted">{{sessionClockHHMMSS}}</span>
+            <span class="badge muted">{{sessionDuration | duration}}</span>
             <span class="small">[ {{$parent.userName}} ]</span>
         </div>
     </div>
@@ -33,7 +33,7 @@
         	NC - <span class="badge muted">{{sessionStats.numCards}}</span>&nbsp;.&nbsp;
         	NL - <span class="badge muted">{{sessionStats.numCardsLeft}}</span>&nbsp;.&nbsp;
         	NA - <span class="badge muted">{{sessionStats.numCardsAnswered}}</span>&nbsp;.&nbsp;
-        	T/C - <span class="badge muted">{{timePerQuestionInHHMMSS}}</span>
+        	T/C - <span class="badge muted">{{timePerQuestion | duration}}</span>
         </div>
     </div>
 
@@ -47,7 +47,7 @@
                 <span class="badge L0">{{currentQuestion.learningStats.currentLevel}}</span>
                 <span class="badge A1">{{currentQuestion.learningEfficiencyLabel}}</span>
                 <span class="badge muted">{{currentQuestion.learningStats.numAttempts}}</span>
-                <span class="badge muted">{{sinceLastAttempt}}</span>
+                <span class="badge muted">{{currentQuestion.learningStats.lastAttemptTime | elapsedDuration}}</span>
                 <table class="temporal">
                     <tr>
                         <td ng-repeat="score in currentQuestion.learningStats.temporalScores track by $index"

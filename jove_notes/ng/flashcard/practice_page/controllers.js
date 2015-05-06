@@ -13,7 +13,6 @@ var currentTopPadHeight = 100 ;
 
 var currentQuestionShowStartTime = 0 ;
 var durationTillNowInMillis = 0 ;
-var timePerQuestionInMillis = 0 ;
 
 var sessionStartTime    = new Date().getTime() ;
 var sessionActive       = true ;
@@ -32,7 +31,6 @@ $scope.currentQuestion  = null ;
 
 $scope.questionText = "" ;
 $scope.answerText   = "" ;
-$scope.sinceLastAttempt = "" ;
 
 $scope.questionMode = false ;
 
@@ -42,8 +40,8 @@ $scope.sessionStats = {
 	numCardsAnswered : 0
 } ;
 
-$scope.sessionClockHHMMSS      = "00:00:00" ;
-$scope.timePerQuestionInHHMMSS = "00:00:00" ;
+$scope.sessionDuration = 0 ;
+$scope.timePerQuestion = 0 ;
 
 $scope.windowWidth = "" ;
 
@@ -187,54 +185,12 @@ function showNextCard() {
 		$scope.questionMode = true ;
 		$scope.questionText = $scope.currentQuestion.formattedQuestion ;
 		$scope.answerText   = '' ;
-		$scope.sinceLastAttempt = getFormattedSinceLastAttemptString() ;
 
 		currentQuestionShowStartTime = new Date().getTime() ;
 	}
 	else {
 		endSession() ;
 	}
-}
-
-function getFormattedSinceLastAttemptString() {
-
-	if( $scope.currentQuestion.learningStats.lastAttemptTime < 0 ) return "" ;
-
-	var str = "" ;
-	var numSecs = 0 ;
-	var millis = new Date().getTime() - 
-	             $scope.currentQuestion.learningStats.lastAttemptTime ;
-
-	if( millis > 0 ) {
-	    numSecs = Math.floor( millis / 1000 ) ;
-	    var days = Math.floor( numSecs / ( 3600 * 24 ) ) ;
-
-	    numSecs = numSecs - ( days * 3600 * 24 ) ;
-	    var hours = Math.floor( numSecs / 3600 ) ;
-
-	    numSecs = numSecs - ( hours * 3600 ) ; 
-	    var minutes = Math.floor( numSecs / 60 ) ;
-
-	    var seconds = numSecs - ( minutes * 60 ) ;
-
-	    if( days > 0 ) {
-	    	str = days + " days ago" ;
-	    }
-	    else {
-	    	if( hours > 0 ) {
-	    		str = hours + " hrs ago" ;
-	    	}
-	    	else {
-	    		if( minutes > 0 ) {
-	    			str = minutes + " min ago" ;
-	    		}
-	    		else {
-	    			str = seconds + " sec ago" ;
-	    		}
-	    	}
-	    }
-	}
-	return str ;
 }
 
 function endSession() {
@@ -426,10 +382,8 @@ function refreshClocks() {
 
 	durationTillNowInMillis = new Date().getTime() - sessionStartTime ;
 
-	timePerQuestionInMillis = durationTillNowInMillis / 
-	                          ( $scope.sessionStats.numCardsAnswered + 1 ) ;
-
-	$scope.timePerQuestionInHHMMSS = toHHMMSS( timePerQuestionInMillis ) ;
+	$scope.timePerQuestion = durationTillNowInMillis / 
+	                         ( $scope.sessionStats.numCardsAnswered + 1 ) ;
 
 	if( $scope.$parent.studyCriteria.maxTime != -1 ) {
 
@@ -439,11 +393,11 @@ function refreshClocks() {
 			sessionActive = false ;
 		}
 		else {
-			$scope.sessionClockHHMMSS = toHHMMSS( timeLeftInMillis ) ;
+			$scope.sessionDuration = timeLeftInMillis ;
 		}
 	}
 	else {
-		$scope.sessionClockHHMMSS = toHHMMSS( durationTillNowInMillis ) ;
+		$scope.sessionDuration = durationTillNowInMillis ;
 	}
 	$scope.$digest() ;
 }
