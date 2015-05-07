@@ -26,8 +26,19 @@ CardLevels.prototype.MAS = "MAS" ;
 
 function QuestionFormatter() {
 // -----------------------------------------------------------------------------
+var chapter = null ;
+var imgResourcePath = "" ;
 
-this.createAndInjectFormattedText = function( questions ) {
+this.createAndInjectFormattedText = function( chapterData ) {
+
+	var chapter = chapterData ;
+	var questions = chapterData.questions ;
+
+	imgResourcePath = "/apps/jove_notes/workspace/" + 
+	                  chapter.syllabusName + "/" + 
+	                  chapter.subjectName  + "/" + 
+	                  chapter.chapterNumber + "/" + 
+	                  chapter.subChapterNumber + "/img/" ;
 
 	for( i=0; i<questions.length; i++ ) {
 
@@ -80,8 +91,48 @@ function formatWM( question ) {
 function formatQA( question ) {
 
 	question.formattedQuestion = question.question ;
-	question.formattedAnswer   = question.answer ;
-	question.answerLength      = $(question.answer).text().length ;
+	question.formattedAnswer   = formatAnswer( question.answer ) ;
+	question.answerLength      = stripHTMLTags( question.answer ).length ;
+}
+
+function stripHTMLTags( html ) {
+   var tmp = document.createElement( "DIV" ) ;
+   tmp.innerHTML = html ;
+   return tmp.textContent || tmp.innerText || "" ;
+}
+
+function formatAnswer( answer ) {
+
+	var regexp = /{{([^{]*)}}/g ;
+	var formattedStr = answer ;
+	var match = regexp.exec( answer ) ;
+
+	while( match != null ) {
+
+		var handleBarContents  = match[1].match(/\S+/g) ;
+		var hint = handleBarContents[0] ;
+		
+		handleBarContents.shift() ;
+		var parameters = handleBarContents ;
+
+		var replacementContent = getReplacementContent( hint, parameters ) ;
+
+		formattedStr = formattedStr.replace( match[0], replacementContent ) ;
+
+		match = regexp.exec( answer ) ;
+	}
+	return formattedStr ;
+}
+
+function getReplacementContent( hint, parameters ) {
+
+	var replacementContent = "[[ COULD NOT SUBSTITUTE " + hint + 
+	                         " - " + parameters + " ]]" ;
+
+	if( hint == "@img" ) {
+		replacementContent = "<img src='" + imgResourcePath + parameters[0] + "'/>" ;
+	}
+	return replacementContent ;
 }
 
 // -----------------------------------------------------------------------------

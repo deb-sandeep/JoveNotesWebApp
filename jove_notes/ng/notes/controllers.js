@@ -103,7 +103,7 @@ function processServerData( data ) {
 		return ;
 	}
 	
- 	formatter.createAndInjectFormattedText( data[0].questions ) ;
+ 	formatter.createAndInjectFormattedText( data[0] ) ;
  	jnUtil.associateLearningStatsToQuestions( 
  		                    data[0].questions, data[1].learningStats ) ;
 

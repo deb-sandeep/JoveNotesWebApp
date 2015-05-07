@@ -92,6 +92,17 @@ $scope.chapterData       = null ;
 $scope.progressStats     = null ;
 $scope.learningCurveData = null ;
 
+$scope.sessionStats = {
+    numCards         : 0,
+    numCardsLeft     : 0,
+    numCardsAnswered : 0
+} ;
+
+$scope.sessionDuration = 0 ;
+$scope.timePerQuestion = 0 ;
+
+$scope.messageForEndPage = "Session Ended." ;
+
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing FlashCardController." ) ;
 $scope.studyCriteria.deserialize() ;
@@ -121,7 +132,7 @@ $scope.processServerData = function( data ) {
     $scope.progressStats     = data[1].progressStats ;
     $scope.learningCurveData = data[1].learningCurveData ;
 
-    formatter.createAndInjectFormattedText( chapterData.questions ) ;
+    formatter.createAndInjectFormattedText( chapterData ) ;
     jnUtil.associateLearningStatsToQuestions( 
                                         chapterData.questions, learningStats ) ;
 

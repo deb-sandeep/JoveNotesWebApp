@@ -1,4 +1,65 @@
-You have completed the session
-<p>
-<a href="#StartPage">Start Page</a><p>
-<a href="#PracticePage">Practice Page</a>
+<div class="container-fluid"
+     ng-include="'/apps/jove_notes/ng/flashcard/end_page/header_fragment.html'">
+</div>
+<div style="height:60px"></div>
+
+<div class="row">
+    <div class="col-sm-12" style="height:70px;">
+        <div class="well well-sm" align="center">
+            <span class="text-primary gi-1-5x">{{messageForEndPage}}</span>
+        </div>
+    </div>
+</div>
+<div style="height:10px"></div>
+<!-- The graphs which show the progress of the user and the chapter stats    -->
+<!-- ======================================================================= -->
+<div class="row">
+    <div class="col-sm-4 text-center">
+        <b>Current learning level</b><p>
+        <canvas id="learningStatsPieGraph" width="250" height="200"></canvas>
+    </div>
+    <div class="col-sm-3 text-center">
+        <div class="panel panel-info">
+          <div class="panel-heading"><b>Session Summary</b></div>
+          <table class="table table-condensed table-striped table-hover">
+            <tr>
+                <td class="text-primary" align="left">Efficiency</td>
+                <td align="right"><span class="badge {{learningEfficiency}}">{{learningEfficiency}}</span></td>
+            </tr>
+            <tr>
+                <td class="text-primary" align="left">Study time</td>
+                <td align="right">{{$parent.sessionDuration | duration}}</td>
+            </tr>
+            <tr>
+                <td class="text-primary" align="left">Time / Card</td>
+                <td align="right">{{$parent.timePerQuestion | duration}}</td>
+            </tr>
+            <tr>
+                <td class="text-primary" align="left">#Questions studied</td>
+                <td align="right">{{$parent.sessionStats.numCardsAnswered}}</td>
+            </tr>
+          </table>
+        </div>
+    </div>
+    <div class="col-sm-5 text-center">
+        <b>Learning curve</b><p>
+        <canvas id="learningCurveGraph" width="350" height="200"></canvas>
+    </div>
+</div>
+
+<!-- Return to Dashboard button                                              -->
+<!-- ======================================================================= -->
+<div class="row">
+    <div class="col-sm-12" style="height:70px;">
+        <p>
+        <p style="padding-left:10px;padding-right:10px;">
+        <a type="button" class="btn btn-success btn-block gi-2x"
+           href="/apps/jove_notes/ng/dashboard/index.php"
+           style="height:50px;">
+            Return to Dashboard.
+            <span class="glyphicon glyphicon-play"></span>
+        </a>
+        </p>
+        <p>
+    </div>
+</div>

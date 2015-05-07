@@ -34,15 +34,6 @@ $scope.answerText   = "" ;
 
 $scope.questionMode = false ;
 
-$scope.sessionStats = {
-	numCards         : 0,
-	numCardsLeft     : 0,
-	numCardsAnswered : 0
-} ;
-
-$scope.sessionDuration = 0 ;
-$scope.timePerQuestion = 0 ;
-
 $scope.windowWidth = "" ;
 
 // ---------------- Main logic for the controller ------------------------------
@@ -61,6 +52,12 @@ $scope.windowWidth = "" ;
 
 	log.debug( "Computing session cards." ) ;
 	computeSessionCards() ;
+
+	if( $scope.$parent.sessionStats.numCards == 0 ) {
+		$scope.$parent.messageForEndPage = "Filter criteria did not select any cards." ;
+		endSession() ;
+		return ;
+	}
 
 	log.debug( "Starting timer." ) ;
 	setTimeout( handleTimerEvent, 1000 ) ;
@@ -103,8 +100,8 @@ $scope.endSession = function() {
 $scope.purgeCard = function() {
 	log.debug( "Purging current card." ) ;
 	
-	$scope.sessionStats.numCards-- ;
-	$scope.sessionStats.numCardsLeft-- ;
+	$scope.$parent.sessionStats.numCards-- ;
+	$scope.$parent.sessionStats.numCardsLeft-- ;
 	showNextCard() ;
 }
 
@@ -164,8 +161,8 @@ function updateLearningStatsForChapter( curLevel, nextLevel ) {
 
 function updateSessionStats() {
 
-	$scope.sessionStats.numCardsLeft = $scope.questionsForSession.length ;
-	$scope.sessionStats.numCardsAnswered++ ;
+	$scope.$parent.sessionStats.numCardsLeft = $scope.questionsForSession.length ;
+	$scope.$parent.sessionStats.numCardsAnswered++ ;
 }
 
 function processNextAction( actionValue ) {
@@ -195,7 +192,16 @@ function showNextCard() {
 
 function endSession() {
 
+	// This will stop the timer at the next click
 	sessionActive = false ;
+
+	$scope.$parent.learningCurveData[0].push( $scope.$parent.progressStats.numCardsNS ) ;
+	$scope.$parent.learningCurveData[1].push( $scope.$parent.progressStats.numCardsL0 ) ;
+	$scope.$parent.learningCurveData[2].push( $scope.$parent.progressStats.numCardsL1 ) ;
+	$scope.$parent.learningCurveData[3].push( $scope.$parent.progressStats.numCardsL2 ) ;
+	$scope.$parent.learningCurveData[4].push( $scope.$parent.progressStats.numCardsL2 ) ;
+	$scope.$parent.learningCurveData[5].push( $scope.$parent.progressStats.numCardsMastered ) ;
+	
 	$location.path( "/EndPage" ) ;
 }
 
@@ -234,8 +240,8 @@ function computeSessionCards() {
 	addNSCards() ;
 	trimCardsAsPerBounds() ;
 
-	$scope.sessionStats.numCards     = $scope.questionsForSession.length ;
-	$scope.sessionStats.numCardsLeft = $scope.questionsForSession.length ;
+	$scope.$parent.sessionStats.numCards     = $scope.questionsForSession.length ;
+	$scope.$parent.sessionStats.numCardsLeft = $scope.questionsForSession.length ;
 }
 
 function applyStudyCriteriaFilter() {
@@ -382,8 +388,8 @@ function refreshClocks() {
 
 	durationTillNowInMillis = new Date().getTime() - sessionStartTime ;
 
-	$scope.timePerQuestion = durationTillNowInMillis / 
-	                         ( $scope.sessionStats.numCardsAnswered + 1 ) ;
+	$scope.$parent.timePerQuestion = durationTillNowInMillis / 
+	                         ( $scope.$parent.sessionStats.numCardsAnswered + 1 ) ;
 
 	if( $scope.$parent.studyCriteria.maxTime != -1 ) {
 
@@ -393,11 +399,11 @@ function refreshClocks() {
 			sessionActive = false ;
 		}
 		else {
-			$scope.sessionDuration = timeLeftInMillis ;
+			$scope.$parent.sessionDuration = timeLeftInMillis ;
 		}
 	}
 	else {
-		$scope.sessionDuration = durationTillNowInMillis ;
+		$scope.$parent.sessionDuration = durationTillNowInMillis ;
 	}
 	$scope.$digest() ;
 }

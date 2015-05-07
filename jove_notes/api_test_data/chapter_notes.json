@@ -25,7 +25,7 @@
 			"questionId"      : 2,
 			"questionType"    : "question_answer",
 			"question"        : "What is the answer to life?",
-			"answer"          : "42",
+			"answer"          : "The answer to life is <p>{{@img AnswerToLife.png}}",
 			"difficultyLevel" : 25
 		},
 		{

@@ -67,7 +67,7 @@ function CardsFilterOptions() {
 function RatingMatrix() {
 
     this.nextLevelMatrix = {
-        //       E      A     P     D
+        //       E      A     P     H
         NS : [ 'L1' , 'L1', 'L0', 'L0' ],
         L0 : [ 'L1' , 'L0', 'L0', 'L0' ],
         L1 : [ 'L2' , 'L1', 'L0', 'L0' ],
@@ -76,7 +76,7 @@ function RatingMatrix() {
     } ;
 
     this.nextActionMatrix = {
-        //       E     A      P     D
+        //       E     A      P     H
         NS : [  -1,   -1,   0.5,   0.25 ],
         L0 : [  -1,    1,   0.5,   0.25 ],
         L1 : [  -1,    1,   0.5,   0.25 ],
@@ -166,7 +166,7 @@ this.associateLearningStatsToQuestions = function( questions, userLearningStats 
             learningStat.numSecondsInSession  = 0 ;
 		}
 		question.learningStats = learningStat ;
-		injectLabelsForValues( question ) ;
+		this.injectLabelsForValues( question ) ;
 
         processTestDataHints( question ) ;
 	}
@@ -278,36 +278,36 @@ this.renderLearningCurveGraph = function( divName, learningCurveData ) {
     .draw() ;
 }
 
+this.injectLabelsForValues = function( question ) {
+
+    question.difficultyLevelLabel = 
+        this.getDifficultyLevelLabel( question.difficultyLevel ) ;
+
+    question.learningEfficiencyLabel = 
+        this.getLearningEfficiencyLabel( question.learningStats.learningEfficiency ) ;
+}
+
+this.getDifficultyLevelLabel = function( level ) {
+
+    if     ( level >= 0  && level < 30 ) { return "VE" ; }
+    else if( level >= 30 && level < 50 ) { return "E"  ; }
+    else if( level >= 50 && level < 70 ) { return "M"  ; }
+    else if( level >= 70 && level < 85 ) { return "H"  ; }
+    return "VH" ;
+}
+
+this.getLearningEfficiencyLabel = function( score ) {
+
+    if      ( score >= 90 && score <= 100 ) { return "A1" ; }
+    else if ( score >= 80 && score <  90  ) { return "A2" ; }
+    else if ( score >= 70 && score <  80  ) { return "B1" ; }
+    else if ( score >= 60 && score <  70  ) { return "B2" ; }
+    else if ( score >= 50 && score <  60  ) { return "C1" ; }
+    else if ( score >= 40 && score <  50  ) { return "C2" ; }
+    else                                    { return "D"  ; }
+}
+
 // -----------------------------------------------------------------------------
-
-function injectLabelsForValues( question ) {
-
-	question.difficultyLevelLabel = 
-		getDifficultyLevelLabel( question.difficultyLevel ) ;
-
-	question.learningEfficiencyLabel = 
-		getLearningEfficiencyLabel( question.learningStats.learningEfficiency ) ;
-}
-
-function getDifficultyLevelLabel( level ) {
-
-	if     ( level >= 0  && level < 30 ) { return "VE" ; }
-	else if( level >= 30 && level < 50 ) { return "E"  ; }
-	else if( level >= 50 && level < 70 ) { return "M"  ; }
-	else if( level >= 70 && level < 85 ) { return "H"  ; }
-	return "VH" ;
-}
-
-function getLearningEfficiencyLabel( score ) {
-
-	if      ( score >= 90 && score <= 100 ) { return "A1" ; }
-	else if ( score >= 80 && score <  90  ) { return "A2" ; }
-	else if ( score >= 70 && score <  80  ) { return "B1" ; }
-	else if ( score >= 60 && score <  70  ) { return "B2" ; }
-	else if ( score >= 50 && score <  60  ) { return "C1" ; }
-	else if ( score >= 40 && score <  50  ) { return "C2" ; }
-	else                                    { return "D"  ; }
-}
 
 function processTestDataHints( question ) {
 

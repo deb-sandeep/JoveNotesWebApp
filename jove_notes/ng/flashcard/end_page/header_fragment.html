@@ -1,7 +1,6 @@
 <div class="container-fluid fixedheader">
 
-    <div ng-show="showL0Header"
-         style="display:table;width:100%;padding-bottom:5px">
+    <div style="display:table;width:100%;padding-bottom:5px">
 
     	<div style="display:table-cell;width:40px;">
         	<img src="/apps/jove_notes/media/images/logo_for_navbar.png" 
@@ -11,14 +10,12 @@
         	<span class="gi-1-15x">{{$parent.pageTitle}}</span>
         </div>
         <div style="display:table-cell;width:170px;text-align:right;">
-            <span class="badge muted">{{$parent.sessionDuration | duration}}</span>
+            <span class="badge muted">{{sessionDuration | duration}}</span>
             <span class="small">[ {{$parent.userName}} ]</span>
         </div>
     </div>
 
-    <div ng-show="showL1Header"
-         class="row" 
-         style="padding-bottom:5px">
+    <div class="row" style="padding-bottom:5px">
 
         <div class="col-sm-6 small">
         	<span class="badge NS">{{$parent.progressStats.numCardsNS}}</span>
@@ -33,27 +30,6 @@
         	NL - <span class="badge muted">{{$parent.sessionStats.numCardsLeft}}</span>&nbsp;.&nbsp;
         	NA - <span class="badge muted">{{$parent.sessionStats.numCardsAnswered}}</span>&nbsp;.&nbsp;
         	T/C - <span class="badge muted">{{$parent.timePerQuestion | duration}}</span>
-        </div>
-    </div>
-
-    <div class="container-fluid">
-        <div ng-show="showL2Header"
-             class="row" 
-             style="padding-bottom:5px;padding-top:5px;background-color:white;">
-
-            <div class="col-sm-12 small">
-                <span class="badge {{currentQuestion.difficultyLevelLabel}}">{{currentQuestion.difficultyLevelLabel}}</span>
-                <span class="badge {{currentQuestion.learningStats.currentLevel}}">{{currentQuestion.learningStats.currentLevel}}</span>
-                <span class="badge {{currentQuestion.learningEfficiencyLabel}}">{{currentQuestion.learningEfficiencyLabel}}</span>
-                <span class="badge muted">{{currentQuestion.learningStats.numAttempts}}</span>
-                <span class="badge muted">{{currentQuestion.learningStats.lastAttemptTime | elapsedDuration}}</span>
-                <table class="temporal">
-                    <tr>
-                        <td ng-repeat="score in currentQuestion.learningStats.temporalScores track by $index"
-                            class="rating-{{score}}"></td>
-                    </tr>
-                </table>
-            </div>
         </div>
     </div>
 
