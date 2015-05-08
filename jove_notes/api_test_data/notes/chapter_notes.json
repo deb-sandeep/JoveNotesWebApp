@@ -1,0 +1,83 @@
+{
+	"chapterDetails" : { 
+		"chapterId"        : 23,
+		"syllabusName"     : "Class-8",
+		"subjectName"      : "Biology",
+		"chapterNumber"    : 3,
+		"subChapterNumber" : 0,
+		"chapterName"      : "Digestion, absorption, assimilation"
+	},
+
+	"notesElements" : [	
+		{
+			"noteElementId" : 1,
+			"elementType"   : "word_meaning",
+			"word"          : "Cat",
+			"meaning"       : "A feline animal",
+			"learningStats" : {
+				"difficultyLevel"    : 25,
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId" : 2,
+			"elementType"   : "question_answer",
+			"question"      : "What is the answer to life?",
+			"answer"        : "The answer to life is <p>{{@img AnswerToLife.png}}",
+			"learningStats" : {
+				"difficultyLevel"    : 25,
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId" : 3,
+			"elementType"   : "word_meaning",
+			"word"          : "Dog",
+			"meaning"       : "An animal who barks",
+			"learningStats" : {
+				"difficultyLevel"    : 40,
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId" : 4,
+			"elementType"   : "word_meaning",
+			"word"          : "Vi",
+			"meaning"       : "Visual Editor",
+			"learningStats" : {
+				"difficultyLevel"    : 40,
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId" : 5,
+			"elementType"   : "question_answer",
+			"question"      : "What is a movie?",
+			"answer"        : "A movie is something that we should watch\nFriday nights",
+			"learningStats" : {
+				"difficultyLevel"    : 60,
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId" : 6,
+			"elementType"   : "fib",
+			"question"      : "The {0} of India is {1}.",
+			"answers"       : [ "capital", "Delhi" ],
+			"learningStats" : {
+				"difficultyLevel"    : 60,
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId" : 7,
+			"elementType"   : "fib",
+			"question"      : "The shortcut for copy is {0} and that of paste is {1}.",
+			"answers"       : [ "ctrl-c", "ctrl-v" ],
+			"learningStats" : {
+				"difficultyLevel"    : 80,
+				"learningEfficiency" : 80
+			}
+		}
+	]
+}

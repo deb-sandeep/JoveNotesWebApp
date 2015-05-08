@@ -1,15 +1,10 @@
 <div ng-if="showUserStatistics">
-	<span class="badge {{question.learningStats.currentLevel}}">
-		{{question.learningStats.currentLevel}}
-	</span>
-	<span class="badge muted">
-		{{question.learningStats.numAttempts}}
-	</span>
-	<span class="badge" ng-class="question.difficultyLevelLabel">
-		{{question.difficultyLevelLabel}}
+	<span class="badge" 
+	      ng-class="element.learningStats.difficultyLabel">
+		{{element.learningStats.difficultyLabel}}
 	</span>
 	<span class="badge"
-	      ng-class="question.learningEfficiencyLabel">
-		{{question.learningEfficiencyLabel}}
+	      ng-class="element.learningStats.efficiencyLabel">
+		{{element.learningStats.efficiencyLabel}}
 	</span>
 </div>

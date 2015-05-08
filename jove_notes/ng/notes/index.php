@@ -27,6 +27,7 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
     <script src="/apps/jove_notes/ng/_common/question_utils.js"></script>    
 
     <script src="/apps/jove_notes/ng/notes/routes.js"></script>    
+    <script src="/apps/jove_notes/ng/notes/filters.js"></script>    
     <script src="/apps/jove_notes/ng/notes/controllers.js"></script>    
 
     <script>

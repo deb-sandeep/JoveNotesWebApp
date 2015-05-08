@@ -6,9 +6,9 @@
   <div class="panel-body">
     <div class="table-responsive">
       <table class="table table-condensed table-hover">
-        <tr ng-repeat="question in fibs">
+        <tr ng-repeat="element in fibs">
             <td>
-              <p ng-bind-html="question.formattedAnswer"></p>
+              <p ng-bind-html="element.question"></p>
             </td>
             <td>
               <div class="pull-right" 

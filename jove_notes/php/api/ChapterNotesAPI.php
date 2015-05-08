@@ -13,7 +13,7 @@ class ChapterNotesAPI extends API {
 		$this->logger->debug( "Executing doGet in ChapterNotesAPI" ) ;
 		$response->responseCode = APIResponse::SC_OK ;
 		$response->responseBody = file_get_contents( DOCUMENT_ROOT . 
-			          "/apps/jove_notes/api_test_data/chapter_notes.json" ) ;
+			          "/apps/jove_notes/api_test_data/notes/chapter_notes.json" ) ;
 	}
 }
 

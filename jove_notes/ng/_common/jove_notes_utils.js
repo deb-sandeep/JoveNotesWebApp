@@ -1,15 +1,11 @@
 // =============================================================================
 // =============================================================================
+// Note that the notes filter options do not have the current level options.
+// Remember that notes and cards are separate entities, where cards are 
+// derived from notes. The learning efficiency and difficulty level of notes
+// elements are an average value of that of the cards derived from the notes
+// elements.
 function NotesFilterOptions() {
-
-    this.currentLevelOptions = [ 
-        { id : "NS",  name : "Not started" },
-        { id : "L0",  name : "Level 0" },
-        { id : "L1",  name : "Level 1" },
-        { id : "L2",  name : "Level 2" },
-        { id : "L3",  name : "Level 3" },
-		{ id : "MAS", name : "Mastered"}
-    ] ;
 
     this.learningEfficiencyOptions = [
         { id : "A1", name : "A1" },
@@ -127,11 +123,12 @@ function RatingMatrix() {
 function JoveNotesUtil() {
 // -----------------------------------------------------------------------------
 
-this.constructPageTitle = function( chapterData ) {
-	return  "[" + chapterData.subjectName + "] " +
-			chapterData.chapterNumber + "." + 
-			chapterData.subChapterNumber + " - " +
-	        chapterData.chapterName ;
+this.constructPageTitle = function( chapterDetails ) {
+
+	return  "[" + chapterDetails.subjectName + "] " +
+			chapterDetails.chapterNumber + "." + 
+			chapterDetails.subChapterNumber + " - " +
+	        chapterDetails.chapterName ;
 }
 
 this.associateLearningStatsToQuestions = function( questions, userLearningStats ) {

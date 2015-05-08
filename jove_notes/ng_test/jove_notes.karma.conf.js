@@ -49,12 +49,14 @@ module.exports = function(config) {
       'ng/dashboard/study_per_day/controllers.js',
 
       'ng/flashcard/routes.js',
+      'ng/flashcard/filters.js',
       'ng/flashcard/controllers.js',
       'ng/flashcard/end_page/controllers.js',
       'ng/flashcard/practice_page/controllers.js',
       'ng/flashcard/start_page/controllers.js',
 
       'ng/notes/routes.js',
+      'ng/notes/filters.js',
       'ng/notes/controllers.js',
 
       'ng_test/bootstrap.js',

@@ -1,5 +1,7 @@
 Flashcard (Practice page)
 --------------------------------------------------------------------------------
+. Design more question types and their attributes
+. Implement more question types
 . Test dynamic question rendering both in notes and flash cards
 . Design server communication for flash card practice actions
 . Create Dummy APIs for flash card practice communications (expand this list.)
