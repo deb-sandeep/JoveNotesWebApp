@@ -165,13 +165,13 @@ function associateFormatter( question ) {
     var questionType = question.questionType ;
 
     if( questionType == QuestionTypes.prototype.QT_FIB ) {
-        question.formatter = new FIBFormatter( $scope.chapterDetails, question ) ;
+        question.handler = new FIBHandler( $scope.chapterDetails, question ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_QA ) {
-        question.formatter = new QAFormatter( $scope.chapterDetails, question ) ;
+        question.handler = new QAHandler( $scope.chapterDetails, question ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_TQ ) {
-        question.formatter = new TQFormatter( $scope.chapterDetails, question ) ;
+        question.handler = new TQHandler( $scope.chapterDetails, question ) ;
     }
     else {
         log.error( "Unrecognized question type = " + questionType ) ;

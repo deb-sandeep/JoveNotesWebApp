@@ -1,30 +1,27 @@
 // =============================================================================
-// 
+
 // =============================================================================
-// function XXXFormatter( chapterDetails, question ) {
+// function XXXHandler( chapterDetails, question ) {
 
 // 	var textFormatter = new TextFormatter( chapterDetails ) ;
 
-//	this.question = question ;
+// 	this.question = question ;
 // 	this.chapterDetails = chapterDetails ;
+// 	this.scope = null ;
 
-// 	this.getAnswerLength = function() {
-
-// 	} ;
-
-// 	this.getFormattedQuestion = function() {
-
-// 	} ;
-
-// 	this.getFormattedAnswer = function() {
-
-// 	} ;
+// 	this.initialize = function( $scope ){ this.scope = $scope ; }
+// 	this.getAnswerLength = function() { return 0 ; } ;
+// 	this.getQuestionUI = function() {} ;
+// 	this.initializeQuestionUI = function() {} ;
+// 	this.getAnswerUI = function() {} ;
+// 	this.initializeAnswerUI = function() {} ;
+// 	this.freezeQuestionUI = function() {} ;
 // }
 
 // =============================================================================
 // Fill in the blanks formatter
 // =============================================================================
-function FIBFormatter( chapterDetails, question ) {
+function FIBHandler( chapterDetails, question ) {
 
 	var textFormatter = new TextFormatter( chapterDetails ) ;
 
@@ -33,6 +30,7 @@ function FIBFormatter( chapterDetails, question ) {
 	this.formattedAnswer = null ;
 
 	{ // -----------------------------------------------------------------------
+
 	this.formattedQuestion = textFormatter.format( question.question ) ;
 	this.formattedAnswer   = "&ctdot;&nbsp;" + 
 	                         textFormatter.format( question.question ) ;
@@ -49,17 +47,18 @@ function FIBFormatter( chapterDetails, question ) {
 		this.formattedQuestion = this.formattedQuestion.replace( strToReplace, " ______ " ) ;
 		this.answerLength     += question.answers[i].length ;
 	}
+
 	} // -----------------------------------------------------------------------
 
 	this.getAnswerLength = function() {
 		return this.answerLength ;
 	} ;
 
-	this.getFormattedQuestion = function() {
+	this.getQuestionUI = function() {
 		return this.formattedQuestion ;
 	} ;
 
-	this.getFormattedAnswer = function() {
+	this.getAnswerUI = function() {
 		return this.formattedAnswer ;
 	} ;
 }
@@ -67,7 +66,7 @@ function FIBFormatter( chapterDetails, question ) {
 // =============================================================================
 // Word Meanings formatter
 // =============================================================================
-function QAFormatter( chapterDetails, question ) {
+function QAHandler( chapterDetails, question ) {
 
 	var textFormatter = new TextFormatter( chapterDetails ) ;
 
@@ -82,11 +81,11 @@ function QAFormatter( chapterDetails, question ) {
 		return this.answerLength ;
 	} ;
 
-	this.getFormattedQuestion = function() {
+	this.getQuestionUI = function() {
 		return this.formattedQuestion ;
 	} ;
 
-	this.getFormattedAnswer = function() {
+	this.getAnswerUI = function() {
 		return this.formattedAnswer ;
 	} ;
 }
@@ -94,32 +93,38 @@ function QAFormatter( chapterDetails, question ) {
 // =============================================================================
 // Test question formatter
 // =============================================================================
-function TQFormatter( chapterDetails, question ) {
+function TQHandler( chapterDetails, question ) {
 
 	var textFormatter = new TextFormatter( chapterDetails ) ;
 
 	this.question = question ;
 	this.chapterDetails = chapterDetails ;
+	this.scope = null ;
 
 	this.answerLength = question.guessWord.length ;
+
+	this.initialize = function( $scope ) {
+		this.scope = $scope ;
+	}
 
 	this.getAnswerLength = function() {
 		return this.answerLength ;
 	} ;
 
-	this.getFormattedQuestion = function() {
+	this.getQuestionUI = function() {
 
 		var button = document.createElement( "button" ) ;
 		button.innerHTML = "Guess the word" ;
 		$this = this ;
 		button.onclick = function() {
-			alert( $this.question.guessWord ) ;
+			log.debug( "Dynamic button clicked. Showing answer." ) ;
+			$this.scope.showAnswer() ;
 		} ;
 
 		return button ;
 	} ;
 
-	this.getFormattedAnswer = function() {
+	this.getAnswerUI = function() {
 		return this.question.guessWord ;
 	} ;
 }
