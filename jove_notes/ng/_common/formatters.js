@@ -90,3 +90,36 @@ function QAFormatter( chapterDetails, question ) {
 		return this.formattedAnswer ;
 	} ;
 }
+
+// =============================================================================
+// Test question formatter
+// =============================================================================
+function TQFormatter( chapterDetails, question ) {
+
+	var textFormatter = new TextFormatter( chapterDetails ) ;
+
+	this.question = question ;
+	this.chapterDetails = chapterDetails ;
+
+	this.answerLength = question.guessWord.length ;
+
+	this.getAnswerLength = function() {
+		return this.answerLength ;
+	} ;
+
+	this.getFormattedQuestion = function() {
+
+		var button = document.createElement( "button" ) ;
+		button.innerHTML = "Guess the word" ;
+		$this = this ;
+		button.onclick = function() {
+			alert( $this.question.guessWord ) ;
+		} ;
+
+		return button ;
+	} ;
+
+	this.getFormattedAnswer = function() {
+		return this.question.guessWord ;
+	} ;
+}

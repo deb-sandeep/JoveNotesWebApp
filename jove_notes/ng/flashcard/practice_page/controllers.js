@@ -350,10 +350,10 @@ function addNSCards() {
 
 	log.debug( "\tAdding NS cards." ) ;
 	var nsQuestionsAdded = 0 ;
-	if( $scope.$parent.maxNewCards > 0 ) {
-		for( var i=0 ; i < $scope.chapterData.questions.length ; i++ ) {
+	if( $scope.$parent.studyCriteria.maxNewCards > 0 ) {
+		for( var i=0 ; i < $scope.$parent.questions.length ; i++ ) {
 
-			var question = $scope.chapterData.questions[ i ] ;
+			var question = $scope.$parent.questions[ i ] ;
 			if( question.learningStats.currentLevel == CardLevels.prototype.NS ) {
 
 				$scope.questionsForSession.unshift( question ) ;

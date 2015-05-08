@@ -140,6 +140,20 @@
 				"lastAttemptTime"    : -1,
 				"_testLATLag"        : -5
 			}
+		},
+		{
+			"questionId"      : 8,
+			"questionType"    : "test_question",
+			"guessWord"       : "Abracadabra",
+			"difficultyLevel" : 100,
+			"learningStats"   : {
+				"numAttempts"        : 0,
+				"learningEfficiency" : 0,
+				"currentLevel"       : "NS",
+				"temporalScores"     : [],
+				"lastAttemptTime"    : -1,
+				"_testLATLag"        : 0
+			}
 		}
 	]
 }

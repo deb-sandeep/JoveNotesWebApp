@@ -10,6 +10,7 @@ function QuestionTypes(){}
 
 QuestionTypes.prototype.QT_FIB = "fib" ;
 QuestionTypes.prototype.QT_QA  = "question_answer" ;
+QuestionTypes.prototype.QT_TQ  = "test_question" ;
 
 // -----------------------------------------------------------------------------
 function StudyStrategyTypes(){}
