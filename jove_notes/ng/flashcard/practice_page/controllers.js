@@ -155,8 +155,8 @@ function updateLearningStatsForCurrentQuestion( rating, nextLevel ) {
 
 function updateLearningStatsForChapter( curLevel, nextLevel ) {
 
-	$scope.$parent.progressStats[ 'numCards' + curLevel  ]-- ;
-	$scope.$parent.progressStats[ 'numCards' + nextLevel ]++ ;
+	$scope.$parent.progressSnapshot[ 'num' + curLevel  ]-- ;
+	$scope.$parent.progressSnapshot[ 'num' + nextLevel ]++ ;
 }
 
 function updateSessionStats() {
@@ -195,12 +195,15 @@ function endSession() {
 	// This will stop the timer at the next click
 	sessionActive = false ;
 
-	$scope.$parent.learningCurveData[0].push( $scope.$parent.progressStats.numCardsNS ) ;
-	$scope.$parent.learningCurveData[1].push( $scope.$parent.progressStats.numCardsL0 ) ;
-	$scope.$parent.learningCurveData[2].push( $scope.$parent.progressStats.numCardsL1 ) ;
-	$scope.$parent.learningCurveData[3].push( $scope.$parent.progressStats.numCardsL2 ) ;
-	$scope.$parent.learningCurveData[4].push( $scope.$parent.progressStats.numCardsL2 ) ;
-	$scope.$parent.learningCurveData[5].push( $scope.$parent.progressStats.numCardsMastered ) ;
+	var currentSnapshot = [ 
+		$scope.$parent.progressSnapshot.numNS,
+		$scope.$parent.progressSnapshot.numL0,
+		$scope.$parent.progressSnapshot.numL1,
+		$scope.$parent.progressSnapshot.numL2,
+		$scope.$parent.progressSnapshot.numL2,
+		$scope.$parent.progressSnapshot.numMAS
+	] ;
+	$scope.$parent.learningCurveData.push( currentSnapshot ) ;
 	
 	$location.path( "/EndPage" ) ;
 }
@@ -221,7 +224,7 @@ function hasSessionEnded() {
 }
 
 function checkInvalidLoad() {
-	if( $scope.$parent.progressStats == null ) {
+	if( $scope.$parent.progressSnapshot == null ) {
 		$location.path( "/StartPage" ) ;
 		return true ;
 	}
@@ -233,7 +236,7 @@ function computeSessionCards() {
 	$scope.questionsForSession.length = 0 ;
 	
 	log.debug( "Computing cards for this session." ) ;
-	log.debug( "\tTotal cards in chapter = " + $scope.chapterData.questions.length ) ;
+	log.debug( "\tTotal cards in chapter = " + $scope.$parent.questions.length ) ;
 
 	applyStudyCriteriaFilter() ;
 	sortCardsAsPerStudyStrategy() ;
@@ -247,8 +250,8 @@ function computeSessionCards() {
 function applyStudyCriteriaFilter() {
 
 	log.debug( "\tApplying study criteria filter." ) ;
-	for( var i=0; i < $scope.chapterData.questions.length ; i++ ) {
-		var question = $scope.chapterData.questions[ i ] ;
+	for( var i=0; i < $scope.$parent.questions.length ; i++ ) {
+		var question = $scope.$parent.questions[ i ] ;
 		if( $scope.$parent.studyCriteria.matchesFilter( question ) ) {
 			$scope.questionsForSession.push( question ) ;
 		}

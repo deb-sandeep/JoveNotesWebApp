@@ -23,7 +23,7 @@ $scope.learningEfficiency = "" ;
 
 // ---------------- Private functions ------------------------------------------
 function checkInvalidLoad() {
-	if( $scope.$parent.progressStats == null ) {
+	if( $scope.$parent.progressSnapshot == null ) {
 		$location.path( "/StartPage" ) ;
 		return true ;
 	}
@@ -49,7 +49,7 @@ function renderGraphs() {
 
     log.debug( "Rendering graphs." ) ;
     jnUtil.renderLearningProgressPie( 'learningStatsPieGraph',
-                                      $scope.$parent.progressStats ) ;
+                                      $scope.$parent.progressSnapshot ) ;
 
     jnUtil.renderLearningCurveGraph ( 'learningCurveGraph',
                                       $scope.$parent.learningCurveData ) ;

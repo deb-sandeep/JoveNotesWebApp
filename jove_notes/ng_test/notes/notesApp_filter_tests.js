@@ -9,7 +9,7 @@ describe( 'notesApp filter', function() {
 
     beforeEach( inject( function( $rootScope, $httpBackend, $controller ) {
 
-        jasmine.getJSONFixtures().fixturesPath='base/api_test_data/';
+        jasmine.getJSONFixtures().fixturesPath='base/api_test_data/notes';
 
         scope       = $rootScope.$new() ;
         httpBackend = $httpBackend ;
@@ -27,8 +27,6 @@ describe( 'notesApp filter', function() {
 
     it( 'can reinitialize itself to default values', function() {
         httpBackend.flush() ;
-        expect( scope.filterCriteria.currentLevelFilters )
-            .toEqual( [ "NS", "L0", "L1", "L2", "L3", "MAS" ] ) ;
         expect( scope.filterCriteria.learningEfficiencyFilters )
             .toEqual( [ "A1", "A2", "B1", "B2", "C1", "C2", "D" ] ) ;
         expect( scope.filterCriteria.difficultyFilters )
@@ -37,26 +35,26 @@ describe( 'notesApp filter', function() {
 
     it( 'picks all questions with the default filter', function() {
         httpBackend.flush() ;
-        expect( scope.filteredQuestions.length ).toEqual( 7 ) ;
+        expect( scope.filteredNotesElements.length ).toEqual( 7 ) ;
     }) ;
 
     it( 'filters based on difficultyLevel criteria', function() {
         httpBackend.flush() ;
         scope.filterCriteria.difficultyFilters = [ "VE" ] ;
         scope.applyFilter() ;
-        expect( scope.filteredQuestions.length ).toEqual( 2 ) ;
+        expect( scope.filteredNotesElements.length ).toEqual( 2 ) ;
 
         scope.filterCriteria.difficultyFilters = [ "VE", "E" ] ;
         scope.applyFilter() ;
-        expect( scope.filteredQuestions.length ).toEqual( 4 ) ;
+        expect( scope.filteredNotesElements.length ).toEqual( 4 ) ;
 
         scope.filterCriteria.difficultyFilters = [ "VE", "E", "M" ] ;
         scope.applyFilter() ;
-        expect( scope.filteredQuestions.length ).toEqual( 6 ) ;
+        expect( scope.filteredNotesElements.length ).toEqual( 6 ) ;
 
         scope.filterCriteria.difficultyFilters = [ "VE", "E", "M", "H" ] ;
         scope.applyFilter() ;
-        expect( scope.filteredQuestions.length ).toEqual( 7 ) ;
+        expect( scope.filteredNotesElements.length ).toEqual( 7 ) ;
     }) ;
 
 });

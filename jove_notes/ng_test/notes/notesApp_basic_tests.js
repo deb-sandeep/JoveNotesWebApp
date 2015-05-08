@@ -9,7 +9,7 @@ describe( 'notesApp basic initialization', function() {
 
     beforeEach( inject( function( $rootScope, $httpBackend, $controller ) {
 
-        jasmine.getJSONFixtures().fixturesPath='base/api_test_data/';
+        jasmine.getJSONFixtures().fixturesPath='base/api_test_data/notes';
 
         scope       = $rootScope.$new() ;
         httpBackend = $httpBackend ;
@@ -41,36 +41,15 @@ it( 'constructs page title from server data', function() {
     expect( scope.pageTitle ).toEqual( '[Biology] 3.0 - Digestion, absorption, assimilation' ) ;
 }) ;
 
-it( 'associates learning stats with all quesitons', function() {
-    httpBackend.flush() ;
-    for( var i=0; i<7; i++ ) {
-        var question = scope.chapterData.questions[i] ;
-        expect( question.learningStats ).toBeDefined() ;
-        expect( question.learningStats.questionId ).toEqual( question.questionId ) ;
-    }
-}) ;
-
 it( 'associates derived attribues to question and learning stats', function() {
     httpBackend.flush() ;
-    for( var i=0; i<7; i++ ) {
-        var question = scope.chapterData.questions[i] ;
+    for( var i=0; i<scope.notesElements.length; i++ ) {
+        var question = scope.notesElements[i] ;
         var learningStats = question.learningStats ;
 
-        expect( learningStats.questionId           ).toBeDefined() ;
-        expect( learningStats.numAttempts          ).toBeDefined() ;
-        expect( learningStats.learningEfficiency   ).toBeDefined() ;
-        expect( learningStats.currentLevel         ).toBeDefined() ;
-        expect( learningStats.lastAttemptTime      ).toBeDefined() ;
-        expect( learningStats.temporalScores       ).toBeDefined() ;
-        expect( learningStats.numAttemptsInSession ).toBeDefined() ;
-        expect( learningStats.numSecondsInSession  ).toBeDefined() ;
-
-        expect( question.difficultyLevelLabel      ).toBeDefined() ;
-        expect( question.learningEfficiencyLabel   ).toBeDefined() ;
-
-        expect( question.formattedQuestion         ).toBeDefined() ;
-        expect( question.formattedAnswer           ).toBeDefined() ;
-        expect( question.answerLength              ).toBeDefined() ;
+        expect( learningStats.learningEfficiency       ).toBeDefined() ;
+        expect( question.difficultyLabel               ).toBeDefined() ;
+        expect( learningStats.efficiencyLabel ).toBeDefined() ;
     }
 }) ;
 

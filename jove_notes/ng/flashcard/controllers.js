@@ -44,8 +44,8 @@ function StudyCriteria() {
     this.matchesFilter = function( question ) {
 
         var currentLevel = question.learningStats.currentLevel ;
-        var lrnEffLabel  = question.learningEfficiencyLabel ;
-        var diffLabel    = question.difficultyLevelLabel ;
+        var lrnEffLabel  = question.learningStats.efficiencyLabel ;
+        var diffLabel    = question.difficultyLabel ;
 
         var currentLevelFilters = this.currentLevelFilters ;
         var lrnEffLabelFilters  = this.learningEfficiencyFilters ;
@@ -79,18 +79,22 @@ var jnUtil = new JoveNotesUtil() ;
 var formatter = new QuestionFormatter() ;
 
 // ---------------- Controller variables ---------------------------------------
+$scope.alerts = [] ;
+
 $scope.userName  = userName ;
 $scope.chapterId = chapterId ;
 
 $scope.pageTitle = '' ;
-$scope.alerts = [] ;
 
 $scope.studyCriteria = new StudyCriteria() ;
 $scope.filterOptions = new CardsFilterOptions() ;
 
-$scope.chapterData       = null ;
-$scope.progressStats     = null ;
+$scope.chapterDetails    = null ;
+$scope.numCardsInDeck    = 0 ;
+$scope.difficultyStats   = null ;
+$scope.progressSnapshot  = null ;
 $scope.learningCurveData = null ;
+$scope.questions         = null ;
 
 $scope.sessionStats = {
     numCards         : 0,
@@ -116,28 +120,25 @@ $scope.closeAlert = function(index) {
     $scope.alerts.splice( index, 1 ) ;
 };
 
-$scope.processServerData = function( data ) {
+$scope.processServerData = function( serverData ) {
 
-    if( typeof data === "string" ) {
-        $scope.addErrorAlert( "Server returned invalid data. " + data ) ;
+    if( typeof serverData === "string" ) {
+        $scope.addErrorAlert( "Server returned invalid data. " + serverData ) ;
         return ;
     }
     
-    // We don't assign them to the scope variables directly since we are about
-    // to amalgamate them. We don't want watchers kicking in before the data
-    // merge.
-    var chapterData          = data[0] ;
-    var learningStats        = data[1].learningStats ;
+    $scope.chapterDetails    = serverData.chapterDetails ;
+    $scope.numCardsInDeck    = serverData.deckDetails.numCards ;
+    $scope.difficultyStats   = serverData.deckDetails.difficultyStats ;
+    $scope.progressSnapshot  = serverData.deckDetails.progressSnapshot ;
+    $scope.learningCurveData = serverData.deckDetails.learningCurveData ;
+    $scope.questions         = serverData.questions ;
 
-    $scope.progressStats     = data[1].progressStats ;
-    $scope.learningCurveData = data[1].learningCurveData ;
+    $scope.pageTitle = jnUtil.constructPageTitle( $scope.chapterDetails ) ;
 
-    formatter.createAndInjectFormattedText( chapterData ) ;
-    jnUtil.associateLearningStatsToQuestions( 
-                                        chapterData.questions, learningStats ) ;
+    jnUtil.preProcessFlashCardQuestions( $scope.questions ) ;
 
-    $scope.chapterData = chapterData ;
-    $scope.pageTitle   = jnUtil.constructPageTitle( data[0] ) ;
+    formatter.createAndInjectFormattedText( $scope.chapterDetails, $scope.questions ) ;
 }
 // ---------------- Private functions ------------------------------------------
 

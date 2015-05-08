@@ -36,10 +36,10 @@ function renderGraphs() {
 
     log.debug( "Rendering graphs." ) ;
     jnUtil.renderLearningProgressPie( 'learningStatsPieGraph',
-                                      $scope.$parent.progressStats ) ;
+                                      $scope.$parent.progressSnapshot ) ;
 
     jnUtil.renderDifficultyStatsBar ( 'difficultyStatsBarGraph',
-                                      $scope.$parent.chapterData.difficultyStats ) ;
+                                      $scope.$parent.difficultyStats ) ;
 
     jnUtil.renderLearningCurveGraph ( 'learningCurveGraph',
                                       $scope.$parent.learningCurveData ) ;

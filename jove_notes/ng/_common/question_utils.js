@@ -83,16 +83,13 @@ function QuestionFormatter() {
 var chapter = null ;
 var imgResourcePath = "" ;
 
-this.createAndInjectFormattedText = function( chapterData ) {
-
-	var chapter = chapterData ;
-	var questions = chapterData.questions ;
+this.createAndInjectFormattedText = function( chapterDetails, questions ) {
 
 	imgResourcePath = "/apps/jove_notes/workspace/" + 
-	                  chapter.syllabusName + "/" + 
-	                  chapter.subjectName  + "/" + 
-	                  chapter.chapterNumber + "/" + 
-	                  chapter.subChapterNumber + "/img/" ;
+	                  chapterDetails.syllabusName + "/" + 
+	                  chapterDetails.subjectName  + "/" + 
+	                  chapterDetails.chapterNumber + "/" + 
+	                  chapterDetails.subChapterNumber + "/img/" ;
 
 	for( i=0; i<questions.length; i++ ) {
 

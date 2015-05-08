@@ -21,12 +21,12 @@
          style="padding-bottom:5px">
 
         <div class="col-sm-6 small">
-        	<span class="badge NS">{{$parent.progressStats.numCardsNS}}</span>
-        	<span class="badge L0">{{$parent.progressStats.numCardsL0}}</span>
-        	<span class="badge L1">{{$parent.progressStats.numCardsL1}}</span>
-        	<span class="badge L2">{{$parent.progressStats.numCardsL2}}</span>
-        	<span class="badge L3">{{$parent.progressStats.numCardsL3}}</span>
-        	<span class="badge MAS">{{$parent.progressStats.numCardsMastered}}</span>
+        	<span class="badge NS">{{$parent.progressSnapshot.numNS}}</span>
+        	<span class="badge L0">{{$parent.progressSnapshot.numL0}}</span>
+        	<span class="badge L1">{{$parent.progressSnapshot.numL1}}</span>
+        	<span class="badge L2">{{$parent.progressSnapshot.numL2}}</span>
+        	<span class="badge L3">{{$parent.progressSnapshot.numL3}}</span>
+        	<span class="badge MAS">{{$parent.progressSnapshot.numMAS}}</span>
         </div>
         <div class="col-sm-6 small" style="text-align:right;">
         	NC - <span class="badge muted">{{$parent.sessionStats.numCards}}</span>&nbsp;.&nbsp;
@@ -42,9 +42,9 @@
              style="padding-bottom:5px;padding-top:5px;background-color:white;">
 
             <div class="col-sm-12 small">
-                <span class="badge {{currentQuestion.difficultyLevelLabel}}">{{currentQuestion.difficultyLevelLabel}}</span>
+                <span class="badge {{currentQuestion.difficultyLabel}}">{{currentQuestion.difficultyLabel}}</span>
                 <span class="badge {{currentQuestion.learningStats.currentLevel}}">{{currentQuestion.learningStats.currentLevel}}</span>
-                <span class="badge {{currentQuestion.learningEfficiencyLabel}}">{{currentQuestion.learningEfficiencyLabel}}</span>
+                <span class="badge {{currentQuestion.learningStats.efficiencyLabel}}">{{currentQuestion.learningStats.efficiencyLabel}}</span>
                 <span class="badge muted">{{currentQuestion.learningStats.numAttempts}}</span>
                 <span class="badge muted">{{currentQuestion.learningStats.lastAttemptTime | elapsedDuration}}</span>
                 <table class="temporal">

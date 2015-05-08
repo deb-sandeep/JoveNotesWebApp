@@ -84,11 +84,11 @@ it( 'associates derived attribues to question and learning stats', function() {
     
     createStartPgCtlr() ;
 
-    for( var i=0; i<7; i++ ) {
-        var question = flashCardScope.chapterData.questions[i] ;
+    for( var i=0; i<flashCardScope.questions.length; i++ ) {
+
+        var question = flashCardScope.questions[i] ;
         var learningStats = question.learningStats ;
 
-        expect( learningStats.questionId           ).toBeDefined() ;
         expect( learningStats.numAttempts          ).toBeDefined() ;
         expect( learningStats.learningEfficiency   ).toBeDefined() ;
         expect( learningStats.currentLevel         ).toBeDefined() ;
@@ -97,8 +97,8 @@ it( 'associates derived attribues to question and learning stats', function() {
         expect( learningStats.numAttemptsInSession ).toBeDefined() ;
         expect( learningStats.numSecondsInSession  ).toBeDefined() ;
 
-        expect( question.difficultyLevelLabel      ).toBeDefined() ;
-        expect( question.learningEfficiencyLabel   ).toBeDefined() ;
+        expect( question.difficultyLabel           ).toBeDefined() ;
+        expect( learningStats.efficiencyLabel      ).toBeDefined() ;
 
         expect( question.formattedQuestion         ).toBeDefined() ;
         expect( question.formattedAnswer           ).toBeDefined() ;

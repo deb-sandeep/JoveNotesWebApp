@@ -164,17 +164,17 @@ function qualifiesFilter( element ) {
 
 	var jnUtil = new JoveNotesUtil() ;
 
+	element.difficultyLabel = 
+		jnUtil.getDifficultyLevelLabel( element.difficultyLevel ) ;
+
 	element.learningStats.efficiencyLabel = 
 		jnUtil.getLearningEfficiencyLabel( element.learningStats.learningEfficiency ) ;
-
-	element.learningStats.difficultyLabel = 
-		jnUtil.getDifficultyLevelLabel( element.learningStats.difficultyLevel ) ;
 
 	var lrnEffLabelFilters = $scope.filterCriteria.learningEfficiencyFilters ;
 	var diffLabelFilters   = $scope.filterCriteria.difficultyFilters ;
 
 	if( lrnEffLabelFilters.indexOf( element.learningStats.efficiencyLabel ) != -1 ) {
-		if( diffLabelFilters.indexOf( element.learningStats.difficultyLabel ) != -1 ) {
+		if( diffLabelFilters.indexOf( element.difficultyLabel ) != -1 ) {
 			return true ;
 		}
 	}

@@ -131,39 +131,19 @@ this.constructPageTitle = function( chapterDetails ) {
 	        chapterDetails.chapterName ;
 }
 
-this.associateLearningStatsToQuestions = function( questions, userLearningStats ) {
-
-	var learningStats = {} ;
-
-	for( i=0; i<userLearningStats.length; i++ ) {
-		var stat = userLearningStats[i] ;
-		learningStats[ stat.questionId ] = stat ;
-	}
+this.preProcessFlashCardQuestions = function( questions ) {
 
 	for( i=0; i<questions.length; i++ ) {
 
 		var question = questions[i] ;
-		var learningStat = null ;
 
-		if( typeof learningStats[ question.questionId ] === 'undefined' ) {
-			learningStat = {
-                questionId           : question.questionId,
-				numAttempts          : -1,
-				learningEfficiency   : 0,
-				currentLevel         : "NS",
-                lastAttemptTime      : -1,
-                temporalScores       : [],
-                numAttemptsInSession : 0,
-                numSecondsInSession  : 0
-			} ;
-		}
-		else {
-			learningStat = learningStats[ question.questionId ] ;
-            learningStat.numAttemptsInSession = 0 ;
-            learningStat.numSecondsInSession  = 0 ;
-		}
-		question.learningStats = learningStat ;
-		this.injectLabelsForValues( question ) ;
+        question.learningStats.numAttemptsInSession = 0 ;
+        question.learningStats.numSecondsInSession  = 0 ;
+        question.difficultyLabel = 
+            this.getDifficultyLevelLabel( question.difficultyLevel ) ;
+
+        question.learningStats.efficiencyLabel = 
+            this.getLearningEfficiencyLabel( question.learningStats.learningEfficiency ) ;
 
         processTestDataHints( question ) ;
 	}
@@ -177,34 +157,34 @@ this.renderLearningProgressPie = function( divName, progressStats ) {
     var labels = [] ;
     var colors = [] ;
 
-    if( progressStats.numCardsNS != 0 ) {
-        vals.push( progressStats.numCardsNS ) ;
-        labels.push( "NS-" + progressStats.numCardsNS ) ;
+    if( progressStats.numNS != 0 ) {
+        vals.push( progressStats.numNS ) ;
+        labels.push( "NS-" + progressStats.numNS ) ;
         colors.push( "#D0D0D0" ) ;
     } 
-    if( progressStats.numCardsL0 != 0 ) {
-        vals.push( progressStats.numCardsL0 ) ;
-        labels.push( "L0-" + progressStats.numCardsL0 ) ;
+    if( progressStats.numL0 != 0 ) {
+        vals.push( progressStats.numL0 ) ;
+        labels.push( "L0-" + progressStats.numL0 ) ;
         colors.push( "#FF0000" ) ;
     } 
-    if( progressStats.numCardsL1 != 0 ) {
-        vals.push( progressStats.numCardsL1 ) ;
-        labels.push( "L1-" + progressStats.numCardsL1 ) ;
+    if( progressStats.numL1 != 0 ) {
+        vals.push( progressStats.numL1 ) ;
+        labels.push( "L1-" + progressStats.numL1 ) ;
         colors.push( "#FF7F2A" ) ;
     }
-    if( progressStats.numCardsL2 != 0 ) {
-        vals.push( progressStats.numCardsL2 ) ;
-        labels.push( "L2-" + progressStats.numCardsL2 ) ;
+    if( progressStats.numL2 != 0 ) {
+        vals.push( progressStats.numL2 ) ;
+        labels.push( "L2-" + progressStats.numL2 ) ;
         colors.push( "#FFFF7F" ) ;
     } 
-    if( progressStats.numCardsL3 != 0 ) {
-        vals.push( progressStats.numCardsL3 ) ;
-        labels.push( "L3-" + progressStats.numCardsL3 ) ;
+    if( progressStats.numL3 != 0 ) {
+        vals.push( progressStats.numL3 ) ;
+        labels.push( "L3-" + progressStats.numL3 ) ;
         colors.push( "#AAFFAA" ) ;
     }
-    if( progressStats.numCardsMastered != 0 ) {
-        vals.push( progressStats.numCardsMastered ) ;
-        labels.push( "MAS-" + progressStats.numCardsMastered ) ;
+    if( progressStats.numMAS != 0 ) {
+        vals.push( progressStats.numMAS ) ;
+        labels.push( "MAS-" + progressStats.numMAS ) ;
         colors.push( "#00FF00" ) ;
     }
 
@@ -256,9 +236,23 @@ this.renderLearningCurveGraph = function( divName, learningCurveData ) {
 
     if( isDebug() )return ;
 
+    var graphData = [
+        [], [], [], [], [], []
+    ] ;
+
+    for( var i=0; i<learningCurveData.length; i++ ) {
+        var snapShot = learningCurveData[i] ;
+        graphData[0].push( snapShot[0] ) ;
+        graphData[1].push( snapShot[1] ) ;
+        graphData[2].push( snapShot[2] ) ;
+        graphData[3].push( snapShot[3] ) ;
+        graphData[4].push( snapShot[4] ) ;
+        graphData[5].push( snapShot[5] ) ;
+    }
+
     var mline = new RGraph.Line( {
         id: divName,
-        data: learningCurveData,
+        data: graphData,
         options: {
             Background: {
               grid: false 
@@ -273,15 +267,6 @@ this.renderLearningCurveGraph = function( divName, learningCurveData ) {
         }
     })
     .draw() ;
-}
-
-this.injectLabelsForValues = function( question ) {
-
-    question.difficultyLevelLabel = 
-        this.getDifficultyLevelLabel( question.difficultyLevel ) ;
-
-    question.learningEfficiencyLabel = 
-        this.getLearningEfficiencyLabel( question.learningStats.learningEfficiency ) ;
 }
 
 this.getDifficultyLevelLabel = function( level ) {
