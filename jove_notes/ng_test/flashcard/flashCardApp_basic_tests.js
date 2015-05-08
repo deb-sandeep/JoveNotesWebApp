@@ -100,9 +100,7 @@ it( 'associates derived attribues to question and learning stats', function() {
         expect( question.difficultyLabel           ).toBeDefined() ;
         expect( learningStats.efficiencyLabel      ).toBeDefined() ;
 
-        expect( question.formattedQuestion         ).toBeDefined() ;
-        expect( question.formattedAnswer           ).toBeDefined() ;
-        expect( question.answerLength              ).toBeDefined() ;
+        expect( question.formatter                 ).toBeDefined() ;
     }
 }) ;
 

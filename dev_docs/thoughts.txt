@@ -1,0 +1,10 @@
+Render question 
+	@show of a new card
+		=> when currentQuestion changes
+
+Render answer
+	@user presses show answer button
+
+	@question is displayed in push mode
+		=> when currentQuestion changes and push flag is on
+

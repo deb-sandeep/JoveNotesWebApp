@@ -29,12 +29,11 @@ $scope.paddingTopHeight = { height: currentTopPadHeight + 'px' } ;
 $scope.questionsForSession = [] ;
 $scope.currentQuestion  = null ;
 
-$scope.questionText = "" ;
-$scope.answerText   = "" ;
+$scope.answerChangeTrigger = "" ;
 
+// questionMode is used by the view to show the appropriate controls when either
+// the question or the answer is shown.
 $scope.questionMode = false ;
-
-$scope.windowWidth = "" ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -136,7 +135,7 @@ $scope.rateCard = function( rating ) {
 
 $scope.showAnswer = function() {
 
-	$scope.answerText   = $scope.currentQuestion.formattedAnswer ;
+	$scope.answerChangeTrigger = "Answer" + $scope.currentQuestion.questionId ;
 	$scope.questionMode = false ;
 }
 
@@ -180,8 +179,7 @@ function showNextCard() {
 		$scope.currentQuestion = $scope.questionsForSession[0] ;
 
 		$scope.questionMode = true ;
-		$scope.questionText = $scope.currentQuestion.formattedQuestion ;
-		$scope.answerText   = '' ;
+		$scope.answerChangeTrigger = "" ;
 
 		currentQuestionShowStartTime = new Date().getTime() ;
 	}

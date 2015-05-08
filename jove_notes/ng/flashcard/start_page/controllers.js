@@ -3,7 +3,6 @@ flashCardApp.controller( 'StartPageController', function( $scope, $http, $routeP
 
 // ---------------- Local variables --------------------------------------------
 var jnUtil    = new JoveNotesUtil() ;
-var formatter = new QuestionFormatter() ;
 
 // ---------------- Controller variables ---------------------------------------
 

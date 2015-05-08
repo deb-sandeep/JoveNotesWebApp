@@ -15,6 +15,12 @@ Flashcard (Start page)
 
 Completed
 --------------------------------------------------------------------------------
+5/8/15 --
+. Redesigned and decoupled JSON design for notes and flash cards
+. Refactored the test cases
+. Implemented directives to render question and answer. This lays the bed for
+  dynamic questions and answers.
+
 5/7/15 --
 . Test rate card logic
 . End page design and implementaiton

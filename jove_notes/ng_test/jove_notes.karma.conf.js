@@ -40,6 +40,7 @@ module.exports = function(config) {
 
       'ng/_common/jove_notes_utils.js',
       'ng/_common/question_utils.js',
+      'ng/_common/formatters.js',
     
       'ng/dashboard/routes.js',
       'ng/dashboard/controllers.js',
@@ -50,6 +51,7 @@ module.exports = function(config) {
 
       'ng/flashcard/routes.js',
       'ng/flashcard/filters.js',
+      'ng/flashcard/directives.js',
       'ng/flashcard/controllers.js',
       'ng/flashcard/end_page/controllers.js',
       'ng/flashcard/practice_page/controllers.js',

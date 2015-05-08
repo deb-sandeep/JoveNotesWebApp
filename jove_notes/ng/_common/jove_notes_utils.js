@@ -131,22 +131,17 @@ this.constructPageTitle = function( chapterDetails ) {
 	        chapterDetails.chapterName ;
 }
 
-this.preProcessFlashCardQuestions = function( questions ) {
+this.getResourcePath = function( chapterDetails ) {
 
-	for( i=0; i<questions.length; i++ ) {
+    return  "/apps/jove_notes/workspace/" + 
+            chapterDetails.syllabusName + "/" + 
+            chapterDetails.subjectName  + "/" + 
+            chapterDetails.chapterNumber + "/" + 
+            chapterDetails.subChapterNumber + "/" ;
+}
 
-		var question = questions[i] ;
-
-        question.learningStats.numAttemptsInSession = 0 ;
-        question.learningStats.numSecondsInSession  = 0 ;
-        question.difficultyLabel = 
-            this.getDifficultyLevelLabel( question.difficultyLevel ) ;
-
-        question.learningStats.efficiencyLabel = 
-            this.getLearningEfficiencyLabel( question.learningStats.learningEfficiency ) ;
-
-        processTestDataHints( question ) ;
-	}
+this.getImgResourcePath = function( chapterDetails ) {
+    return  this.getResourcePath( chapterDetails ) + "img/" ;
 }
 
 this.renderLearningProgressPie = function( divName, progressStats ) {
@@ -290,15 +285,6 @@ this.getLearningEfficiencyLabel = function( score ) {
 }
 
 // -----------------------------------------------------------------------------
-
-function processTestDataHints( question ) {
-
-    if( question.learningStats.hasOwnProperty( '_testLATLag' ) ) {
-
-        var numMillisLag = question.learningStats._testLATLag * 24 * 60 * 60 * 1000 ;
-        question.learningStats.lastAttemptTime = new Date().getTime() + numMillisLag ;
-    }
-}
 
 function isDebug() {
     if( typeof __debug__ != 'undefined' ) {

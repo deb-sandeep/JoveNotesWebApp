@@ -76,7 +76,6 @@ function StudyCriteria() {
 
 // ---------------- Local variables --------------------------------------------
 var jnUtil = new JoveNotesUtil() ;
-var formatter = new QuestionFormatter() ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.alerts = [] ;
@@ -136,11 +135,54 @@ $scope.processServerData = function( serverData ) {
 
     $scope.pageTitle = jnUtil.constructPageTitle( $scope.chapterDetails ) ;
 
-    jnUtil.preProcessFlashCardQuestions( $scope.questions ) ;
-
-    formatter.createAndInjectFormattedText( $scope.chapterDetails, $scope.questions ) ;
+    preProcessFlashCardQuestions( $scope.questions ) ;
 }
 // ---------------- Private functions ------------------------------------------
+
+function preProcessFlashCardQuestions( questions ) {
+
+    for( i=0; i<questions.length; i++ ) {
+
+        var question = questions[i] ;
+
+        question.learningStats.numAttemptsInSession = 0 ;
+        question.learningStats.numSecondsInSession  = 0 ;
+        
+        question.difficultyLabel = 
+            jnUtil.getDifficultyLevelLabel( question.difficultyLevel ) ;
+
+        question.learningStats.efficiencyLabel = 
+            jnUtil.getLearningEfficiencyLabel( question.learningStats.learningEfficiency ) ;
+
+        associateFormatter( question ) ;
+
+        processTestDataHints( question ) ;
+    }
+}
+
+function associateFormatter( question ) {
+
+    var questionType = question.questionType ;
+
+    if( questionType == QuestionTypes.prototype.QT_FIB ) {
+        question.formatter = new FIBFormatter( $scope.chapterDetails, question ) ;
+    }
+    else if( questionType == QuestionTypes.prototype.QT_QA ) {
+        question.formatter = new QAFormatter( $scope.chapterDetails, question ) ;
+    }
+    else {
+        log.error( "Unrecognized question type = " + questionType ) ;
+        throw "Unrecognized question type. Can't associate formatter." ;
+    }
+}
+
+function processTestDataHints( question ) {
+
+    if( question.learningStats.hasOwnProperty( '_testLATLag' ) ) {
+        var numMillisLag = question.learningStats._testLATLag * 24 * 60 * 60 * 1000 ;
+        question.learningStats.lastAttemptTime = new Date().getTime() + numMillisLag ;
+    }
+}
 
 // ---------------- End of controller ------------------------------------------
 } ) ;
