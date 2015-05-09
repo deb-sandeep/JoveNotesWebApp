@@ -32,6 +32,7 @@ module.exports = function(config) {
       '/home/sandeep/projects/source/PHPAppFramework/lib-ext/rgraph/RGraph.common.key.js',
       '/home/sandeep/projects/source/PHPAppFramework/lib-ext/rgraph/RGraph.line.js',
       '/home/sandeep/projects/source/PHPAppFramework/lib-ext/rgraph/RGraph.pie.js',
+      '/home/sandeep/projects/source/PHPAppFramework/lib-ext/dombuilder/DOMBuilder.min.js',
 
       '/home/sandeep/projects/source/PHPWebApps/_common/scripts/common_utils.js',
 
@@ -40,7 +41,7 @@ module.exports = function(config) {
 
       'ng/_common/jove_notes_utils.js',
       'ng/_common/question_utils.js',
-      'ng/_common/formatters.js',
+      'ng/_common/question_handlers.js',
     
       'ng/dashboard/routes.js',
       'ng/dashboard/controllers.js',

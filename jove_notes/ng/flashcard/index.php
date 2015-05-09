@@ -22,7 +22,7 @@ $pageConfig = array(
 
     <script src="/apps/jove_notes/ng/_common/jove_notes_utils.js"></script>    
     <script src="/apps/jove_notes/ng/_common/question_utils.js"></script>    
-    <script src="/apps/jove_notes/ng/_common/formatters.js"></script>    
+    <script src="/apps/jove_notes/ng/_common/question_handlers.js"></script>    
 
     <script src="/apps/jove_notes/ng/flashcard/routes.js"></script>    
     <script src="/apps/jove_notes/ng/flashcard/filters.js"></script>    

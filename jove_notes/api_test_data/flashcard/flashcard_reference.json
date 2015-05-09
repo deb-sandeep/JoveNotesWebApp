@@ -143,8 +143,10 @@
 		},
 		{
 			"questionId"      : 8,
-			"questionType"    : "test_question",
-			"guessWord"       : "Abracadabra",
+			"questionType"    : "true_false",
+			"statement"       : "Sun is a star.",
+			"truthValue"      : true,
+			"justification"   : "Sun is a celestial body and emits its own light. Hence it is a star.",
 			"difficultyLevel" : 100,
 			"learningStats"   : {
 				"numAttempts"        : 0,

@@ -23,6 +23,8 @@
     <script src="/lib-ext/bootstrap-3.3.4/angular/ui-bootstrap-custom-0.12.1.min.js"></script>
     <script src="/lib-ext/bootstrap-3.3.4/angular/ui-bootstrap-custom-tpls-0.12.1.min.js"></script>
 
+    <script src="/lib-ext/dombuilder/DOMBuilder.min.js"></script>
+
     <script src="/apps/_common/scripts/common_utils.js"></script>
 
     <script type="text/javascript">
@@ -40,4 +42,8 @@
     $( '[data-toggle="tooltip"]' ).tooltip( {
         placement : 'top'
     } ) ;
+    </script>
+
+    <script>
+        DOMBuilder.apply( window, 'dom' ) ;
     </script>

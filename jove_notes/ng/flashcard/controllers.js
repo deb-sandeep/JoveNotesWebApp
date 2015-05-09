@@ -170,8 +170,8 @@ function associateFormatter( question ) {
     else if( questionType == QuestionTypes.prototype.QT_QA ) {
         question.handler = new QAHandler( $scope.chapterDetails, question ) ;
     }
-    else if( questionType == QuestionTypes.prototype.QT_TQ ) {
-        question.handler = new TQHandler( $scope.chapterDetails, question ) ;
+    else if( questionType == QuestionTypes.prototype.QT_TF ) {
+        question.handler = new TFHandler( $scope.chapterDetails, question ) ;
     }
     else {
         log.error( "Unrecognized question type = " + questionType ) ;
