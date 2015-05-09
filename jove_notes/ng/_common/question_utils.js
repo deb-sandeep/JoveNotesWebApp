@@ -8,9 +8,10 @@ NotesElementsTypes.prototype.QA  = "question_answer" ;
 // -----------------------------------------------------------------------------
 function QuestionTypes(){}
 
-QuestionTypes.prototype.QT_FIB = "fib" ;
-QuestionTypes.prototype.QT_QA  = "question_answer" ;
-QuestionTypes.prototype.QT_TF  = "true_false" ;
+QuestionTypes.prototype.QT_FIB      = "fib" ;
+QuestionTypes.prototype.QT_QA       = "question_answer" ;
+QuestionTypes.prototype.QT_TF       = "true_false" ;
+QuestionTypes.prototype.QT_MATCHING = "matching" ;
 
 // -----------------------------------------------------------------------------
 function StudyStrategyTypes(){}

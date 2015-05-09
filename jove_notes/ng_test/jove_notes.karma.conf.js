@@ -41,7 +41,6 @@ module.exports = function(config) {
 
       'ng/_common/jove_notes_utils.js',
       'ng/_common/question_utils.js',
-      'ng/_common/question_handlers.js',
     
       'ng/dashboard/routes.js',
       'ng/dashboard/controllers.js',
@@ -50,6 +49,9 @@ module.exports = function(config) {
       'ng/dashboard/progress_snapshot/controllers.js',
       'ng/dashboard/study_per_day/controllers.js',
 
+      'ng/flashcard/practice_page/question_handlers.js',
+      'ng/flashcard/practice_page/dynq_matching.js',
+      
       'ng/flashcard/routes.js',
       'ng/flashcard/filters.js',
       'ng/flashcard/directives.js',

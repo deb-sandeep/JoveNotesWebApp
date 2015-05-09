@@ -59,7 +59,6 @@ function FIBHandler( chapterDetails, question ) {
 function QAHandler( chapterDetails, question ) {
 
 	var textFormatter = new TextFormatter( chapterDetails ) ;
-	var question = question ;
 
 	var formattedQuestion = textFormatter.format( question.question ) ;
 	var formattedAnswer = textFormatter.format( question.answer ) ;
@@ -73,11 +72,11 @@ function QAHandler( chapterDetails, question ) {
 // =============================================================================
 // True False handler
 // =============================================================================
-function TFHandler( chapterDetails, question ) {
+function TFHandler( chapterDetails, questionObj ) {
 
 	var textFormatter = new TextFormatter( chapterDetails ) ;
 
-	var question = question ;
+	var question = questionObj ;
 	var chapterDetails = chapterDetails ;
 
 	var scope = null ;
@@ -137,4 +136,44 @@ function TFHandler( chapterDetails, question ) {
 					P( question.justification )
 				  ) ;
 	} ;
+}
+
+// =============================================================================
+// Matching handler
+// =============================================================================
+function MatchingHandler( chapterDetails, questionObj ) {
+
+	var textFormatter = new TextFormatter( chapterDetails ) ;
+
+	var question = questionObj ;
+	var chapterDetails = chapterDetails ;
+	var scope = null ;
+	var manager = null ;
+
+	this.initialize = function( $scope ){ 
+		log.debug( "Initializing matching handler." ) ;
+		scope = $scope ; 
+		manager = new MatchQuestionManager( questionObj ) ;
+		manager.initialize() ;
+	}
+
+	this.getAnswerLength = function() { 
+		return manager.answerLength ; 
+	} ;
+
+	this.getQuestionUI = function() { 
+		return manager.getQuestionUI() ; 
+	} ;
+
+	this.initializeQuestionUI = function() {
+		manager.refresh() ;
+	} ;
+
+	this.getAnswerUI = function() { 
+		return 'Matching answer' ; 
+	} ;
+
+	this.initializeAnswerUI = function() {} ;
+
+	this.freezeQuestionUI = function() {} ;
 }

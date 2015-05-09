@@ -156,6 +156,28 @@
 				"lastAttemptTime"    : -1,
 				"_testLATLag"        : 0
 			}
+		},
+		{
+			"questionId"      : 9,
+			"questionType"    : "matching",
+			"caption"         : "Match the following",
+			"matchData"       : [
+				[ "1", "One"   ],
+				[ "2", "Two"   ],
+				[ "3", "Three" ],
+				[ "4", "Four"  ],
+				[ "5", "Five"  ],
+				[ "6", "Six"   ]
+			],
+			"difficultyLevel" : 100,
+			"learningStats"   : {
+				"numAttempts"        : 0,
+				"learningEfficiency" : 0,
+				"currentLevel"       : "NS",
+				"temporalScores"     : [],
+				"lastAttemptTime"    : -1,
+				"_testLATLag"        : 0
+			}
 		}
 	]
 }
