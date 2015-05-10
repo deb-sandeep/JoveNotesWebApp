@@ -1,10 +1,13 @@
-<div class="container-fluid"
+<div id="flashcard-hdr-div" 
+     class="container-fluid fixedheader"
      ng-include="'/apps/jove_notes/ng/flashcard/practice_page/header_fragment.html'">
 </div>
-<div ng-style="paddingTopHeight"></div>
-<div class="container-fluid"
+<div id="flashcard-body-div" 
+	 class="container-fluid fixedbody"
+	 ng-style="bodyDivStyle"
      ng-include="'/apps/jove_notes/ng/flashcard/practice_page/body_fragment.html'">
 </div>
-<div class="container-fluid"
+<div id="flashcard-footer-div" 
+	 class="container-fluid fixedfooter"
      ng-include="'/apps/jove_notes/ng/flashcard/practice_page/footer_fragment.html'">
 </div>

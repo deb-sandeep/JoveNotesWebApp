@@ -8,14 +8,15 @@ var SSR_DELTA_L2 = SSR_DELTA_L0 * 3 ;
 var SSR_DELTA_L3 = SSR_DELTA_L0 * 4  ;
 
 // ---------------- Local variables --------------------------------------------
-var ratingMatrix        = new RatingMatrix() ;
-var currentTopPadHeight = 100 ;
+var ratingMatrix = new RatingMatrix() ;
 
 var currentQuestionShowStartTime = 0 ;
 var durationTillNowInMillis = 0 ;
 
-var sessionStartTime    = new Date().getTime() ;
-var sessionActive       = true ;
+var sessionStartTime = new Date().getTime() ;
+var sessionActive    = true ;
+var oldBodyTop       = -1 ;
+var oldBodyBottom    = -1 ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.showL0Header     = true ;
@@ -24,7 +25,7 @@ $scope.showL2Header     = true ;
 $scope.showAuxControls  = false ;
 $scope.showFooterDropup = true ;
 
-$scope.paddingTopHeight = { height: currentTopPadHeight + 'px' } ;
+$scope.bodyDivStyle = null ; 
 
 $scope.questionsForSession = [] ;
 $scope.currentQuestion  = null ;
@@ -43,8 +44,6 @@ $scope.questionMode = false ;
 		return ;
 	}
 
-	window.addEventListener( "resize", onWindowResize ) ;
-	onWindowResize() ;
 
 	log.debug( "Serializing study criteria." ) ;
 	$scope.$parent.studyCriteria.serialize() ;
@@ -61,6 +60,8 @@ $scope.questionMode = false ;
 	log.debug( "Starting timer." ) ;
 	setTimeout( handleTimerEvent, 1000 ) ;
 
+	onWindowResize() ;
+	window.addEventListener( "resize", onWindowResize ) ;
 	showNextCard() ;
 }
 
@@ -68,22 +69,18 @@ $scope.questionMode = false ;
 $scope.toggleDisplay = function( displayId ) {
 
 	if( displayId == "L0-Hdr" ) { 
-		$scope.showL0Header = !$scope.showL0Header;
-		currentTopPadHeight += ( $scope.showL0Header ) ? 25 : -25 ;
+		$scope.showL0Header = !$scope.showL0Header ;
 	}
 	else if( displayId == "L1-Hdr" ) { 
-		$scope.showL1Header = !$scope.showL1Header; 
-		currentTopPadHeight += ( $scope.showL1Header ) ? 25 : -25 ;
+		$scope.showL1Header = !$scope.showL1Header ; 
 	}
 	else if( displayId == "L2-Hdr" ) { 
-		$scope.showL2Header = !$scope.showL2Header; 
-		currentTopPadHeight += ( $scope.showL2Header ) ? 25 : -25 ;
+		$scope.showL2Header = !$scope.showL2Header ; 
 	}
 	else if( displayId == "AuxControls" ) { 
-		$scope.showAuxControls = !$scope.showAuxControls; 
+		$scope.showAuxControls = !$scope.showAuxControls ; 
 	}
-
-	$scope.paddingTopHeight.height = currentTopPadHeight + 'px' ;
+	setTimeout( resizeBody, 10 ) ;
 }
 
 $scope.randomizeCards = function() {
@@ -217,7 +214,6 @@ function hasSessionEnded() {
 	if( $scope.questionsForSession.length == 0 ) {
 		return true ;
 	}
-
 	return false ;
 }
 
@@ -410,16 +406,14 @@ function refreshClocks() {
 }
 
 function onWindowResize() {
-	
+
 	if( window.innerWidth < 700 ) {
+
 		$scope.showL0Header     = false ;
 		$scope.showL1Header     = false ;
 		$scope.showL2Header     = true ;
 		$scope.showAuxControls  = false ;
 		$scope.showFooterDropup = false ;
-
-		currentTopPadHeight = 30 ;
-		$scope.paddingTopHeight.height = currentTopPadHeight + 'px' ;
 	}
 	else {
 		if( !$scope.showFooterDropup ) {
@@ -428,9 +422,34 @@ function onWindowResize() {
 			$scope.showL1Header     = true ;
 			$scope.showL2Header     = true ;
 			$scope.showAuxControls  = false ;
-			$scope.showFooterDropup = true ;
 		}
 	}
+	setTimeout( resizeBody, 1 ) ;
+}
+
+function resizeBody() {
+
+	var curBodyTop    = getDivHeight( 'flashcard-hdr-div' ) ;
+	var curBodyBottom = getDivHeight( 'flashcard-footer-div' ) ;
+
+	if( ( curBodyTop != oldBodyTop ) || ( curBodyBottom != oldBodyBottom ) ) {
+		oldBodyTop = curBodyTop ;
+		oldBodyBottom = curBodyBottom ;
+
+		$scope.bodyDivStyle = {
+			top    : oldBodyTop,
+			bottom : oldBodyBottom
+		} ;
+	}
+}
+
+function getDivHeight( divName ) {
+
+	var div = document.getElementById( divName ) ;
+	if( div != null ) {
+		return div.offsetHeight ;
+	}
+	else return 0 ;
 }
 
 // ---------------- End of controller ------------------------------------------

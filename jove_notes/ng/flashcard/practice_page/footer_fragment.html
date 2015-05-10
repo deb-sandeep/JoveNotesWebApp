@@ -1,109 +1,108 @@
-<div class="container-fluid fixedfooter">
-    <div class="row">
+<div class="row">
 
-        <div class="col-sm-5">
+    <div class="col-sm-5"
+         style="padding-left:0px, padding-right:0px">
 
-            <!-- The End Session button -->
-            <button type="button" 
-                    class="btn btn-danger btn-lg"
-                    ng-click="endSession()"
-                    ng-show="showAuxControls"
-                    data-toggle="tooltip" data-placement="top" 
-                    title="End session">
-                <span class="glyphicon glyphicon-off"></span>
-            </button>
+        <!-- The End Session button -->
+        <button type="button" 
+                class="btn btn-danger btn-lg"
+                ng-click="endSession()"
+                ng-show="showAuxControls"
+                data-toggle="tooltip" data-placement="top" 
+                title="End session">
+            <span class="glyphicon glyphicon-off"></span>
+        </button>
 
-            <!-- The toggle header popup -->
-            <div class="dropup" style="display:inline" ng-show="showFooterDropup">
-              <button type="button" 
-                      class="btn btn-primary dropdown-toggle btn-lg" 
-                      data-toggle="dropdown">
-                <span class="glyphicon glyphicon-equalizer"></span>
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li role="presentation">
-                    <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L0-Hdr')">Title Header</a>
-                </li>
-                <li role="presentation">
-                    <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L1-Hdr')">Session Header</a>
-                </li>
-                <li role="presentation">
-                    <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L2-Hdr')">Card header</a>
-                </li>
-                <li role="presentation">
-                    <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('AuxControls')">Auxillary Controls</a>
-                </li>
-              </ul>
-            </div>
-
-            <!-- The Shuffle cards button -->
-            <button type="button" 
-                    class="btn btn-primary btn-lg"
-                    ng-click="randomizeCards()"
-                    ng-show="showAuxControls"
-                    data-toggle="tooltip" data-placement="top" 
-                    title="Shuffle remaining cards">
-                <span class="glyphicon glyphicon-random"></span>
-            </button>
-
-            <!-- The Purge cards button -->
-            <button type="button" 
-                    class="btn btn-primary btn-lg"
-                    ng-click="purgeCard()"
-                    ng-show="showAuxControls"
-                    data-toggle="tooltip" data-placement="top" 
-                    title="Purge current card">
-                <span class="glyphicon glyphicon-share"></span>
-            </button>
-
-            <!-- The Mark for Edit button -->
-            <button type="button" 
-                    class="btn btn-primary btn-lg"
-                    ng-click="markCardForEdit()"
-                    ng-show="showAuxControls"
-                    data-toggle="tooltip" data-placement="top" 
-                    title="Mark current card for editing">
-                <span class="glyphicon glyphicon-edit"></span>
-            </button>
+        <!-- The toggle header popup -->
+        <div class="dropup" style="display:inline" ng-show="showFooterDropup">
+          <button type="button" 
+                  class="btn btn-primary dropdown-toggle btn-lg" 
+                  data-toggle="dropdown">
+            <span class="glyphicon glyphicon-equalizer"></span>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L0-Hdr')">Title Header</a>
+            </li>
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L1-Hdr')">Session Header</a>
+            </li>
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L2-Hdr')">Card header</a>
+            </li>
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('AuxControls')">Auxillary Controls</a>
+            </li>
+          </ul>
         </div>
 
-        <div class="col-sm-7 pull-right">
-            <div class="btn-group btn-group-justified" role="group" ng-show="!questionMode">
-              <div class="btn-group" role="group">
-                <button type="button" class="btn btn-danger btn-lg"
-                        ng-click="rateCard( 'H' )"
-                        data-toggle="tooltip" data-placement="top" 
-                        title="Difficult">&nbsp;</button>
-              </div>
-              <div class="btn-group" role="group">
-                <button type="button" class="btn btn-warning btn-lg"
-                        ng-click="rateCard( 'P' )"
-                        data-toggle="tooltip" data-placement="top" 
-                        title="Needs practice">&nbsp;</button>
-              </div>
-              <div class="btn-group" role="group">
-                <button type="button" class="btn btn-info btn-lg"
-                        ng-click="rateCard( 'A' )"
-                        data-toggle="tooltip" data-placement="top" 
-                        title="Almost correct">&nbsp;</button>
-              </div>
-              <div class="btn-group" role="group">
-                <button type="button" class="btn btn-success btn-lg"
-                        ng-click="rateCard( 'E' )"
-                        data-toggle="tooltip" data-placement="top" 
-                        title="Correct">&nbsp;</button>
-              </div>
-            </div>
+        <!-- The Shuffle cards button -->
+        <button type="button" 
+                class="btn btn-primary btn-lg"
+                ng-click="randomizeCards()"
+                ng-show="showAuxControls"
+                data-toggle="tooltip" data-placement="top" 
+                title="Shuffle remaining cards">
+            <span class="glyphicon glyphicon-random"></span>
+        </button>
 
-            <div class="btn-group btn-group-justified" role="group" ng-show="questionMode">
-              <div class="btn-group" role="group">
-                <button type="button" class="btn btn-primary btn-lg"
-                        ng-click="showAnswer()">
-                    Show Answer
-                </button>
-              </div>
-            </div>
+        <!-- The Purge cards button -->
+        <button type="button" 
+                class="btn btn-primary btn-lg"
+                ng-click="purgeCard()"
+                ng-show="showAuxControls"
+                data-toggle="tooltip" data-placement="top" 
+                title="Purge current card">
+            <span class="glyphicon glyphicon-share"></span>
+        </button>
+
+        <!-- The Mark for Edit button -->
+        <button type="button" 
+                class="btn btn-primary btn-lg"
+                ng-click="markCardForEdit()"
+                ng-show="showAuxControls"
+                data-toggle="tooltip" data-placement="top" 
+                title="Mark current card for editing">
+            <span class="glyphicon glyphicon-edit"></span>
+        </button>
+    </div>
+
+    <div class="col-sm-7 pull-right">
+        <div class="btn-group btn-group-justified" role="group" ng-show="!questionMode">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-danger btn-lg"
+                    ng-click="rateCard( 'H' )"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Difficult">&nbsp;</button>
+          </div>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-warning btn-lg"
+                    ng-click="rateCard( 'P' )"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Needs practice">&nbsp;</button>
+          </div>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-info btn-lg"
+                    ng-click="rateCard( 'A' )"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Almost correct">&nbsp;</button>
+          </div>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-success btn-lg"
+                    ng-click="rateCard( 'E' )"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Correct">&nbsp;</button>
+          </div>
+        </div>
+
+        <div class="btn-group btn-group-justified" role="group" ng-show="questionMode">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-primary btn-lg"
+                    ng-click="showAnswer()">
+                Show Answer
+            </button>
+          </div>
         </div>
     </div>
 </div>

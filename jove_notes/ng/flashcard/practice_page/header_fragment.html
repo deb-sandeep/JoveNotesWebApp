@@ -1,60 +1,56 @@
-<div class="container-fluid fixedheader">
+<div ng-show="showL0Header"
+     style="display:table;width:100%;padding-bottom:5px">
 
-    <div ng-show="showL0Header"
-         style="display:table;width:100%;padding-bottom:5px">
-
-    	<div style="display:table-cell;width:40px;">
-        	<img src="/apps/jove_notes/media/images/logo_for_navbar.png" 
-        	     style="height: 20px" />
-        </div>
-        <div style="display:table-cell;text-align:center;">
-        	<span class="gi-1-15x">{{$parent.pageTitle}}</span>
-        </div>
-        <div style="display:table-cell;width:170px;text-align:right;">
-            <span class="badge muted">{{$parent.sessionDuration | duration}}</span>
-            <span class="small">[ {{$parent.userName}} ]</span>
-        </div>
+	<div style="display:table-cell;width:40px;">
+    	<img src="/apps/jove_notes/media/images/logo_for_navbar.png" 
+    	     style="height: 20px" />
     </div>
+    <div style="display:table-cell;text-align:center;">
+    	<span class="gi-1-15x">{{$parent.pageTitle}}</span>
+    </div>
+    <div style="display:table-cell;width:170px;text-align:right;">
+        <span class="badge muted">{{$parent.sessionDuration | duration}}</span>
+        <span class="small">[ {{$parent.userName}} ]</span>
+    </div>
+</div>
 
-    <div ng-show="showL1Header"
+<div ng-show="showL1Header"
+     class="row" 
+     style="padding-bottom:5px">
+
+    <div class="col-sm-6 small">
+    	<span class="badge NS">{{$parent.progressSnapshot.numNS}}</span>
+    	<span class="badge L0">{{$parent.progressSnapshot.numL0}}</span>
+    	<span class="badge L1">{{$parent.progressSnapshot.numL1}}</span>
+    	<span class="badge L2">{{$parent.progressSnapshot.numL2}}</span>
+    	<span class="badge L3">{{$parent.progressSnapshot.numL3}}</span>
+    	<span class="badge MAS">{{$parent.progressSnapshot.numMAS}}</span>
+    </div>
+    <div class="col-sm-6 small" style="text-align:right;">
+    	NC - <span class="badge muted">{{$parent.sessionStats.numCards}}</span>&nbsp;.&nbsp;
+    	NL - <span class="badge muted">{{$parent.sessionStats.numCardsLeft}}</span>&nbsp;.&nbsp;
+    	NA - <span class="badge muted">{{$parent.sessionStats.numCardsAnswered}}</span>&nbsp;.&nbsp;
+    	T/C - <span class="badge muted">{{$parent.timePerQuestion | duration}}</span>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div ng-show="showL2Header"
          class="row" 
-         style="padding-bottom:5px">
+         style="padding-bottom:5px;padding-top:5px;background-color:white;">
 
-        <div class="col-sm-6 small">
-        	<span class="badge NS">{{$parent.progressSnapshot.numNS}}</span>
-        	<span class="badge L0">{{$parent.progressSnapshot.numL0}}</span>
-        	<span class="badge L1">{{$parent.progressSnapshot.numL1}}</span>
-        	<span class="badge L2">{{$parent.progressSnapshot.numL2}}</span>
-        	<span class="badge L3">{{$parent.progressSnapshot.numL3}}</span>
-        	<span class="badge MAS">{{$parent.progressSnapshot.numMAS}}</span>
-        </div>
-        <div class="col-sm-6 small" style="text-align:right;">
-        	NC - <span class="badge muted">{{$parent.sessionStats.numCards}}</span>&nbsp;.&nbsp;
-        	NL - <span class="badge muted">{{$parent.sessionStats.numCardsLeft}}</span>&nbsp;.&nbsp;
-        	NA - <span class="badge muted">{{$parent.sessionStats.numCardsAnswered}}</span>&nbsp;.&nbsp;
-        	T/C - <span class="badge muted">{{$parent.timePerQuestion | duration}}</span>
-        </div>
-    </div>
-
-    <div class="container-fluid">
-        <div ng-show="showL2Header"
-             class="row" 
-             style="padding-bottom:5px;padding-top:5px;background-color:white;">
-
-            <div class="col-sm-12 small">
-                <span class="badge {{currentQuestion.difficultyLabel}}">{{currentQuestion.difficultyLabel}}</span>
-                <span class="badge {{currentQuestion.learningStats.currentLevel}}">{{currentQuestion.learningStats.currentLevel}}</span>
-                <span class="badge {{currentQuestion.learningStats.efficiencyLabel}}">{{currentQuestion.learningStats.efficiencyLabel}}</span>
-                <span class="badge muted">{{currentQuestion.learningStats.numAttempts}}</span>
-                <span class="badge muted">{{currentQuestion.learningStats.lastAttemptTime | elapsedDuration}}</span>
-                <table class="temporal">
-                    <tr>
-                        <td ng-repeat="score in currentQuestion.learningStats.temporalScores track by $index"
-                            class="rating-{{score}}"></td>
-                    </tr>
-                </table>
-            </div>
+        <div class="col-sm-12 small">
+            <span class="badge {{currentQuestion.difficultyLabel}}">{{currentQuestion.difficultyLabel}}</span>
+            <span class="badge {{currentQuestion.learningStats.currentLevel}}">{{currentQuestion.learningStats.currentLevel}}</span>
+            <span class="badge {{currentQuestion.learningStats.efficiencyLabel}}">{{currentQuestion.learningStats.efficiencyLabel}}</span>
+            <span class="badge muted">{{currentQuestion.learningStats.numAttempts}}</span>
+            <span class="badge muted">{{currentQuestion.learningStats.lastAttemptTime | elapsedDuration}}</span>
+            <table class="temporal">
+                <tr>
+                    <td ng-repeat="score in currentQuestion.learningStats.temporalScores track by $index"
+                        class="rating-{{score}}"></td>
+                </tr>
+            </table>
         </div>
     </div>
-
 </div>

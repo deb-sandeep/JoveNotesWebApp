@@ -8,6 +8,17 @@
 	padding:0px;
 }
 
+.fixedbody {
+	position:fixed;
+	top:75px;
+	bottom:60px;
+	left:0px;
+	width:100%;
+	padding:0px;
+	overflow-x: auto;
+	overflow-y: auto;
+}
+
 .fixedfooter {
 	position:fixed;
 	bottom:0px;
@@ -20,7 +31,7 @@
 
 .jove_match_question_div {
     
-    font: normal 12px/150% Verdana, Arial, Helvetica, sans-serif ;
+    font: normal 12px/150% 'Open Sans', sans-serif, Verdana, Helvetica, Arial ;
     overflow: hidden ;
     width: 100%;
 }
@@ -35,21 +46,10 @@
 }
 
 .jove_match_question_div caption {
-    font-family:"Trebuchet MS"; 
-    font-size:17px; 
-    padding-bottom: 10px;
-}
-
-.jove_match_question_div table thead th {
-    
-    color: #4B4B4B ;
-    font-size: 13px ;
-    font-weight: bold ;
-}
-
-.jove_match_question_div table td,
-.jove_match_question_div table th {
-    padding: 2px 2px;
+    font-family:"Open Sans"; 
+    font-size:13px; 
+    padding-bottom: 5px;
+    text-align: center;
 }
 
 .jove_match_question_div .separator_td {
@@ -58,11 +58,11 @@
     max-width: 25px ;
 }
 
-.jove_match_question_div table tbody td {
+.jove_match_question_div table tbody tr td {
 
-    color: #00496B ;
     font-size: 13px ;
     font-weight: normal ;
+    padding: 2px 2px;
 }
 
 .jove_match_question_div .sel_unans_question {
@@ -101,19 +101,3 @@
     background: #ECECEC;
 }
 
-.matching_ans_table {
-    
-    border-collapse: collapse ;
-    font: normal 13px/150% Verdana, Arial, Helvetica, sans-serif ;
-    text-align: left ;
-    margin-left:auto; 
-    margin-right:auto;
-    min-width: 400px;
-}
-
-.matching_ans_table td {
-    
-    padding: 5px 5px 5px 5px;
-    border: 1px solid #000;
-    border-color: #83D1FB;
-}

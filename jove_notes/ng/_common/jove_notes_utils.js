@@ -284,6 +284,24 @@ this.getLearningEfficiencyLabel = function( score ) {
     else                                    { return "D"  ; }
 }
 
+this.playSoundClip = function( clipPath ) {
+    
+    var audio = document.getElementById( "audio" ) ;
+    audio.src = clipPath ;
+    audio.load() ;
+    audio.play() ;
+} ;
+
+this.playCorrectAnswerClip = function() {
+    this.playSoundClip( "/lib-app/media/audio/correct_answer.mp3" ) ;
+} ;
+
+this.playWrongAnswerClip = function() {
+    this.playSoundClip( "/lib-app/media/audio/wrong_answer.mp3" ) ;
+} ;
+
+
+
 // -----------------------------------------------------------------------------
 
 function isDebug() {

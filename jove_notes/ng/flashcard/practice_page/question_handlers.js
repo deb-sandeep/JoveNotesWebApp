@@ -75,6 +75,7 @@ function QAHandler( chapterDetails, question ) {
 function TFHandler( chapterDetails, questionObj ) {
 
 	var textFormatter = new TextFormatter( chapterDetails ) ;
+	var jnUtils = new JoveNotesUtil() ;
 
 	var question = questionObj ;
 	var chapterDetails = chapterDetails ;
@@ -90,13 +91,11 @@ function TFHandler( chapterDetails, questionObj ) {
 		if( answerLength == 0 ) { this.answerLength = 5 } ;
 
 		trueBtn.onclick = function() {
-			answeredCorrectly = ( question.truthValue ) ? true : false ;
-			scope.showAnswer() ;
+			handleUserRating( true ) ;
 		} ;
 
 		falseBtn.onclick = function() {
-			answeredCorrectly = ( !question.truthValue ) ? true : false ;
-			scope.showAnswer() ;
+			handleUserRating( false ) ;
 		} ;
 	}
 
@@ -136,6 +135,17 @@ function TFHandler( chapterDetails, questionObj ) {
 					P( question.justification )
 				  ) ;
 	} ;
+
+	function handleUserRating( userChoice ) {
+		answeredCorrectly = ( question.truthValue == userChoice ) ? true : false ;
+		scope.showAnswer() ;
+		if( answeredCorrectly ) {
+			jnUtils.playCorrectAnswerClip() ;
+		}
+		else {
+			jnUtils.playWrongAnswerClip() ;
+		}
+	}
 }
 
 // =============================================================================
@@ -153,27 +163,17 @@ function MatchingHandler( chapterDetails, questionObj ) {
 	this.initialize = function( $scope ){ 
 		log.debug( "Initializing matching handler." ) ;
 		scope = $scope ; 
-		manager = new MatchQuestionManager( questionObj ) ;
+		manager = new MatchQuestionManager( questionObj, textFormatter ) ;
 		manager.initialize() ;
 	}
 
-	this.getAnswerLength = function() { 
-		return manager.answerLength ; 
-	} ;
+	this.getAnswerLength = function() { return manager.answerLength ; } ;
 
-	this.getQuestionUI = function() { 
-		return manager.getQuestionUI() ; 
-	} ;
+	this.getQuestionUI = function() { return manager.getQuestionUI() ; } ;
 
-	this.initializeQuestionUI = function() {
-		manager.refresh() ;
-	} ;
+	this.initializeQuestionUI = function() { manager.refresh() ; } ;
 
-	this.getAnswerUI = function() { 
-		return 'Matching answer' ; 
-	} ;
+	this.getAnswerUI = function() { return manager.getAnswerUI() ; } ;
 
-	this.initializeAnswerUI = function() {} ;
-
-	this.freezeQuestionUI = function() {} ;
+	this.freezeQuestionUI = function() { manager.freezeQuestionUI() ; } ;
 }

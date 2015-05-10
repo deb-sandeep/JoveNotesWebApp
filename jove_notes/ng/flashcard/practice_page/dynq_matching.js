@@ -1,4 +1,4 @@
-function MatchQuestionManager( questionObj ) {
+function MatchQuestionManager( questionObj, textFormatter ) {
 
 	function CardAnswerWrapper( question, answer ) {
 		this.question = question ;
@@ -7,7 +7,7 @@ function MatchQuestionManager( questionObj ) {
 	} ;
 
 	// Derived attributes - initialized during initialize() funciton
-	this.caption   = questionObj.caption ;
+	this.caption   = textFormatter.format( questionObj.caption ) ;
 	this.matchData = questionObj.matchData ;
 	this.matchAssociativeArray = [] ;
 	this.numTotalQuestions = 0 ;
@@ -24,9 +24,14 @@ function MatchQuestionManager( questionObj ) {
 	var oldUnAnsQuestionRowIndex = -1 ;
 	var selectedQuestion         = null ;
 
+	var jnUtils = new JoveNotesUtil() ;
+
 	this.initialize = function() {
 
 		for( var i=0; i<this.matchData.length; i++ ) {
+
+			this.matchData[i][0] = textFormatter.format( this.matchData[i][0] ) ;
+			this.matchData[i][1] = textFormatter.format( this.matchData[i][1] ) ;
 
 			var question = this.matchData[i][0] ;
 			var answer   = this.matchData[i][1] ;
@@ -48,26 +53,93 @@ function MatchQuestionManager( questionObj ) {
 
 	this.initializeTableDOMWithoutData = function() {
 		
-		tableDOM = document.createElement( "table" ) ;
-		tableDOM.createCaption().innerHTML = this.caption ;
+		tableDOM = TABLE( CAPTION( this.caption ), TBODY( 
+						TR.map( this.matchData, function( rowData ){
+						  return [ 
+						  	TD( DIV() ), 
+						  	TD( { class : 'separator_td' }, DIV() ) , 
+						  	TD( DIV() ) 
+						  ] ;
+					}))) ;
 
-		var tBody = tableDOM.createTBody() ;
-		for( var i=0; i<this.numTotalQuestions; i++ ) {
-			var tr = tBody.insertRow() ;
-			
-			tr.insertCell().appendChild( document.createElement( "div" ) ) ;
+		divDOM = DIV( { 'class' : 'jove_match_question_div' }, tableDOM ) ;
+	} ;
 
-			var mDiv = document.createElement( "div" ) ;
-			var middleTD = tr.insertCell() ;
-			middleTD.className = 'separator_td' ;
-			middleTD.appendChild( mDiv ) ;
+	this.getQuestionUI = function() {
+		return divDOM ;
+	} ;
 
-			tr.insertCell().appendChild( document.createElement( "div" ) ) ;
+	this.refresh = function() {
+
+		log.debug( "Refreshing matching question UI" ) ;
+		for( var i=0 ; i<unAnsweredQuestions.length; i++ ) {
+			this.renderUnansweredQuestion( i, 
+				                           unAnsweredQuestions[i], 
+				                           unAnsweredAnswers[i] ) ;
 		}
 
-		divDOM = document.createElement( "div" ) ;
-		divDOM.appendChild( tableDOM ) ;
-		divDOM.setAttribute( "class", "jove_match_question_div" ) ;
+		for( var i=0 ; i<answeredQuestions.length; i++ ) {
+			this.renderAnsweredQuestion( i+unAnsweredQuestions.length,
+				                         answeredQuestions[i], 
+				                         answeredAnswers[i] ) ;
+		}
+	} ;
+
+	this.renderUnansweredQuestion = function( rowIndex, question, answer ) {
+
+		var qDiv = getCellDiv( rowIndex, 0 ) ;
+		var mDiv = getCellDiv( rowIndex, 1 ) ;
+		var aDiv = getCellDiv( rowIndex, 2 ) ;
+
+		qDiv.innerHTML = question ;
+		aDiv.innerHTML = answer ;
+		mDiv.innerHTML = "..." ;
+
+		qDiv.className = "unans_question" ;
+		aDiv.className = "unans_answer" ;
+		
+		var thisInstance = this ;
+		qDiv.onclick = function() {
+			thisInstance.unAnsweredQuestionClicked( rowIndex, question ) ;
+		} ;
+		aDiv.onclick = function() {
+			thisInstance.unAnsweredAnswerClicked( rowIndex, answer ) ;
+		} ;
+	}
+
+	this.renderAnsweredQuestion = function( rowIndex, question, answer ) {
+
+		var qDiv = getCellDiv( rowIndex, 0 ) ;
+		var mDiv = getCellDiv( rowIndex, 1 ) ;
+		var aDiv = getCellDiv( rowIndex, 2 ) ;
+
+		qDiv.innerHTML = question ;
+		aDiv.innerHTML = answer ;
+
+		var answerWrapper = this.matchAssociativeArray[ question ] ;
+		mDiv.innerHTML = answerWrapper.numWrongAttempts ;
+		if( answerWrapper.numWrongAttempts > 0 ) {
+			mDiv.style.background = 'red' ;
+		}
+		else {
+			mDiv.style.background = '#00FF00' ;
+			mDiv.style.color      = '#00FF00' ;
+		}
+		
+		qDiv.className = "ans_question" ;
+		aDiv.className = "ans_answer" ;
+
+		qDiv.onclick = null ;
+		aDiv.onclick = null ;
+	}
+
+	this.freezeQuestionUI = function() {
+
+		log.debug( "Freezing matching question UI" ) ;
+		for( var i=0 ; i<this.numTotalQuestions; i++ ) {
+			getCellDiv( i, 0 ).onclick = null ;
+			getCellDiv( i, 2 ).onclick = null ;
+		}
 	} ;
 
 	this.isRightAnswer = function( question, answer ) {
@@ -117,48 +189,6 @@ function MatchQuestionManager( questionObj ) {
 		}
 		return matchResult ;
 	} ;
-
-	this.getQuestionUI = function() {
-		return divDOM ;
-	} ;
-
-	this.refresh = function() {
-
-		log.debug( "Refreshing matching question UI" ) ;
-		for( var i=0 ; i<unAnsweredQuestions.length; i++ ) {
-			this.renderUnansweredQuestion( i, 
-				                           unAnsweredQuestions[i], 
-				                           unAnsweredAnswers[i] ) ;
-		}
-
-		for( var i=0 ; i<answeredQuestions.length; i++ ) {
-			this.renderAnsweredQuestion( i+unAnsweredQuestions.length,
-				                         answeredQuestions[i], 
-				                         answeredAnswers[i] ) ;
-		}
-	} ;
-
-	this.renderUnansweredQuestion = function( rowIndex, question, answer ) {
-
-		var qDiv = getCellDiv( rowIndex, 0 ) ;
-		var mDiv = getCellDiv( rowIndex, 1 ) ;
-		var aDiv = getCellDiv( rowIndex, 2 ) ;
-
-		qDiv.innerHTML = question ;
-		aDiv.innerHTML = answer ;
-		mDiv.innerHTML = "..." ;
-
-		qDiv.className = "unans_question" ;
-		aDiv.className = "unans_answer" ;
-		
-		var thisInstance = this ;
-		qDiv.onclick = function() {
-			thisInstance.unAnsweredQuestionClicked( rowIndex, question ) ;
-		} ;
-		aDiv.onclick = function() {
-			thisInstance.unAnsweredAnswerClicked( rowIndex, answer ) ;
-		} ;
-	}
 
 	this.unAnsweredQuestionClicked = function( rowIndex, question ) {
 
@@ -213,43 +243,39 @@ function MatchQuestionManager( questionObj ) {
 					break ;
 				}
 			}
-
 			if( incorrect ) {
-				playWrongAnswerClip() ;
+				jnUtils.playWrongAnswerClip() ;
 			}
 			else {
-				playCorrectAnswerClip() ;
+				jnUtils.playCorrectAnswerClip() ;
 			}
 		}
 	} ;
 
-	this.renderAnsweredQuestion = function( rowIndex, question, answer ) {
-
-		var qDiv = getCellDiv( rowIndex, 0 ) ;
-		var mDiv = getCellDiv( rowIndex, 1 ) ;
-		var aDiv = getCellDiv( rowIndex, 2 ) ;
-
-		qDiv.innerHTML = question ;
-		aDiv.innerHTML = answer ;
-
-		var answerWrapper = this.matchAssociativeArray[ question ] ;
-		mDiv.innerHTML = answerWrapper.numWrongAttempts ;
-		if( answerWrapper.numWrongAttempts > 0 ) {
-			mDiv.style.background = 'red' ;
-		}
-		else {
-			mDiv.style.background = '#00FF00' ;
-			mDiv.style.color      = '#00FF00' ;
-		}
-		
-		qDiv.className = "ans_question" ;
-		aDiv.className = "ans_answer" ;
-
-		qDiv.onclick = null ;
-		aDiv.onclick = null ;
-	}
-
 	var getCellDiv = function( rowIndex, colIndex ) {
 		return tableDOM.rows[rowIndex].cells[colIndex].children[0] ;
 	}
+
+	this.getAnswerUI = function() {
+
+		return DIV( { class : 'jove_match_question_div' }, 
+		       	TABLE( 
+		       	  TBODY( 
+					TR.map( this.matchData, function( rowData ){
+
+					  var qDiv = DIV( { class : 'ans_question' } ) ;
+					  var aDiv = DIV( { class : 'ans_answer' } ) ;
+
+					  qDiv.innerHTML = rowData[0] ;
+					  aDiv.innerHTML = rowData[1] ;
+
+					  return [ 
+					  	TD( qDiv ), 
+					  	TD( { class : 'separator_td' }, SPAN( " - " )   ) , 
+					  	TD( aDiv ) 
+					  ] ;
+					}) 
+				  ) 
+			   )) ;
+	} ;
 } ;

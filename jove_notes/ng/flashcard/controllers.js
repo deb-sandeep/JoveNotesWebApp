@@ -154,13 +154,12 @@ function preProcessFlashCardQuestions( questions ) {
         question.learningStats.efficiencyLabel = 
             jnUtil.getLearningEfficiencyLabel( question.learningStats.learningEfficiency ) ;
 
-        associateFormatter( question ) ;
-
+        associateHandler( question ) ;
         processTestDataHints( question ) ;
     }
 }
 
-function associateFormatter( question ) {
+function associateHandler( question ) {
 
     var questionType = question.questionType ;
 

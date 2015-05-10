@@ -43,6 +43,7 @@ $pageConfig = array(
 
 <body ng-controller="FlashCardController">
     <?php include( ALERT_DIV_FILE ) ; ?>
+    <audio id="audio"></audio>
   	<div class="ng-view"></div>	
 </body>
 

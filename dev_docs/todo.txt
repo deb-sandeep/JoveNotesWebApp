@@ -2,8 +2,6 @@ Flashcard (Practice page)
 --------------------------------------------------------------------------------
 . Implement image label dynamic question
 . Implement difficult word dynamic question 
-. Implement matching dynamic questions.
-. Implement sound clip for right and wrong dynamic answer
 . Test dynamic question rendering both in notes and flash cards
 . Design server communication for flash card practice actions
 . Create Dummy APIs for flash card practice communications (expand this list.)
@@ -17,6 +15,15 @@ Flashcard (Start page)
 
 Completed
 --------------------------------------------------------------------------------
+5/11/15 -- 
+
+5/10/15 --
+. Implement matching dynamic questions.
+. Redesigned flashcard body design, including dynamic resize logic
+. Implemented images in matching questions
+. Migated existing DOM creation logic to DOMBuilder.js
+. Implement sound clip for right and wrong dynamic answer
+
 5/9/15 --
 . Dynamic question framework created and tested with sammple question
 . Implemented true/false dynamic question
