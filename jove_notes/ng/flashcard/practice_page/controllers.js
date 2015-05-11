@@ -424,7 +424,7 @@ function onWindowResize() {
 			$scope.showAuxControls  = false ;
 		}
 	}
-	setTimeout( resizeBody, 1 ) ;
+	setTimeout( resizeBody, 10 ) ;
 }
 
 function resizeBody() {
@@ -440,6 +440,7 @@ function resizeBody() {
 			top    : oldBodyTop,
 			bottom : oldBodyBottom
 		} ;
+		$scope.$digest() ;
 	}
 }
 

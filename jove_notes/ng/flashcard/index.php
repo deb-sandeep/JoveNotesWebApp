@@ -26,6 +26,7 @@ $pageConfig = array(
     <script src="/apps/jove_notes/ng/flashcard/practice_page/question_handlers.js"></script>    
     <script src="/apps/jove_notes/ng/flashcard/practice_page/dynq_matching.js"></script>    
     <script src="/apps/jove_notes/ng/flashcard/practice_page/dynq_imglabel.js"></script>    
+    <script src="/apps/jove_notes/ng/flashcard/practice_page/dynq_spellbee.js"></script>    
 
     <script src="/apps/jove_notes/ng/flashcard/routes.js"></script>    
     <script src="/apps/jove_notes/ng/flashcard/filters.js"></script>    

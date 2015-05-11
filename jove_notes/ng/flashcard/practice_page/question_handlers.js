@@ -200,3 +200,27 @@ function ImageLabelHandler( chapterDetails, questionObj ) {
 	this.getAnswerUI = function() { return manager.getAnswerUI() ; } ;
 
 }
+
+// =============================================================================
+// Spell Bee Handler
+// =============================================================================
+function SpellBeeHandler( chapterDetails, questionObj ) {
+
+	var manager = null ;
+
+	this.initialize = function( $scope ){ 
+		log.debug( "Initializing SpellBee handler." ) ;
+		manager = new SpellBeeManager( questionObj, $scope ) ;
+		manager.initialize() ;
+	}
+
+	this.getAnswerLength = function() { return manager.answerLength ; } ;
+
+	this.getQuestionUI = function() { return manager.getQuestionUI() ; } ;
+
+	this.freezeQuestionUI = function() { manager.freezeQuestionUI() ; } ;
+
+	this.getAnswerUI = function() { return manager.getAnswerUI() ; } ;
+
+	this.initializeAnswerUI = function(){ manager.initializeAnswerUI() ; } ;
+}

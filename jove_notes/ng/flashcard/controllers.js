@@ -178,6 +178,9 @@ function associateHandler( question ) {
     else if( questionType == QuestionTypes.prototype.QT_IMGLABEL ) {
         question.handler = new ImageLabelHandler( $scope.chapterDetails, question ) ;
     }
+    else if( questionType == QuestionTypes.prototype.QT_SPELLBEE ) {
+        question.handler = new SpellBeeHandler( $scope.chapterDetails, question ) ;
+    }
     else {
         log.error( "Unrecognized question type = " + questionType ) ;
         throw "Unrecognized question type. Can't associate formatter." ;

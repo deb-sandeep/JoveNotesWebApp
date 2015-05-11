@@ -139,6 +139,20 @@
 				"lastAttemptTime"    : -1,
 				"_testLATLag"        : 0
 			}
+		},
+		{
+			"questionId"      : 11,
+			"questionType"    : "spellbee",
+			"word"            : "abbreviate",
+			"difficultyLevel" : 100,
+			"learningStats"   : {
+				"numAttempts"        : 0,
+				"learningEfficiency" : 0,
+				"currentLevel"       : "NS",
+				"temporalScores"     : [],
+				"lastAttemptTime"    : -1,
+				"_testLATLag"        : 0
+			}
 		}
 	]
 }

@@ -23,6 +23,7 @@ function MatchQuestionManager( questionObj, textFormatter, $scope ) {
 	var tableDOM                 = null ;
 	var oldUnAnsQuestionRowIndex = -1 ;
 	var selectedQuestion         = null ;
+	var answeredCorrectly        = false ;
 
 	var jnUtils = new JoveNotesUtil() ;
 
@@ -244,9 +245,11 @@ function MatchQuestionManager( questionObj, textFormatter, $scope ) {
 			}
 			$scope.showAnswer() ;
 			if( incorrect ) {
+				answeredCorrectly = false ;
 				jnUtils.playWrongAnswerClip() ;
 			}
 			else {
+				answeredCorrectly = true ;
 				jnUtils.playCorrectAnswerClip() ;
 			}
 		}
@@ -257,6 +260,8 @@ function MatchQuestionManager( questionObj, textFormatter, $scope ) {
 	}
 
 	this.getAnswerUI = function() {
+
+		if( answeredCorrectly ) return DIV() ;
 
 		return DIV( { class : 'jove_match_question_div' }, 
 		       	TABLE( 

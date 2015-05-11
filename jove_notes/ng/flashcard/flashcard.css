@@ -180,3 +180,48 @@
 .jove_imglabel_div .label_matched   { background-color: #E1E1E1 ; color: #BFBFBF; }
 .jove_imglabel_div .label_selected  { background-color: #00FF00 ; }
 
+/* -------------------------------------------------------------------------- */
+/* Dynamic question - Spell Bee                                               */
+/* -------------------------------------------------------------------------- */
+#_spellbeediv table {
+    border-collapse: separate;
+    border-spacing: 1px 0px;
+}
+
+#_spellbeediv td {
+    width: 50px;
+    height: 50px;
+    padding: 1px; 
+}
+
+#_spellbeediv td button {
+    font: normal 14px 'Open Sans', sans-serif ;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    padding: 0px; 
+}
+
+#_spellbeediv .vtf_cell {
+    background: #E1E1E1;
+    font: normal 16px 'Open Sans', sans-serif ;
+    font-weight: bold;
+    padding: 1px;
+    width: 40px;
+    height: 50px;
+    text-align: center;
+}
+
+#_spellbeediv_ansdiv_spelling {
+
+    font: normal 25px 'Open Sans', sans-serif ;
+    color: red;
+    letter-spacing: 5px ;
+    text-align: center;
+}
+
+#_spellbeediv_ansdiv_meaning {
+
+    font: normal 13px 'Open Sans', sans-serif ;
+    text-align: left;
+}

@@ -76,6 +76,7 @@ function ImageLabelManager( questionObj, textFormatter, $scope ) {
 	this.numTotalIncorrectAttempts = 0 ;
 	this.labelsArray = [] ;
 	this.answerLength = 0 ;
+	this.answeredCorrectly = false ;
 
 	this.selectedHotspot = null ;
 
@@ -110,6 +111,9 @@ function ImageLabelManager( questionObj, textFormatter, $scope ) {
 	} ;
 
 	this.getAnswerUI = function() {
+		if( this.answeredCorrectly ) {
+			return DIV() ;
+		}
 		return this.getUIDOM( false ) ;
 	}
 
@@ -266,9 +270,11 @@ function ImageLabelManager( questionObj, textFormatter, $scope ) {
 				if( this.numHotSpotsLeftToMatch <= 0 ) {
 					$scope.showAnswer() ;
 					if( this.numTotalIncorrectAttempts == 0 ) {
+						this.answeredCorrectly = true ;
 						jnUtils.playCorrectAnswerClip() ;
 					}
 					else {
+						this.answeredCorrectly = false ;
 						jnUtils.playWrongAnswerClip() ;
 					}
 				}

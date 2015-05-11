@@ -13,6 +13,7 @@ QuestionTypes.prototype.QT_QA       = "question_answer" ;
 QuestionTypes.prototype.QT_TF       = "true_false" ;
 QuestionTypes.prototype.QT_MATCHING = "matching" ;
 QuestionTypes.prototype.QT_IMGLABEL = "image_label" ;
+QuestionTypes.prototype.QT_SPELLBEE = "spellbee" ;
 
 
 // -----------------------------------------------------------------------------
