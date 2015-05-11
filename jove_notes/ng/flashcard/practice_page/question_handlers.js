@@ -157,13 +157,11 @@ function MatchingHandler( chapterDetails, questionObj ) {
 
 	var question = questionObj ;
 	var chapterDetails = chapterDetails ;
-	var scope = null ;
 	var manager = null ;
 
 	this.initialize = function( $scope ){ 
 		log.debug( "Initializing matching handler." ) ;
-		scope = $scope ; 
-		manager = new MatchQuestionManager( questionObj, textFormatter ) ;
+		manager = new MatchQuestionManager( questionObj, textFormatter, $scope ) ;
 		manager.initialize() ;
 	}
 
@@ -176,4 +174,29 @@ function MatchingHandler( chapterDetails, questionObj ) {
 	this.getAnswerUI = function() { return manager.getAnswerUI() ; } ;
 
 	this.freezeQuestionUI = function() { manager.freezeQuestionUI() ; } ;
+}
+
+// =============================================================================
+// Image Label handler
+// =============================================================================
+function ImageLabelHandler( chapterDetails, questionObj ) {
+
+	var textFormatter = new TextFormatter( chapterDetails ) ;
+
+	var question = questionObj ;
+	var chapterDetails = chapterDetails ;
+	var manager = null ;
+
+	this.initialize = function( $scope ){ 
+		log.debug( "Initializing image label handler." ) ;
+		manager = new ImageLabelManager( questionObj, textFormatter, $scope ) ;
+		manager.initialize() ;
+	}
+
+	this.getAnswerLength = function() { return manager.answerLength ; } ;
+
+	this.getQuestionUI = function() { return manager.getQuestionUI() ; } ;
+
+	this.getAnswerUI = function() { return manager.getAnswerUI() ; } ;
+
 }

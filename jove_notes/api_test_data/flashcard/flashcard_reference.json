@@ -67,66 +67,6 @@
 			}
 		},
 		{
-			"questionId"      : 3,
-			"questionType"    : "question_answer",
-			"question"        : "What is the meaning of <p><code>Dog</code>",
-			"answer"          : "An animal who barks",
-			"difficultyLevel" : 75,
-			"learningStats"   : {
-				"numAttempts"        : 6,
-				"learningEfficiency" : 75,
-				"currentLevel"       : "L1",
-				"temporalScores"     : [ "H", "A", "P" ],
-				"lastAttemptTime"    : -1,
-				"_testLATLag"        : -5
-			}
-		},
-		{
-			"questionId"      : 4,
-			"questionType"    : "question_answer",
-			"question"        : "What is the meaning of <p><code>Vi</code>",
-			"answer"          : "Visual Editor",
-			"difficultyLevel" : 80,
-			"learningStats"   : {
-				"numAttempts"        : 8,
-				"learningEfficiency" : 65,
-				"currentLevel"       : "L3",
-				"temporalScores"     : [ "H", "A", "E", "P", "E" ],
-				"lastAttemptTime"    : -1,
-				"_testLATLag"        : -5
-			}
-		},
-		{
-			"questionId"      : 5,
-			"questionType"    : "question_answer",
-			"question"        : "What is a movie?",
-			"answer"          : "A movie is something that we should watch\nFriday nights",
-			"difficultyLevel" : 95,
-			"learningStats"   : {
-				"numAttempts"        : 10,
-				"learningEfficiency" : 55,
-				"currentLevel"       : "MAS",
-				"temporalScores"     : [ "H", "A", "P", "E", "E" ],
-				"lastAttemptTime"    : -1,
-				"_testLATLag"        : -5
-			}
-		},
-		{
-			"questionId"      : 6,
-			"questionType"    : "fib",
-			"question"        : "The {0} of India is {1}.",
-			"answers"         : [ "capital", "Delhi" ],
-			"difficultyLevel" : 10,
-			"learningStats"   : {
-				"numAttempts"        : 6,
-				"learningEfficiency" : 95,
-				"currentLevel"       : "L3",
-				"temporalScores"     : [ "H", "A", "P", "E", "E" ],
-				"lastAttemptTime"    : -1,
-				"_testLATLag"        : -5
-			}
-		},
-		{
 			"questionId"      : 7,
 			"questionType"    : "fib",
 			"question"        : "The shortcut for copy is {0} and that of paste is {1}.",
@@ -168,6 +108,27 @@
 				[ "4", "Four"  ],
 				[ "5", "Five"  ],
 				[ "Smily", "{{@img smily.png}}" ]
+			],
+			"difficultyLevel" : 100,
+			"learningStats"   : {
+				"numAttempts"        : 0,
+				"learningEfficiency" : 0,
+				"currentLevel"       : "NS",
+				"temporalScores"     : [],
+				"lastAttemptTime"    : -1,
+				"_testLATLag"        : 0
+			}
+		},
+		{
+			"questionId"      : 10,
+			"questionType"    : "image_label",
+			"caption"         : "Label the image",
+			"imageName"       : "teeths.png",
+			"hotSpots"        : [
+			    [ 104,  21, "Molars"    ],
+			    [ 242,  20, "Premolars" ],
+			    [ 364,  24, "Incisors"  ],
+			    [ 305, 201, "Canines"   ]
 			],
 			"difficultyLevel" : 100,
 			"learningStats"   : {

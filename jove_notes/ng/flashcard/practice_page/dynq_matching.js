@@ -1,4 +1,4 @@
-function MatchQuestionManager( questionObj, textFormatter ) {
+function MatchQuestionManager( questionObj, textFormatter, $scope ) {
 
 	function CardAnswerWrapper( question, answer ) {
 		this.question = question ;
@@ -71,7 +71,6 @@ function MatchQuestionManager( questionObj, textFormatter ) {
 
 	this.refresh = function() {
 
-		log.debug( "Refreshing matching question UI" ) ;
 		for( var i=0 ; i<unAnsweredQuestions.length; i++ ) {
 			this.renderUnansweredQuestion( i, 
 				                           unAnsweredQuestions[i], 
@@ -243,6 +242,7 @@ function MatchQuestionManager( questionObj, textFormatter ) {
 					break ;
 				}
 			}
+			$scope.showAnswer() ;
 			if( incorrect ) {
 				jnUtils.playWrongAnswerClip() ;
 			}

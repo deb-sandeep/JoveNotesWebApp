@@ -29,6 +29,9 @@
 	padding:5px;
 }
 
+/* -------------------------------------------------------------------------- */
+/* Dynamic question - Matching                                                */
+/* -------------------------------------------------------------------------- */
 .jove_match_question_div {
     
     font: normal 12px/150% 'Open Sans', sans-serif, Verdana, Helvetica, Arial ;
@@ -100,4 +103,80 @@
     vertical-align: middle;
     background: #ECECEC;
 }
+
+/* -------------------------------------------------------------------------- */
+/* Dynamic question - Image Label                                             */
+/* -------------------------------------------------------------------------- */
+.jove_imglabel_div {
+    
+    font: normal 12px/150% 'Open Sans', sans-serif, Verdana, Helvetica, Arial ;
+    overflow: hidden ;
+    width: 100%;
+}
+
+.jove_imglabel_div table {
+    
+    border-collapse: collapse ;
+    text-align: left ;
+    margin-left:auto ; 
+    margin-right:auto ;
+}
+
+.jove_imglabel_div caption {
+    font-family:"Open Sans"; 
+    font-size:13px; 
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+.jove_imglabel_div td {
+    vertical-align: top ;
+}
+
+.jove_imglabel_div .label_table td {
+
+    color: #00496B ;
+    font-size: 15px ;
+    font-weight: normal ;
+    padding: 2px 0px 2px 0px ;
+}
+
+.jove_imglabel_div .result_ind_empty,
+.jove_imglabel_div .result_ind_right,
+.jove_imglabel_div .result_ind_wrong,
+.jove_imglabel_div .label_id_unmatched,
+.jove_imglabel_div .label_id_matched,
+.jove_imglabel_div .label_id_selected,
+.jove_imglabel_div .label_unmatched,
+.jove_imglabel_div .label_matched,
+.jove_imglabel_div .label_selected {
+
+    vertical-align: middle ;
+    padding: 7px 0px 7px 0px ;
+    float: right;
+    width: 100% ;
+}
+
+.jove_imglabel_div .result_ind_empty,
+.jove_imglabel_div .result_ind_right,
+.jove_imglabel_div .result_ind_wrong { min-width: 25px ; }
+
+.jove_imglabel_div .result_ind_right { background-color: #00FF00 ; }
+.jove_imglabel_div .result_ind_wrong { background-color: #FF0000 ; }
+
+.jove_imglabel_div .label_id_unmatched,
+.jove_imglabel_div .label_id_matched,
+.jove_imglabel_div .label_id_selected {
+
+    min-width: 35px ;
+    text-align: right ;
+}
+
+.jove_imglabel_div .label_id_unmatched { background-color: #D4FFFF ; }
+.jove_imglabel_div .label_id_matched   { background-color: #E1E1E1 ; color: #BFBFBF; }
+.jove_imglabel_div .label_id_selected  { background-color: #00FF00 ; }
+
+.jove_imglabel_div .label_unmatched { background-color: #D4FFFF ; }
+.jove_imglabel_div .label_matched   { background-color: #E1E1E1 ; color: #BFBFBF; }
+.jove_imglabel_div .label_selected  { background-color: #00FF00 ; }
 

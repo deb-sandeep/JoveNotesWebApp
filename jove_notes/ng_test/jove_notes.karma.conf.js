@@ -51,6 +51,7 @@ module.exports = function(config) {
 
       'ng/flashcard/practice_page/question_handlers.js',
       'ng/flashcard/practice_page/dynq_matching.js',
+      'ng/flashcard/practice_page/dynq_imglabel.js',
       
       'ng/flashcard/routes.js',
       'ng/flashcard/filters.js',

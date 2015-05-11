@@ -12,6 +12,8 @@ QuestionTypes.prototype.QT_FIB      = "fib" ;
 QuestionTypes.prototype.QT_QA       = "question_answer" ;
 QuestionTypes.prototype.QT_TF       = "true_false" ;
 QuestionTypes.prototype.QT_MATCHING = "matching" ;
+QuestionTypes.prototype.QT_IMGLABEL = "image_label" ;
+
 
 // -----------------------------------------------------------------------------
 function StudyStrategyTypes(){}
@@ -42,6 +44,10 @@ function TextFormatter( chapterDetails ) {
 	   var tmp = document.createElement( "DIV" ) ;
 	   tmp.innerHTML = html ;
 	   return tmp.textContent || tmp.innerText || "" ;
+	}
+
+	this.getAbsolutePathForImage = function( imgName ) {
+		return imgResourcePath + imgName ;
 	}
 
 	this.format = function( inputText ) {
