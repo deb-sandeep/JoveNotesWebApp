@@ -23,7 +23,7 @@
 			"noteElementId"   : 2,
 			"elementType"     : "question_answer",
 			"question"        : "What is the answer to life? \\( ax^2 + 2bx + c = 0 \\)",
-			"answer"          : "$$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.$$",
+			"answer"          : "$$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}$$",
 			"difficultyLevel" : 25,
 			"learningStats" : {
 				"learningEfficiency" : 80

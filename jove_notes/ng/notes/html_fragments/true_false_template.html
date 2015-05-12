@@ -1,23 +1,24 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <span class="glyphicon glyphicon-option-horizontal"></span>&nbsp;&nbsp;
-    <span class="panel-title"><b>Points to remember</b></span>
+    <span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;
+    <span class="panel-title">Points to remember</span>
   </div>
-  <div class="panel-body">
-    <div class="table-responsive">
-      <table class="table table-condensed table-hover">
-        <tr ng-repeat="element in trueFalseStatements">
-            <td>
-              <p ng-bind-html="element.statement"     ng-show="element.truthValue"></p>
-              <p ng-bind-html="element.justification" ng-hide="element.truthValue"></p>
-            </td>
-            <td>
-              <div class="pull-right" 
-                   ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
-              </div>
-            </td>
-        </tr>
-      </table>
-    </div>
+  <div class="table-responsive">
+    <table class="table table-condensed table-hover">
+      <tr ng-repeat="element in trueFalseStatements">
+          <td>
+            <span><span class="glyphicon glyphicon-ok"></span></span>
+          </td>
+          <td>
+            <p ng-bind-html="element.statement"     ng-show="element.truthValue"></p>
+            <p ng-bind-html="element.justification" ng-hide="element.truthValue"></p>
+          </td>
+          <td>
+            <div class="pull-right" 
+                 ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
+            </div>
+          </td>
+      </tr>
+    </table>
   </div>
 </div> 
