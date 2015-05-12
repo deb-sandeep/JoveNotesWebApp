@@ -10,9 +10,9 @@
 
 .fixedbody {
 	position:fixed;
-	top:75px;
-	bottom:60px;
 	left:0px;
+    top:75px;
+    bottom:60px;
 	width:100%;
 	padding:0px;
 	overflow-x: auto;

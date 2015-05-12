@@ -1,0 +1,55 @@
+{
+	"chapterDetails" : { 
+		"chapterId"        : 23,
+		"syllabusName"     : "Class-8",
+		"subjectName"      : "Biology",
+		"chapterNumber"    : 3,
+		"subChapterNumber" : 0,
+		"chapterName"      : "Digestion, absorption, assimilation"
+	},
+	"deckDetails" : {
+		"numCards" : 100,
+		"difficultyStats"  : {
+			"numVE" : 20,
+			"numE"  : 10,
+			"numM"  : 10,
+			"numH"  : 25,
+			"numVH" : 25
+		},
+		"progressSnapshot" : {
+			"numNS"  :  20 ,
+			"numL0"  :  20 ,
+			"numL1"  :  10 ,
+			"numL2"  :  10 ,
+			"numL3"  :  20 ,
+			"numMAS" :  20
+		},
+		"learningCurveData" : [
+	        [ 100,   0,   0,  0,  0,   0 ],
+	        [  50,  10,  40,  0,  0,   0 ],
+	        [  30,   5,  10, 55,  0,   0 ],
+	        [  10,  10,  20, 40, 20,   0 ],
+	        [   0,   5,   0, 50, 30,  15 ],
+	        [   0,   0,   0, 10, 50,  40 ],
+	        [   0,   0,   0,  0, 30,  70 ],
+	        [   0,   0,   0,  0,  0, 100 ]
+		]
+	},
+	"questions" : [
+		{
+			"questionId"      : 2,
+			"questionType"    : "question_answer",
+			"question"        : "What is the answer to life?",
+			"answer"          : "The answer to life is <p>$$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}$$",
+			"difficultyLevel" : 40,
+			"learningStats"   : {
+				"numAttempts"        : 4,
+				"learningEfficiency" : 85,
+				"currentLevel"       : "L0",
+				"temporalScores"     : [ "A", "P" ],
+				"lastAttemptTime"    : -1,
+				"_testLATLag"        : -5
+			}
+		}
+	]
+}

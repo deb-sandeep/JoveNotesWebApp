@@ -25,6 +25,7 @@ Completed
 . Experiment with MathJS and integrate it with text formatter
 . Testing UTF data in JSON for notes and flash cards
 . Implement note element type - TRUE_FALSE
+. Formulae not showing in flash cards, investigate
 
 5/11/15 -- 
 . Implement image label dynamic question

@@ -80,6 +80,7 @@ flashCardApp.directive( 'renderFlashCardAnswer', function() {
 					element.append( answerUI ) ;
 
 					handler.initializeAnswerUI() ;
+					MathJax.Hub.Queue( ["Typeset", MathJax.Hub, answerUI] ) ;
 				}
 			}) ; 
         }

@@ -55,7 +55,7 @@
 			"questionId"      : 2,
 			"questionType"    : "question_answer",
 			"question"        : "What is the answer to life?",
-			"answer"          : "The answer to life is <p>{{@img AnswerToLife.png}}",
+			"answer"          : "The answer to life is <p>$$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}$$",
 			"difficultyLevel" : 40,
 			"learningStats"   : {
 				"numAttempts"        : 4,

@@ -25,7 +25,7 @@ $scope.showL2Header     = true ;
 $scope.showAuxControls  = false ;
 $scope.showFooterDropup = true ;
 
-$scope.bodyDivStyle = null ; 
+$scope.bodyDivStyle = { top : 75, bottom : 60 } ;
 
 $scope.questionsForSession = [] ;
 $scope.currentQuestion  = null ;
