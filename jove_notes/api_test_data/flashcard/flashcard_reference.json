@@ -40,7 +40,7 @@
 			"questionId"      : 1,
 			"questionType"    : "question_answer",
 			"question"        : "What is the meaning of <p><code>Cat</code>",
-			"answer"          : "A feline animal",
+			"answer"          : "हमारे राष्ट्रीय प्रतीक",
 			"difficultyLevel" : 25,
 			"learningStats"   : {
 				"numAttempts"        : 2,

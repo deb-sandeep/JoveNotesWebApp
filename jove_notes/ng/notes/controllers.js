@@ -52,6 +52,12 @@ $scope.filteredNotesElements = [] ;
 $scope.wordMeanings          = [] ;
 $scope.questionAnswers       = [] ;
 $scope.fibs                  = [] ;
+$scope.definitions           = [] ;
+$scope.characters            = [] ;
+$scope.teacherNotes          = [] ;
+$scope.matchings             = [] ;
+$scope.events                = [] ;
+$scope.trueFalseStatements   = [] ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -111,8 +117,6 @@ function processServerData( data ) {
 		return ;
 	}
 	
- 	// formatter.createAndInjectFormattedText( data[0] ) ;
-
  	$scope.chapterDetails = data.chapterDetails ;
  	$scope.notesElements  = data.notesElements ;
 
@@ -130,9 +134,15 @@ function processNotesElements() {
 	// Reset all the arrrays before we fill them with filtered contents
 	$scope.filteredNotesElements.length = 0 ;
 
-	$scope.wordMeanings.length      = 0 ;
-	$scope.questionAnswers.length   = 0 ;
-	$scope.fibs.length              = 0 ;
+	$scope.wordMeanings.length        = 0 ;
+	$scope.questionAnswers.length     = 0 ;
+	$scope.fibs.length                = 0 ;
+	$scope.definitions.length         = 0 ;
+	$scope.characters.length          = 0 ;
+	$scope.teacherNotes.length        = 0 ;
+	$scope.matchings.length           = 0 ;
+	$scope.events.length              = 0 ;
+	$scope.trueFalseStatements.length = 0 ;
 
 	for( index=0; index<$scope.notesElements.length; index++ ) {
 
@@ -151,6 +161,24 @@ function processNotesElements() {
 			}
 			else if( type == NotesElementsTypes.prototype.FIB ) {
 				$scope.fibs.push( formatFIB( element ) ) ;
+			}
+			else if( type == NotesElementsTypes.prototype.DEFINITION ) {
+				$scope.definitions.push( formatDefinition( element ) ) ;
+			}
+			else if( type == NotesElementsTypes.prototype.CHARACTER ) {
+				$scope.characters.push( formatCharacter( element ) ) ;
+			}
+			else if( type == NotesElementsTypes.prototype.TEACHER_NOTE ) {
+				$scope.teacherNotes.push( formatTeacherNote( element ) ) ;
+			}
+			else if( type == NotesElementsTypes.prototype.MATCHING ) {
+				$scope.matchings.push( formatMatching( element ) ) ;
+			}
+			else if( type == NotesElementsTypes.prototype.EVENT ) {
+				$scope.events.push( formatEvent( element ) ) ;
+			}
+			else if( type == NotesElementsTypes.prototype.TRUE_FALSE ) {
+				$scope.trueFalseStatements.push( formatTrueFalse( element ) ) ;
 			}
 		}
 		else {
@@ -206,6 +234,48 @@ function formatQA( qaElement ){
 	qaElement.answer = textFormatter.format( qaElement.answer ) ;
 
 	return qaElement ;
+}
+
+function formatDefinition( defElement ) {
+	defElement.term = textFormatter.format( defElement.term ) ;
+	defElement.definition = textFormatter.format( defElement.definition ) ;
+
+	return defElement ;
+}
+
+function formatCharacter( charElement ) {
+	charElement.character = textFormatter.format( charElement.character ) ;
+	charElement.estimate = textFormatter.format( charElement.estimate ) ;
+
+	return charElement ;
+}
+
+function formatTeacherNote( tnElement ) {
+	tnElement.note = textFormatter.format( tnElement.note ) ;
+	return tnElement ;
+}
+
+function formatMatching( matchElement ) {
+	for( var i=0; i<matchElement.matchData.length; i++ ) {
+		var pair = matchElement.matchData[i] ;
+		pair[0] = textFormatter.format( pair[0] ) ;
+		pair[1] = textFormatter.format( pair[1] ) ;
+	}
+	return matchElement ;
+}
+
+function formatEvent( eventElement ) {
+	eventElement.time = textFormatter.format( eventElement.time ) ;
+	eventElement.event = textFormatter.format( eventElement.event ) ;
+
+	return eventElement ;
+}
+
+function formatTrueFalse( tfElement ) {
+	tfElement.statement = textFormatter.format( tfElement.statement ) ;
+	tfElement.justification = textFormatter.format( tfElement.justification ) ;
+
+	return tfElement ;
 }
 
 // ---------------- End of controller ------------------------------------------

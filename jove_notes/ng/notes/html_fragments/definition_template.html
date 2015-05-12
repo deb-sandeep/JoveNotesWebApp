@@ -1,0 +1,12 @@
+<div class="panel panel-info" ng-repeat="element in definitions">
+  <div class="panel-heading">
+    <span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;
+    <span class="panel-title" ng-bind-html="element.term"></span>&nbsp;&nbsp;[Definition]
+    <div class="pull-right" 
+         ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
+    </div>
+  </div>
+  <div class="panel-body">
+    <p ng-bind-html="element.definition"></p>
+  </div>
+</div> 

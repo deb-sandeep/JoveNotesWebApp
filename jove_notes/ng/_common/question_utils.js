@@ -1,9 +1,20 @@
 // -----------------------------------------------------------------------------
 function NotesElementsTypes(){}
 
-NotesElementsTypes.prototype.FIB = "fib" ;
-NotesElementsTypes.prototype.WM  = "word_meaning" ;
-NotesElementsTypes.prototype.QA  = "question_answer" ;
+NotesElementsTypes.prototype.WM            = "word_meaning" ;
+NotesElementsTypes.prototype.QA            = "question_answer" ;
+NotesElementsTypes.prototype.FIB           = "fib" ;
+NotesElementsTypes.prototype.DEFINITION    = "definition" ;
+NotesElementsTypes.prototype.CHARACTER     = "character" ;
+NotesElementsTypes.prototype.TEACHER_NOTE  = "teacher_note" ;
+NotesElementsTypes.prototype.MATCHING      = "matching" ;
+NotesElementsTypes.prototype.EVENT         = "event" ;
+NotesElementsTypes.prototype.TRUE_FALSE    = "true_false" ;
+NotesElementsTypes.prototype.IMAGE_LABEL   = "image_label" ;
+NotesElementsTypes.prototype.SPELLBEE      = "spellbee" ;
+NotesElementsTypes.prototype.CHEM_EQUATION = "chem_equation" ;
+NotesElementsTypes.prototype.CHEM_COMPOUND = "chem_compound" ;
+NotesElementsTypes.prototype.EQUATION      = "equation" ;
 
 // -----------------------------------------------------------------------------
 function QuestionTypes(){}
@@ -14,7 +25,6 @@ QuestionTypes.prototype.QT_TF       = "true_false" ;
 QuestionTypes.prototype.QT_MATCHING = "matching" ;
 QuestionTypes.prototype.QT_IMGLABEL = "image_label" ;
 QuestionTypes.prototype.QT_SPELLBEE = "spellbee" ;
-
 
 // -----------------------------------------------------------------------------
 function StudyStrategyTypes(){}

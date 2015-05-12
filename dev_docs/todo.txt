@@ -1,15 +1,9 @@
 Flashcard (Practice page)
 --------------------------------------------------------------------------------
-. Implement note element type - MATCHING
 . Implement note element type - CHEM_EQUATION
 . Implement note element type - CHEM_COMPOUND
-. Implement note element type - DEFINITION
-. Implement note element type - EVENT
 . Implement note element type - SPELLBEE
-. Implement note element type - CHARACTER
 . Implement note element type - IMAGE_LABEL
-. Implement note element type - TRUE_FALSE
-. Implement note element type - TEACHER_NOTE
 . Implement note element type - EQUATION
 . Design server communication for flash card practice actions
 . Create Dummy APIs for flash card practice communications (expand this list.)
@@ -22,6 +16,16 @@ Flashcard (Start page)
 
 Completed
 --------------------------------------------------------------------------------
+5/12/15 --
+. Implement note element type - DEFINITION
+. Implement note element type - CHARACTER
+. Implement note element type - TEACHER_NOTE
+. Implement note element type - MATCHING
+. Implement note element type - EVENT
+. Experiment with MathJS and integrate it with text formatter
+. Testing UTF data in JSON for notes and flash cards
+. Implement note element type - TRUE_FALSE
+
 5/11/15 -- 
 . Implement image label dynamic question
 . Implement show answer logic for image labeling

@@ -22,8 +22,8 @@
 		{
 			"noteElementId"   : 2,
 			"elementType"     : "question_answer",
-			"question"        : "What is the answer to life?",
-			"answer"          : "The answer to life is <p>{{@img AnswerToLife.png}}",
+			"question"        : "What is the answer to life? \\( ax^2 + 2bx + c = 0 \\)",
+			"answer"          : "$$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.$$",
 			"difficultyLevel" : 25,
 			"learningStats" : {
 				"learningEfficiency" : 80
@@ -32,8 +32,8 @@
 		{
 			"noteElementId"   : 3,
 			"elementType"     : "word_meaning",
-			"word"            : "Dog",
-			"meaning"         : "An animal who barks",
+			"word"            : "शेर",
+			"meaning"         : "हमारे राष्ट्रीय प्रतीक",
 			"difficultyLevel" : 40,
 			"learningStats" : {
 				"learningEfficiency" : 80
@@ -76,6 +76,181 @@
 			"answers"         : [ "ctrl-c", "ctrl-v" ],
 			"difficultyLevel" : 80,
 			"learningStats" : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"   : 8,
+			"elementType"     : "definition",
+			"term"            : "Water cycle",
+			"definition"      : "The cycle of processes by which water circulates between the earth's oceans, atmosphere, and land, involving precipitation as rain and snow, drainage in streams and rivers, and return to the atmosphere by evaporation and transpiration.<p>{{@img WaterCycle.jpg}}",
+			"difficultyLevel" : 40,
+			"learningStats" : {
+				"learningEfficiency" : 90
+			}
+		},
+		{
+			"noteElementId"   : 9,
+			"elementType"     : "character",
+			"character"       : "Akbar",
+			"estimate"        : "Akbar, the third generation Moghal emperor who lived from 1542-1605 A.D, has been extolled as the greatest of all Moghals, righteous in deed and noble in character. He is praised to be the only and truly secular Emperor of the times, very caring and protective of his subjects.",
+			"difficultyLevel" : 40,
+			"learningStats" : {
+				"learningEfficiency" : 90
+			}
+		},
+		{
+			"noteElementId"   : 10,
+			"elementType"     : "teacher_note",
+			"note"            : "Study the salient points of Akbar. This is important.",
+			"difficultyLevel" : 40,
+			"learningStats" : {
+				"learningEfficiency" : 90
+			}
+		},
+		{
+			"noteElementId"   : 11,
+			"elementType"     : "matching",
+			"matchData"       : [
+				[ "1", "One"   ],
+				[ "2", "Two"   ],
+				[ "3", "Three" ],
+				[ "4", "Four"  ],
+				[ "5", "Five"  ],
+				[ "Smily", "{{@img smily.png}}" ]
+			],
+			"difficultyLevel" : 40,
+			"learningStats" : {
+				"learningEfficiency" : 90
+			}
+		},
+		{
+			"noteElementId"   : 12,
+			"elementType"     : "matching",
+			"matchData"       : [
+			    [ "Bairam Khan",       "Regent or Akbar"              ],
+			    [ "Adil Shah Suri",    "Nephew of Sher Shah Suri"     ],
+			    [ "Hemu",              "Army chief of Adil Shal Suri" ],
+			    [ "Baz Bahadur",       "King of Malwa"                ],
+			    [ "Queen Durgawati",   "Regent ruler of Gondwana"     ],
+			    [ "Jodha Bai",         "Daughter of Bharamal"         ],
+			    [ "Raja Man Singh",    "Son of Raja Bhagwant Das"     ],
+			    [ "Udai Singh",        "Ruler of Mewar"               ],
+			    [ "Rana Pratap Singh", "Son of Udai Singh"            ]
+			],
+			"difficultyLevel" : 80,
+			"learningStats" : {
+				"learningEfficiency" : 20
+			}
+		},
+		{
+			"noteElementId"    : 13,
+			"elementType"      : "event",
+			"time"             : "1191 AD",
+			"event"            : "First Battle of Tarain",
+			"difficultyLevel"  : 30,
+			"learningStats"    : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"    : 14,
+			"elementType"      : "event",
+			"time"             : "1192 AD",
+			"event"            : "Second Battle of Tarain",
+			"difficultyLevel"  : 30,
+			"learningStats"    : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"    : 15,
+			"elementType"      : "event",
+			"time"             : "1206 AD",
+			"event"            : "Accession of Qutub-ud-Din Aibak to tde tdrone oof Delhi",
+			"difficultyLevel"  : 30,
+			"learningStats"    : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"    : 16,
+			"elementType"      : "event",
+			"time"             : "1210 AD",
+			"event"            : "Deatd of Qutub-ud-Din Aibak",
+			"difficultyLevel"  : 30,
+			"learningStats"    : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"    : 17,
+			"elementType"      : "event",
+			"time"             : "1221 AD",
+			"event"            : "Changez Khan invaded India (Mongol invasion)",
+			"difficultyLevel"  : 30,
+			"learningStats"    : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"    : 18,
+			"elementType"      : "event",
+			"time"             : "1236 AD",
+			"event"            : "Accession of Razia Sultan to tde tdrone of Delhi",
+			"difficultyLevel"  : 30,
+			"learningStats"    : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"    : 19,
+			"elementType"      : "event",
+			"time"             : "1240 AD",
+			"event"            : "Deatd of Razia Sultan",
+			"difficultyLevel"  : 30,
+			"learningStats"    : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"    : 20,
+			"elementType"      : "event",
+			"time"             : "1296 AD",
+			"event"            : "Accession of Ala-ud-Din Khilji",
+			"difficultyLevel"  : 30,
+			"learningStats"    : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"    : 21,
+			"elementType"      : "event",
+			"time"             : "1316 AD",
+			"event"            : "Deatd of Ala-ud-Din Khilji",
+			"difficultyLevel"  : 30,
+			"learningStats"    : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"    : 22,
+			"elementType"      : "event",
+			"time"             : "1325 AD",
+			"event"            : "Accession of Muhammad-bin Tughlaq",
+			"difficultyLevel"  : 30,
+			"learningStats"    : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"    : 23,
+			"elementType"      : "true_false",
+			"statement"        : "Sun is a star.",
+			"truthValue"       : false,
+			"justification"    : "Sun is a celestial body and emits its own light. Hence it is a star.",
+			"difficultyLevel"  : 30,
+			"learningStats"    : {
 				"learningEfficiency" : 80
 			}
 		}
