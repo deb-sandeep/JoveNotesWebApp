@@ -10,10 +10,10 @@ NotesElementsTypes.prototype.TEACHER_NOTE  = "teacher_note" ;
 NotesElementsTypes.prototype.MATCHING      = "matching" ;
 NotesElementsTypes.prototype.EVENT         = "event" ;
 NotesElementsTypes.prototype.TRUE_FALSE    = "true_false" ;
-NotesElementsTypes.prototype.IMAGE_LABEL   = "image_label" ;
-NotesElementsTypes.prototype.SPELLBEE      = "spellbee" ;
 NotesElementsTypes.prototype.CHEM_EQUATION = "chem_equation" ;
 NotesElementsTypes.prototype.CHEM_COMPOUND = "chem_compound" ;
+NotesElementsTypes.prototype.SPELLBEE      = "spellbee" ;
+NotesElementsTypes.prototype.IMAGE_LABEL   = "image_label" ;
 NotesElementsTypes.prototype.EQUATION      = "equation" ;
 
 // -----------------------------------------------------------------------------

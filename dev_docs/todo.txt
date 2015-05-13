@@ -1,10 +1,9 @@
 Flashcard (Practice page)
 --------------------------------------------------------------------------------
-. Implement note element type - CHEM_EQUATION
-. Implement note element type - CHEM_COMPOUND
-. Implement note element type - SPELLBEE
-. Implement note element type - IMAGE_LABEL
-. Implement note element type - EQUATION
+. Think of JoveNotes redesign
+. Plan for notes input datamodel (SQL)
+. Integrate JoveNotes run with Database
+. Think of server side API logic
 . Design server communication for flash card practice actions
 . Create Dummy APIs for flash card practice communications (expand this list.)
 . Implement markCardForEdit
@@ -16,6 +15,14 @@ Flashcard (Start page)
 
 Completed
 --------------------------------------------------------------------------------
+5/13/15 --
+. Chemical equation parser using MathJax and mhchem package
+. Implement note element type - CHEM_EQUATION
+. Implement note element type - CHEM_COMPOUND
+. Implement note element type - SPELLBEE
+. Implement note element type - IMAGE_LABEL
+. Implement note element type - EQUATION
+
 5/12/15 --
 . Implement note element type - DEFINITION
 . Implement note element type - CHARACTER

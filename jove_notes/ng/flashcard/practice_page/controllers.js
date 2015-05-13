@@ -15,8 +15,8 @@ var durationTillNowInMillis = 0 ;
 
 var sessionStartTime = new Date().getTime() ;
 var sessionActive    = true ;
-var oldBodyTop       = -1 ;
-var oldBodyBottom    = -1 ;
+var oldBodyTop       = 0 ;
+var oldBodyBottom    = 0 ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.showL0Header     = true ;

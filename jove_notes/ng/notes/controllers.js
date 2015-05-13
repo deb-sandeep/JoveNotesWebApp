@@ -58,6 +58,11 @@ $scope.teacherNotes          = [] ;
 $scope.matchings             = [] ;
 $scope.events                = [] ;
 $scope.trueFalseStatements   = [] ;
+$scope.chemEquations         = [] ;
+$scope.chemCompounds         = [] ;
+$scope.spellbeeWords         = [] ;
+$scope.imageLabels           = [] ;
+$scope.equations             = [] ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -92,6 +97,10 @@ $scope.applyFilter = function() {
 $scope.cancelFilter = function() {
 	$scope.showFilterForm = false ;
 	$scope.filterCriteria.deserialize() ;
+}
+
+$scope.playWordSound = function( word ) {
+	jnUtil.playWordSound( word ) ;
 }
 
 // ---------------- Private functions ------------------------------------------
@@ -134,15 +143,20 @@ function processNotesElements() {
 	// Reset all the arrrays before we fill them with filtered contents
 	$scope.filteredNotesElements.length = 0 ;
 
-	$scope.wordMeanings.length        = 0 ;
-	$scope.questionAnswers.length     = 0 ;
-	$scope.fibs.length                = 0 ;
-	$scope.definitions.length         = 0 ;
-	$scope.characters.length          = 0 ;
-	$scope.teacherNotes.length        = 0 ;
-	$scope.matchings.length           = 0 ;
-	$scope.events.length              = 0 ;
-	$scope.trueFalseStatements.length = 0 ;
+	// $scope.wordMeanings.length        = 0 ;
+	// $scope.questionAnswers.length     = 0 ;
+	// $scope.fibs.length                = 0 ;
+	// $scope.definitions.length         = 0 ;
+	// $scope.characters.length          = 0 ;
+	// $scope.teacherNotes.length        = 0 ;
+	// $scope.matchings.length           = 0 ;
+	// $scope.events.length              = 0 ;
+	// $scope.trueFalseStatements.length = 0 ;
+	// $scope.chemEquations.length       = 0 ;
+	// $scope.chemCompounds.length       = 0 ;
+	// $scope.spellbeeWords.length       = 0 ;
+	// $scope.imageLabels.length         = 0 ;
+	// $scope.equations.length           = 0 ;
 
 	for( index=0; index<$scope.notesElements.length; index++ ) {
 
@@ -179,6 +193,21 @@ function processNotesElements() {
 			}
 			else if( type == NotesElementsTypes.prototype.TRUE_FALSE ) {
 				$scope.trueFalseStatements.push( formatTrueFalse( element ) ) ;
+			}
+			else if( type == NotesElementsTypes.prototype.CHEM_EQUATION ) {
+				$scope.chemEquations.push( formatChemEquation( element ) ) ;
+			}
+			else if( type == NotesElementsTypes.prototype.CHEM_COMPOUND ) {
+				$scope.chemCompounds.push( formatChemCompound( element ) ) ;
+			}
+			else if( type == NotesElementsTypes.prototype.SPELLBEE ) {
+				$scope.spellbeeWords.push( formatSpellbeeWord( element ) ) ;
+			}
+			else if( type == NotesElementsTypes.prototype.IMAGE_LABEL ) {
+				$scope.imageLabels.push( formatImageLabel( element ) ) ;
+			}
+			else if( type == NotesElementsTypes.prototype.EQUATION ) {
+				$scope.equations.push( formatEquation( element ) ) ;
 			}
 		}
 		else {
@@ -276,6 +305,34 @@ function formatTrueFalse( tfElement ) {
 	tfElement.justification = textFormatter.format( tfElement.justification ) ;
 
 	return tfElement ;
+}
+
+function formatChemEquation( chemEqElement ) {
+	chemEqElement.description = textFormatter.format( chemEqElement.description ) ;
+	chemEqElement.notes = textFormatter.format( chemEqElement.notes ) ;
+
+	return chemEqElement ;
+}
+
+function formatChemCompound( chemCompoundElement ) {
+	return chemCompoundElement ;
+}
+
+function formatSpellbeeWord( spellbeeWord ) {
+	return spellbeeWord ;
+}
+
+function formatImageLabel( imageLabelElement ) {
+	return imageLabelElement ;
+}
+
+function formatEquation( eqElement ) {
+	eqElement.description = textFormatter.format( eqElement.description ) ;
+	for( var i=0; i<eqElement.symbols.length; i++ ) {
+		var symbol = eqElement.symbols[i] ;
+		symbol[1] = textFormatter.format( symbol[1] ) ;
+	}
+	return eqElement ;
 }
 
 // ---------------- End of controller ------------------------------------------

@@ -51,9 +51,10 @@
 		},
 		{
 			"noteElementId"   : 5,
-			"elementType"     : "question_answer",
-			"question"        : "What is a movie?",
-			"answer"          : "A movie is something that we should watch\nFriday nights",
+			"elementType"     : "chem_equation",
+			"equation"        : "$$\\ce{CO2 + C -> 2 CO}$$",
+			"description"     : "Carbon di-oxide reacts with Carbon to produce Carbon Monooxide.",
+			"notes"           : "This is why we should not burn coke in a closed room.",
 			"difficultyLevel" : 60,
 			"learningStats" : {
 				"learningEfficiency" : 80
@@ -251,6 +252,107 @@
 			"justification"    : "Sun is a celestial body and emits its own light. Hence it is a star.",
 			"difficultyLevel"  : 30,
 			"learningStats"    : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"   : 24,
+			"elementType"     : "chem_equation",
+			"equation"        : "$$\\ce{$x\\,$ Na(NH4)HPO4 ->[\\Delta](NaPO3)_{$x$} + $x\\,$ NH3 ^ + $x\\,$ H2O}$$",
+			"description"     : "Some arbitrary complex equation.",
+			"notes"           : "This is copied from the internet for the sake of testing.",
+			"difficultyLevel" : 60,
+			"learningStats" : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"   : 25,
+			"elementType"     : "chem_compound",
+			"symbol"          : "$$\\ce{NaHCO3}$$",
+			"chemicalName"    : "Sodium Bi-Carbonate.",
+			"commonName"      : "Baking soda",
+			"difficultyLevel" : 60,
+			"learningStats" : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"   : 26,
+			"elementType"     : "chem_compound",
+			"symbol"          : "$$\\ce{CaSO4.2H2O}$$",
+			"chemicalName"    : "Calcium Sulfate Dihydrate.",
+			"commonName"      : "Gypsum",
+			"difficultyLevel" : 60,
+			"learningStats" : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"   : 27,
+			"elementType"     : "spellbee",
+			"word"            : "abbreviate",
+			"pronounciation"  : "(ə-brēˈvē-ātˌ)",
+			"difficultyLevel" : 60,
+			"learningStats" : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"   : 28,
+			"elementType"     : "spellbee",
+			"word"            : "abyss",
+			"pronounciation"  : "(ə-bĭsˈ)",
+			"difficultyLevel" : 60,
+			"learningStats" : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"   : 29,
+			"elementType"     : "image_label",
+			"caption"         : "Label the image",
+			"imageName"       : "teeths.png",
+			"hotSpots"        : [
+			    [ 106,  22, "Molars"    ],
+			    [ 242,  21, "Premolars" ],
+			    [ 365,  24, "Incisors"  ],
+			    [ 305, 202, "Canines"   ]
+			],
+			"difficultyLevel" : 60,
+			"learningStats" : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"   : 30,
+			"elementType"     : "equation",
+			"equation"        : "$$s = ut + \\frac{1}{2}at^2$$",
+			"description"     : "The equation of displacement given the initial velocity and acceleration.",
+			"symbols"         : [
+				[ "\\(s\\)", "The displacement" ],
+				[ "\\(u\\)", "Initial velocity" ],
+				[ "\\(t\\)", "Time" ],
+				[ "\\(a\\)", "Acceleration" ]
+			],
+			"difficultyLevel" : 60,
+			"learningStats" : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"   : 31,
+			"elementType"     : "equation",
+			"equation"        : "$$v = u + at$$",
+			"description"     : "Final velocity as a function of initial velocity, acceleration and time.",
+			"symbols"         : [
+				[ "\\(v\\)", "Final velocity" ],
+				[ "\\(u\\)", "Initial velocity" ],
+				[ "\\(t\\)", "Time" ],
+				[ "\\(a\\)", "Acceleration" ]
+			],
+			"difficultyLevel" : 60,
+			"learningStats" : {
 				"learningEfficiency" : 80
 			}
 		}

@@ -13,6 +13,9 @@ $pageConfig = array(
 <head>
     <?php include( HEAD_CONTENT_FILE ); ?>
 
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({ TeX: { extensions: ["mhchem.js"] }});
+    </script>
     <script type="text/javascript" src="/lib-ext/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
     <link rel='stylesheet' href='/apps/jove_notes/ng/flashcard/flashcard.css'>

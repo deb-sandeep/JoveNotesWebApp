@@ -1,4 +1,4 @@
-function VirtualTextFieldKeyboardWidget( keyboardConfig, numEntryCells ) {
+function VirtualTextFieldKeyboardWidget( pronounciation, keyboardConfig, numEntryCells ) {
 
 	var keyboardConfig = keyboardConfig ;
 	var numEntryCells  = numEntryCells ;
@@ -14,7 +14,7 @@ function VirtualTextFieldKeyboardWidget( keyboardConfig, numEntryCells ) {
 	this.initialize = function() {
 
 		this.divDOM = DIV( { align : 'center', id : '_spellbeediv' },
-						H5( 'Spell Bee' ),
+						H5( 'Spell Bee - ' + pronounciation ),
 						this.getVirtualTextFieldDOM(),
 						P(),
 						this.getVirtualKeyBoardDOM()
@@ -174,7 +174,7 @@ function SpellBeeManager( questionObj, $scope ) {
 
 	this.initialize = function() {
 
-		inputWidget = new VirtualTextFieldKeyboardWidget( sbKeys, 17 ) ;
+		inputWidget = new VirtualTextFieldKeyboardWidget( questionObj.pronounciation, sbKeys, 17 ) ;
 		audio = document.getElementById( "audio" ) ;
 
 		inputWidget.initialize() ;

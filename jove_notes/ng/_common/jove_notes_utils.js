@@ -300,6 +300,10 @@ this.playWrongAnswerClip = function() {
     this.playSoundClip( "/lib-app/media/audio/wrong_answer.mp3" ) ;
 } ;
 
+this.playWordSound = function( word ) {
+    this.playSoundClip( "/apps/jove_notes/workspace/_spellbee/" + word + ".mp3" ) ;
+}
+
 
 
 // -----------------------------------------------------------------------------
