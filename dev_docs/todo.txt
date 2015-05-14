@@ -1,6 +1,7 @@
 Flashcard (Practice page)
 --------------------------------------------------------------------------------
-. Think of JoveNotes redesign
+. Think of JoveNotes redesign - 
+	maybe new apps, instead of refactor. Move away from Jove???
 . Plan for notes input datamodel (SQL)
 . Integrate JoveNotes run with Database
 . Think of server side API logic
@@ -15,6 +16,15 @@ Flashcard (Start page)
 
 Completed
 --------------------------------------------------------------------------------
+5/14/15 --
+. Redesigned JoveNotes XText grammar
+. Rebranded minimal eclipse with JoveNotes XText plugins
+. Set up base project for taking notes
+. Synched up the base project with OptiPlex Git server and created clones on 
+  my and Deba's machine
+. Checked in xtext and xtext.ui projects to Github
+. Fixed optiplex RECORDFAIL_TIMEOUT malfunction
+
 5/13/15 --
 . Chemical equation parser using MathJax and mhchem package
 . Implement note element type - CHEM_EQUATION
