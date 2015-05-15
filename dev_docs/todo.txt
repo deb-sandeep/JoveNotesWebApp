@@ -1,7 +1,6 @@
 Flashcard (Practice page)
 --------------------------------------------------------------------------------
-. Think of JoveNotes redesign - 
-	maybe new apps, instead of refactor. Move away from Jove???
+. Start JoveNotes processor project - plumbing setup
 . Plan for notes input datamodel (SQL)
 . Integrate JoveNotes run with Database
 . Think of server side API logic
@@ -9,6 +8,7 @@ Flashcard (Practice page)
 . Create Dummy APIs for flash card practice communications (expand this list.)
 . Implement markCardForEdit
 . Score computation
+. Create local page for entering hindi and latex formulaes
 
 Flashcard (Start page)
 --------------------------------------------------------------------------------
@@ -16,6 +16,16 @@ Flashcard (Start page)
 
 Completed
 --------------------------------------------------------------------------------
+5/15/15 --
+. Move PHPAppFW, PHPWebApps to Op and set up structure including linking of
+  directories etc
+. Set up Dell Optiplex server
+. Open up router port for Op (HTTP, SSH and MySQL)
+. Changed router port forward to map 
+  - 80 to Op and 8080 to Pi. Pi HTTP daemon now listens at port 8080
+  - 22 to Op and 2222 to Pi. Pi SSH daemon now listens at port 2222
+  - 3306 to Op and 33306 to Pi. MySQL daemon now listens at port 33306
+
 5/14/15 --
 . Redesigned JoveNotes XText grammar
 . Rebranded minimal eclipse with JoveNotes XText plugins
