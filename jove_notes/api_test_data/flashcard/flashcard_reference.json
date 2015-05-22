@@ -144,7 +144,7 @@
 			"questionId"      : 11,
 			"questionType"    : "spellbee",
 			"word"            : "abbreviate",
-			"pronounciation"  : "(ə-brēˈvē-ātˌ)",
+			"pronunciation"   : "(ə-brēˈvē-ātˌ)",
 			"difficultyLevel" : 100,
 			"learningStats"   : {
 				"numAttempts"        : 0,

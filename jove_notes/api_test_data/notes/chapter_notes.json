@@ -292,7 +292,7 @@
 			"noteElementId"   : 27,
 			"elementType"     : "spellbee",
 			"word"            : "abbreviate",
-			"pronounciation"  : "(ə-brēˈvē-ātˌ)",
+			"pronunciation"   : "(ə-brēˈvē-ātˌ)",
 			"difficultyLevel" : 60,
 			"learningStats" : {
 				"learningEfficiency" : 80
@@ -302,7 +302,7 @@
 			"noteElementId"   : 28,
 			"elementType"     : "spellbee",
 			"word"            : "abyss",
-			"pronounciation"  : "(ə-bĭsˈ)",
+			"pronunciation"   : "(ə-bĭsˈ)",
 			"difficultyLevel" : 60,
 			"learningStats" : {
 				"learningEfficiency" : 80

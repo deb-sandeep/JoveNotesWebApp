@@ -62,7 +62,7 @@
 	},
 	{	"elementType"     : "spellbee",
 		"word"            : "abbreviate",
-		"pronounciation"  : "(ə-brēˈvē-ātˌ)",
+		"pronunciation"   : "(ə-brēˈvē-ātˌ)",
 	},
 	{	"elementType"     : "image_label",
 		"caption"         : "Label the image",

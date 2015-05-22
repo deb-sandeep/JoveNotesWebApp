@@ -1,21 +1,60 @@
-Flashcard (Practice page)
+PHPWebApp
 --------------------------------------------------------------------------------
-. Start JoveNotes processor project - plumbing setup
-. Plan for notes input datamodel (SQL)
-. Integrate JoveNotes run with Database
-. Think of server side API logic
+. Implement ProgressSnapshotAPI
 . Design server communication for flash card practice actions
 . Create Dummy APIs for flash card practice communications (expand this list.)
 . Implement markCardForEdit
 . Score computation
 . Create local page for entering hindi and latex formulaes
-
-Flashcard (Start page)
---------------------------------------------------------------------------------
 . Implement 'apply level to all cards' on click action
 
+JoveNotes processor
+--------------------------------------------------------------------------------
+. JNP - Think about redesigning the chemical equation language  
+. JNP - Make question optional from @matching and republish the eclipse plugins
+. JNP - common name should be optional in chemical compounds
+. JNP - Implement notes element - "chem_equation"
+
+================================================================================
 Completed
 --------------------------------------------------------------------------------
+5/22/15 --
+. JNP - Implement notes element - "spellbee"
+. JNP - Implement Spellbee asynchronous command
+. JNP - Implement notes element - "image_label"
+. JNP - Implement notes element - "chem_compound"
+. JNP - Implement notes element - "equation"
+. JNP - Spellbee Cmd - do not download pronounciation if exists in DB
+
+5/21/15 --
+. JNP - Implement notes element - "teacher_note"
+. JNP - Implement notes element - "character"
+. JNP - Implement notes element - "event"
+. JNP - Implement notes element - "fib"
+. JNP - Implement notes element - "matching"
+. JNP - Implement notes element - "true_false"
+. JNP - Moved persistent queue from file based to database
+. JNP - Added 'ready' attribute to notes element and card
+
+5/20/15 --
+. Difficulty level implementation of questions
+. JNP - JSON content framework of NE and Cards
+. Revisit object id - minimal input + unique/ add element/question type
+. Serialize card to database
+. Implemented pooling for database connections.
+. Implemented source to DB sync logic and initial testing done. All is well ;)
+. JNP - Implement notes element - "word_meaning"
+. JNP - Implement CMap transformation.
+. JNP - Implement notes element - "definition"
+
+5/19/15 --
+. JNP - Make JN text processor regexp more robust
+. JNP - Media (img) processing and sync during notes element content processing
+. JNP - Implement notes element - "question_answer"
+. JNP - DAO implementation completed. 
+. JNP - Database table setup for chapter, notes and cards
+. JNP - Write scaffold algorithm to insert chapter, notes and cards.
+ 
 5/15/15 --
 . Move PHPAppFW, PHPWebApps to Op and set up structure including linking of
   directories etc

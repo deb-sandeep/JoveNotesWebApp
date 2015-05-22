@@ -268,8 +268,8 @@ this.getDifficultyLevelLabel = function( level ) {
 
     if     ( level >= 0  && level < 30 ) { return "VE" ; }
     else if( level >= 30 && level < 50 ) { return "E"  ; }
-    else if( level >= 50 && level < 70 ) { return "M"  ; }
-    else if( level >= 70 && level < 85 ) { return "H"  ; }
+    else if( level >= 50 && level < 75 ) { return "M"  ; }
+    else if( level >= 75 && level < 90 ) { return "H"  ; }
     return "VH" ;
 }
 

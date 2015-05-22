@@ -9,7 +9,7 @@
         <thead>
             <tr class="default">
                 <th>Word</th>
-                <th>Pronounciation</th>
+                <th>Pronunciation</th>
                 <th>Play</th>
                 <th></th>
             </tr>
@@ -17,7 +17,7 @@
         <tbody>
             <tr ng-repeat="element in spellbeeWords">
                 <td class="text-primary" style="letter-spacing:3px"><b>{{element.word | uppercase}}</b></td>
-                <td>{{element.pronounciation}}</td>
+                <td>{{element.pronunciation}}</td>
                 <td>
                   <button type="button" class="btn btn-default" ng-click="playWordSound(element.word)">
                     <span class="glyphicon glyphicon-volume-up"></span>
