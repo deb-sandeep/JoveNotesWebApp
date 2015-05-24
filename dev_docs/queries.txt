@@ -1,0 +1,53 @@
+--------------------------------------------------------------------------------
+=> Extracting num cards and classification into difficulty levels
+The summation of all group counts is the total number of cards.
+--------------------------------------------------------------------------------
+select 
+	if( difficulty_level < 30, 'VE', 
+		if( difficulty_level < 50, 'E', 
+			if( difficulty_level < 75, 'M',
+				if( difficulty_level < 90, 'H', 'VH') 
+            ) 
+		) 
+	) as level, count(*)
+from 
+	card 
+where 
+	chapter_id = 1 and 
+	ready = 1
+group by level ;
+
+
+--------------------------------------------------------------------------------
+=> Role and entitlemnt data for Deba and UTUser (JoveNotes)
+--------------------------------------------------------------------------------
+insert into user.roles
+( name, child_role ) 
+values 
+( "JN_CLASS_8_USER", null ), 
+( "JN_TESTER", null );
+
+insert into user.entitlement_selector_alias 
+( alias_name, selector_type, selector_value, description )
+values
+( 'JN_ALL_CHAPTERS',         'PATH', '+:chapter:**',         'All JoveNotes chapters' ),
+( 'JN_ALL_CHAPTERS_CLASS_8', 'PATH', '+:chapter:Class-8/**', 'Only Class-8 chapters' ) ;
+
+insert into user.entitlement_alias 
+( alias_name, entitlement_type, child_entitlement_alias, selector_alias, permissible_ops )
+values
+( 'JN_ENT_USE_CLASS_8_CHAPTERS', 'RAW', null, 'JN_ALL_CHAPTERS_CLASS_8', 'NOTES, FLASH_CARD, CHAPTER_STATS' ),
+( 'JN_ENT_USE_ALL_CHAPTERS',     'RAW', null, 'JN_ALL_CHAPTERS',         'NOTES, FLASH_CARD, CHAPTER_STATS' );
+
+insert into user.entity_entitlement
+( entity_type, entity_name, entitlement_type, entitlement_alias )
+values
+( 'ROLE', 'JN_CLASS_8_USER', 'ENT_ALIAS', 'JN_ENT_USE_CLASS_8_CHAPTERS' ),
+( 'ROLE', 'JN_TESTER',       'ENT_ALIAS', 'JN_ENT_USE_ALL_CHAPTERS'     );
+
+insert into user.user_roles
+( user_name, role_name )
+values
+( 'UTUser', 'JN_TESTER' ),
+( 'Deba',   'JN_CLASS_8_USER' ) ;
+

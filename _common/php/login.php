@@ -76,9 +76,7 @@ $requestedPage = HTTPUtils::getValueFromSession(
               <select id="default_app_element"
                 class="form-control"
                 name="default_app">
-                <option value="jove_notes">Jove Notes</option>
-                <option value="home_finance">Home Finance</option>
-                <option value="test_app" selected>Test App</option>
+                <option value="jove_notes" selected>Jove Notes</option>
               </select>
             </div>
             <div class="checkbox">

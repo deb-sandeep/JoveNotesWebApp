@@ -1,12 +1,18 @@
 PHPWebApp
 --------------------------------------------------------------------------------
+. Give entitlements to Deba and UTUser for chapters
 . Implement ProgressSnapshotAPI
+  * - Entitlements for chapters and notesAuthorized, flashcardAuthorized, 
+    statisticsAuthorized for each chapter
+    - Count by user learning level
 . Design server communication for flash card practice actions
 . Create Dummy APIs for flash card practice communications (expand this list.)
 . Implement markCardForEdit
 . Score computation
 . Create local page for entering hindi and latex formulaes
 . Implement 'apply level to all cards' on click action
+. Reenable user caching in user_context_interceptor.php - it has been turned 
+  off for development purposes.
 
 JoveNotes processor
 --------------------------------------------------------------------------------
@@ -18,6 +24,14 @@ JoveNotes processor
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+5/23/15 --
+. JNP - Special need-for-update handling for cards and notes elements which are
+  not ready. This is to take care of optimized async processing (network 
+  download) in case of elements which require 2 phase processing like spellbee.
+. JNP - Keep chapter meta data updated - num cards, num VE, E, M, H, VH
+. JNP - Recheck difficulty level of all cards - esp. Spellbee
+. Create few chapter and a separate test syllabus
+
 5/22/15 --
 . JNP - Implement notes element - "spellbee"
 . JNP - Implement Spellbee asynchronous command

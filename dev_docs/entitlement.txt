@@ -1,0 +1,32 @@
+================================================================================
+Selectors
+--------------------------------------------------------------------------------
+JN_ALL_CHAPTERS         - (PATH)
+                        - +:chapter:**
+
+JN_ALL_CHAPTERS_CLASS_8 - (PATH)
+                        - +:chapter:Class-8/**
+
+================================================================================
+Entitlement alias (RAW)
+--------------------------------------------------------------------------------
+Alias Name                   | Selector Alias          | Permissible Ops
+--------------------------------------------------------------------------------
+JN_ENT_USE_CLASS_8_CHAPTERS  | JN_ALL_CHAPTERS_CLASS_8 | NOTES, FLASH_CARD, CHAPTER_STATS
+JN_ENT_USE_ALL_CHAPTERS      | JN_ALL_CHAPTERS         | NOTES, FLASH_CARD, CHAPTER_STATS
+
+================================================================================
+Roles
+--------------------------------------------------------------------------------
+JN_CLASS_8_USER         - Jove Notes class 8 student. Has full entitlements only
+                          for Class-8 syllabus
+JN_TESTER               - Has full access to all Syllabus
+
+
+================================================================================
+Role entitlements
+--------------------------------------------------------------------------------
+Role                        Entitlement alias
+--------------------------------------------------------------------------------
+JN_CLASS_8_USER             JN_ENT_USE_CLASS_8_CHAPTERS
+JN_TESTER                   JN_ENT_USE_ALL_CHAPTERS
