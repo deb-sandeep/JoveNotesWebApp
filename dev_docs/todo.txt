@@ -1,8 +1,5 @@
 PHPWebApp
 --------------------------------------------------------------------------------
-. Ensure links are properly constructed in dashboard UI page
-. Ensure ChapterNotesAPI picks up the chapterID passed from dashboard
-. Create base API for Notes
 . Create base API for FlashCards
 . Implement flashcard grade, score etc
 . Implement user specific stats in Dashboard
@@ -30,6 +27,11 @@ Completed
 5/25/15 --
 . Implement base functionality for ProgressSnapshotAPI and test integration with
   UI (dashboard)
+. Ensure links are properly constructed in dashboard UI page
+. Ensure ChapterNotesAPI picks up the chapterID passed from dashboard
+. Create base API for Notes
+. UTF-8 text flows end to end
+. Authorization checked at both dashboard, notes and API level
 
 5/24/15 --
 . Give entitlements to Deba and UTUser for chapters
