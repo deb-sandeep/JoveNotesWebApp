@@ -74,9 +74,14 @@ class ProgressSnapshotAPI extends API {
 		$responseObj = $this->constructResponseObj() ;
 
 		$response->responseCode = APIResponse::SC_OK ;
-		// $response->responseBody = file_get_contents( DOCUMENT_ROOT . 
-		// 	          "/apps/jove_notes/api_test_data/progress_snapshot.json" ) ;
 		$response->responseBody = $responseObj ;
+	}
+
+	// Set the responseBody to the output of this function if we want to send 
+	// back a prefabricated reference JSON.
+	private function getReferenceOutput() {
+		return file_get_contents( DOCUMENT_ROOT . 
+			         "/apps/jove_notes/api_test_data/progress_snapshot.json" ) ;
 	}
 
 	private function loadAndClassifyRelevantChapters() {

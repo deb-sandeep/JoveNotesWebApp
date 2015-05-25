@@ -11,6 +11,35 @@ class ChapterDAO extends AbstractDAO {
 		$this->logger = Logger::getLogger( __CLASS__ ) ;
 	}
 
+	function getChapterMetaData( $chapterId ) {
+
+$query = <<< QUERY
+select 
+	concat( "chapter:", syllabus_name, "/", 
+		                subject_name, "/", 
+		                chapter_num, "/", 
+		                sub_chapter_num, "/", 
+		                chapter_name ) as guard, 
+	chapter_id,
+	syllabus_name,
+	subject_name,
+	chapter_num,
+	sub_chapter_num,
+	chapter_name,
+	num_cards
+from 
+	jove_notes.chapter 
+where 
+	is_test_paper = 0 and 
+	chapter_id = $chapterId 
+QUERY;
+
+		$colNames = [ "guard", "chapter_id", "syllabus_name", "subject_name", 
+	                  "chapter_num", "sub_chapter_num", "chapter_name", "num_cards" ] ;
+
+		return parent::getResultAsAssociativeArray( $query, $colNames ) ;
+	}
+
 	function getChaptersMetaData() {
 
 $query = <<< QUERY
@@ -41,6 +70,25 @@ QUERY;
 	              "chapter_num", "sub_chapter_num", "chapter_name", "num_cards" ] ;
 
 		return parent::getResultAsAssociativeArray( $query, $colNames ) ;
+	}
+
+	function getChapterGuard( $chapterId ) {
+
+$query = <<< QUERY
+select 
+	concat( "chapter:", syllabus_name, "/", 
+		                subject_name, "/", 
+		                chapter_num, "/", 
+		                sub_chapter_num, "/", 
+		                chapter_name ) as guard
+from 
+	jove_notes.chapter 
+where 
+	is_test_paper = 0 and 
+	chapter_id = $chapterId 
+QUERY;
+
+		return parent::selectSingleValue( $query ) ;
 	}
 }
 

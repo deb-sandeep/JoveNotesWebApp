@@ -1,8 +1,17 @@
 <?php
 require_once( $_SERVER[ "DOCUMENT_ROOT" ] . "/apps/jove_notes/php/app_bootstrap.php" ) ;
 
-// TODO - Authorization check for chapterId
+require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/chapter_dao.php" ) ;
 
+// Check if the user has access to notes for the requested chapter.
+$chapterDAO = new ChapterDAO() ;
+$guard = $chapterDAO->getChapterGuard( $_REQUEST[ 'chapterId' ] ) ;
+if( !Authorizer::hasAccess( $guard, "NOTES" ) ) {
+    HTTPUtils::redirectTo( ServerContext::getUnauthRedirPage() ) ;
+    return ;
+}
+
+// The user has access to notes of this chapter. Proceed with rendering of the page.
 $pageConfig = array(
 	"tab_title"  => "Chapter Notes"
 ) ;
