@@ -1,10 +1,13 @@
 PHPWebApp
 --------------------------------------------------------------------------------
-. Give entitlements to Deba and UTUser for chapters
-. Implement ProgressSnapshotAPI
-  * - Entitlements for chapters and notesAuthorized, flashcardAuthorized, 
-    statisticsAuthorized for each chapter
-    - Count by user learning level
+. Ensure links are properly constructed in dashboard UI page
+. Ensure ChapterNotesAPI picks up the chapterID passed from dashboard
+. Create base API for Notes
+. Create base API for FlashCards
+. Implement flashcard grade, score etc
+. Implement user specific stats in Dashboard
+. Implement user specific stats in Notes
+. Implement user specific stats in flash cards
 . Design server communication for flash card practice actions
 . Create Dummy APIs for flash card practice communications (expand this list.)
 . Implement markCardForEdit
@@ -24,6 +27,13 @@ JoveNotes processor
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+5/25/15 --
+. Implement base functionality for ProgressSnapshotAPI and test integration with
+  UI (dashboard)
+
+5/24/15 --
+. Give entitlements to Deba and UTUser for chapters
+
 5/23/15 --
 . JNP - Special need-for-update handling for cards and notes elements which are
   not ready. This is to take care of optimized async processing (network 

@@ -2,7 +2,7 @@
 require_once( $_SERVER['DOCUMENT_ROOT']."/lib-app/php/page_preprocessor.php" ) ;
 
 $requestedPage = HTTPUtils::getValueFromSession( 
-	                   WebAuthenticationInterceptor::SESSION_PARAM_REQ_PAGE, "" ) ;
+	                   WebAuthenticationInterceptor::SESSION_PARAM_REQ_PAGE, "/" ) ;
 ?>
 
 <!DOCTYPE html>

@@ -146,8 +146,10 @@ function prepareDataForDisplay( rawData ) {
 
 				rowNum++ ;
 				var chapter = subject.chapters[ chpIndex  ] ;
+				var displayName = chapter.chapterNum + "." + chapter.subChapterNum + 
+				                  " - " + chapter.chapterName ;
 				var chapterRD = new RowData( RowData.prototype.ROW_TYPE_CHAPTER, 
-					                         chapter.chapterName, rowNum, 
+					                         displayName, rowNum, 
 					                         subjectRD.rowNum ) ;
 
 				chapterRD.isNotesAuthorized      = chapter.isNotesAuthorized ;
