@@ -82,12 +82,15 @@ function TFHandler( chapterDetails, questionObj ) {
 
 	var scope = null ;
 	var answeredCorrectly = null ;
-	var answerLength = question.justification.length ;
 	var trueBtn  = BUTTON( { 'class' : 'btn btn-success btn-sm' }, "True" ) ;
 	var falseBtn = BUTTON( { 'class' : 'btn btn-warning btn-sm' }, "False" ) ;
 	var truthValueIcon = ( question.truthValue ) ? "ok" : "remove" ;
-	
+	var answerLength = question.statement.length ;
+
 	{
+		if( question.hasOwnProperty( 'justification' ) ) {
+			answerLength = question.justification.length ;
+		}
 		if( answerLength == 0 ) { this.answerLength = 5 } ;
 
 		trueBtn.onclick = function() {

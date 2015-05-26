@@ -26,7 +26,12 @@ select
 	chapter_num,
 	sub_chapter_num,
 	chapter_name,
-	num_cards
+	num_cards,
+	num_VE,
+	num_E,
+	num_M,
+	num_H,
+	num_VH
 from 
 	jove_notes.chapter 
 where 
@@ -35,7 +40,8 @@ where
 QUERY;
 
 		$colNames = [ "guard", "chapter_id", "syllabus_name", "subject_name", 
-	                  "chapter_num", "sub_chapter_num", "chapter_name", "num_cards" ] ;
+	                  "chapter_num", "sub_chapter_num", "chapter_name", "num_cards",
+	                  "num_VE", "num_E", "num_M", "num_H", "num_VH" ] ;
 
 		return parent::getResultAsAssociativeArray( $query, $colNames ) ;
 	}
@@ -55,7 +61,12 @@ select
 	chapter_num,
 	sub_chapter_num,
 	chapter_name,
-	num_cards
+	num_cards,
+	num_VE,
+	num_E,
+	num_M,
+	num_H,
+	num_VH
 from 
 	jove_notes.chapter 
 where 
@@ -66,8 +77,9 @@ order by
 	sub_chapter_num asc
 QUERY;
 
-	$colNames = [ "guard", "chapter_id", "syllabus_name", "subject_name", 
-	              "chapter_num", "sub_chapter_num", "chapter_name", "num_cards" ] ;
+		$colNames = [ "guard", "chapter_id", "syllabus_name", "subject_name", 
+	                  "chapter_num", "sub_chapter_num", "chapter_name", "num_cards",
+	                  "num_VE", "num_E", "num_M", "num_H", "num_VH" ] ;
 
 		return parent::getResultAsAssociativeArray( $query, $colNames ) ;
 	}

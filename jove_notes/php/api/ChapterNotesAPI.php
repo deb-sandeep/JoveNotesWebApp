@@ -1,70 +1,29 @@
 <?php
-require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/api_bootstrap.php" ) ;
-require_once( APP_ROOT      . "/php/dao/chapter_dao.php" ) ;
+require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/abstract_jove_notes_api.php" ) ;
 require_once( APP_ROOT      . "/php/dao/notes_element_dao.php" ) ;
 
-class ChapterNotesAPI extends API {
+class ChapterNotesAPI extends AbstractJoveNotesAPI {
 
-	private $chapterDAO   = null ;
-	private $neDAO        = null ;
-
-	private $chapterId    = 0 ;
-	private $chapterDetail= null ;
-	private $chapterGuard = null ;
+	private $neDAO = null ;
 
 	function __construct() {
 		parent::__construct() ;
-		$this->chapterDAO = new ChapterDAO() ;
-		$this->neDAO      = new NotesElementDAO() ;
+		$this->neDAO = new NotesElementDAO() ;
 	}
 
 	public function doGet( $request, &$response ) {
 
 		$this->logger->debug( "Executing doGet in ChapterNotesAPI" ) ;
-		$this->chapterId = $request->requestPathComponents[0] ;
 
-		$this->logger->debug( "Chapter ID = " . $this->chapterId ) ;
-		$this->chapterDetails = $this->constructChapterDetails() ;
+		if( $this->isUserEntitledForNotes( $request->requestPathComponents[0] ) ) {
 
-		$this->logger->debug( "Chapter guard = " . $this->chapterGuard ) ;
+			$respBody = array() ;
+			$respBody[ "chapterDetails" ] = $this->chapterDetail ;
+			$respBody[ "notesElements"  ] = $this->constructNotesElements() ;
 
-		if( !Authorizer::hasAccess( $this->chapterGuard, "NOTES" ) ) {
-			$response->responseCode = APIResponse::SC_ERR_UNAUTHORIZED ;
-			$response->responseBody = "Unauthorized access." ;
-		}
-		else {
 			$response->responseCode = APIResponse::SC_OK ;
-			$response->responseBody = $this->constructResponseBody() ;
+			$response->responseBody = $respBody ;
 		}
-	}
-
-	private function constructResponseBody() {
-
-		$responseBody = array() ;
-		$responseBody[ "chapterDetails" ] = $this->chapterDetails ;
-		$responseBody[ "notesElements"  ] = $this->constructNotesElements() ;
-
-		return $responseBody ;
-	}
-
-	private function constructChapterDetails() {
-
-		$chapDetails = array() ;
-		$meta = $this->chapterDAO->getChapterMetaData( $this->chapterId ) ;
-		if( $meta == null ) {
-			throw new Exception( "Chapter not found" ) ;
-		}
-		$this->logger->debug( $meta ) ;
-
-		$this->chapterGuard = $meta[ "guard" ] ;		
-		$chapDetails[ "chapterId"        ] = $meta[ "chapter_id"      ] ;
-		$chapDetails[ "syllabusName"     ] = $meta[ "syllabus_name"   ] ;
-		$chapDetails[ "subjectName"      ] = $meta[ "subject_name"    ] ;
-		$chapDetails[ "chapterNumber"    ] = $meta[ "chapter_num"     ] ;
-		$chapDetails[ "subChapterNumber" ] = $meta[ "sub_chapter_num" ] ;
-		$chapDetails[ "chapterName"      ] = $meta[ "chapter_name"    ] ;
-
-		return $chapDetails ;		
 	}
 
 	private function constructNotesElements() {

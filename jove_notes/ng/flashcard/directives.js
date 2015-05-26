@@ -53,6 +53,7 @@ flashCardApp.directive( 'renderFlashCardQuestion', function() {
 					element.append( questionUI ) ;
 
 					handler.initializeQuestionUI() ;
+					MathJax.Hub.Queue( ["Typeset", MathJax.Hub, answerUI] ) ;
 				}
 			}) ; 
         }
