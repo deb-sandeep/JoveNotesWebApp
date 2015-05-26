@@ -13,9 +13,12 @@ PHPWebApp
 . Implement 'apply level to all cards' on click action
 . Reenable user caching in user_context_interceptor.php - it has been turned 
   off for development purposes.
+. Remember to php.ini encoding on Dell Opt
 
 JoveNotes processor
 --------------------------------------------------------------------------------
+. JNP - JCMap connecting phrase seems to be of bigger font, reduce and republish
+        binary
 . JNP - Think about redesigning the chemical equation language  
 . JNP - Make question optional from @matching and republish the eclipse plugins
 . JNP - common name should be optional in chemical compounds
@@ -24,6 +27,10 @@ JoveNotes processor
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+5/26/15 --
+. Check markdown support
+. Transform pure tables into bootstrap tables post markdown processing
+
 5/25/15 --
 . Implement base functionality for ProgressSnapshotAPI and test integration with
   UI (dashboard)
