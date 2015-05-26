@@ -49,11 +49,12 @@ flashCardApp.directive( 'renderFlashCardQuestion', function() {
 					handler.initialize( $scope ) ;
 
 					var questionUI = handler.getQuestionUI() ;
+
 					element.empty() ;
 					element.append( questionUI ) ;
 
 					handler.initializeQuestionUI() ;
-					MathJax.Hub.Queue( ["Typeset", MathJax.Hub, answerUI] ) ;
+					MathJax.Hub.Queue( ["Typeset", MathJax.Hub, questionUI] ) ;
 				}
 			}) ; 
         }
@@ -77,6 +78,7 @@ flashCardApp.directive( 'renderFlashCardAnswer', function() {
 					handler.freezeQuestionUI() ;
 					
 					var answerUI = handler.getAnswerUI() ;
+					
 					element.empty() ;
 					element.append( answerUI ) ;
 

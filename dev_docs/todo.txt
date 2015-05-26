@@ -1,6 +1,5 @@
 PHPWebApp
 --------------------------------------------------------------------------------
-. Left align flash card answers if the length of the answer exceeds certain value
 . Implement flashcard grade, score etc
 . Implement user specific stats in Dashboard
 . Implement user specific stats in Notes
@@ -37,6 +36,8 @@ Completed
 . JNP - Definition quesiton. Space b/w Define and the quoted word
 . JNP - Image label caption ? (default? - Image label caption)
 . Chemical formulae not being resolved in question!
+. Left align flash card answers if the length of the answer exceeds certain value
+. In matching, the formulae rendering disappears on refresh
 
 5/25/15 --
 . Implement base functionality for ProgressSnapshotAPI and test integration with

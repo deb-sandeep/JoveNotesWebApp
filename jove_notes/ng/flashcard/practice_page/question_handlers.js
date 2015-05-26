@@ -44,7 +44,7 @@ function FIBHandler( chapterDetails, question ) {
 
 			formattedAnswer   = formattedAnswer.replace( strToReplace, replacedText ) ;
 			formattedQuestion = formattedQuestion.replace( strToReplace, " ______ " ) ;
-			answerLength     += question.answers[i].length ;
+			answerLength     += ("" + question.answers[i]).length ;
 		}
 	}
 
@@ -161,6 +161,15 @@ function MatchingHandler( chapterDetails, questionObj ) {
 	var question = questionObj ;
 	var chapterDetails = chapterDetails ;
 	var manager = null ;
+	var answerLength = 0 ;
+
+	{
+		var matchData = questionObj.matchData ;
+		for( var i=0; i<matchData.length; i++ ) {
+			var answer = matchData[i][1] ;
+			answerLength += answer.length ;
+		}
+	}
 
 	this.initialize = function( $scope ){ 
 		log.debug( "Initializing matching handler." ) ;
@@ -168,7 +177,7 @@ function MatchingHandler( chapterDetails, questionObj ) {
 		manager.initialize() ;
 	}
 
-	this.getAnswerLength = function() { return manager.answerLength ; } ;
+	this.getAnswerLength = function() { return answerLength ; } ;
 
 	this.getQuestionUI = function() { return manager.getQuestionUI() ; } ;
 
@@ -189,6 +198,15 @@ function ImageLabelHandler( chapterDetails, questionObj ) {
 	var question = questionObj ;
 	var chapterDetails = chapterDetails ;
 	var manager = null ;
+	var answerLength = 0 ;
+
+	{
+		var hotSpots = questionObj.hotSpots ;
+		for( var i=0; i<hotSpots.length; i++ ) {
+			var hsLabel = hotSpots[i][2] ;
+			answerLength += hsLabel.length ;
+		}
+	}
 
 	this.initialize = function( $scope ){ 
 		log.debug( "Initializing image label handler." ) ;
@@ -196,7 +214,7 @@ function ImageLabelHandler( chapterDetails, questionObj ) {
 		manager.initialize() ;
 	}
 
-	this.getAnswerLength = function() { return manager.answerLength ; } ;
+	this.getAnswerLength = function() { return answerLength ; } ;
 
 	this.getQuestionUI = function() { return manager.getQuestionUI() ; } ;
 
@@ -217,7 +235,7 @@ function SpellBeeHandler( chapterDetails, questionObj ) {
 		manager.initialize() ;
 	}
 
-	this.getAnswerLength = function() { return manager.answerLength ; } ;
+	this.getAnswerLength = function() { return questionObj.word.length ; } ;
 
 	this.getQuestionUI = function() { return manager.getQuestionUI() ; } ;
 

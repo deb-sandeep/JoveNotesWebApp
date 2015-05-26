@@ -31,6 +31,7 @@ $scope.questionsForSession = [] ;
 $scope.currentQuestion  = null ;
 
 $scope.answerChangeTrigger = "" ;
+$scope.answerAlign = "center" ;
 
 // questionMode is used by the view to show the appropriate controls when either
 // the question or the answer is shown.
@@ -174,9 +175,14 @@ function showNextCard() {
 	if( !hasSessionEnded() ) {
 
 		$scope.currentQuestion = $scope.questionsForSession[0] ;
+		var answerLength = $scope.currentQuestion.handler.getAnswerLength() ;
+
+		log.debug( "Answer length = " + answerLength ) ;
 
 		$scope.questionMode = true ;
 		$scope.answerChangeTrigger = "" ;
+		$scope.answerAlign = answerLength < 100 ? "center" : "left" ;
+		log.debug( "Answer align = " + $scope.answerAlign ) ;
 
 		currentQuestionShowStartTime = new Date().getTime() ;
 	}
@@ -289,13 +295,13 @@ function sortCardsAsPerStudyStrategy() {
 	else if( strategy == StudyStrategyTypes.prototype.OBJECTIVE ) {
 		log.debug( "\tSorting cards as per OBJECTIVE study strategy." ) ;
         $scope.questionsForSession.sort( function( q1, q2 ){
-            return q1.answerLength - q2.answerLength ;
+            return q1.handler.getAnswerLength() - q2.handler.getAnswerLength() ;
         }) ;
 	}
 	else if( strategy == StudyStrategyTypes.prototype.SUBJECTIVE ) {
 		log.debug( "\tSorting cards as per SUBJECTIVE study strategy." ) ;
         $scope.questionsForSession.sort( function( q1, q2 ){
-            return q2.answerLength - q1.answerLength ;
+            return q2.handler.getAnswerLength() - q1.handler.getAnswerLength() ;
         }) ;
 	} 
 
