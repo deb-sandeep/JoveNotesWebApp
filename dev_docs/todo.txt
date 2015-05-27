@@ -1,18 +1,16 @@
 PHPWebApp
 --------------------------------------------------------------------------------
-. Implement flashcard grade, score etc
+. Render <code> blocks - highlight.js?
 . Implement user specific stats in Dashboard
 . Implement user specific stats in Notes
 . Implement user specific stats in flash cards
-. Design server communication for flash card practice actions
-. Create Dummy APIs for flash card practice communications (expand this list.)
 . Implement markCardForEdit
-. Score computation
 . Create local page for entering hindi and latex formulaes
 . Implement 'apply level to all cards' on click action
 . Reenable user caching in user_context_interceptor.php - it has been turned 
   off for development purposes.
 . Remember to php.ini encoding on Dell Opt
+. Flash card inactivity timeout - with user override/countdown
 
 JoveNotes processor
 --------------------------------------------------------------------------------
@@ -26,6 +24,16 @@ JoveNotes processor
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+5/27/15 --
+. Authorization for flash card
+. Rating API for cards
+. Learning session implementation - every flash card load generates a new session
+  against which the learning can be tracked
+. Score computation
+. Learning efficiency computation for cards
+. Chapter-User-Card refresh
+. Score is saved and sent back to the user (visible on flashcard)
+
 5/26/15 --
 . Check markdown support for commonly used typographies
 . Transform pure tables into bootstrap tables post markdown processing

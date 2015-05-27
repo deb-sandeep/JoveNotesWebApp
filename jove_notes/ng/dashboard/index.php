@@ -1,5 +1,12 @@
 <?php
 require_once( $_SERVER[ "DOCUMENT_ROOT" ] . "/apps/jove_notes/php/app_bootstrap.php" ) ;
+require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/card_learning_summary_dao.php" ) ;
+
+global $log;
+
+$log->debug( "Refreshing card learning summaries" ) ;
+$clsDAO = new CardLearningSummaryDAO() ;
+$clsDAO->refresh( ExecutionContext::getCurrentUserName() ) ;
 
 $pageConfig = array(
 	"tab_title"  => "Dashboard"

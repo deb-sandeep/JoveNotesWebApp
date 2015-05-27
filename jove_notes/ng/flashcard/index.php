@@ -1,11 +1,32 @@
 <?php
 require_once( $_SERVER[ "DOCUMENT_ROOT" ] . "/apps/jove_notes/php/app_bootstrap.php" ) ;
 
-// TODO - Authorization check for chapterId
+require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/chapter_dao.php" ) ;
+require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/learning_session_dao.php" ) ;
+require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/student_score_dao.php" ) ;
+
+// Check if the user has access to flash cards for the requested chapter.
+$chapterDAO = new ChapterDAO() ;
+$guard = $chapterDAO->getChapterGuard( $_REQUEST[ 'chapterId' ] ) ;
+if( !Authorizer::hasAccess( $guard, "FLASH_CARD" ) ) {
+    HTTPUtils::redirectTo( ServerContext::getUnauthRedirPage() ) ;
+    return ;
+}
+
+// If the user has access, we generate a new session identifier for this study
+// session.
+$learningSessionDAO = new LearningSessionDAO() ;
+$sessionId = $learningSessionDAO->createNewSession( 
+            ExecutionContext::getCurrentUserName(), $_REQUEST[ 'chapterId' ] ) ;
 
 $pageConfig = array(
 	"tab_title"  => "Flash Card"
 ) ;
+
+// Get the current score of the user
+$scoreDAO = new StudentScoreDAO() ;
+$score = $scoreDAO->getScore( ExecutionContext::getCurrentUserName() ) ;
+
 ?>
 <!DOCTYPE html>
 <html ng-app="flashCardApp">
@@ -44,8 +65,10 @@ $pageConfig = array(
     <script src="/apps/jove_notes/ng/flashcard/end_page/controllers.js"></script>
 
     <script>
-    var userName = '<?php echo ExecutionContext::getCurrentUserName() ?>' ;
+    var userName  = '<?php echo ExecutionContext::getCurrentUserName() ?>' ;
     var chapterId = <?php echo $_REQUEST[ 'chapterId' ] ?> ;
+    var sessionId = <?php echo $sessionId ?> ;
+    var userScore = <?php echo $score ?> ;
     </script>
 </head>
 

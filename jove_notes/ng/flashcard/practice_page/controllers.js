@@ -17,6 +17,7 @@ var sessionStartTime = new Date().getTime() ;
 var sessionActive    = true ;
 var oldBodyTop       = 0 ;
 var oldBodyBottom    = 0 ;
+var scoreDelta       = 0 ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.showL0Header     = true ;
@@ -28,7 +29,8 @@ $scope.showFooterDropup = true ;
 $scope.bodyDivStyle = { top : 75, bottom : 60 } ;
 
 $scope.questionsForSession = [] ;
-$scope.currentQuestion  = null ;
+$scope.currentQuestion     = null ;
+$scope.userScore           = userScore ;
 
 $scope.answerChangeTrigger = "" ;
 $scope.answerAlign = "center" ;
@@ -109,6 +111,7 @@ $scope.markCardForEdit = function() {
 $scope.rateCard = function( rating ) {
 	log.debug( "Rating current card as " + rating )	 ;
 
+	var cardId     = $scope.currentQuestion.questionId ;
 	var curLevel   = $scope.currentQuestion.learningStats.currentLevel ;
 	var nextLevel  = ratingMatrix.getNextLevel( curLevel, rating ) ;
 	var nextAction = ratingMatrix.getNextAction( curLevel, rating ) ;
@@ -120,14 +123,36 @@ $scope.rateCard = function( rating ) {
 	updateLearningStatsForChapter( curLevel, nextLevel ) ;
 	updateSessionStats() ;
 
+	log.debug( "Card id       = " + $scope.currentQuestion.questionId ) ;
 	log.debug( "Current level = " + curLevel ) ;
 	log.debug( "Next level    = " + nextLevel ) ;
 	log.debug( "Next action   = " + nextAction ) ;
 	log.debug( "Num attmepts  = " + $scope.currentQuestion.learningStats.numAttemptsInSession ) ;
 	log.debug( "Time spent    = " + $scope.currentQuestion.learningStats.numSecondsInSession ) ;
 	
-	// TODO: Compute the score 
-	// TODO: Initiate asynchronous communication with server to save ratings
+	$http.post( '/jove_notes/api/GradeCard', { 
+		chapterId   : chapterId,
+		sessionId   : sessionId,
+		cardId      : cardId,
+		nextLevel   : nextLevel,
+		rating      : rating,
+		timeTaken   : Math.ceil( ( new Date().getTime() - currentQuestionShowStartTime )/1000 )
+	})
+	.success( function( data ){
+		if( typeof data === 'string' ) {
+        	$scope.addErrorAlert( "API call failed. " + data ) ;
+		}
+		else {
+			log.debug( "Grading of card " + cardId + " success." ) ;
+			log.debug( "Score earned = " + data.score ) ;
+			scoreDelta += data.score ;
+			updateScore() ;
+		}
+	})
+	.error( function( data ){
+        $scope.addErrorAlert( "API call failed. " + data ) ;
+	}) ;
+
 	showNextCard() ;
 }
 
@@ -457,6 +482,16 @@ function getDivHeight( divName ) {
 		return div.offsetHeight ;
 	}
 	else return 0 ;
+}
+
+function updateScore() {
+
+	if( scoreDelta !=0 ) {
+		var delta = ( scoreDelta > 0 ) ? 1 : -1 ;
+		$scope.userScore += delta ;
+		scoreDelta       -= delta ;
+		setTimeout( updateScore, 10 ) ;
+	}
 }
 
 // ---------------- End of controller ------------------------------------------

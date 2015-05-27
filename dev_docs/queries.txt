@@ -51,3 +51,27 @@ values
 ( 'UTUser', 'JN_TESTER' ),
 ( 'Deba',   'JN_CLASS_8_USER' ) ;
 
+--------------------------------------------------------------------------------
+TABLE card_rating (
+  id                  int
+  student_name        varchar(45)
+  chapter_id          int
+  card_id             int
+  notes_element_id    int
+  timestamp           timestamp 
+  rating              enum('E','A','P','H')
+  score               int
+  time_spent          int
+
+
+TABLE card_learning_summary (
+  id                  int
+  chapter_id          int
+  notes_element_id    int
+  card_id             int
+  student_name        varchar(45)
+  current_level       enum('NS','L0','L1','L2','L3','MAS')
+  num_attempts        int
+  temporal_ratings    varchar(512)
+  learning_efficiency int
+  last_attempt_time   timestamp 
