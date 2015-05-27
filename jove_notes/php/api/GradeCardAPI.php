@@ -101,16 +101,38 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 
 	private function updateSessionSummary() {
 
-		$incrE = 0 ; $incrA = 0 ; $incrP = 0 ; $incrH = 0 ;
+		$incrE  = 0 ; $incrA  = 0 ; $incrP  = 0 ; $incrH  = 0 ;
+
+		$incrNS = 0 ; $incrL0 = 0 ; $incrL1  = 0 ; 
+		$incrL2 = 0 ; $incrL3 = 0 ; $incrMAS = 0 ;
 
 		if     ( $this->requestObj->rating === 'E' ) $incrE = 1 ;
 		else if( $this->requestObj->rating === 'A' ) $incrA = 1 ;
 		else if( $this->requestObj->rating === 'P' ) $incrP = 1 ;
 		else if( $this->requestObj->rating === 'H' ) $incrH = 1 ;
 
+		if( $this->requestObj->currentLevel === 'NS' ) $incrNS = -1 ;
+
+		if      ( $this->requestObj->currentLevel === 'NS'  ) $incrNS  = -1 ;
+		else if ( $this->requestObj->currentLevel === 'L0'  ) $incrL0  = -1 ;
+		else if ( $this->requestObj->currentLevel === 'L1'  ) $incrL1  = -1 ;
+		else if ( $this->requestObj->currentLevel === 'L2'  ) $incrL2  = -1 ;
+		else if ( $this->requestObj->currentLevel === 'L3'  ) $incrL3  = -1 ;
+		else if ( $this->requestObj->currentLevel === 'MAS' ) $incrMAS = -1 ;
+
+		if      ( $this->requestObj->nextLevel === 'NS'  ) $incrNS  += 1 ;
+		else if ( $this->requestObj->nextLevel === 'L0'  ) $incrL0  += 1 ;
+		else if ( $this->requestObj->nextLevel === 'L1'  ) $incrL1  += 1 ;
+		else if ( $this->requestObj->nextLevel === 'L2'  ) $incrL2  += 1 ;
+		else if ( $this->requestObj->nextLevel === 'L3'  ) $incrL3  += 1 ;
+		else if ( $this->requestObj->nextLevel === 'MAS' ) $incrMAS += 1 ;
+
 		$this->lsDAO->updateSessionStat( $this->requestObj->sessionId,
 			                             $this->requestObj->timeTaken,
-			                             $incrE, $incrA, $incrP, $incrH ) ;
+			                             $incrE, $incrA, $incrP, $incrH,
+										 $incrNS, $incrL0, $incrL1, 
+										 $incrL2, $incrL3, $incrMAS, 
+										 $this->score ) ;
 	}
 
 	private function updateCardLearningSummary() {

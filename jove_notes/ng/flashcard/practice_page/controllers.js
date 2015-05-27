@@ -134,6 +134,7 @@ $scope.rateCard = function( rating ) {
 		chapterId   : chapterId,
 		sessionId   : sessionId,
 		cardId      : cardId,
+		currentLevel: curLevel,
 		nextLevel   : nextLevel,
 		rating      : rating,
 		timeTaken   : Math.ceil( ( new Date().getTime() - currentQuestionShowStartTime )/1000 )
@@ -146,6 +147,7 @@ $scope.rateCard = function( rating ) {
 			log.debug( "Grading of card " + cardId + " success." ) ;
 			log.debug( "Score earned = " + data.score ) ;
 			scoreDelta += data.score ;
+			$scope.$parent.pointsEarnedInThisSession += data.score ;
 			updateScore() ;
 		}
 	})
