@@ -134,7 +134,7 @@ $scope.rateCard = function( rating ) {
 	
 	$http.post( '/jove_notes/api/GradeCard', { 
 		chapterId   : chapterId,
-		sessionId   : sessionId,
+		sessionId   : $scope.$parent.sessionId,
 		cardId      : cardId,
 		currentLevel: curLevel,
 		nextLevel   : nextLevel,

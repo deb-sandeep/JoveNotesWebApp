@@ -88,6 +88,7 @@ $scope.pageTitle = '' ;
 $scope.studyCriteria = new StudyCriteria() ;
 $scope.filterOptions = new CardsFilterOptions() ;
 
+$scope.sessionId         = sessionId ;
 $scope.chapterDetails    = null ;
 $scope.numCardsInDeck    = 0 ;
 $scope.difficultyStats   = null ;
@@ -128,6 +129,8 @@ $scope.processServerData = function( serverData ) {
         $scope.addErrorAlert( "Server returned invalid data. " + serverData ) ;
         return ;
     }
+
+    log.debug( "Session id = " + $scope.sessionId ) ;
     
     $scope.chapterDetails    = serverData.chapterDetails ;
     $scope.numCardsInDeck    = serverData.deckDetails.numCards ;

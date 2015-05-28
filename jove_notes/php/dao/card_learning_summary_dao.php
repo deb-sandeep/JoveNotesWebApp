@@ -103,6 +103,21 @@ QUERY;
 
         return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
     }
+
+    function resetLevelOfAllCards( $userName, $chapterId, $level ) {
+
+$query = <<< QUERY
+update   
+  jove_notes.card_learning_summary
+set
+  current_level = '$level'
+where  
+    student_name = '$userName' and  
+    chapter_id = $chapterId  
+QUERY;
+
+        parent::executeUpdate( $query ) ;
+    }
 }
 ?>
 
