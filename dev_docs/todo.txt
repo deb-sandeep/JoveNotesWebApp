@@ -1,6 +1,5 @@
 PHPWebApp
 --------------------------------------------------------------------------------
-. Implement user values in Dashboard API
 . Implement remote flash
 . Render <code> blocks - highlight.js?
 . Create local page for entering hindi and latex formulaes
@@ -37,6 +36,7 @@ Completed
 . Track points lost within a session and show in end page
 . Implement 'apply level to all cards' on click action
 . Implement user values in Notes API
+. Implement user values in Dashboard API
 
 5/27/15 --
 . Authorization for flash card

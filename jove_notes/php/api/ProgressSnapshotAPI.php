@@ -1,6 +1,7 @@
 <?php
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/api_bootstrap.php" ) ;
 require_once( APP_ROOT      . "/php/dao/chapter_dao.php" ) ;
+require_once( APP_ROOT      . "/php/dao/card_learning_summary_dao.php" ) ;
 
 class ChapterProgressSnapshot {
 
@@ -59,18 +60,27 @@ class ProgressSnapshotAPI extends API {
 
 	private $syllabusMap ;
 	private $chapters ;
+	private $selectedChapterIdList ;
+	private $chapterDAO ;
+	private $clsDAO ;
 
 	function __construct() {
 		parent::__construct() ;
-		$this->syllabusMap = array() ;
-		$this->chapters = array() ;
+		$this->syllabusMap           = array() ;
+		$this->chapters              = array() ;
+		$this->selectedChapterIdList = array() ;
+		$this->chapterDAO            = new ChapterDAO() ;
+		$this->clsDAO                = new CardLearningSummaryDAO() ;
 	}
 
 	public function doGet( $request, &$response ) {
 
 		$this->logger->debug( "Executing doGet in ProgressSnapshotAPI" ) ;
 
+		$this->clsDAO->refresh( ExecutionContext::getCurrentUserName() ) ;
 		$this->loadAndClassifyRelevantChapters() ;
+		$this->associateProgressSnapshotWithChapters() ;
+		
 		$responseObj = $this->constructResponseObj() ;
 
 		$response->responseCode = APIResponse::SC_OK ;
@@ -86,16 +96,16 @@ class ProgressSnapshotAPI extends API {
 
 	private function loadAndClassifyRelevantChapters() {
 
-		$chapterDAO = new ChapterDAO() ;
-		$chapterMeta = $chapterDAO->getChaptersMetaData() ;
+		$chapterMeta = $this->chapterDAO->getChaptersMetaData() ;
 
 		foreach( $chapterMeta as $meta ) {
 
+			$chapter = null ;
 			$chapter = new ChapterProgressSnapshot( $meta ) ;
-
 			if( $chapter->isUserEntitled() ) {
 
-				array_push( $this->chapters, $chapter ) ;
+				$this->chapters[ $chapter->chapterId ] = $chapter ;
+				array_push( $this->selectedChapterIdList, $chapter->chapterId ) ;
 
 				if( !array_key_exists( $chapter->syllabusName, $this->syllabusMap ) ) {
 					$this->syllabusMap[ $chapter->syllabusName ] = array() ;
@@ -142,6 +152,29 @@ class ProgressSnapshotAPI extends API {
 			array_push( $responseArray, $subObj ) ;
 		}
 		return $responseArray ;
+	}
+
+	private function associateProgressSnapshotWithChapters() {
+
+		$levelCounts = $this->clsDAO->getChapterWiseLevelCounts( 
+										ExecutionContext::getCurrentUserName(), 
+										$this->selectedChapterIdList ) ;
+
+		foreach( $levelCounts as $levelRow ) {
+
+			$chapterId = $levelRow[ "chapter_id" ] ;
+			$level     = $levelRow[ "current_level" ] ;
+			$count     = $levelRow[ "count" ] ;
+
+			$chapter = &$this->chapters[ $chapterId ] ;
+
+			     if( $level == 'NS'  ) $chapter->notStartedCards = $count ;
+			else if( $level == 'L0'  ) $chapter->l0Cards         = $count ;
+			else if( $level == 'L1'  ) $chapter->l1Cards         = $count ;
+			else if( $level == 'L2'  ) $chapter->l2Cards         = $count ;
+			else if( $level == 'L3'  ) $chapter->l3Cards         = $count ;
+			else if( $level == 'MAS' ) $chapter->masteredCards   = $count ;
+		}
 	}
 
 	private function &constructChapterResponseObj( $chapter ) {

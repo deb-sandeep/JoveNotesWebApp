@@ -118,6 +118,26 @@ QUERY;
 
         parent::executeUpdate( $query ) ;
     }
+
+    function getChapterWiseLevelCounts( $userName, $chapterIdList ) {
+
+        $idList = implode( $chapterIdList, "," ) ;
+
+$query = <<<QUERY
+select 
+  chapter_id, current_level, count( current_level ) as count
+from
+  jove_notes.card_learning_summary
+where
+  chapter_id in ( $idList ) and 
+  student_name = '$userName'
+group by 
+  chapter_id, current_level
+QUERY;
+        
+        return parent::getResultAsAssociativeArray( $query, 
+                        [ "chapter_id", "current_level", "count" ], false ) ;
+    }
 }
 ?>
 
