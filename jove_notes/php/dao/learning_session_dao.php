@@ -99,6 +99,25 @@ QUERY;
         parent::executeUpdate( $query ) ;
     }
 
+    function getProgressSnapshots( $userName, $chapterId ) {
+
+$query = <<< SEL_QUERY
+select 
+    time_spent, num_NS, num_L0, num_L1, num_L2, num_L3, num_MAS
+from 
+    jove_notes.learning_session
+where
+    student_name = '$userName' and
+    chapter_id = $chapterId
+order by
+    timestamp asc
+SEL_QUERY;
+
+        $colNames = [ "time_spent", "num_NS", "num_L0", "num_L1", 
+                      "num_L2", "num_L3", "num_MAS" ] ;
+
+        return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
+    }
 }
 ?>
 

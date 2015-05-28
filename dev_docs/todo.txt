@@ -1,11 +1,8 @@
 PHPWebApp
 --------------------------------------------------------------------------------
-. Implement user values in FlashCardAPI response
-    - progressSnapshot
-    - learningCurveData
-    - per card learningStats
 . Implement user values in Notes API
 . Implement user values in Dashboard API
+. Implement remote flash
 . Render <code> blocks - highlight.js?
 . Implement 'apply level to all cards' on click action
 . Create local page for entering hindi and latex formulaes
@@ -26,7 +23,20 @@ JoveNotes processor
 Completed
 --------------------------------------------------------------------------------
 5/28/15 --
-
+. Implement user values in FlashCardAPI response
+    - progressSnapshot
+    - learningCurveData
+    - per card learningStats
+. Removed a bug from FlashCard end session where the learning curve data was 
+  not being refreshed properly.
+. If the user has answerd an question such that the next action does not purge
+  it from the session (next action > 0). In such a case, should the user be
+  - Allowed to score points for subsequent ratings?
+    - No, points are scored only on the first attempt. Subsequent attempts are
+      for practice and since short term memory kicks in, it is not a fair test
+  - Allowed to move out of the level in the session?
+    - No, the card stays at the level.
+. Track points lost within a session and show in end page
 
 5/27/15 --
 . Authorization for flash card

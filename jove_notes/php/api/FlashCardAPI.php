@@ -1,21 +1,25 @@
 <?php
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/abstract_jove_notes_api.php" ) ;
-require_once( APP_ROOT      . "/php/dao/card_dao.php" ) ;
+require_once( APP_ROOT      . "/php/dao/learning_session_dao.php" ) ;
+require_once( APP_ROOT      . "/php/dao/card_learning_summary_dao.php" ) ;
 
 class FlashCardAPI extends AbstractJoveNotesAPI {
 
-	private $cardDAO = null ;
+	private $lsDAO   = null ;
+	private $clsDAO  = null ;
 
 	function __construct() {
 		parent::__construct() ;
-		$this->cardDAO = new CardDAO() ;
+		$this->lsDAO = new LearningSessionDAO() ;
+		$this->clsDAO= new CardLearningSummaryDAO() ;
 	}
 
 	public function doGet( $request, &$response ) {
 
 		$this->logger->debug( "Executing doGet in FlashCardAPI" ) ;
 
-		if( $this->isUserEntitledForFlashCards( $request->requestPathComponents[0] ) ) {
+		$this->chapterId = $request->requestPathComponents[0] ;
+		if( $this->isUserEntitledForFlashCards( $this->chapterId ) ) {
 
 			$response->responseCode = APIResponse::SC_OK ;
 			$response->responseBody = $this->constructResponseBody() ;
@@ -40,8 +44,8 @@ class FlashCardAPI extends AbstractJoveNotesAPI {
 
 		$deckDetailsObj[ "numCards"          ] = $this->numCards ;
 		$deckDetailsObj[ "difficultyStats"   ] = $this->constructDifficultyStats() ;
-		$deckDetailsObj[ "progressSnapshot"  ] = $this->constructProgressSnapshot() ;
-		$deckDetailsObj[ "learningCurveData" ] = $this->constructLearningCurveData() ;
+
+		$this->attachProgressSnapshots( $deckDetailsObj ) ;
 
 		return $deckDetailsObj ;
 	}
@@ -60,58 +64,70 @@ class FlashCardAPI extends AbstractJoveNotesAPI {
 
 	}
 
-	private function constructProgressSnapshot() {
+	private function attachProgressSnapshots( &$deckDetailsObj ) {
 
 		$progressSnapshotObj = array() ;
-
-		$progressSnapshotObj[ "numNS"  ] = 20 ;
-		$progressSnapshotObj[ "numL0"  ] = 20 ;
-		$progressSnapshotObj[ "numL1"  ] = 10 ;
-		$progressSnapshotObj[ "numL2"  ] = 10 ;
-		$progressSnapshotObj[ "numL3"  ] = 20 ;
-		$progressSnapshotObj[ "numMAS" ] = 20 ;
-
-		return $progressSnapshotObj ;
-
-	}
-
-	private function constructLearningCurveData() {
-
 		$learningCurveDataObj = array() ;
 
-	    array_push( $learningCurveDataObj, array( 100,   0,   0,  0,  0,   0 ) ) ;
-	    array_push( $learningCurveDataObj, array(  50,  10,  40,  0,  0,   0 ) ) ;
-	    array_push( $learningCurveDataObj, array(  30,   5,  10, 55,  0,   0 ) ) ;
-	    array_push( $learningCurveDataObj, array(  10,  10,  20, 40, 20,   0 ) ) ;
-	    array_push( $learningCurveDataObj, array(   0,   5,   0, 50, 30,  15 ) ) ;
-	    array_push( $learningCurveDataObj, array(   0,   0,   0, 10, 50,  40 ) ) ;
-	    array_push( $learningCurveDataObj, array(   0,   0,   0,  0, 30,  70 ) ) ;
-	    array_push( $learningCurveDataObj, array(   0,   0,   0,  0,  0, 100 ) ) ;
+		$this->logger->debug( "Getting snapshots for " . 
+			                  ExecutionContext::getCurrentUserName() . " and " .
+			                  " chapter = " . $this->chapterId ) ;
 
-		return $learningCurveDataObj ;
+		$snapshots = $this->lsDAO->getProgressSnapshots( 
+										ExecutionContext::getCurrentUserName(),
+										$this->chapterId ) ;
+
+		$this->logger->debug( "Successfully obtained snapshots." ) ;
+
+		$numSnapshots = count( $snapshots ) ;
+		for( $i=0; $i<$numSnapshots; $i++ ) {
+
+			$pushSnapshot = false ;
+			$snapshot = $snapshots[ $i ] ;
+			if( $i == $numSnapshots-1 ) {
+				$progressSnapshotObj[ "numNS"  ] = $snapshot[ "num_NS" ] ;
+				$progressSnapshotObj[ "numL0"  ] = $snapshot[ "num_L0" ] ;
+				$progressSnapshotObj[ "numL1"  ] = $snapshot[ "num_L1" ] ;
+				$progressSnapshotObj[ "numL2"  ] = $snapshot[ "num_L2" ] ;
+				$progressSnapshotObj[ "numL3"  ] = $snapshot[ "num_L3" ] ;
+				$progressSnapshotObj[ "numMAS" ] = $snapshot[ "num_MAS" ] ;
+
+				$pushSnapshot = true ;
+			}
+			else {
+				if( $snapshot[ "time_spent" ] > 10 ) {
+					$pushSnapshot = true ;
+				}
+			}
+
+			if( $pushSnapshot ) {
+			    array_push( $learningCurveDataObj, 
+			    	        array( $snapshot["num_NS"],$snapshot["num_L0"], 
+			    	        	   $snapshot["num_L1"],$snapshot["num_L2"], 
+			    	        	   $snapshot["num_L3"],$snapshot["num_MAS"] ));
+			}
+		}
+		$deckDetailsObj[ "progressSnapshot"  ] = $progressSnapshotObj ;
+		$deckDetailsObj[ "learningCurveData" ] = $learningCurveDataObj ;
 	}
 
 	private function constructQuestions() {
 
 		$questions = array() ;
 
-		$cards = $this->cardDAO->getAllCards( $this->chapterId ) ;
-		if( $cards != null ) {
-			if( gettype( $cards ) == "array" ) {
-				foreach( $cards as $card ) {
-					array_push( $questions, $this->constructQuestion( $card ) ) ;
-				}
-			}
-			else {
-				array_push( $questions, $this->constructQuestion( $card ) ) ;
-			}
+		$cards = $this->clsDAO->getCardsForUser( ExecutionContext::getCurrentUserName(), 
+			                                     $this->chapterId ) ;
+		foreach( $cards as $card ){
+			array_push( $questions, $this->constructQuestion( $card ) ) ;
 		}
+
 		return $questions ;
 	}
 
 	private function constructQuestion( $card ) {
 
 		$quesiton = array() ;
+		$learningStats = array() ;
 
 		$question[ "questionId"      ] = $card[ "card_id" ] ;
 		$question[ "questionType"    ] = $card[ "card_type" ] ;
@@ -119,7 +135,21 @@ class FlashCardAPI extends AbstractJoveNotesAPI {
 
 		$this->injectCardContent( $question, $card[ "content" ] ) ;
 
-		$question[ "learningStats" ] = $this->constructLearningStats() ;
+		$lastAttemptTime = $card[ "last_attempt_time" ] ;
+		if( $lastAttemptTime == null ) {
+			$lastAttemptTime = -1 ;
+		}
+		else {
+			$lastAttemptTime = strtotime( $lastAttemptTime ) * 1000 ;
+		}
+
+    	$learningStats[ "numAttempts"        ] = $card[ "num_attempts" ] ;
+		$learningStats[ "learningEfficiency" ] = $card[ "learning_efficiency" ] ;
+		$learningStats[ "currentLevel"       ] = $card[ "current_level" ] ;
+		$learningStats[ "temporalScores"     ] = str_split( $card[ "temporal_ratings" ] ) ;
+		$learningStats[ "lastAttemptTime"    ] = $lastAttemptTime ;
+
+		$question[ "learningStats" ] = $learningStats ;
 
 		return $question ;
 	}
@@ -131,19 +161,6 @@ class FlashCardAPI extends AbstractJoveNotesAPI {
 		foreach( $contentArr as $key => $value ) {
 			$element[ $key ] = $value ;
 		}
-	}
-
-	private function constructLearningStats() {
-
-		$learningStats = array() ;
-
-		$learningStats[ "numAttempts"        ] = 2 ;
-		$learningStats[ "learningEfficiency" ] = 95 ;
-		$learningStats[ "currentLevel"       ] = "L2" ;
-		$learningStats[ "temporalScores"     ] = array( "H", "A", "P", "E", "E" ) ;
-		$learningStats[ "lastAttemptTime"    ] = 24352352435 ;
-
-		return $learningStats ;
 	}
 
 	// Set the responseBody to the output of this function if we want to send 

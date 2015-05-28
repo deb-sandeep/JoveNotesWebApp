@@ -23,8 +23,20 @@
           <div class="panel-heading"><b>Session Summary</b></div>
           <table class="table table-condensed table-striped table-hover">
             <tr>
+                <td class="text-primary" align="left">Total points</td>
+                <td align="right">
+                    <span class="badge MAS">
+                    {{$parent.pointsEarnedInThisSession + $parent.pointsLostInThisSession}}
+                    </span>
+                </td>
+            </tr>
+            <tr>
                 <td class="text-primary" align="left">Points earned</td>
                 <td align="right"><span class="badge MAS">{{$parent.pointsEarnedInThisSession}}</span></td>
+            </tr>
+            <tr>
+                <td class="text-primary" align="left">Points lost</td>
+                <td align="right"><span class="badge L1">{{$parent.pointsLostInThisSession}}</span></td>
             </tr>
             <tr>
                 <td class="text-primary" align="left">Efficiency</td>

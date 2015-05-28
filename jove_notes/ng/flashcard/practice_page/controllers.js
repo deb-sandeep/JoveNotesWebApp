@@ -113,7 +113,9 @@ $scope.rateCard = function( rating ) {
 
 	var cardId     = $scope.currentQuestion.questionId ;
 	var curLevel   = $scope.currentQuestion.learningStats.currentLevel ;
-	var nextLevel  = ratingMatrix.getNextLevel( curLevel, rating ) ;
+	var numAttempts= $scope.currentQuestion.learningStats.numAttemptsInSession+1 ;
+
+	var nextLevel  = ratingMatrix.getNextLevel( numAttempts, curLevel, rating ) ;
 	var nextAction = ratingMatrix.getNextAction( curLevel, rating ) ;
 
 	$scope.questionsForSession.shift() ;
@@ -127,7 +129,7 @@ $scope.rateCard = function( rating ) {
 	log.debug( "Current level = " + curLevel ) ;
 	log.debug( "Next level    = " + nextLevel ) ;
 	log.debug( "Next action   = " + nextAction ) ;
-	log.debug( "Num attmepts  = " + $scope.currentQuestion.learningStats.numAttemptsInSession ) ;
+	log.debug( "Num attmepts  = " + numAttempts ) ;
 	log.debug( "Time spent    = " + $scope.currentQuestion.learningStats.numSecondsInSession ) ;
 	
 	$http.post( '/jove_notes/api/GradeCard', { 
@@ -137,7 +139,8 @@ $scope.rateCard = function( rating ) {
 		currentLevel: curLevel,
 		nextLevel   : nextLevel,
 		rating      : rating,
-		timeTaken   : Math.ceil( ( new Date().getTime() - currentQuestionShowStartTime )/1000 )
+		timeTaken   : Math.ceil( ( new Date().getTime() - currentQuestionShowStartTime )/1000 ),
+		numAttempts : numAttempts
 	})
 	.success( function( data ){
 		if( typeof data === 'string' ) {
@@ -147,8 +150,21 @@ $scope.rateCard = function( rating ) {
 			log.debug( "Grading of card " + cardId + " success." ) ;
 			log.debug( "Score earned = " + data.score ) ;
 			scoreDelta += data.score ;
-			$scope.$parent.pointsEarnedInThisSession += data.score ;
-			updateScore() ;
+
+			// There are times, especially for the last card in the deck that the
+			// server response is received after we have shown the end page.
+			// In these cases $scope.$parent turns out to be null and the following
+			// throws an error. To prevent the mishap, we explicitly check for
+			// a not null parent.
+			if( $scope.$parent != null ) {
+				if( data.score > 0 ) {
+					$scope.$parent.pointsEarnedInThisSession += data.score ;
+					updateScore() ;
+				}
+				else if( data.score < 0 ) {
+					$scope.$parent.pointsLostInThisSession += data.score ;
+				}
+			}
 		}
 	})
 	.error( function( data ){
@@ -204,12 +220,9 @@ function showNextCard() {
 		$scope.currentQuestion = $scope.questionsForSession[0] ;
 		var answerLength = $scope.currentQuestion.handler.getAnswerLength() ;
 
-		log.debug( "Answer length = " + answerLength ) ;
-
 		$scope.questionMode = true ;
 		$scope.answerChangeTrigger = "" ;
 		$scope.answerAlign = answerLength < 100 ? "center" : "left" ;
-		log.debug( "Answer align = " + $scope.answerAlign ) ;
 
 		currentQuestionShowStartTime = new Date().getTime() ;
 	}
@@ -228,7 +241,7 @@ function endSession() {
 		$scope.$parent.progressSnapshot.numL0,
 		$scope.$parent.progressSnapshot.numL1,
 		$scope.$parent.progressSnapshot.numL2,
-		$scope.$parent.progressSnapshot.numL2,
+		$scope.$parent.progressSnapshot.numL3,
 		$scope.$parent.progressSnapshot.numMAS
 	] ;
 	$scope.$parent.learningCurveData.push( currentSnapshot ) ;

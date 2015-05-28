@@ -96,6 +96,7 @@ $scope.learningCurveData = null ;
 $scope.questions         = null ;
 
 $scope.pointsEarnedInThisSession = 0 ;
+$scope.pointsLostInThisSession = 0 ;
 
 $scope.sessionStats = {
     numCards         : 0,

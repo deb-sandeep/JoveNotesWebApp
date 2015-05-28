@@ -106,8 +106,11 @@ function RatingMatrix() {
         return value ;
     }
 
-    this.getNextLevel = function( currentLevel, currentRating ) {
+    this.getNextLevel = function( numAttempts, currentLevel, currentRating ) {
         log.debug( "Getting next level" ) ;
+        if( numAttempts > 1 ) {
+            return currentLevel ;
+        }
         return getMatrixValue( this.nextLevelMatrix, currentLevel, currentRating ) ;
     } ;
 
