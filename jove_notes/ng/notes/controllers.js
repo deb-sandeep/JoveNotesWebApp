@@ -142,6 +142,20 @@ function processNotesElements() {
 
 	// Reset all the arrrays before we fill them with filtered contents
 	$scope.filteredNotesElements.length = 0 ;
+	$scope.wordMeanings.length = 0 ;
+	$scope.questionAnswers.length = 0 ;
+	$scope.fibs.length = 0 ;
+	$scope.definitions.length = 0 ;
+	$scope.characters.length = 0 ;
+	$scope.teacherNotes.length = 0 ;
+	$scope.matchings.length = 0 ;
+	$scope.events.length = 0 ;
+	$scope.trueFalseStatements.length = 0 ;
+	$scope.chemEquations.length = 0 ;
+	$scope.chemCompounds.length = 0 ;
+	$scope.spellbeeWords.length = 0 ;
+	$scope.imageLabels.length = 0 ;
+	$scope.equations.length = 0 ;
 
 	for( index=0; index<$scope.notesElements.length; index++ ) {
 

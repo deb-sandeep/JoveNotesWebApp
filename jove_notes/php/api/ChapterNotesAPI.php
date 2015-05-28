@@ -31,16 +31,10 @@ class ChapterNotesAPI extends AbstractJoveNotesAPI {
 		$notesElements = array() ;
 
 		$neDataArray = $this->neDAO->getNoteElements( $this->chapterId ) ;
-		if( $neDataArray != null ) {
-			if( gettype( $neDataArray ) == "array" ) {
-				foreach( $neDataArray as $neData ) {
-					array_push( $notesElements, $this->constructNotesElement( $neData ) ) ;
-				}
-			}
-			else {
-				array_push( $notesElements, $this->constructNotesElement( $neData ) ) ;
-			}
+		foreach( $neDataArray as $neData ) {
+			array_push( $notesElements, $this->constructNotesElement( $neData ) ) ;
 		}
+
 		return $notesElements ;
 	}
 
@@ -51,7 +45,7 @@ class ChapterNotesAPI extends AbstractJoveNotesAPI {
 		$element[ "noteElementId"   ] = $neData[ "notes_element_id" ] ;
 		$element[ "elementType"     ] = $neData[ "element_type" ] ;
 		$element[ "difficultyLevel" ] = $neData[ "difficulty_level" ] ;
-		$element[ "learningStats"   ] = array( "learningEfficiency" => 80 ) ;
+		$element[ "learningStats"   ] = array( "learningEfficiency" => $neData[ "learning_efficiency" ] ) ;
 
 		$this->injectNEContent( $element, $neData[ "content" ] ) ;
 
