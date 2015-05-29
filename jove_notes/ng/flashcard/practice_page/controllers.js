@@ -60,6 +60,22 @@ $scope.questionMode = false ;
 		return ;
 	}
 
+	// TODO: Push only if push is on and refactor into a private method. Think
+	// of the message content. Also if we are stating the session, we should 
+	// be clearing out the previous session messages - on the DAO side.
+	$http.post( '/jove_notes/api/RemoteFlashMessage', { 
+		chapterId   : chapterId,
+		msgType     : 'start_session',
+		msgContent  : {
+			this : 'that'
+		}
+	})
+	.success( function( data ){
+	})
+	.error( function( data ){
+        $scope.addErrorAlert( "API call failed. " + data ) ;
+	}) ;
+
 	log.debug( "Starting timer." ) ;
 	setTimeout( handleTimerEvent, 1000 ) ;
 
