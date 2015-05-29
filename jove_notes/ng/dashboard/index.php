@@ -57,6 +57,11 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
        ng-click="setActiveReport( 'StudyPerDay' )">
   	Study per Day
   	</a>
+
+    <a type="button" class="btn btn-info btn-md" 
+       href="/apps/jove_notes/ng/remoteflash/index.php">
+    Remote Flash
+    </a>
   	<div class="ng-view"></div>	
 </body>
 </html>
