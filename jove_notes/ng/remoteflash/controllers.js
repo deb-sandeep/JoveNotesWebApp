@@ -2,13 +2,17 @@ remoteFlashCardApp.controller( 'RemoteFlashCardController', function( $scope, $h
 // ---------------- Constants and inner class definition -----------------------
 // ---------------- Local variables --------------------------------------------
 var jnUtil = new JoveNotesUtil() ;
+var lastMessageId = -1 ;
 
 // ---------------- Controller variables ---------------------------------------
-$scope.alerts = [] ;
-$scope.userName  = userName ;
+$scope.alerts   = [] ;
+$scope.userName = userName ;
+$scope.messages = [] ;
 
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing RemoteFlashCardController." ) ;
+runMesssageFetchPump() ;
+runMessageProcessPump() ;
 
 // ---------------- Controller methods -----------------------------------------
 $scope.addErrorAlert = function( msgString ) {
@@ -20,6 +24,47 @@ $scope.closeAlert = function(index) {
 };
 
 // ---------------- Private functions ------------------------------------------
+function runMesssageFetchPump() {
+
+    log.debug( "Running message pump." ) ;
+    $http.get( "/jove_notes/api/RemoteFlashMessage", {
+        params : {
+            lastMessageId : lastMessageId
+        }
+    })
+    .success( function( data ){
+        log.debug( "Received data from server." ) ;
+        if( Array.isArray( data ) ) {
+            for( var i=0; i<data.length; i++ ) {
+                $scope.data.push( data[i] ) ;
+            }
+
+            lastMessageId = data[ data.length -1 ].messageId ;
+            log.debug( "Last message id = " + lastMessageId ) ;
+        }
+    })
+    .error( function( data ){
+        log.error( "Error getting remote flash messages." + data ) ;
+        $scope.addErrorAlert( "Could not receive remote flash messages." + data ) ;
+    }) ;
+    setTimeout( runMesssageFetchPump, 1000 ) ;
+}
+
+function runMessageProcessPump() {
+
+    log.debug( "Executing message processing pump" ) ;
+    while( $scope.messages.length > 0 ) {
+        var message = $scope.messages.shift() ;
+        processMessage( message ) ;
+    }
+    setTimeout( runMessageProcessPump, 500 ) ;
+}
+
+function processMessage( message ) {
+
+    log.debug( "Processing message." ) ;
+}
+
 function preProcessFlashCardQuestions( questions ) {
 
     question.difficultyLabel = 
