@@ -5,6 +5,7 @@ remoteFlashCardApp.controller( 'RemoteFlashCardController', function( $scope, $h
 var jnUtil = new JoveNotesUtil() ;
 var lastMessageId = -1 ;
 var messages = [] ;
+var waitingForUserAcceptance = false ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.SCREEN_WAITING_TO_START = "waiting_to_start" ;
@@ -32,18 +33,20 @@ runMessageProcessPump() ;
 // ---------------- Controller methods -----------------------------------------
 $scope.addErrorAlert = function( msgString ) {
     $scope.alerts.push( { type: 'danger', msg: msgString } ) ;
-}
+};
 
 $scope.closeAlert = function(index) {
     $scope.alerts.splice( index, 1 ) ;
 };
 
+$scope.resetWaitingForUserAcceptanceFlag = function() {
+    log.debug( "Setting waiting for user acceptance flag to false." ) ;
+    waitingForUserAcceptance = false ;
+};
+
 // ---------------- Private functions ------------------------------------------
 function runMesssageFetchPump() {
 
-    // TODO: For testing I am setting -1 as last message Id always. This is to 
-    //       ensure a full playback of messages. Change this to lastMessageId
-    //       variable once ready.
     $http.get( "/jove_notes/api/RemoteFlashMessage?lastMessageId=" + lastMessageId )
     .success( function( data ){
         if( Array.isArray( data ) ) {
@@ -67,33 +70,31 @@ function runMesssageFetchPump() {
 
 function runMessageProcessPump() {
 
-    while( messages.length > 0 ) {
-        var message = messages.shift() ;
-        log.debug( "Processing message." ) ;
-        log.debug( "    message id   = " + message.id ) ;
-        log.debug( "    message type = " + message.msgType ) ;
-        log.debug( "    content      = " + JSON.stringify( message.content ) ) ;
+    if( !waitingForUserAcceptance ) {
+        while( messages.length > 0 ) {
+            var message = messages.shift() ;
+            log.debug( "Processing message." ) ;
+            log.debug( "    message id   = " + message.id ) ;
+            log.debug( "    message type = " + message.msgType ) ;
+            log.debug( "    content      = " + JSON.stringify( message.content ) ) ;
 
-        // try {
-            if( message.msgType == "yet_to_start" ) {
-                $scope.currentScreen = $scope.SCREEN_WAITING_TO_START ;
+            try {
+                if( message.msgType == "yet_to_start" ) {
+                    $scope.currentScreen = $scope.SCREEN_WAITING_TO_START ;
+                }
+                else if( message.msgType == "start_session" ) {
+                    processStartSessionMessage( message ) ;
+                }
+                else {
+                    throw "Unknown message type " + message.msgType ;
+                }
             }
-            else if( message.msgType == "start_session" ) {
-                processStartSessionMessage( message ) ;
+            catch( exception ) {
+                log.error( "Error processing message." + exception ) ;
             }
-            else {
-                throw "Unknown message type " + message.msgType ;
-            }
-        // }
-        // catch( e ) {
-        //     log.error( "Error processing message." + e ) ;
-        // }
+        }
     }
-    setTimeout( runMessageProcessPump, 1000 ) ;
-}
-
-function processMessage( message ) {
-
+    setTimeout( runMessageProcessPump, 500 ) ;
 }
 
 function processStartSessionMessage( message ) {
@@ -128,6 +129,7 @@ function processStartSessionMessage( message ) {
                                       $scope.learningCurveData ) ;
 
     $scope.currentScreen = $scope.SCREEN_SESSION_SETTINGS ;
+    waitingForUserAcceptance = true ;
 }
 
 function preProcessFlashCardQuestions( questions ) {

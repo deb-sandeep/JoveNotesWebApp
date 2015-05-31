@@ -1,6 +1,15 @@
 PHPWebApp
 --------------------------------------------------------------------------------
-. Implement remote flash
+. Remote flash server should show answers along with questions
+. Remote flash server should push questions
+. Remote flash server should have a push answer button shown when we are operating
+  in push mode
+. Remote flash server should be able to push answer when the push answer button
+  is clicked
+. What about refetching flashed question by client - problem which we suffered
+  last year?
+. How does mass playback work, especially in cases where waiting for user input
+  is required.
 . Render <code> blocks - highlight.js?
 . Create local page for entering hindi and latex formulaes
 . Remember to php.ini encoding on Dell Opt
@@ -19,6 +28,20 @@ JoveNotes processor
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+5/31/15 --
+. Session settings page implemented
+  - Page, API, DAO and integration end to end
+. Session page will not move forward unless user reviews the settings, even if
+  the server has started flashing questions.
+
+5/30/15 --
+. Waiting for session start screen implemented
+. Message fetch and process pump implemented
+. RemoteMessageQueue foundation laid
+
+5/29/15 --
+. Too tired to do anything.. :(
+
 5/28/15 --
 . Implement user values in FlashCardAPI response
     - progressSnapshot
