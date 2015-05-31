@@ -60,28 +60,15 @@ $scope.questionMode = false ;
 		return ;
 	}
 
-	// TODO: Push only if push is on and refactor into a private method. Think
-	// of the message content. Also if we are stating the session, we should 
-	// be clearing out the previous session messages - on the DAO side.
-	$http.post( '/jove_notes/api/RemoteFlashMessage', { 
-		chapterId   : chapterId,
-		msgType     : 'start_session',
-		msgContent  : {
-			this : 'that'
-		}
-	})
-	.success( function( data ){
-	})
-	.error( function( data ){
-        $scope.addErrorAlert( "API call failed. " + data ) ;
+	startSession( function(){
+
+		log.debug( "Starting timer." ) ;
+		setTimeout( handleTimerEvent, 1000 ) ;
+
+		onWindowResize() ;
+		window.addEventListener( "resize", onWindowResize ) ;
+		showNextCard() ;
 	}) ;
-
-	log.debug( "Starting timer." ) ;
-	setTimeout( handleTimerEvent, 1000 ) ;
-
-	onWindowResize() ;
-	window.addEventListener( "resize", onWindowResize ) ;
-	showNextCard() ;
 }
 
 // ---------------- Controller methods -----------------------------------------
@@ -197,6 +184,40 @@ $scope.showAnswer = function() {
 }
 
 // ---------------- Private functions ------------------------------------------
+function startSession( callback ) {
+
+	log.debug( "Starting the session." ) ;
+	if( $scope.$parent.studyCriteria.push ) {
+		log.debug( "Session is configured for remote push. " + 
+			       "Posting start_session message." ) ;
+
+		$http.post( '/jove_notes/api/RemoteFlashMessage', { 
+			sessionId   : $scope.$parent.sessionId,
+			chapterId   : chapterId,
+			msgType     : 'start_session',
+			msgContent  : {
+				"chapterDetails"    : $scope.$parent.chapterDetails,
+				"difficultyStats"   : $scope.$parent.difficultyStats,
+				"progressSnapshot"  : $scope.$parent.progressSnapshot,
+				"learningCurveData" : $scope.$parent.learningCurveData,
+				"studyCriteria"     : $scope.$parent.studyCriteria,
+			}
+		})
+		.success( function( data ){
+			callback() ;
+		})
+		.error( function( data ){
+			var message = "Can't start session. Could not post remote start message" ;
+			log.error( message ) ;
+			log.error( "Server says - " + data ) ;
+	        $scope.addErrorAlert( message ) ;
+		}) ;
+	}
+	else {
+		callback() ;
+	}
+}
+
 function updateLearningStatsForCurrentQuestion( rating, nextLevel ) {
 
 	var delta = ( new Date().getTime() - currentQuestionShowStartTime )/1000 ;

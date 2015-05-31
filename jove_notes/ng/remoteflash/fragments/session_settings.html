@@ -1,0 +1,121 @@
+<!-- The page header                                                         -->
+<!-- ======================================================================= -->
+<div class="fixedheader" style="display:table;width:100%;">
+
+    <div style="display:table-cell;width:40px;">
+        <img src="/apps/jove_notes/media/images/logo_for_navbar.png" 
+             style="height: 20px" />
+    </div>
+    <div style="display:table-cell;text-align:center;">
+        <span class="gi-1-15x">{{pageTitle}}</span>
+    </div>
+    <div style="display:table-cell;width:170px;text-align:right;">
+        <span class="small">
+        [ {{ userName }} ] &nbsp;
+        </span>
+        <div class="pull-right" style="margin-top: 3px">
+            <a href="/apps/jove_notes/ng/dashboard/index.php">
+                <span class="glyphicon glyphicon-eye-open gi-1-5x"></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- The "Start Session" button which spans the entire width                 -->
+<!-- ======================================================================= -->
+<div style="height:30px"></div>
+<div class="row">
+    <div class="col-sm-12" style="height:70px;">
+        <p>
+        <p style="padding-left:10px;padding-right:10px;">
+        <a type="button" class="btn btn-success btn-block gi-2x"
+           href="#PracticePage"
+           style="height:50px;">
+            Start Session
+            <span class="glyphicon glyphicon-play"></span>
+        </a>
+        </p>
+        <p>
+    </div>
+</div>
+
+<!-- The graphs which show the progress of the user and the chapter stats    -->
+<!-- ======================================================================= -->
+<div class="row">
+    <div class="col-sm-3 text-center">
+        <b>Difficulty level of cards</b><p>
+        <canvas id="difficultyStatsBarGraph" width="250" height="200"></canvas>
+    </div>
+    <div class="col-sm-4 text-center">
+        <b>Current learning level</b><p>
+        <canvas id="learningStatsPieGraph" width="250" height="200"></canvas>
+    </div>
+    <div class="col-sm-5 text-center">
+        <b>Learning curve</b><p>
+        <canvas id="learningCurveGraph" width="350" height="200"></canvas>
+    </div>
+</div>
+
+<!-- The session criteria based on which cards are selected for this session -->
+<!-- ======================================================================= -->
+<div class="row">
+    <div class="col-sm-3 pad-5px">
+        <div class="panel panel-info">
+          <div class="panel-heading"><b>Study Bounds</b></div>
+          <div class="panel-body pad-5px">
+            <div align="left"> 
+                <div class="pad-10px">
+                    <label>Max cards : </label> {{studyCriteria.maxCards}}
+                </div>
+                <div class="pad-10px">
+                    <label>Max time : </label> {{studyCriteria.maxTime}}
+                </div>
+                <div class="pad-10px">
+                    <label>Max new cards : </label> {{studyCriteria.maxNewCards}}
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-sm-3 pad-5px">
+        <div class="panel panel-info">
+          <div class="panel-heading"><b>Study Strategy</b></div>
+          <div class="panel-body pad-5px">
+            <div align="left">
+                <div>
+                    <label>Strategy : </label> {{studyCriteria.strategy}}
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-sm-6 pad-5px">
+        <div class="panel panel-info">
+          <div class="panel-heading"><b>Filter Criteria</b></div>
+          <div class="panel-body pad-5px">
+            <div align="left">
+                <div class="row">
+                <div class="col-sm-4">
+                    <label>Level : </label>
+                    <ul>
+                        <li ng-repeat="item in studyCriteria.currentLevelFilters">{{item}}</li>
+                    </ul>
+                </div>
+                <div class="col-sm-4">
+                    <label>Efficiency : </label>
+                    <ul>
+                        <li ng-repeat="item in studyCriteria.learningEfficiencyFilters">{{item}}</li>
+                    </ul>
+                </div>
+                <div class="col-sm-4">
+                    <label>Difficulty : </label>
+                    <ul>
+                        <li ng-repeat="item in studyCriteria.difficultyFilters">{{item}}</li>
+                    </ul>
+                </div>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>

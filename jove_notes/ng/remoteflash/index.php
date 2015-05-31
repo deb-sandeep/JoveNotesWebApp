@@ -19,6 +19,13 @@ $pageConfig = array(
 <head>
     <?php include( HEAD_CONTENT_FILE ); ?>
 
+    <style>
+        .jumbotron {
+            background: #000 ;
+            color: #C2C2C2;
+        }    
+    </style>
+
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({ TeX: { extensions: ["mhchem.js"] }});
     </script>
@@ -51,7 +58,18 @@ $pageConfig = array(
 <body ng-controller="RemoteFlashCardController">
     <?php include( ALERT_DIV_FILE ) ; ?>
     <audio id="audio"></audio>
-    This is the remote flash page.
+    <div ng-show="currentScreen == SCREEN_WAITING_TO_START" class="ng-hide"
+         ng-include="'/apps/jove_notes/ng/remoteflash/fragments/waiting_to_start.html'">
+    </div>
+    <div ng-show="currentScreen == SCREEN_SESSION_SETTINGS" class="ng-hide"
+         ng-include="'/apps/jove_notes/ng/remoteflash/fragments/session_settings.html'">
+    </div>
+    <div ng-show="currentScreen == SCREEN_PRACTICE" class="ng-hide"
+         ng-include="'/apps/jove_notes/ng/remoteflash/fragments/session_practice.html'">
+    </div>
+    <div ng-show="currentScreen == SCREEN_SESSION_END" class="ng-hide"
+         ng-include="'/apps/jove_notes/ng/remoteflash/fragments/session_end.html'">
+    </div>
 </body>
 
 </html>

@@ -1,0 +1,48 @@
+Session settings
+--------------------------------------------------------------------------------
+{
+	"sessionId"      : 20,
+	"chapterDetails" : { 
+		"chapterId"        : 23,
+		"syllabusName"     : "Class-8",
+		"subjectName"      : "Biology",
+		"chapterNumber"    : 3,
+		"subChapterNumber" : 0,
+		"chapterName"      : "Digestion, absorption, assimilation"
+	},
+	"difficultyStats"  : {
+		"numVE" : 20,
+		"numE"  : 10,
+		"numM"  : 10,
+		"numH"  : 25,
+		"numVH" : 25
+	},
+	"progressSnapshot" : {
+		"numNS"  :  20 ,
+		"numL0"  :  20 ,
+		"numL1"  :  10 ,
+		"numL2"  :  10 ,
+		"numL3"  :  20 ,
+		"numMAS" :  20
+	},
+	"learningCurveData" : [
+        [ 100,   0,   0,  0,  0,   0 ],
+        [  50,  10,  40,  0,  0,   0 ],
+        [  30,   5,  10, 55,  0,   0 ],
+        [  10,  10,  20, 40, 20,   0 ],
+        [   0,   5,   0, 50, 30,  15 ],
+        [   0,   0,   0, 10, 50,  40 ],
+        [   0,   0,   0,  0, 30,  70 ],
+        [   0,   0,   0,  0,  0, 100 ]
+	],
+	"studyCriteria" : {
+	    "maxCards"                  : 10000,
+	    "maxTime"                   : -1,
+	    "maxNewCards"               : 10000,
+	    "currentLevelFilters"       : [ "L0", "L1", "L2", "L3"                  ],
+	    "learningEfficiencyFilters" : [ "A1", "A2", "B1", "B2", "C1", "C2", "D" ],
+	    "difficultyFilters"         : [ "VE", "E",  "M",  "H",  "VH"            ],
+	    "strategy"                  : "SSR",
+	    "push"                      : false
+	}
+}

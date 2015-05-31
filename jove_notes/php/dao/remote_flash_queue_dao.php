@@ -11,7 +11,7 @@ class RemoteFlashQueueDAO extends AbstractDAO {
 		$this->logger = Logger::getLogger( __CLASS__ ) ;
 	}
 
-	function addMessage( $userName, $msgType, $content=NULL ) {
+	function addMessage( $userName, $sessionId, $msgType, $content=NULL ) {
 
         if( $content != NULL ) {
             if( is_object( $content ) ) {
@@ -23,17 +23,71 @@ $query = <<<QUERY
 insert into jove_notes.remote_flash_queue
 ( session_id, student_name, msg_type, msg_content )
 values
-(
-    ( select max(session_id) 
-      from jove_notes.learning_session 
-      where student_name='$userName'
-    ),
-    '$userName', '$msgType', '$content'
-)
+( $sessionId, '$userName', '$msgType', '$content')
 QUERY;
 
         parent::executeInsert( $query ) ;
 	}
+
+    function purgePreviousSessionMessages( $userName, $currentSessionId ) {
+
+$query = <<<QUERY
+delete from jove_notes.remote_flash_queue 
+where 
+    student_name = '$userName' and 
+    session_id < $currentSessionId 
+QUERY;
+
+        parent::executeDelete( $query ) ;
+    }
+
+    function purgeAllMessages( $userName ) {
+
+$query = <<<QUERY
+delete from jove_notes.remote_flash_queue 
+where 
+    student_name = '$userName' 
+QUERY;
+
+        parent::executeDelete( $query ) ;
+    }
+
+    function getLastMessageAgeAndId( $userName ) {
+
+$query = <<<QUERY
+select id, TIMESTAMPDIFF(SECOND, create_timestamp, CURRENT_TIMESTAMP ) as age
+from 
+    jove_notes.remote_flash_queue 
+where 
+    student_name = '$userName' and 
+    id = ( 
+        select max(id) 
+        from jove_notes.remote_flash_queue 
+        where student_name = '$userName'
+    ) 
+QUERY;
+
+        return parent::getResultAsAssociativeArray( $query, [ "id", "age" ] ) ;
+    }
+
+    function getAllMessages( $userName, $lastMessageId ) {
+
+$query = <<<QUERY
+select id, msg_type, msg_content 
+from 
+    jove_notes.remote_flash_queue
+where
+    student_name = '$userName' and 
+    id > $lastMessageId 
+order by 
+    id asc 
+QUERY;
+
+        $colNames = [ "id", "msg_type", "msg_content" ] ;
+
+        return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
+    }
 }
+
 ?>
 
