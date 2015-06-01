@@ -17,11 +17,42 @@ $scope.learningEfficiency = "" ;
 
 	$scope.learningEfficiency = computeLearningEfficiency() ;
 	renderGraphs() ;
+
+	if( $scope.$parent.studyCriteria.push ) {
+		pushSessionEndMessage() ;
+	}
 }
 
 // ---------------- Controller methods -----------------------------------------
 
 // ---------------- Private functions ------------------------------------------
+function pushSessionEndMessage() {
+
+	// There is a reason I pass chapter details - This is in case the selection
+	// criteria does not select any cards, the session can go straight to end
+	// screen - without a start session. In this case, the remote client would
+	// not have any clue of the chapter details and hence won't be able to purge
+	// the queue.
+	$http.post( '/jove_notes/api/RemoteFlashMessage', { 
+		sessionId   : $scope.$parent.sessionId,
+		chapterId   : $scope.$parent.chapterId,
+		msgType     : 'end_session',
+		msgContent  : {
+			chapterDetails    : $scope.$parent.chapterDetails,
+			learningCurveData : $scope.$parent.learningCurveData,
+			progressSnapshot  : $scope.$parent.progressSnapshot,
+			messageForEndPage : $scope.$parent.messageForEndPage,
+			sessionStats      : $scope.$parent.sessionStats
+		}
+	})
+	.error( function( data ){
+		var message = "Could not push end session message to remote." ;
+		log.error( message ) ;
+		log.error( "Server says - " + data ) ;
+        $scope.addErrorAlert( message ) ;
+	}) ;
+}
+
 function checkInvalidLoad() {
 	if( $scope.$parent.progressSnapshot == null ) {
 		$location.path( "/StartPage" ) ;

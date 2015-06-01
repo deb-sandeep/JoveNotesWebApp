@@ -33,7 +33,9 @@ $scope.userScore           = userScore ;
 
 $scope.answerChangeTrigger = "" ;
 $scope.answerAlign = "center" ;
-$scope.questionPushed = false ;
+
+$scope.pushQuestionSuccess = false ;
+$scope.pushAnswerSuccess   = false ;
 
 // questionMode is used by the view to show the appropriate controls when either
 // the question or the answer is shown.
@@ -46,7 +48,6 @@ $scope.questionMode = false ;
 		log.debug( "Invalid refresh detected. Returning to start page." ) ;
 		return ;
 	}
-
 
 	log.debug( "Serializing study criteria." ) ;
 	$scope.$parent.studyCriteria.serialize() ;
@@ -153,12 +154,16 @@ $scope.rateCard = function( rating ) {
 			// throws an error. To prevent the mishap, we explicitly check for
 			// a not null parent.
 			if( $scope.$parent != null ) {
+				if( $scope.$parent.studyCriteria.push ) {
+					pushDeltaScoreToRemote( data.score ) ;
+				}
 				if( data.score > 0 ) {
 					$scope.$parent.pointsEarnedInThisSession += data.score ;
 					updateScore() ;
 				}
 				else if( data.score < 0 ) {
 					$scope.$parent.pointsLostInThisSession += data.score ;
+					updateScore() ;
 				}
 			}
 		}
@@ -185,7 +190,7 @@ $scope.pushAnswer = function() {
 		msgContent  : null
 	})
 	.success( function( data ){
-		// Some way of of showing that the answer has been pushed
+		$scope.pushAnswerSuccess = true ;
 	})
 	.error( function( data ){
 		var message = "Could not push show answer message to remote." ;
@@ -196,6 +201,26 @@ $scope.pushAnswer = function() {
 }
 
 // ---------------- Private functions ------------------------------------------
+function pushDeltaScoreToRemote( deltaScore ) {
+
+	log.debug( "Pushing delta score to remote" ) ;
+
+	$http.post( '/jove_notes/api/RemoteFlashMessage', { 
+		sessionId   : $scope.$parent.sessionId,
+		chapterId   : chapterId,
+		msgType     : 'delta_score',
+		msgContent  : {
+			"deltaScore" : deltaScore
+		}
+	})
+	.error( function( data ){
+		var message = "Could not post delta score to remote." ;
+		log.error( message ) ;
+		log.error( "Server says - " + data ) ;
+        $scope.addErrorAlert( message ) ;
+	}) ;
+}
+
 function startSession( callback ) {
 
 	log.debug( "Starting the session." ) ;
@@ -208,6 +233,7 @@ function startSession( callback ) {
 			chapterId   : chapterId,
 			msgType     : 'start_session',
 			msgContent  : {
+				"userScore"         : $scope.userScore,
 				"chapterDetails"    : $scope.$parent.chapterDetails,
 				"difficultyStats"   : $scope.$parent.difficultyStats,
 				"progressSnapshot"  : $scope.$parent.progressSnapshot,
@@ -267,7 +293,6 @@ function showNextCard() {
 	if( !hasSessionEnded() ) {
 
 		log.debug( "Showing next question." ) ;
-		$scope.questionPushed  = false ;
 		$scope.currentQuestion = $scope.questionsForSession[0] ;
 		var answerLength = $scope.currentQuestion.handler.getAnswerLength() ;
 
@@ -281,12 +306,14 @@ function showNextCard() {
 			log.debug( "Session is configured for remote push. " + 
 				       "Posting next question." ) ;
 
+			$scope.pushQuestionSuccess = false ;
+			$scope.pushAnswerSuccess = false ;
+
 			$http.post( '/jove_notes/api/RemoteFlashMessage', { 
 				sessionId   : $scope.$parent.sessionId,
 				chapterId   : chapterId,
 				msgType     : 'question',
 				msgContent  : {
-					"userScore"       : $scope.userScore,
 					"progressSnapshot": $scope.$parent.progressSnapshot,
 					"sessionStats"    : $scope.$parent.sessionStats,
 					"currentQuestion" : $scope.currentQuestion,
@@ -294,7 +321,7 @@ function showNextCard() {
 				}
 			})
 			.success( function( data ){
-				$scope.questionPushed = true ;
+				$scope.pushQuestionSuccess = true ;
 			})
 			.error( function( data ){
 				var message = "Could not post question for remote view" ;
@@ -325,7 +352,7 @@ function endSession() {
 		$scope.$parent.progressSnapshot.numMAS
 	] ;
 	$scope.$parent.learningCurveData.push( currentSnapshot ) ;
-	
+
 	$location.path( "/EndPage" ) ;
 }
 

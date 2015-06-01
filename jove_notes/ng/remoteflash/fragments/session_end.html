@@ -1,1 +1,111 @@
-This is the session end screen
+<div class="container-fluid fixedheader">
+
+    <div style="display:table;width:100%;padding-bottom:5px">
+
+    	<div style="display:table-cell;width:40px;">
+        	<img src="/apps/jove_notes/media/images/logo_for_navbar.png" 
+        	     style="height: 20px" />
+        </div>
+        <div style="display:table-cell;text-align:center;">
+        	<span class="gi-1-15x">{{pageTitle}}</span>
+        </div>
+        <div style="display:table-cell;width:170px;text-align:right;">
+            <span class="badge muted">{{sessionDuration | duration}}</span>
+            <span class="small">[ {{userName}} ]</span>
+        </div>
+    </div>
+
+    <div class="row" style="padding-bottom:5px">
+
+        <div class="col-sm-6 small">
+        	<span class="badge NS">{{progressSnapshot.numNS}}</span>
+        	<span class="badge L0">{{progressSnapshot.numL0}}</span>
+        	<span class="badge L1">{{progressSnapshot.numL1}}</span>
+        	<span class="badge L2">{{progressSnapshot.numL2}}</span>
+        	<span class="badge L3">{{progressSnapshot.numL3}}</span>
+        	<span class="badge MAS">{{progressSnapshot.numMAS}}</span>
+        </div>
+        <div class="col-sm-6 small" style="text-align:right;">
+        	NC - <span class="badge muted">{{sessionStats.numCards}}</span>&nbsp;.&nbsp;
+        	NL - <span class="badge muted">{{sessionStats.numCardsLeft}}</span>&nbsp;.&nbsp;
+        	NA - <span class="badge muted">{{sessionStats.numCardsAnswered}}</span>&nbsp;.&nbsp;
+        	T/C - <span class="badge muted">{{timePerQuestion | duration}}</span>
+        </div>
+    </div>
+
+</div>
+
+<div style="height:60px"></div>
+
+<div class="row">
+    <div class="col-sm-12" style="height:70px;">
+        <div class="well well-sm" align="center">
+            <span class="text-primary gi-1-5x">{{messageForEndPage}}</span>
+        </div>
+    </div>
+</div>
+<div style="height:10px"></div>
+<!-- The graphs which show the progress of the user and the chapter stats    -->
+<!-- ======================================================================= -->
+<div class="row">
+    <div class="col-sm-4 text-center">
+        <b>Current learning level</b><p>
+        <canvas id="learningStatsPieGraphEnd" width="250" height="200"></canvas>
+    </div>
+    <div class="col-sm-3 text-center">
+        <div class="panel panel-info">
+          <div class="panel-heading"><b>Session Summary</b></div>
+          <table class="table table-condensed table-striped table-hover">
+            <tr>
+                <td class="text-primary" align="left">Total points</td>
+                <td align="right">
+                    <span class="badge MAS">
+                    {{pointsEarnedInThisSession + pointsLostInThisSession}}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-primary" align="left">Points earned</td>
+                <td align="right"><span class="badge MAS">{{pointsEarnedInThisSession}}</span></td>
+            </tr>
+            <tr>
+                <td class="text-primary" align="left">Points lost</td>
+                <td align="right"><span class="badge L1">{{pointsLostInThisSession}}</span></td>
+            </tr>
+            <tr>
+                <td class="text-primary" align="left">Study time</td>
+                <td align="right">{{sessionDuration | duration}}</td>
+            </tr>
+            <tr>
+                <td class="text-primary" align="left">Time / Card</td>
+                <td align="right">{{timePerQuestion | duration}}</td>
+            </tr>
+            <tr>
+                <td class="text-primary" align="left">#Questions studied</td>
+                <td align="right">{{sessionStats.numCardsAnswered}}</td>
+            </tr>
+          </table>
+        </div>
+    </div>
+    <div class="col-sm-5 text-center">
+        <b>Learning curve</b><p>
+        <canvas id="learningCurveGraphEnd" width="350" height="200"></canvas>
+    </div>
+</div>
+
+<!-- Return to Dashboard button                                              -->
+<!-- ======================================================================= -->
+<div class="row">
+    <div class="col-sm-12" style="height:70px;">
+        <p>
+        <p style="padding-left:10px;padding-right:10px;">
+        <a type="button" class="btn btn-success btn-block gi-2x"
+           ng-click="cancelSessionEndScreen()"
+           style="height:50px;">
+            Return to remote flash.
+            <span class="glyphicon glyphicon-play"></span>
+        </a>
+        </p>
+        <p>
+    </div>
+</div>

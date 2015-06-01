@@ -48,6 +48,17 @@ class RemoteFlashMessageAPI extends AbstractJoveNotesAPI {
 										ExecutionContext::getCurrentUserName(),
 										$message->sessionId ) ;
 		}
+		
+		if( $message->msgType == "purge_session" ) {
+			$this->logger->debug( "Purging messages for this and older sessions" . 
+				                  $message->sessionId ) ;
+
+			$this->queueDAO->purgePreviousSessionMessages( 
+										ExecutionContext::getCurrentUserName(),
+										$message->sessionId+1 ) ;
+			// We don't save this message. This is just for clearing up the queue.
+			return ; 
+		}
 
 		$this->queueDAO->addMessage( ExecutionContext::getCurrentUserName(), 
 									 $message->sessionId,
@@ -119,7 +130,21 @@ class RemoteFlashMessageAPI extends AbstractJoveNotesAPI {
 		$message[ "id"        ] = $dbMsg[ "id"         ] ;
 		$message[ "sessionId" ] = $dbMsg[ "session_id" ] ;
 		$message[ "msgType"   ] = $dbMsg[ "msg_type"   ] ;
-		$message[ "content"   ] = json_decode( $dbMsg[ "msg_content" ], true ) ;
+
+		$content = json_decode( $dbMsg[ "msg_content" ], true ) ;
+
+		if( $content == null && json_last_error() !== JSON_ERROR_NONE ) {
+
+			$parseErrMsg = JSONUtils::getJSONErrorMessage( json_last_error() ) ;
+
+			$this->logger->error( "Error parsing JSON. " . $dbMsg[ "msg_content" ] ) ;
+			$this->logger->error( "Error message = $parseErrMsg" ) ;
+
+			throw new Exception( "Error parsing JSON - $parseErrMsg" ) ;
+		}
+		else {
+			$message[ "content"   ] = $content ;
+		}
 
 		return $message ;
 	}

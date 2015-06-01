@@ -19,8 +19,8 @@ class RemoteFlashQueueDAO extends AbstractDAO {
             }
         }
 
-        // For some reason, mysql replaces \uXXXX to uXXXX, we make it \\uXXXX
-        $content = preg_replace( '/\\\\u([0-9a-f]{4})/i', '\\\\\\\\u${1}', $content ) ;
+        // Escaping single \ to \\ so that mysql preserves it.
+        $content = preg_replace( '/\\\\/i', '\\\\\\\\', $content ) ;
 
 $query = <<<QUERY
 insert into jove_notes.remote_flash_queue

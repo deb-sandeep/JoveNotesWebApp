@@ -45,6 +45,10 @@ $scope.bodyDivStyle    = { top : 75 } ;
 $scope.showQuestionTrigger = "" ;
 $scope.showAnswerTrigger   = "" ;
 
+$scope.pointsEarnedInThisSession = 0 ;
+$scope.pointsLostInThisSession = 0 ;
+$scope.messageForEndPage = "" ;
+
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing RemoteFlashCardController." ) ;
 runMesssageFetchPump() ;
@@ -70,6 +74,12 @@ $scope.resetWaitingForUserAcceptanceFlag = function() {
     }
 };
 
+$scope.cancelSessionEndScreen = function() {
+
+    waitingForUserAcceptance = false ;
+    $scope.currentScreen = $scope.SCREEN_WAITING_TO_START ;
+}
+
 $scope.showAnswer = function() {
     $scope.showAnswerTrigger = $scope.sessionId + ".Answer-" 
                                         + $scope.currentQuestion.questionId ;
@@ -81,7 +91,6 @@ function runMesssageFetchPump() {
     $http.get( "/jove_notes/api/RemoteFlashMessage?lastMessageId=" + lastMessageId )
     .success( function( data ){
         if( Array.isArray( data ) ) {
-            log.debug( "Received " + data.length + " messages from server." ) ;
             for( var i=0; i<data.length; i++ ) {
 
                 // If we recieve a start_session message, we purge out everything
@@ -94,7 +103,6 @@ function runMesssageFetchPump() {
                 messages.push( data[i] ) ;
                 if( i == data.length -1 ) {
                     lastMessageId = data[ i ].id ;
-                    log.debug( "Last message id = " + lastMessageId ) ;
                 }
             }
         }
@@ -108,42 +116,90 @@ function runMesssageFetchPump() {
 
 function runMessageProcessPump() {
 
-    if( !waitingForUserAcceptance ) {
-        while( messages.length > 0 ) {
-            var message = messages.shift() ;
-            log.debug( "Processing message." ) ;
-            log.debug( "    message id   = " + message.id ) ;
-            log.debug( "    message type = " + message.msgType ) ;
-            log.debug( "    content      = " + JSON.stringify( message.content ) ) ;
+    while( messages.length > 0 && !waitingForUserAcceptance ) {
 
-            try {
-                if( message.msgType == "yet_to_start" ) {
-                    $scope.currentScreen = $scope.SCREEN_WAITING_TO_START ;
-                }
-                else if( message.msgType == "start_session" ) {
-                    processStartSessionMessage( message ) ;
-                }
-                else if( message.msgType == "question" ) {
-                    processIncomingQuestion( message ) ;
-                }
-                else if( message.msgType == "answer" ) {
-                    $scope.showAnswer() ;
-                }
-                else {
-                    throw "Unknown message type " + message.msgType ;
-                }
+        var message = messages.shift() ;
+        // log.debug( "Processing message." ) ;
+        // log.debug( "    message id   = " + message.id ) ;
+        // log.debug( "    message type = " + message.msgType ) ;
+        // log.debug( "    content      = " + JSON.stringify( message.content ) ) ;
+
+        try {
+            if( message.msgType == "yet_to_start" ) {
+                $scope.currentScreen = $scope.SCREEN_WAITING_TO_START ;
             }
-            catch( exception ) {
-                log.error( "Error processing message." + exception ) ;
+            else if( message.msgType == "start_session" ) {
+                processStartSessionMessage( message ) ;
             }
+            else if( message.msgType == "question" ) {
+                processIncomingQuestion( message ) ;
+            }
+            else if( message.msgType == "answer" ) {
+                $scope.showAnswer() ;
+            }
+            else if( message.msgType == "delta_score" ) {
+                processDeltaScoreMessage( message ) ;
+            }
+            else if( message.msgType == "end_session" ) {
+                processEndSessionMessage( message ) ;
+            }
+            else {
+                throw "Unknown message type " + message.msgType ;
+            }
+        }
+        catch( exception ) {
+            log.error( "Error processing message." + exception ) ;
         }
     }
     setTimeout( runMessageProcessPump, 300 ) ;
 }
 
+function processEndSessionMessage( message ) {
+    
+    $scope.chapterDetails    = message.content.chapterDetails ;
+    $scope.messageForEndPage = message.content.messageForEndPage ;
+    $scope.learningCurveData = message.content.learningCurveData ;
+    $scope.progressSnapshot  = message.content.progressSnapshot ;
+    $scope.sessionStats      = message.content.sessionStats ;
+
+    jnUtil.renderLearningProgressPie( 'learningStatsPieGraphEnd',
+                                      $scope.progressSnapshot ) ;
+
+    jnUtil.renderLearningCurveGraph ( 'learningCurveGraphEnd',
+                                      $scope.learningCurveData ) ;
+
+    $scope.currentScreen = $scope.SCREEN_SESSION_END ;
+
+    $http.post( '/jove_notes/api/RemoteFlashMessage', { 
+        sessionId   : $scope.sessionId,
+        chapterId   : $scope.chapterDetails.chapterId,
+        msgType     : 'purge_session',
+        msgContent  : null
+    })
+    .error( function( data ){
+        var message = "Could not purge messages for this session." ;
+        log.error( message ) ;
+        log.error( "Server says - " + data ) ;
+        $scope.addErrorAlert( message ) ;
+    }) ;
+    waitingForUserAcceptance = true ;
+}
+
+function processDeltaScoreMessage( message ) {
+
+    $scope.userScore += message.content.deltaScore ;
+    if( message.content.deltaScore > 0 ) {
+        $scope.pointsEarnedInThisSession += message.content.deltaScore ;
+    }
+    else {
+        $scope.pointsLostInThisSession += message.content.deltaScore ;
+    }
+}
+
 function processStartSessionMessage( message ) {
 
     $scope.sessionId         = message.sessionId ;
+    $scope.userScore         = message.content.userScore ;
     $scope.chapterDetails    = message.content.chapterDetails ;
     $scope.difficultyStats   = message.content.difficultyStats ;
     $scope.progressSnapshot  = message.content.progressSnapshot ;
@@ -179,7 +235,6 @@ function processStartSessionMessage( message ) {
 
 function processIncomingQuestion( message ) {
 
-    $scope.userScore        = message.content.userScore ;
     $scope.progressSnapshot = message.content.progressSnapshot ;
     $scope.sessionStats     = message.content.sessionStats ;
     $scope.currentQuestion  = message.content.currentQuestion ;

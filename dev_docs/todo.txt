@@ -1,15 +1,6 @@
 PHPWebApp
 --------------------------------------------------------------------------------
-. End session message - with relevant stats
-. Score messages need to be published
-. Remote flash server should have a push answer button shown when we are operating
-  in push mode
-. Remote flash server should be able to push answer when the push answer button
-  is clicked
-. What about refetching flashed question by client - problem which we suffered
-  last year?
-. How does mass playback work, especially in cases where waiting for user input
-  is required.
+. In true-false, if there is no statement, it comes as undefined - fix
 . Building on dell optiplex
   - Exporting jovenoteprocessor as a standalong executable with scripts
   - Set up of jovenotesprocessor on Dell Optiplex
@@ -35,10 +26,25 @@ JoveNotes processor
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/2/15 --
+
+
 6/1/15 --
 . Remote flash server should show answers along with questions
 . Remote flash server should push questions
 . Remote flash client should render the question properly
+. Remote flash server should have a push answer button shown when we are operating
+  in push mode
+. Remote flash server should be able to push answer when the push answer button
+  is clicked
+. Show successful push notifications on the remote server
+. Body bottom of remote flash client is at 60 - debug and fix
+. Flash answer of image label doesn't show - debug and fix
+. End statistics of session end page doesn't match - debug and fix
+. End session message - with relevant stats
+. Score messages need to be published
+. What about refetching flashed question by client - problem which we suffered
+  last year? - Skipped, will do on a need basis
 
 5/31/15 --
 . Session settings page implemented

@@ -24,6 +24,17 @@ $pageConfig = array(
             background: #000 ;
             color: #C2C2C2;
         }    
+
+        .flashcardbody {
+            position:fixed;
+            left:0px;
+            top:75px;
+            bottom:0px;
+            width:100%;
+            padding:0px;
+            overflow-x: auto;
+            overflow-y: auto;
+        }        
     </style>
 
     <script type="text/x-mathjax-config">
