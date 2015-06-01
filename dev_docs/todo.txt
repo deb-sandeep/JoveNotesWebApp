@@ -1,7 +1,7 @@
 PHPWebApp
 --------------------------------------------------------------------------------
-. Remote flash server should show answers along with questions
-. Remote flash server should push questions
+. End session message - with relevant stats
+. Score messages need to be published
 . Remote flash server should have a push answer button shown when we are operating
   in push mode
 . Remote flash server should be able to push answer when the push answer button
@@ -10,11 +10,18 @@ PHPWebApp
   last year?
 . How does mass playback work, especially in cases where waiting for user input
   is required.
+. Building on dell optiplex
+  - Exporting jovenoteprocessor as a standalong executable with scripts
+  - Set up of jovenotesprocessor on Dell Optiplex
+  . Script to check out from Git and execute jovenotesprocessor
 . Render <code> blocks - highlight.js?
 . Create local page for entering hindi and latex formulaes
-. Remember to php.ini encoding on Dell Opt
+. Remember to php.ini encoding on Dell Opt for UTF-8
 . Flash card inactivity timeout - with user override/countdown
 . Implement markCardForEdit
+. Check mobile device compatibility - header might need modifications
+. Create a favicon and set it up
+
 
 JoveNotes processor
 --------------------------------------------------------------------------------
@@ -28,6 +35,11 @@ JoveNotes processor
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/1/15 --
+. Remote flash server should show answers along with questions
+. Remote flash server should push questions
+. Remote flash client should render the question properly
+
 5/31/15 --
 . Session settings page implemented
   - Page, API, DAO and integration end to end

@@ -19,12 +19,17 @@ class RemoteFlashQueueDAO extends AbstractDAO {
             }
         }
 
+        // For some reason, mysql replaces \uXXXX to uXXXX, we make it \\uXXXX
+        $content = preg_replace( '/\\\\u([0-9a-f]{4})/i', '\\\\\\\\u${1}', $content ) ;
+
 $query = <<<QUERY
 insert into jove_notes.remote_flash_queue
 ( session_id, student_name, msg_type, msg_content )
 values
 ( $sessionId, '$userName', '$msgType', '$content')
 QUERY;
+
+        $this->logger->debug( $query ) ;
 
         parent::executeInsert( $query ) ;
 	}
@@ -73,7 +78,7 @@ QUERY;
     function getAllMessages( $userName, $lastMessageId ) {
 
 $query = <<<QUERY
-select id, msg_type, msg_content 
+select id, session_id, msg_type, msg_content 
 from 
     jove_notes.remote_flash_queue
 where
@@ -83,7 +88,7 @@ order by
     id asc 
 QUERY;
 
-        $colNames = [ "id", "msg_type", "msg_content" ] ;
+        $colNames = [ "id", "session_id", "msg_type", "msg_content" ] ;
 
         return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
     }

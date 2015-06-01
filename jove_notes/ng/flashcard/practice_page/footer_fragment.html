@@ -5,12 +5,12 @@
 
         <!-- The End Session button -->
         <button type="button" 
-                class="btn btn-danger btn-lg"
-                ng-click="endSession()"
-                ng-show="showAuxControls"
+                class="btn btn-success btn-lg"
+                ng-click="pushAnswer()"
+                ng-show="studyCriteria.push"
                 data-toggle="tooltip" data-placement="top" 
-                title="End session">
-            <span class="glyphicon glyphicon-off"></span>
+                title="Push answer">
+            <span class="glyphicon glyphicon-share-alt"></span>
         </button>
 
         <!-- The toggle header popup -->
@@ -23,49 +23,34 @@
           </button>
           <ul class="dropdown-menu" role="menu">
             <li role="presentation">
-                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L0-Hdr')">Title Header</a>
+                <a role="menuitem" tabindex="-1" ng-click="endSession()">
+                    <span class="glyphicon glyphicon-off"></span>
+                    End session
+                </a>
             </li>
             <li role="presentation">
-                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L1-Hdr')">Session Header</a>
+                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L0-Hdr')">Toggle Title Header</a>
             </li>
             <li role="presentation">
-                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L2-Hdr')">Card header</a>
+                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L1-Hdr')">Toggle Session Header</a>
             </li>
             <li role="presentation">
-                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('AuxControls')">Auxillary Controls</a>
+                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L2-Hdr')">Toggle Card header</a>
+            </li>
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="randomizeCards()">
+                    <span class="glyphicon glyphicon-random"></span>
+                    Randomize cards
+                </a>
+            </li>
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="purgeCard()">
+                    <span class="glyphicon glyphicon-share"></span>
+                    Purge Card
+                </a>
             </li>
           </ul>
         </div>
-
-        <!-- The Shuffle cards button -->
-        <button type="button" 
-                class="btn btn-primary btn-lg"
-                ng-click="randomizeCards()"
-                ng-show="showAuxControls"
-                data-toggle="tooltip" data-placement="top" 
-                title="Shuffle remaining cards">
-            <span class="glyphicon glyphicon-random"></span>
-        </button>
-
-        <!-- The Purge cards button -->
-        <button type="button" 
-                class="btn btn-primary btn-lg"
-                ng-click="purgeCard()"
-                ng-show="showAuxControls"
-                data-toggle="tooltip" data-placement="top" 
-                title="Purge current card">
-            <span class="glyphicon glyphicon-share"></span>
-        </button>
-
-        <!-- The Mark for Edit button -->
-        <button type="button" 
-                class="btn btn-primary btn-lg"
-                ng-click="markCardForEdit()"
-                ng-show="showAuxControls"
-                data-toggle="tooltip" data-placement="top" 
-                title="Mark current card for editing">
-            <span class="glyphicon glyphicon-edit"></span>
-        </button>
     </div>
 
     <div class="col-sm-7 pull-right">

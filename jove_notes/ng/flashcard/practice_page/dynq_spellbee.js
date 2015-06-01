@@ -227,9 +227,7 @@ function SpellBeeManager( questionObj, $scope ) {
 		var ansSpellingDivDOM = document.getElementById( "_spellbeediv_ansdiv_spelling" ) ;
 		var ansMeaningDivDOM  = document.getElementById( "_spellbeediv_ansdiv_meaning" ) ;
 		
-		if( !answeredCorrectly ) {
-			ansSpellingDivDOM.innerHTML = wordToBeSpelled.toUpperCase() ;
-		}
+		ansSpellingDivDOM.innerHTML = wordToBeSpelled.toUpperCase() ;
 
 		$.ajax({
             type: 'GET',

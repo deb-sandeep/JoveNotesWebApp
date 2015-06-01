@@ -5,11 +5,11 @@
     	     style="height: 20px" />
     </div>
     <div style="display:table-cell;text-align:center;">
-    	<span class="gi-1-15x">{{$parent.pageTitle}}</span>
+    	<span class="gi-1-15x">{{pageTitle}}</span>
     </div>
     <div style="display:table-cell;width:170px;text-align:right;">
-        <span class="badge muted">{{$parent.sessionDuration}}</span>
-        <span class="small">[ {{$parent.userName}} ]</span>
+        <span class="badge muted">{{sessionDuration | duration}}</span>
+        <span class="small">[ {{userName}} ]</span>
     </div>
 </div>
 
@@ -17,21 +17,21 @@
      style="padding-bottom:5px">
 
     <div class="col-sm-5 small">
-    	<span class="badge NS">{{$parent.progressSnapshot.numNS}}</span>
-    	<span class="badge L0">{{$parent.progressSnapshot.numL0}}</span>
-    	<span class="badge L1">{{$parent.progressSnapshot.numL1}}</span>
-    	<span class="badge L2">{{$parent.progressSnapshot.numL2}}</span>
-    	<span class="badge L3">{{$parent.progressSnapshot.numL3}}</span>
-    	<span class="badge MAS">{{$parent.progressSnapshot.numMAS}}</span>
+    	<span class="badge NS">{{progressSnapshot.numNS}}</span>
+    	<span class="badge L0">{{progressSnapshot.numL0}}</span>
+    	<span class="badge L1">{{progressSnapshot.numL1}}</span>
+    	<span class="badge L2">{{progressSnapshot.numL2}}</span>
+    	<span class="badge L3">{{progressSnapshot.numL3}}</span>
+    	<span class="badge MAS">{{progressSnapshot.numMAS}}</span>
     </div>
     <div class="col-sm-1 small">
         <span class="badge NS">{{userScore}}</span>
     </div>
     <div class="col-sm-6 small" style="text-align:right;">
-    	NC - <span class="badge muted">{{$parent.sessionStats.numCards}}</span>&nbsp;.&nbsp;
-    	NL - <span class="badge muted">{{$parent.sessionStats.numCardsLeft}}</span>&nbsp;.&nbsp;
-    	NA - <span class="badge muted">{{$parent.sessionStats.numCardsAnswered}}</span>&nbsp;.&nbsp;
-    	T/C - <span class="badge muted">{{$parent.timePerQuestion}}</span>
+    	NC - <span class="badge muted">{{sessionStats.numCards}}</span>&nbsp;.&nbsp;
+    	NL - <span class="badge muted">{{sessionStats.numCardsLeft}}</span>&nbsp;.&nbsp;
+    	NA - <span class="badge muted">{{sessionStats.numCardsAnswered}}</span>&nbsp;.&nbsp;
+    	T/C - <span class="badge muted">{{timePerQuestion | duration}}</span>
     </div>
 </div>
 
@@ -44,7 +44,7 @@
             <span class="badge {{currentQuestion.learningStats.currentLevel}}">{{currentQuestion.learningStats.currentLevel}}</span>
             <span class="badge {{currentQuestion.learningStats.efficiencyLabel}}">{{currentQuestion.learningStats.efficiencyLabel}}</span>
             <span class="badge muted">{{currentQuestion.learningStats.numAttempts}}</span>
-            <span class="badge muted">{{currentQuestion.learningStats.lastAttemptTime}}</span>
+            <span class="badge muted">{{currentQuestion.learningStats.lastAttemptTime | elapsedDuration }}</span>
             <table class="temporal">
                 <tr>
                     <td ng-repeat="score in currentQuestion.learningStats.temporalScores track by $index"

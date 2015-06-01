@@ -48,7 +48,9 @@ $pageConfig = array(
     <script src="/apps/jove_notes/ng/flashcard/practice_page/dynq_spellbee.js"></script>    
 
     <script src="/apps/jove_notes/ng/remoteflash/routes.js"></script>    
+    <script src="/apps/jove_notes/ng/remoteflash/filters.js"></script>    
     <script src="/apps/jove_notes/ng/remoteflash/controllers.js"></script>    
+    <script src="/apps/jove_notes/ng/remoteflash/directives.js"></script>    
 
     <script>
     var userName  = '<?php echo ExecutionContext::getCurrentUserName() ?>' ;

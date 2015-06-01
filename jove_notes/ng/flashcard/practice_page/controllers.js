@@ -23,7 +23,6 @@ var scoreDelta       = 0 ;
 $scope.showL0Header     = true ;
 $scope.showL1Header     = true ;
 $scope.showL2Header     = true ;
-$scope.showAuxControls  = false ;
 $scope.showFooterDropup = true ;
 
 $scope.bodyDivStyle = { top : 75, bottom : 60 } ;
@@ -34,6 +33,7 @@ $scope.userScore           = userScore ;
 
 $scope.answerChangeTrigger = "" ;
 $scope.answerAlign = "center" ;
+$scope.questionPushed = false ;
 
 // questionMode is used by the view to show the appropriate controls when either
 // the question or the answer is shown.
@@ -83,9 +83,6 @@ $scope.toggleDisplay = function( displayId ) {
 	else if( displayId == "L2-Hdr" ) { 
 		$scope.showL2Header = !$scope.showL2Header ; 
 	}
-	else if( displayId == "AuxControls" ) { 
-		$scope.showAuxControls = !$scope.showAuxControls ; 
-	}
 	setTimeout( resizeBody, 10 ) ;
 }
 
@@ -105,10 +102,6 @@ $scope.purgeCard = function() {
 	$scope.$parent.sessionStats.numCards-- ;
 	$scope.$parent.sessionStats.numCardsLeft-- ;
 	showNextCard() ;
-}
-
-$scope.markCardForEdit = function() {
-	alert( "Mark card for edit." ) ;
 }
 
 $scope.rateCard = function( rating ) {
@@ -183,6 +176,25 @@ $scope.showAnswer = function() {
 	$scope.questionMode = false ;
 }
 
+$scope.pushAnswer = function() {
+
+	$http.post( '/jove_notes/api/RemoteFlashMessage', { 
+		sessionId   : $scope.$parent.sessionId,
+		chapterId   : chapterId,
+		msgType     : 'answer',
+		msgContent  : null
+	})
+	.success( function( data ){
+		// Some way of of showing that the answer has been pushed
+	})
+	.error( function( data ){
+		var message = "Could not push show answer message to remote." ;
+		log.error( message ) ;
+		log.error( "Server says - " + data ) ;
+        $scope.addErrorAlert( message ) ;
+	}) ;
+}
+
 // ---------------- Private functions ------------------------------------------
 function startSession( callback ) {
 
@@ -254,6 +266,8 @@ function showNextCard() {
 
 	if( !hasSessionEnded() ) {
 
+		log.debug( "Showing next question." ) ;
+		$scope.questionPushed  = false ;
 		$scope.currentQuestion = $scope.questionsForSession[0] ;
 		var answerLength = $scope.currentQuestion.handler.getAnswerLength() ;
 
@@ -262,6 +276,35 @@ function showNextCard() {
 		$scope.answerAlign = answerLength < 100 ? "center" : "left" ;
 
 		currentQuestionShowStartTime = new Date().getTime() ;
+
+		if( $scope.$parent.studyCriteria.push ) {
+			log.debug( "Session is configured for remote push. " + 
+				       "Posting next question." ) ;
+
+			$http.post( '/jove_notes/api/RemoteFlashMessage', { 
+				sessionId   : $scope.$parent.sessionId,
+				chapterId   : chapterId,
+				msgType     : 'question',
+				msgContent  : {
+					"userScore"       : $scope.userScore,
+					"progressSnapshot": $scope.$parent.progressSnapshot,
+					"sessionStats"    : $scope.$parent.sessionStats,
+					"currentQuestion" : $scope.currentQuestion,
+					"answerAlign"     : $scope.answerAlign
+				}
+			})
+			.success( function( data ){
+				$scope.questionPushed = true ;
+			})
+			.error( function( data ){
+				var message = "Could not post question for remote view" ;
+				log.error( message ) ;
+				log.error( "Server says - " + data ) ;
+		        $scope.addErrorAlert( message ) ;
+			}) ;
+
+			$scope.showAnswer() ;
+		}
 	}
 	else {
 		endSession() ;
@@ -495,7 +538,6 @@ function onWindowResize() {
 		$scope.showL0Header     = false ;
 		$scope.showL1Header     = false ;
 		$scope.showL2Header     = true ;
-		$scope.showAuxControls  = false ;
 		$scope.showFooterDropup = false ;
 	}
 	else {
@@ -504,7 +546,6 @@ function onWindowResize() {
 			$scope.showL0Header     = true ;
 			$scope.showL1Header     = true ;
 			$scope.showL2Header     = true ;
-			$scope.showAuxControls  = false ;
 		}
 	}
 	setTimeout( resizeBody, 10 ) ;

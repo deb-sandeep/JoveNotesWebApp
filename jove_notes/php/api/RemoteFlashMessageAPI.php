@@ -116,9 +116,10 @@ class RemoteFlashMessageAPI extends AbstractJoveNotesAPI {
 
 		$message = array() ;
 
-		$message[ "id"      ] = $dbMsg[ "id"       ] ;
-		$message[ "msgType" ] = $dbMsg[ "msg_type" ] ;
-		$message[ "content" ] = json_decode( $dbMsg[ "msg_content" ], true ) ;
+		$message[ "id"        ] = $dbMsg[ "id"         ] ;
+		$message[ "sessionId" ] = $dbMsg[ "session_id" ] ;
+		$message[ "msgType"   ] = $dbMsg[ "msg_type"   ] ;
+		$message[ "content"   ] = json_decode( $dbMsg[ "msg_content" ], true ) ;
 
 		return $message ;
 	}
@@ -127,9 +128,10 @@ class RemoteFlashMessageAPI extends AbstractJoveNotesAPI {
 
 		$message = array() ;
 
-		$message[ "id"      ] = -1 ;
-		$message[ "msgType" ] = "yet_to_start" ;
-		$message[ "content" ] = null ;
+		$message[ "id"       ] = -1 ;
+		$message[ "sessionId"] = -1 ;
+		$message[ "msgType"  ] = "yet_to_start" ;
+		$message[ "content"  ] = null ;
 		
 		return $message ;
 	}

@@ -6,6 +6,9 @@ var jnUtil = new JoveNotesUtil() ;
 var lastMessageId = -1 ;
 var messages = [] ;
 var waitingForUserAcceptance = false ;
+var sessionStartTime = 0 ;
+var currentQuestionShowStartTime = 0 ;
+var durationTillNowInMillis = 0 ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.SCREEN_WAITING_TO_START = "waiting_to_start" ;
@@ -19,11 +22,28 @@ $scope.pageTitle = null ;
 
 $scope.currentScreen = $scope.SCREEN_WAITING_TO_START ;
 
+$scope.sessionId         = 0 ;
 $scope.chapterDetails    = null ;
 $scope.difficultyStats   = null ;
 $scope.progressSnapshot  = null ;
 $scope.learningCurveData = null ;
 $scope.studyCriteria     = null ;
+
+$scope.sessionStats = {
+    numCards         : 0,
+    numCardsLeft     : 0,
+    numCardsAnswered : 0
+} ;
+
+$scope.sessionDuration = 0 ;
+$scope.timePerQuestion = 0 ;
+$scope.userScore       = 0 ;
+$scope.currentQuestion = null ;
+$scope.answerAlign     = "center" ;
+$scope.bodyDivStyle    = { top : 75 } ;
+
+$scope.showQuestionTrigger = "" ;
+$scope.showAnswerTrigger   = "" ;
 
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing RemoteFlashCardController." ) ;
@@ -42,7 +62,18 @@ $scope.closeAlert = function(index) {
 $scope.resetWaitingForUserAcceptanceFlag = function() {
     log.debug( "Setting waiting for user acceptance flag to false." ) ;
     waitingForUserAcceptance = false ;
+
+    if( $scope.currentScreen == $scope.SCREEN_SESSION_SETTINGS ) {
+        $scope.currentScreen = $scope.SCREEN_PRACTICE ;
+        sessionStartTime = new Date().getTime() ;
+        setTimeout( handleTimerEvent, 1000 ) ;
+    }
 };
+
+$scope.showAnswer = function() {
+    $scope.showAnswerTrigger = $scope.sessionId + ".Answer-" 
+                                        + $scope.currentQuestion.questionId ;
+}
 
 // ---------------- Private functions ------------------------------------------
 function runMesssageFetchPump() {
@@ -52,6 +83,13 @@ function runMesssageFetchPump() {
         if( Array.isArray( data ) ) {
             log.debug( "Received " + data.length + " messages from server." ) ;
             for( var i=0; i<data.length; i++ ) {
+
+                // If we recieve a start_session message, we purge out everything
+                // from the mesages queue
+                if( data[i].msgType == "start_session" ) {
+                    messages.length = 0 ;
+                    waitingForUserAcceptance = false ;
+                } 
 
                 messages.push( data[i] ) ;
                 if( i == data.length -1 ) {
@@ -65,7 +103,7 @@ function runMesssageFetchPump() {
         log.error( "Error getting remote flash messages." + data ) ;
         $scope.addErrorAlert( "Could not receive remote flash messages." + data ) ;
     }) ;
-    setTimeout( runMesssageFetchPump, 3000 ) ;
+    setTimeout( runMesssageFetchPump, 1000 ) ;
 }
 
 function runMessageProcessPump() {
@@ -85,6 +123,12 @@ function runMessageProcessPump() {
                 else if( message.msgType == "start_session" ) {
                     processStartSessionMessage( message ) ;
                 }
+                else if( message.msgType == "question" ) {
+                    processIncomingQuestion( message ) ;
+                }
+                else if( message.msgType == "answer" ) {
+                    $scope.showAnswer() ;
+                }
                 else {
                     throw "Unknown message type " + message.msgType ;
                 }
@@ -94,11 +138,12 @@ function runMessageProcessPump() {
             }
         }
     }
-    setTimeout( runMessageProcessPump, 500 ) ;
+    setTimeout( runMessageProcessPump, 300 ) ;
 }
 
 function processStartSessionMessage( message ) {
 
+    $scope.sessionId         = message.sessionId ;
     $scope.chapterDetails    = message.content.chapterDetails ;
     $scope.difficultyStats   = message.content.difficultyStats ;
     $scope.progressSnapshot  = message.content.progressSnapshot ;
@@ -132,44 +177,69 @@ function processStartSessionMessage( message ) {
     waitingForUserAcceptance = true ;
 }
 
-function preProcessFlashCardQuestions( questions ) {
+function processIncomingQuestion( message ) {
 
-    question.difficultyLabel = 
-        jnUtil.getDifficultyLevelLabel( question.difficultyLevel ) ;
+    $scope.userScore        = message.content.userScore ;
+    $scope.progressSnapshot = message.content.progressSnapshot ;
+    $scope.sessionStats     = message.content.sessionStats ;
+    $scope.currentQuestion  = message.content.currentQuestion ;
+    $scope.answerAlign      = message.content.answerAlign ;
 
-    question.learningStats.efficiencyLabel = 
-        jnUtil.getLearningEfficiencyLabel( question.learningStats.learningEfficiency ) ;
-
-    associateHandler( question ) ;
-}
-
-function associateHandler( question ) {
-
-    var questionType = question.questionType ;
-
+    var questionType = message.content.currentQuestion.questionType ;
+    var handler = null ;
     if( questionType == QuestionTypes.prototype.QT_FIB ) {
-        question.handler = new FIBHandler( $scope.chapterDetails, question ) ;
+        handler = new FIBHandler( $scope.chapterDetails, 
+                                  $scope.currentQuestion ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_QA ) {
-        question.handler = new QAHandler( $scope.chapterDetails, question ) ;
+        handler = new QAHandler( $scope.chapterDetails, 
+                                 $scope.currentQuestion ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_TF ) {
-        question.handler = new TFHandler( $scope.chapterDetails, question ) ;
+        handler = new TFHandler( $scope.chapterDetails, 
+                                 $scope.currentQuestion ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_MATCHING ) {
-        question.handler = new MatchingHandler( $scope.chapterDetails, question ) ;
+        handler = new MatchingHandler( $scope.chapterDetails, 
+                                       $scope.currentQuestion ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_IMGLABEL ) {
-        question.handler = new ImageLabelHandler( $scope.chapterDetails, question ) ;
+        handler = new ImageLabelHandler( $scope.chapterDetails, 
+                                         $scope.currentQuestion ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_SPELLBEE ) {
-        question.handler = new SpellBeeHandler( $scope.chapterDetails, question ) ;
+        handler = new SpellBeeHandler( $scope.chapterDetails, 
+                                       $scope.currentQuestion ) ;
     }
     else {
         log.error( "Unrecognized question type = " + questionType ) ;
         throw "Unrecognized question type. Can't associate formatter." ;
     }
+    $scope.currentQuestion.handler = handler ;
+
+    $scope.showQuestionTrigger = message.sessionId + ".Question-" 
+                                 + $scope.currentQuestion.questionId ;
+    $scope.showAnswerTrigger   = "" ;
 }
+
+function handleTimerEvent() {
+    if( $scope.currentScreen == $scope.SCREEN_PRACTICE ) {
+        refreshClocks() ;
+        setTimeout( handleTimerEvent, 1000 ) ;
+    }
+}
+
+function refreshClocks() {
+
+    durationTillNowInMillis = new Date().getTime() - sessionStartTime ;
+
+    $scope.sessionDuration = durationTillNowInMillis ;
+    $scope.timePerQuestion = durationTillNowInMillis / 
+                             ( $scope.sessionStats.numCardsAnswered + 1 ) ;
+
+    $scope.$digest() ;
+}
+
 // ---------------- End of controller ------------------------------------------
 } ) ;
 

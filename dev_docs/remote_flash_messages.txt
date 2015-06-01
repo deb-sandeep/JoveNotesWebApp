@@ -46,3 +46,26 @@ Session settings
 	    "push"                      : false
 	}
 }
+
+Question
+--------------------------------------------------------------------------------
+{
+	"userScore"       : 1000,
+	"progressSnapshot" : {
+		"numNS"  :  20 ,
+		"numL0"  :  20 ,
+		"numL1"  :  10 ,
+		"numL2"  :  10 ,
+		"numL3"  :  20 ,
+		"numMAS" :  20
+	},
+	"sessionStats" : {
+	    numCards         : 0,
+	    numCardsLeft     : 0,
+	    numCardsAnswered : 0
+	},
+	"currentQuestion" : {
+	...
+	},
+	"answerAlign" : "center"
+}

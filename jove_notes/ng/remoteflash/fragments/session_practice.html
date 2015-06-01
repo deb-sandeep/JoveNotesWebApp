@@ -1,3 +1,12 @@
 <div class="container-fluid fixedheader"
      ng-include="'/apps/jove_notes/ng/remoteflash/fragments/session_practice_header.html'">
 </div>
+<div ng-style="bodyDivStyle" class="container-fluid fixedbody">
+	<div align="center">
+		<render-remote-flash-card-question></render-remote-flash-card-question>
+	</div>
+	<hr>
+	<div align="{{answerAlign}}">
+		<render-remote-flash-card-answer></render-remote-flash-card-answer>
+	</div>
+</div>
