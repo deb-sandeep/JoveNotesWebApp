@@ -9,6 +9,12 @@ pre {
 	padding: 3px;
 }
 
+blockquote {
+	font-size: 13px;
+	background-color: #F3F3F3;
+	font-style: italic;
+}
+
 .nav_element {
 	max-height: 40px;
 	min-height: 40px;

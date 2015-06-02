@@ -1,13 +1,15 @@
 PHPWebApp
 --------------------------------------------------------------------------------
+. Building on dell optiplex
+  - Update Maven to output jovenotes executable package and dependency jars
+  - Exporting jovenoteprocessor as a standalong executable with scripts
+  - Set up of jovenotesprocessor on Dell Optiplex
+  . Script to check out from Git and execute jovenotesprocessor
+. Set up on Dell Op
 . Revise design on data capture and extraction availability for the following
     - Total questions studied (per subject)
     - Total questions studied (per subject)
     - Total time studied (per subject, per day, per subject per day)
-. Building on dell optiplex
-  - Exporting jovenoteprocessor as a standalong executable with scripts
-  - Set up of jovenotesprocessor on Dell Optiplex
-  . Script to check out from Git and execute jovenotesprocessor
 . Create local page for entering hindi and latex formulaes
 . Remember to php.ini encoding on Dell Opt for UTF-8
 . Flash card inactivity timeout - with user override/countdown
@@ -19,12 +21,14 @@ PHPWebApp
 
 JoveNotes processor
 --------------------------------------------------------------------------------
-. JNP - Implement notes element - rtc
 
         
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/3/15 --
+. JNP - Implement notes element - rtc
+
 6/2/15 --
 . Real escaped string while putting JSON into remote message queue
 . Padding for answer display set to 15px left and right

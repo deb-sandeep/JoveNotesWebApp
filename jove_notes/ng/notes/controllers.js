@@ -63,6 +63,7 @@ $scope.chemCompounds         = [] ;
 $scope.spellbeeWords         = [] ;
 $scope.imageLabels           = [] ;
 $scope.equations             = [] ;
+$scope.referenceToContexts   = [] ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -143,20 +144,21 @@ function processNotesElements() {
 
 	// Reset all the arrrays before we fill them with filtered contents
 	$scope.filteredNotesElements.length = 0 ;
-	$scope.wordMeanings.length = 0 ;
-	$scope.questionAnswers.length = 0 ;
-	$scope.fibs.length = 0 ;
-	$scope.definitions.length = 0 ;
-	$scope.characters.length = 0 ;
-	$scope.teacherNotes.length = 0 ;
-	$scope.matchings.length = 0 ;
-	$scope.events.length = 0 ;
-	$scope.trueFalseStatements.length = 0 ;
-	$scope.chemEquations.length = 0 ;
-	$scope.chemCompounds.length = 0 ;
-	$scope.spellbeeWords.length = 0 ;
-	$scope.imageLabels.length = 0 ;
-	$scope.equations.length = 0 ;
+	$scope.wordMeanings.length          = 0 ;
+	$scope.questionAnswers.length       = 0 ;
+	$scope.fibs.length                  = 0 ;
+	$scope.definitions.length           = 0 ;
+	$scope.characters.length            = 0 ;
+	$scope.teacherNotes.length          = 0 ;
+	$scope.matchings.length             = 0 ;
+	$scope.events.length                = 0 ;
+	$scope.trueFalseStatements.length   = 0 ;
+	$scope.chemEquations.length         = 0 ;
+	$scope.chemCompounds.length         = 0 ;
+	$scope.spellbeeWords.length         = 0 ;
+	$scope.imageLabels.length           = 0 ;
+	$scope.equations.length             = 0 ;
+	$scope.referenceToContexts.length   = 0 ;
 
 	for( index=0; index<$scope.notesElements.length; index++ ) {
 
@@ -208,6 +210,9 @@ function processNotesElements() {
 			}
 			else if( type == NotesElementsTypes.prototype.EQUATION ) {
 				$scope.equations.push( formatEquation( element ) ) ;
+			}
+			else if( type == NotesElementsTypes.prototype.REF_TO_CONTEXT ) {
+				$scope.referenceToContexts.push( formatRTC( element ) ) ;
 			}
 		}
 		else {
@@ -333,6 +338,17 @@ function formatEquation( eqElement ) {
 		symbol[1] = textFormatter.format( symbol[1] ) ;
 	}
 	return eqElement ;
+}
+
+function formatRTC( rtcElement ) {
+
+	rtcElement.context = textFormatter.format( rtcElement.context ) ;
+	for( var i=0; i<rtcElement.questions.length; i++ ) {
+		var qa = rtcElement.questions[i].question ;
+		qa.question = textFormatter.format( qa.question ) ;
+		qa.answer   = textFormatter.format( qa.answer ) ;
+	}
+	return rtcElement ;
 }
 
 // ---------------- End of controller ------------------------------------------

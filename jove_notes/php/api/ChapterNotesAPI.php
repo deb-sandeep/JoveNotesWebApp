@@ -23,6 +23,7 @@ class ChapterNotesAPI extends AbstractJoveNotesAPI {
 
 			$response->responseCode = APIResponse::SC_OK ;
 			$response->responseBody = $respBody ;
+			// $response->responseBody = $this->getReferenceOutput() ;
 		}
 	}
 

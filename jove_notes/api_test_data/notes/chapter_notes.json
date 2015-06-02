@@ -54,7 +54,6 @@
 			"elementType"     : "chem_equation",
 			"equation"        : "$$\\ce{CO2 + C -> 2 CO}$$",
 			"description"     : "Carbon di-oxide reacts with Carbon to produce Carbon Monooxide.",
-			"notes"           : "This is why we should not burn coke in a closed room.",
 			"difficultyLevel" : 60,
 			"learningStats" : {
 				"learningEfficiency" : 80
@@ -349,6 +348,25 @@
 				[ "\\(u\\)", "Initial velocity" ],
 				[ "\\(t\\)", "Time" ],
 				[ "\\(a\\)", "Acceleration" ]
+			],
+			"difficultyLevel" : 60,
+			"learningStats" : {
+				"learningEfficiency" : 80
+			}
+		},
+		{
+			"noteElementId"   : 32,
+			"elementType"     : "rtc",
+			"context"         : "This is the context",
+			"questions"       : [
+				{
+					"question" : "This is question1",
+					"answer"   : "This is answer1"
+				},
+				{
+					"question" : "This is question2",
+					"answer"   : "This is answer2"
+				}
 			],
 			"difficultyLevel" : 60,
 			"learningStats" : {

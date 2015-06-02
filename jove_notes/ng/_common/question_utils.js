@@ -15,6 +15,7 @@ NotesElementsTypes.prototype.CHEM_COMPOUND = "chem_compound" ;
 NotesElementsTypes.prototype.SPELLBEE      = "spellbee" ;
 NotesElementsTypes.prototype.IMAGE_LABEL   = "image_label" ;
 NotesElementsTypes.prototype.EQUATION      = "equation" ;
+NotesElementsTypes.prototype.REF_TO_CONTEXT= "rtc" ;
 
 // -----------------------------------------------------------------------------
 function QuestionTypes(){}
