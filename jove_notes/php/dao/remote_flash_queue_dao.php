@@ -13,14 +13,17 @@ class RemoteFlashQueueDAO extends AbstractDAO {
 
 	function addMessage( $userName, $sessionId, $msgType, $content=NULL ) {
 
+        global $dbConn ;
+
         if( $content != NULL ) {
             if( is_object( $content ) ) {
                 $content = json_encode( $content, JSON_NUMERIC_CHECK ) ;
             }
+            $content = $dbConn->real_escape_string( $content ) ;
         }
-
-        // Escaping single \ to \\ so that mysql preserves it.
-        $content = preg_replace( '/\\\\/i', '\\\\\\\\', $content ) ;
+        else {
+            $content = "{}" ;
+        }
 
 $query = <<<QUERY
 insert into jove_notes.remote_flash_queue
@@ -28,8 +31,6 @@ insert into jove_notes.remote_flash_queue
 values
 ( $sessionId, '$userName', '$msgType', '$content')
 QUERY;
-
-        $this->logger->debug( $query ) ;
 
         parent::executeInsert( $query ) ;
 	}

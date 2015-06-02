@@ -42,6 +42,7 @@ $pageConfig = array(
     </script>
     <script type="text/javascript" src="/lib-ext/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
+    <link rel='stylesheet' href='/lib-ext/pure/tables.css'>
     <link rel='stylesheet' href='/apps/jove_notes/ng/flashcard/flashcard.css'>
 
     <script src="/lib-ext/rgraph/RGraph.common.core.js"></script>    

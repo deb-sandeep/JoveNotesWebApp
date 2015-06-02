@@ -256,6 +256,10 @@ function ImageLabelManager( questionObj, textFormatter, $scope ) {
 			var clickX = e.clientX - rect.left ;
 			var clickY = e.clientY - rect.top ;
 
+			if( !this.isValidClick( clickX, clickY ) ) {
+				return ;
+			}
+
 			var distance = getDistance( this.selectedHotspot.x, this.selectedHotspot.y,
 				                        clickX, clickY ) ;
 			if( distance <= 20 ) {
@@ -286,6 +290,17 @@ function ImageLabelManager( questionObj, textFormatter, $scope ) {
 			}
 		}
 	} ;
+
+	this.isValidClick = function( x, y ) {
+
+		for( var hsLabel in this.hotspotsAssociativeArray ){
+		    var hs = this.hotspotsAssociativeArray[ hsLabel ] ;
+		    if( getDistance( hs.x, hs.y, x, y ) <= 20 ) {
+		    	return true ;
+		    }
+		}	
+		return false ;	
+	}
 
 	var getDistance = function( x1, y1, x2, y2 ) {
 		return Math.sqrt( Math.pow( (x2-x1), 2 ) + Math.pow( (y2-y1), 2 ) ) ;

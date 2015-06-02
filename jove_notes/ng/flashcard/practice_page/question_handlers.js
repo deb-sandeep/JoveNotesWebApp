@@ -132,10 +132,19 @@ function TFHandler( chapterDetails, questionObj ) {
 			divBackground = ( answeredCorrectly ) ? "#D3FFE2" : "#FFCCCC" ;
 		}
 
+		var justificationText = null ;
+		if( question.hasOwnProperty( 'justification' ) &&
+			                        question.justification != null ) {
+			justificationText = question.justification ;
+		}
+		else {
+			justificationText = "" ;
+		}
+
 		return DIV( { 'style' : 'background-color:' + divBackground }, 
 					SPAN( { 'class' : 'glyphicon gi-2x glyphicon-' + truthValueIcon } ),
 					P(),
-					P( question.justification )
+					P( justificationText )
 				  ) ;
 	} ;
 

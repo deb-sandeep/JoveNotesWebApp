@@ -1,6 +1,9 @@
 PHPWebApp
 --------------------------------------------------------------------------------
-. In true-false, if there is no statement, it comes as undefined - fix
+. Revise design on data capture and extraction availability for the following
+    - Total questions studied (per subject)
+    - Total questions studied (per subject)
+    - Total time studied (per subject, per day, per subject per day)
 . Building on dell optiplex
   - Exporting jovenoteprocessor as a standalong executable with scripts
   - Set up of jovenotesprocessor on Dell Optiplex
@@ -9,25 +12,39 @@ PHPWebApp
 . Create local page for entering hindi and latex formulaes
 . Remember to php.ini encoding on Dell Opt for UTF-8
 . Flash card inactivity timeout - with user override/countdown
-. Implement markCardForEdit
 . Check mobile device compatibility - header might need modifications
 . Create a favicon and set it up
-
+. Feature - Can a single card be marked as mastered from the flash card context
+  menu?
+. Publish latest eclipse plugins to DellOp download area and in Deba's workspace
 
 JoveNotes processor
 --------------------------------------------------------------------------------
-. JNP - JCMap connecting phrase seems to be of bigger font, reduce and republish
-        binary
 . JNP - Think about redesigning the chemical equation language  
-. JNP - Make question optional from @matching and republish the eclipse plugins
-. JNP - common name should be optional in chemical compounds
 . JNP - Implement notes element - "chem_equation"
-
+        
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
 6/2/15 --
-
+. Real escaped string while putting JSON into remote message queue
+. Padding for answer display set to 15px left and right
+. Hindi tested end to end - source to flash card to remote flash - all good
+. In true-false, if there is no statement, it comes as undefined - fix
+. JNP - Grammar changes
+    - Caption of @matching and @img_label are optional
+    - Common name is optional in chemical equations
+    - matching dynamic question should have an optional flag to prevent reverse
+      generation of card
+. JNP - Eclipse plugin updated and published to eclipse, jnprocessor and 
+  eclipse JoveNotes installable.      
+. JNP - Matching notes element should generate reverse cards by default, unless
+        an optional flag is present in the grammar which tells it not to.
+. JNP - JCMap connecting phrase seems to be of bigger font, reduce and republish
+        binary
+. Feature - If an image label is touched outside the hot-zone, it should not be
+  considered as a wrong answer.
+. Simple rendering for tables in markdown processed text - used pure tables
 
 6/1/15 --
 . Remote flash server should show answers along with questions

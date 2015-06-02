@@ -44,6 +44,7 @@ define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
 <head>
     <?php include( HEAD_CONTENT_FILE ); ?>
 
+    <link rel='stylesheet' href='/lib-ext/pure/tables.css'>
     <link rel='stylesheet' href='/apps/jove_notes/ng/flashcard/flashcard.css'>
 
     <script type="text/x-mathjax-config">
