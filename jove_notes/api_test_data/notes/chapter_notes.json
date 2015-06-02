@@ -260,7 +260,6 @@
 			"elementType"     : "chem_equation",
 			"equation"        : "$$\\ce{$x\\,$ Na(NH4)HPO4 ->[\\Delta](NaPO3)_{$x$} + $x\\,$ NH3 ^ + $x\\,$ H2O}$$",
 			"description"     : "Some arbitrary complex equation.",
-			"notes"           : "This is copied from the internet for the sake of testing.",
 			"difficultyLevel" : 60,
 			"learningStats" : {
 				"learningEfficiency" : 80

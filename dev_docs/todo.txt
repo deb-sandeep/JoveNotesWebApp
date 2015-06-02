@@ -19,8 +19,8 @@ PHPWebApp
 
 JoveNotes processor
 --------------------------------------------------------------------------------
-. JNP - Think about redesigning the chemical equation language  
-. JNP - Implement notes element - "chem_equation"
+. JNP - Implement notes element - rtc
+
         
 ================================================================================
 Completed
@@ -46,6 +46,8 @@ Completed
 . Simple rendering for tables in markdown processed text - used pure tables
 . Render <code> blocks - highlight.js
 . Teacher Note is not being retrieved - debug and fix
+. JNP - Think about redesigning the chemical equation language  
+. JNP - Implement notes element - "chem_equation"
 
 6/1/15 --
 . Remote flash server should show answers along with questions
