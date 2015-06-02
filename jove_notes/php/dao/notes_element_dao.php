@@ -15,20 +15,21 @@ class NotesElementDAO extends AbstractDAO {
 	 * Always returns an array of possibly zero or more associate arrays of
 	 * column names. 
 	 */
-	function getNoteElements( $chapterId ) {
+	function getNoteElements( $userName, $chapterId ) {
 
 $query = <<< QUERY
 select 
 	ne.notes_element_id, ne.element_type, ne.difficulty_level, ne.content,
 	CEIL( AVG( cls.learning_efficiency ) ) as learning_efficiency
 from 
-	jove_notes.notes_element ne,
+	jove_notes.notes_element ne left join
 	jove_notes.card_learning_summary cls
+on
+	ne.notes_element_id = cls.notes_element_id
 where
 	ne.chapter_id = $chapterId and
 	ne.ready = 1 and
-	ne.notes_element_id = cls.notes_element_id and
-	cls.student_name = 'UTUser'
+	( cls.student_name = '$userName' or cls.student_name is null )
 group by
 	ne.notes_element_id
 order by 

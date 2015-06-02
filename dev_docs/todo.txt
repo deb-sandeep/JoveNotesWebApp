@@ -45,6 +45,7 @@ Completed
   considered as a wrong answer.
 . Simple rendering for tables in markdown processed text - used pure tables
 . Render <code> blocks - highlight.js
+. Teacher Note is not being retrieved - debug and fix
 
 6/1/15 --
 . Remote flash server should show answers along with questions

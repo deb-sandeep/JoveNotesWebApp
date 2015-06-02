@@ -30,7 +30,8 @@ class ChapterNotesAPI extends AbstractJoveNotesAPI {
 
 		$notesElements = array() ;
 
-		$neDataArray = $this->neDAO->getNoteElements( $this->chapterId ) ;
+		$neDataArray = $this->neDAO->getNoteElements( ExecutionContext::getCurrentUserName(),
+			                                          $this->chapterId ) ;
 		foreach( $neDataArray as $neData ) {
 			array_push( $notesElements, $this->constructNotesElement( $neData ) ) ;
 		}
