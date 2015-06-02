@@ -5,6 +5,10 @@ body {
 	font-size: 13px;
 }
 
+pre {
+	padding: 3px;
+}
+
 .nav_element {
 	max-height: 40px;
 	min-height: 40px;

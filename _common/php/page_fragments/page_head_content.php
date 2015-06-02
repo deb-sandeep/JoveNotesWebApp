@@ -47,3 +47,7 @@
     <script>
         DOMBuilder.apply( window, 'dom' ) ;
     </script>
+
+    <link rel="stylesheet" href="/lib-ext/highlight/styles/railscasts.css">
+    <script src="/lib-ext/highlight/highlight.pack.js"></script>
+

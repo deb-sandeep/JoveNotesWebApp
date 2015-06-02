@@ -8,7 +8,6 @@ PHPWebApp
   - Exporting jovenoteprocessor as a standalong executable with scripts
   - Set up of jovenotesprocessor on Dell Optiplex
   . Script to check out from Git and execute jovenotesprocessor
-. Render <code> blocks - highlight.js?
 . Create local page for entering hindi and latex formulaes
 . Remember to php.ini encoding on Dell Opt for UTF-8
 . Flash card inactivity timeout - with user override/countdown
@@ -45,6 +44,7 @@ Completed
 . Feature - If an image label is touched outside the hot-zone, it should not be
   considered as a wrong answer.
 . Simple rendering for tables in markdown processed text - used pure tables
+. Render <code> blocks - highlight.js
 
 6/1/15 --
 . Remote flash server should show answers along with questions

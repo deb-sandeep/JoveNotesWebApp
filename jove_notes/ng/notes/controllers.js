@@ -111,6 +111,7 @@ function refreshData() {
          .success( function( data ){
          	log.debug( "Data received from server." ) ;
          	processServerData( data ) ;
+			setTimeout( hljs.initHighlighting, 1000 ) ;
          })
          .error( function( data ){
          	log.error( "Server returned error. " + data ) ;

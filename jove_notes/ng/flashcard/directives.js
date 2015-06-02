@@ -55,7 +55,11 @@ flashCardApp.directive( 'renderFlashCardQuestion', function() {
 
 					handler.initializeQuestionUI() ;
 					MathJax.Hub.Queue( ["Typeset", MathJax.Hub, questionUI] ) ;
-				}
+
+					element.find( 'pre code' ).each( function(i, block) {
+						hljs.highlightBlock( block ) ;
+					});
+  				}
 			}) ; 
         }
 	} ;
@@ -84,6 +88,10 @@ flashCardApp.directive( 'renderFlashCardAnswer', function() {
 
 					handler.initializeAnswerUI() ;
 					MathJax.Hub.Queue( ["Typeset", MathJax.Hub, answerUI] ) ;
+
+					element.find( 'pre code' ).each( function(i, block) {
+						hljs.highlightBlock( block ) ;
+					});
 				}
 			}) ; 
         }
