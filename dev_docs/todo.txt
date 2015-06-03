@@ -1,23 +1,17 @@
 PHPWebApp
 --------------------------------------------------------------------------------
 . Building on dell optiplex
-  - Update Maven to output jovenotes executable package and dependency jars
-  - Exporting jovenoteprocessor as a standalong executable with scripts
   - Set up of jovenotesprocessor on Dell Optiplex
-  . Script to check out from Git and execute jovenotesprocessor
-. Set up on Dell Op
-. Revise design on data capture and extraction availability for the following
-    - Total questions studied (per subject)
-    - Total questions studied (per subject)
-    - Total time studied (per subject, per day, per subject per day)
+  - Script to check out from Git and execute jovenotesprocessor
+  - Command line parameters
+  - DB setup - export import, including entitlements
 . Create local page for entering hindi and latex formulaes
 . Remember to php.ini encoding on Dell Opt for UTF-8
 . Flash card inactivity timeout - with user override/countdown
 . Check mobile device compatibility - header might need modifications
 . Create a favicon and set it up
-. Feature - Can a single card be marked as mastered from the flash card context
-  menu?
 . Publish latest eclipse plugins to DellOp download area and in Deba's workspace
+. Create Munni's id and entitlement for JoveNotes
 
 JoveNotes processor
 --------------------------------------------------------------------------------
@@ -28,6 +22,9 @@ Completed
 --------------------------------------------------------------------------------
 6/3/15 --
 . JNP - Implement notes element - rtc
+. JNP - Building of JoveNotesProcessor and creating assembly
+. JNP - Property switching for assembly and dev
+. Hide 'Study per day' button in preparation for go-live
 
 6/2/15 --
 . Real escaped string while putting JSON into remote message queue
