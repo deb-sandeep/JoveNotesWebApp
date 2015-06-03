@@ -1,5 +1,6 @@
 PHPWebApp
 --------------------------------------------------------------------------------
+. Check in com.sandy.xtext.jovenotes.tests project into github
 . Building on dell optiplex
   - Set up of jovenotesprocessor on Dell Optiplex
   - Script to check out from Git and execute jovenotesprocessor

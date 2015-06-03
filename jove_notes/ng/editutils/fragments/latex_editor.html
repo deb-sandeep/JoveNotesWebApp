@@ -1,0 +1,43 @@
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <div class="panel-title" class="pull-left">
+        MathJAX Expression Tester
+            <div class="pull-right" >
+                <button type="button" class="btn btn-success btn-xs"
+                        ng-show="latex.editorExpanded" class="ng-hide"
+                        ng-click="toggleLatexEditorVisibility()">
+                    <span class="glyphicon glyphicon-resize-small"></span>
+                </button>
+                <button type="button" class="btn btn-success btn-xs"
+                        ng-show="!latex.editorExpanded" class="ng-hide"
+                        ng-click="toggleLatexEditorVisibility()">
+                    <span class="glyphicon glyphicon-resize-full"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body" align="center"
+         ng-show="latex.editorExpanded" class="ng-hide">
+        <form>
+            <label>
+                <input type="radio" ng-model="latex.expressionType" value="Latex">
+                Latex Expression
+            </label> | 
+            <label>
+                <input type="radio" ng-model="latex.expressionType" value="MHChem">
+                MH Chem
+            </label>
+            <button type="button" class="btn btn-success btn-xs" 
+                ng-click="copyLatexTextToClipboard()">
+                <span class="glyphicon glyphicon-copy">Copy</span>
+            </button>
+        </form>
+        <div>
+            <input type="text" class="form-control" ng-model="latex.expression"/>
+        </div>
+    </div>
+    <div class="panel-footer" align="center"
+         ng-show="latex.editorExpanded" class="ng-hide">
+      <render-latex></render-latex>
+    </div>
+</div>

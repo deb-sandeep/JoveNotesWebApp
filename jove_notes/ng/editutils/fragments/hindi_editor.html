@@ -1,0 +1,41 @@
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <div class="panel-title" class="pull-left">
+        <button type="button" class="btn btn-success btn-sm"
+                ng-click="addHindiText()"
+                ng-show="hindi.text.length > 0" class="ng-hide">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+        Hindi editor
+            <div class="pull-right" >
+                <button type="button" class="btn btn-success btn-xs"
+                        ng-show="hindi.editorExpanded" class="ng-hide"
+                        ng-click="toggleHindiEditorVisibility()">
+                    <span class="glyphicon glyphicon-resize-small"></span>
+                </button>
+                <button type="button" class="btn btn-success btn-xs"
+                        ng-show="!hindi.editorExpanded" class="ng-hide"
+                        ng-click="toggleHindiEditorVisibility()">
+                    <span class="glyphicon glyphicon-resize-full"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body" align="center"
+         ng-show="hindi.editorExpanded" class="ng-hide">
+        <div>
+            <textarea class="form-control" rows="5" ng-model="hindi.text"/>
+        </div>
+        <table class="table table-striped table-condensed">
+            <tr ng-repeat="text in hindi.textElements track by $index">
+                <td width="50px">
+                    <button type="button" class="btn btn-default btn-xs"
+                            ng-click="removeHindiTextElement($index)">
+                        <span class="glyphicon glyphicon-minus"></span>
+                    </button>
+                </td>
+                <td style="font-size:17px" align="left">{{text}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
