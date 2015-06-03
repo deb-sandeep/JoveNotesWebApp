@@ -26,6 +26,8 @@ Completed
 . JNP - Building of JoveNotesProcessor and creating assembly
 . JNP - Property switching for assembly and dev
 . Hide 'Study per day' button in preparation for go-live
+. Edit Utilities to real time test latex and mhchem and also to enter ML text
+  via google transliteration (phonetic tool).
 
 6/2/15 --
 . Real escaped string while putting JSON into remote message queue
