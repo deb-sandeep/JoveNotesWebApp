@@ -1,21 +1,6 @@
-PHPWebApp
+Pending dev cards
 --------------------------------------------------------------------------------
-. Building on dell optiplex
-  - DB setup - export import, including entitlements
-  - Install jovenotesprocessor on Dell Optiplex
-  - scp jovenotes plugins to dell optiplex
-  - Script to check out from Git and execute jovenotesprocessor
-  - Command line parameters
-  - Remember to php.ini encoding on Dell Opt for UTF-8
-  - rsync the web apps
-  - Run jnp and test end to end
-. Create a favicon and set it up
-. Flash card inactivity timeout - with user override/countdown
-. Check mobile device compatibility - header might need modifications
-. Publish latest eclipse plugins to DellOp download area and in Deba's workspace
 
-JoveNotes processor
---------------------------------------------------------------------------------
 
         
 ================================================================================
@@ -33,6 +18,23 @@ Completed
   the notes element to get filtered out from view. Especially useful in case
   the same note element is being shown in multiple ways, for example word meaning
   are also shown as associations if the same is a part of matching.
+. Dell OptiPlex setup
+  - DB setup - export import, including entitlements
+  - Install jovenotesprocessor on Dell Optiplex. Massive problems with ANTLR 
+    version conflict. Took me nearly half a day to find a work around.. sucks!
+  - Script to check out from Git and execute jovenotesprocessor
+  - Remember to php.ini encoding on Dell Opt for UTF-8
+  - scp jovenotes plugins to dell optiplex
+  - Softlink JoveNotesEditor.tar to www root
+  - rsync the web apps. Check the links of workspace and update rsync command
+  - Run jnp and test end to end
+. Increase the default font size.
+. Set logging to warn
+. Publish latest eclipse plugins to DellOp download area and in Deba's workspace
+. Create a favicon and set it up
+. Go-live complete !! bang on schedule. I will go and smoke now, followed by 
+  a cold bath and late night movie(s). Tomorrow, I will take a day off and 
+  not open my laptop. 
 
 6/3/15 --
 . JNP - Implement notes element - rtc

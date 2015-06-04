@@ -6,6 +6,10 @@
     <link rel='stylesheet' href='/lib-ext/fonts/Open_Sans/opensans.css'>
     <link rel="stylesheet" href="/lib-ext/bootstrap-3.3.4/css/bootstrap.css">
 
+    <head profile="http://www.w3.org/2005/10/profile">
+    <link rel="icon" type="image/ico"
+          href="/apps/_common/media/images/favicon.ico">
+
     <link rel="stylesheet" href="/lib-app/style/app_fw_main.css"></style>
     <link rel="stylesheet" href="/apps/_common/style/main.css"></style>
     <link rel="stylesheet" href="<?php echo APP_MAIN_CSS_PATH ?>"></style>
