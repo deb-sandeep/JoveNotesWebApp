@@ -28,7 +28,8 @@ on
 	ne.notes_element_id = cls.notes_element_id
 where
 	ne.chapter_id = $chapterId and
-	ne.ready = 1 and
+	ne.ready = 1 and 
+	ne.hidden_from_view = 0 and 
 	( cls.student_name = '$userName' or cls.student_name is null )
 group by
 	ne.notes_element_id

@@ -1,18 +1,18 @@
 PHPWebApp
 --------------------------------------------------------------------------------
-. Check in com.sandy.xtext.jovenotes.tests project into github
 . Building on dell optiplex
-  - Set up of jovenotesprocessor on Dell Optiplex
+  - DB setup - export import, including entitlements
+  - Install jovenotesprocessor on Dell Optiplex
+  - scp jovenotes plugins to dell optiplex
   - Script to check out from Git and execute jovenotesprocessor
   - Command line parameters
-  - DB setup - export import, including entitlements
-. Create local page for entering hindi and latex formulaes
-. Remember to php.ini encoding on Dell Opt for UTF-8
+  - Remember to php.ini encoding on Dell Opt for UTF-8
+  - rsync the web apps
+  - Run jnp and test end to end
+. Create a favicon and set it up
 . Flash card inactivity timeout - with user override/countdown
 . Check mobile device compatibility - header might need modifications
-. Create a favicon and set it up
 . Publish latest eclipse plugins to DellOp download area and in Deba's workspace
-. Create Munni's id and entitlement for JoveNotes
 
 JoveNotes processor
 --------------------------------------------------------------------------------
@@ -21,6 +21,19 @@ JoveNotes processor
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/4/15 --
+. BUG - Markdown processor had ANCHORLINKS turned on, which was converting # [0-9]*
+  to anchor links. Clicking these links was causing the page to autoload, spoiling
+  the session. Turned off the ANCHORLINKS behavior.
+. Create Munni's id and entitlement for JoveNotes
+. Created a simple lession for Munni and tested the entitlement behavior 
+. MEGA BUG - Refresh card_learning_session was wrongly implemented. Changed the 
+  query. Three hours of struggle to zero in and fix the bug.
+. Changed grammar to introduce 'hide' for each notes element. This will cause
+  the notes element to get filtered out from view. Especially useful in case
+  the same note element is being shown in multiple ways, for example word meaning
+  are also shown as associations if the same is a part of matching.
+
 6/3/15 --
 . JNP - Implement notes element - rtc
 . JNP - Building of JoveNotesProcessor and creating assembly
@@ -28,6 +41,7 @@ Completed
 . Hide 'Study per day' button in preparation for go-live
 . Edit Utilities to real time test latex and mhchem and also to enter ML text
   via google transliteration (phonetic tool).
+. Check in com.sandy.xtext.jovenotes.tests project into github
 
 6/2/15 --
 . Real escaped string while putting JSON into remote message queue

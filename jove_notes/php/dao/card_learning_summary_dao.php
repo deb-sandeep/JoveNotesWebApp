@@ -29,12 +29,16 @@ insert into jove_notes.card_learning_summary
 ( chapter_id, notes_element_id, card_id, student_name )
 select c.chapter_id, c.notes_element_id, c.card_id, '$userName'
 from
-  jove_notes.card c left join
-  jove_notes.card_learning_summary ls
-on
-  c.card_id = ls.card_id 
+  jove_notes.card c 
 where
-  ls.chapter_id IS NULL
+  c.card_id not in 
+    (
+      select cls.card_id
+      from
+        jove_notes.card_learning_summary cls
+      where
+        cls.student_name = '$userName'
+    )
 QUERY;
 
         parent::executeInsert( $query ) ;
