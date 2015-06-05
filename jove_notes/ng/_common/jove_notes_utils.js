@@ -62,6 +62,8 @@ function CardsFilterOptions() {
 // =============================================================================
 function RatingMatrix() {
 
+    // NOTE: These array values are carefully calibrated. Please DO NOT change
+    //       the values without understanding their significance.
     this.nextLevelMatrix = {
         //       E      A     P     H
         NS : [ 'L1' , 'L1', 'L0', 'L0' ],

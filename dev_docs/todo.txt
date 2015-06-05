@@ -1,7 +1,8 @@
 Pending dev cards
 --------------------------------------------------------------------------------
 . If in the same session an anwer is wronged more than once - marks should be
-  deducted.
+  deducted - think through this requirement. Need clear articulation before
+  implementing
         
 ================================================================================
 Completed

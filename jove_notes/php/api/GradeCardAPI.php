@@ -81,8 +81,8 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 		else {
 			$scoreMatrix = array(
 			   "E"=>array( "NS"=>100, "L0"=> 80, "L1"=> 90, "L2"=> 80, "L3"=>  60 ),
-			   "A"=>array( "NS"=> 90, "L0"=> 60, "L1"=> 50, "L2"=> 40, "L3"=>  30 ),
-			   "P"=>array( "NS"=> 20, "L0"=>  0, "L1"=>-10, "L2"=>-20, "L3"=> -40 ),
+			   "A"=>array( "NS"=> 80, "L0"=> 60, "L1"=> 50, "L2"=> 40, "L3"=>  30 ),
+			   "P"=>array( "NS"=> 10, "L0"=> -5, "L1"=>-10, "L2"=>-20, "L3"=> -40 ),
 			   "H"=>array( "NS"=>  0, "L0"=>-10, "L1"=>-20, "L2"=>-50, "L3"=>-100 )
 			) ;
 
