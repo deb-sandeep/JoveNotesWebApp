@@ -1,7 +1,7 @@
 Pending dev cards
 --------------------------------------------------------------------------------
-. Install sshpass on DellOp
-. Test patch script run from DellOp looking up .105
+. If in the same session an anwer is wronged more than once - marks should be
+  deducted.
         
 ================================================================================
 Completed
@@ -21,6 +21,13 @@ Completed
 . BUG FIX
   - FlashCard bounds w.r.t maxNewCards was wrongly implemented and thanks to
     Angular's forgiving nature, it had survived so long.
+. Install sshpass on DellOp
+. Patch JNP script created
+. BUG FIX
+  - Chemical name of a chemical compound can be blank - check while generating
+    cards
+. syncdevop - rsync command needed a t - tested
+. Changed permission from 644 to 755
 
 6/4/15 --
 . BUG - Markdown processor had ANCHORLINKS turned on, which was converting # [0-9]*
