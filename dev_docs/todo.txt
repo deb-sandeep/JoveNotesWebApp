@@ -1,11 +1,27 @@
 Pending dev cards
 --------------------------------------------------------------------------------
-
-
+. Install sshpass on DellOp
+. Test patch script run from DellOp looking up .105
         
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/5/15 --
+. BUG FIX 
+  - Collision detection between notes elements, cards based on scope
+  - Duplicate questions in notes are identified and logged. Skipping all
+  other than the first one.
+
+  WARNING: IMPACT LEVEL "EXTREME" This would require a rebuild of the
+  whole dataset. Erasing all history contents!!
+. Enter spell bee for Tom Sawyer
+. Publish patch to production, clean and rebuild entire database.
+. Regression testing
+. Update Munni's scores to around 200
+. BUG FIX
+  - FlashCard bounds w.r.t maxNewCards was wrongly implemented and thanks to
+    Angular's forgiving nature, it had survived so long.
+
 6/4/15 --
 . BUG - Markdown processor had ANCHORLINKS turned on, which was converting # [0-9]*
   to anchor links. Clicking these links was causing the page to autoload, spoiling
