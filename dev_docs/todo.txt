@@ -7,6 +7,16 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/6/15 --
+. BUG FIX
+  - For chemical compounds whose chemical names was blank, no question should be 
+    generated which involves chemical name. The fix applied yesterday was 
+    incomplete and today it has been fixed to satisfaction.
+. JNP - Logging differentiated to be more meaningful both at info and debug level
+. jnp launch script of DellOp can now take jnprocessor cmd line flags. This is
+  especially useful if jnprocessor has to be launched with -f to force process
+  all source files.
+
 6/5/15 --
 . BUG FIX 
   - Collision detection between notes elements, cards based on scope
