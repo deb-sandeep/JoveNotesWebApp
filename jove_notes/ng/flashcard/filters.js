@@ -33,7 +33,7 @@ flashCardApp.filter( 'elapsedDuration', function(){
 
 	return function( milestoneTime ) {
 
-		if( milestoneTime < 0 ) return "" ;
+		if( milestoneTime < 0 ) return "New card" ;
 
 		var str = "" ;
 		var numSecs = 0 ;

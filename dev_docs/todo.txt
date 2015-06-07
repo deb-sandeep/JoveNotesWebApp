@@ -1,12 +1,19 @@
 Pending dev cards
 --------------------------------------------------------------------------------
-. If in the same session an anwer is wronged more than once - marks should be
+. If in the same session an answer is wronged more than once - marks should be
   deducted - think through this requirement. Need clear articulation before
   implementing
+. Responsive headers - responsive headers are really not working. Change them 
+  to static non-floating headers
         
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/7/15 --
+. BUG - Elapsed time is not showing on flashcard practice page
+  - Bug of unknown order - maybe a typo, cut & paste from remote flash seems to
+    have fixed it. RC not found.
+
 6/6/15 --
 . BUG FIX
   - For chemical compounds whose chemical names was blank, no question should be 
