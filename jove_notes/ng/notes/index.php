@@ -98,12 +98,16 @@ define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
         <div ng-include="'<?php echo EQUATION_FRAGMENT_PATH ?>'"></div>
     </div>
 
+    <div ng-if="definitions.length">
+        <div ng-include="'<?php echo DEFN_FRAGMENT_PATH ?>'"></div>
+    </div>
+
     <div ng-if="fibs.length">
         <div ng-include="'<?php echo FIB_FRAGMENT_PATH ?>'"></div>
     </div>
 
-    <div ng-if="definitions.length">
-        <div ng-include="'<?php echo DEFN_FRAGMENT_PATH ?>'"></div>
+    <div ng-if="trueFalseStatements.length">
+        <div ng-include="'<?php echo TF_FRAGMENT_PATH ?>'"></div>
     </div>
 
     <div ng-if="characters.length">
@@ -120,10 +124,6 @@ define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
 
     <div ng-if="events.length">
         <div ng-include="'<?php echo EVENT_FRAGMENT_PATH ?>'"></div>
-    </div>
-
-    <div ng-if="trueFalseStatements.length">
-        <div ng-include="'<?php echo TF_FRAGMENT_PATH ?>'"></div>
     </div>
 
     <div ng-if="imageLabels.length">

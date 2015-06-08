@@ -1,14 +1,24 @@
 Pending dev cards
 --------------------------------------------------------------------------------
-. If in the same session an answer is wronged more than once - marks should be
-  deducted - think through this requirement. Need clear articulation before
-  implementing
+. In remote flash card, the graphs are getting overwritten. O should clear the
+  canvas before drawing graphs
+. Review the flow of grading.. seems like some cards are getting pushed back
+  into the deck even for Easy grades
+. Review computation of scores
+  - If in the same session an answer is wronged more than once - marks should be
+    deducted - think through this requirement. Need clear articulation before
+    implementing
 . Responsive headers - responsive headers are really not working. Change them 
   to static non-floating headers
         
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/8/15 --
+. Feature - Editing enhancements for inline MathJax operators
+. Slight CSS modifications for P
+. Changed order of notes element display
+
 6/7/15 --
 . BUG - Elapsed time is not showing on flashcard practice page
   - Bug of unknown order - maybe a typo, cut & paste from remote flash seems to
