@@ -34,19 +34,22 @@
                 on-render-complete 
                 on-row-render>
                 <td> 
-                <span ng-show="rowData.isStatisticsAuthorized">
-                <a href="#ChapterProgressSnapshot/{{rowData.chapterId}}">
-                {{rowData.name}}
-                </a>
-                </span>
-                <span ng-show="!rowData.isStatisticsAuthorized">{{rowData.name}}</span>
+                    <span ng-show="rowData.isNotesAuthorized">
+                    <a href="/apps/jove_notes/ng/notes/index.php?chapterId={{rowData.chapterId}}">
+                    {{rowData.name}}
+                    </a>
+                    </span>
+                    <span ng-show="!rowData.isNotesAuthorized">{{rowData.name}}</span>
                 </td>
-                <td class="text-center"><canvas width='200' height='20' id='canvas-{{rowData.rowNum}}'></canvas></td>
+                <td class="text-center">
+                    <canvas width='200' height='20' id='canvas-{{rowData.rowNum}}'>
+                    </canvas>
+                </td>
                 <td>
                     <a type="button" class="btn btn-default btn-xs" 
-                       href="/apps/jove_notes/ng/notes/index.php?chapterId={{rowData.chapterId}}"
-                       ng-show="rowData.isNotesAuthorized">
-                        <span class="glyphicon glyphicon-file"></span>
+                       href="#ChapterProgressSnapshot/{{rowData.chapterId}}"
+                       ng-show="rowData.isStatisticsAuthorized">
+                        <span class="glyphicon glyphicon-equalizer"></span>
                     </a>
                 </td>
                 <td>

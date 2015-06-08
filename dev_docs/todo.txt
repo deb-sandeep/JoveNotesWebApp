@@ -1,7 +1,5 @@
 Pending dev cards
 --------------------------------------------------------------------------------
-. In remote flash card, the graphs are getting overwritten. O should clear the
-  canvas before drawing graphs
 . Review the flow of grading.. seems like some cards are getting pushed back
   into the deck even for Easy grades
 . Review computation of scores
@@ -20,6 +18,12 @@ Completed
 . Changed order of notes element display
 . BUG - Graphs in remote flash keeps superimposing. Clearing the graph canvas 
   brefore rendering.
+. The padding around the play button in both flash and remote flash settings
+  adjusted
+. Convert the chapter name link to notes and change the notes icon to statistics
+  icon - more usable
+. In remote flash card, the graphs are getting overwritten. O should clear the
+  canvas before drawing graphs
 
 6/7/15 --
 . BUG - Elapsed time is not showing on flashcard practice page
