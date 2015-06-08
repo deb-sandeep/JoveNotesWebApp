@@ -188,6 +188,7 @@ this.renderLearningProgressPie = function( divName, progressStats ) {
         colors.push( "#00FF00" ) ;
     }
 
+    clearCanvas( divName ) ;
     var pie = new RGraph.Pie(divName, vals)
         .set('gutter.left',   30 )
         .set('gutter.right',  30 )
@@ -198,6 +199,8 @@ this.renderLearningProgressPie = function( divName, progressStats ) {
         .set('colors', colors )
         .draw();
 } ;
+
+
 
 this.renderDifficultyStatsBar = function( divName, difficultyStats ) {
 
@@ -211,6 +214,7 @@ this.renderDifficultyStatsBar = function( divName, difficultyStats ) {
         difficultyStats.numVH
     ] ;
 
+    clearCanvas( divName ) ;
     var bar = new RGraph.Bar( {
         id     : divName,
         data   : vals,
@@ -250,6 +254,7 @@ this.renderLearningCurveGraph = function( divName, learningCurveData ) {
         graphData[5].push( snapShot[5] ) ;
     }
 
+    clearCanvas( divName ) ;
     var mline = new RGraph.Line( {
         id: divName,
         data: graphData,
@@ -319,5 +324,13 @@ function isDebug() {
     }
     return false ;
 }
+
+function clearCanvas( canvasId ) {
+
+    var canvas = document.getElementById( canvasId ) ;
+    var context = canvas.getContext( "2d" ) ;
+    context.clearRect( 0, 0, canvas.width, canvas.height ) ;
+}
+
 // -----------------------------------------------------------------------------
 }

@@ -18,6 +18,8 @@ Completed
 . Feature - Editing enhancements for inline MathJax operators
 . Slight CSS modifications for P
 . Changed order of notes element display
+. BUG - Graphs in remote flash keeps superimposing. Clearing the graph canvas 
+  brefore rendering.
 
 6/7/15 --
 . BUG - Elapsed time is not showing on flashcard practice page
