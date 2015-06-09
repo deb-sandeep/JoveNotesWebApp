@@ -82,6 +82,10 @@ define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
     <div ng-show="showFilterForm" ng-include="'<?php echo FILTER_FRAGMENT_PATH ?>'">
     </div>
     <p>
+    <div ng-if="teacherNotes.length">
+        <div ng-include="'<?php echo TN_FRAGMENT_PATH ?>'"></div>
+    </div>
+
     <div ng-if="wordMeanings.length">
         <div ng-include="'<?php echo WM_FRAGMENT_PATH ?>'"></div>
     </div>
@@ -112,10 +116,6 @@ define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
 
     <div ng-if="characters.length">
         <div ng-include="'<?php echo CHAR_FRAGMENT_PATH ?>'"></div>
-    </div>
-
-    <div ng-if="teacherNotes.length">
-        <div ng-include="'<?php echo TN_FRAGMENT_PATH ?>'"></div>
     </div>
 
     <div ng-if="matchings.length">

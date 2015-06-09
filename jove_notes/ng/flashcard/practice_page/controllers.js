@@ -141,7 +141,8 @@ $scope.rateCard = function( rating ) {
     })
     .success( function( data ){
         if( typeof data === 'string' ) {
-            $scope.addErrorAlert( "API call failed. " + data ) ;
+            $scope.addErrorAlert( "Grade Card API call failed. No score " + 
+                                  "returned. Server says - " + data ) ;
         }
         else {
             log.debug( "Grading of card " + cardId + " success." ) ;
@@ -169,7 +170,7 @@ $scope.rateCard = function( rating ) {
         }
     })
     .error( function( data ){
-        $scope.addErrorAlert( "API call failed. " + data ) ;
+        $scope.addErrorAlert( "Grade Card API call failed. " + data ) ;
     }) ;
 
     showNextCard() ;

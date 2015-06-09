@@ -6,12 +6,17 @@ Pending dev cards
   - If in the same session an answer is wronged more than once - marks should be
     deducted - think through this requirement. Need clear articulation before
     implementing
+  - If in session n, a card has moved to L0. If in session n+1, the user fails on
+    a card in L0, marks should be deducted.
 . Responsive headers - responsive headers are really not working. Change them 
   to static non-floating headers
         
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/9/15 --
+. Usability - bring the flash card icon before the progress meter.
+
 6/8/15 --
 . Feature - Editing enhancements for inline MathJax operators
 . Slight CSS modifications for P
@@ -24,6 +29,7 @@ Completed
   icon - more usable
 . In remote flash card, the graphs are getting overwritten. O should clear the
   canvas before drawing graphs
+. More meaningful alert when GradeCard API call fails.
 
 6/7/15 --
 . BUG - Elapsed time is not showing on flashcard practice page
