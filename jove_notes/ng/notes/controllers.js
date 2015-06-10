@@ -8,12 +8,12 @@ function FilterCriteria() {
 
     this.serialize = function() {
         $.cookie.json = true ;
-        $.cookie( 'notesCriteria-' + $scope.chapterId, this, { expires: 30 } ) ;
+        $.cookie( 'notesCriteria', this, { expires: 30 } ) ;
     }
 
     this.deserialize = function() {
         $.cookie.json = true ;
-        var crit = $.cookie( 'notesCriteria-' + $scope.chapterId ) ;
+        var crit = $.cookie( 'notesCriteria' ) ;
         if( typeof crit != 'undefined' ) {
 	        log.debug( "Deserialized filter criteria." ) ;
 			this.learningEfficiencyFilters = crit.learningEfficiencyFilters ;

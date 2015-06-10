@@ -1,5 +1,12 @@
 Pending dev cards
 --------------------------------------------------------------------------------
+. Push button for questions - there are occations where the push API call fails,
+  think of either retrying the call or providing a push button to manually push
+  the question
+. Think about a way to auto clear the error messages or clear all of them in 
+  one go. Also should duplicate entries be merged?
+. Check the remote flash page elapsed time badge just in case of new cards - 
+  it is not showing despite cache cleans
 . Review the flow of grading.. seems like some cards are getting pushed back
   into the deck even for Easy grades
 . Review computation of scores
@@ -14,6 +21,12 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/10/15 --
+. BUG - Can't store chapter specific cookies on a generic page. Browser ends up 
+  shovelling everything to the server and after a time, the cumulative size of 
+  those cookies exceeds 4K and the server returns a bad request. Changed the
+  preference notes and studyCriteria to be generic across all chapters.
+
 6/9/15 --
 . Usability - bring the flash card icon before the progress meter.
 

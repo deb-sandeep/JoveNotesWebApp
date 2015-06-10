@@ -21,12 +21,12 @@ function StudyCriteria() {
 
     this.serialize = function() {
         $.cookie.json = true ;
-        $.cookie( 'studyCriteria-' + $scope.chapterId, this, { expires: 30 } ) ;
+        $.cookie( 'studyCriteria', this, { expires: 30 } ) ;
     }
 
     this.deserialize = function() {
         $.cookie.json = true ;
-        var crit = $.cookie( 'studyCriteria-' + $scope.chapterId ) ;
+        var crit = $.cookie( 'studyCriteria' ) ;
         if( typeof crit != 'undefined' ) {
             this.maxCards    = crit.maxCards ;
             this.maxTime     = crit.maxTime ;
