@@ -102,6 +102,8 @@ $scope.purgeCard = function() {
     
     $scope.$parent.sessionStats.numCards-- ;
     $scope.$parent.sessionStats.numCardsLeft-- ;
+    $scope.questionsForSession.shift() ;
+    
     showNextCard() ;
 }
 

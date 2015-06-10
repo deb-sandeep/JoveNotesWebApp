@@ -1,5 +1,7 @@
 Pending dev cards
 --------------------------------------------------------------------------------
+. Revisit logging and segregate logs into debug, info, warn and error
+. Lot of grade card API call fails - check server logs and diagnose
 . Push button for questions - there are occations where the push API call fails,
   think of either retrying the call or providing a push button to manually push
   the question
@@ -26,6 +28,8 @@ Completed
   shovelling everything to the server and after a time, the cumulative size of 
   those cookies exceeds 4K and the server returns a bad request. Changed the
   preference notes and studyCriteria to be generic across all chapters.
+. BUG - Purge card not working. Purge was not shifting the card list.
+. 
 
 6/9/15 --
 . Usability - bring the flash card icon before the progress meter.
