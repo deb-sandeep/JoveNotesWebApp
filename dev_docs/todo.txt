@@ -1,8 +1,10 @@
 Pending dev cards
 --------------------------------------------------------------------------------
+. Change unique object id logig for FIB, Matching, Imglabel.. 
 . Revisit logging and segregate logs into debug, info, warn and error
-. Lot of grade card API call fails - check server logs and diagnose
-. Push button for questions - there are occations where the push API call fails,
+. Harden logic - If grade card API fails, push again.. after a threshold if 
+  push is still not going through, then show a manual button.
+  Push button for questions - there are occations where the push API call fails,
   think of either retrying the call or providing a push button to manually push
   the question
 . Think about a way to auto clear the error messages or clear all of them in 
@@ -24,7 +26,7 @@ Completed
 6/11/15 --
 . JNP - Text process FIB inputs to take care of any latex expressions
 . Web - FIB answers are no longer embraced by <code> - it makes MathJax expression 
-  fail
+  fail. New class fib_answer added
 . Make latex matching regular expressions non-greedy
 . Logging enhancements both at server and client side
 . BUG - Check the remote flash page elapsed time badge just in case of new cards

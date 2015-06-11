@@ -254,7 +254,7 @@ function formatFIB( fibElement ){
 
 	for( var i=0; i<numBlanks; i++ ) {
 		var strToReplace = "{" + i + "}" ;
-		var replacedText = "<u><b>" + fibElement.answers[i] + "</b></u>" ;
+		var replacedText = "<span class='fib_answer'>" + fibElement.answers[i] + "</span>" ;
 
 		formattedAnswer   = formattedAnswer.replace( strToReplace, replacedText ) ;
 	}

@@ -19,6 +19,14 @@ p {
 	padding-top: 8px;
 }
 
+.fib_answer {
+	color: crimson;
+	background-color: #f1f1f1;
+	padding: 1px 4px;
+	border-radius: 4px;
+	font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+}
+
 .nav_element {
 	max-height: 40px;
 	min-height: 40px;
