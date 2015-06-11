@@ -5,6 +5,10 @@ require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/chapter_dao.php" ) ;
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/learning_session_dao.php" ) ;
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/student_score_dao.php" ) ;
 
+global $log ;
+$log->info( "Rendering flashcard for chapter " . $_REQUEST[ 'chapterId' ] . 
+            " and user " . ExecutionContext::getCurrentUserName() ) ;
+
 // Check if the user has access to flash cards for the requested chapter.
 $chapterDAO = new ChapterDAO() ;
 $guard = $chapterDAO->getChapterGuard( $_REQUEST[ 'chapterId' ] ) ;

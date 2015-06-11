@@ -8,6 +8,9 @@ if( !Authorizer::hasAccess( "feature:RemoteFlash", "USE" ) ) {
     return ;
 }
 
+global $log ;
+$log->info( "Rendering remote flash for user " . ExecutionContext::getCurrentUserName() ) ;
+
 $pageConfig = array(
 	"tab_title"  => "Remote Flash Client"
 ) ;

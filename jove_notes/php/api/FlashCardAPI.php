@@ -25,6 +25,13 @@ class FlashCardAPI extends AbstractJoveNotesAPI {
 			$response->responseBody = $this->constructResponseBody() ;
 			// $response->responseBody = $this->getReferenceOutput() ;
 		}
+		else {
+			$response->responseCode = APIResponse::SC_ERR_UNAUTHORIZED ;
+			$response->responseBody = "User is not authorized to invoke " .
+			                          "FlashCard for chapter " . 
+			                          $request->requestPathComponents[0] ;
+		}
+
 	}
 
 	private function constructResponseBody() {

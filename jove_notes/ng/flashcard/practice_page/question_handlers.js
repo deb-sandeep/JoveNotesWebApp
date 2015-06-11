@@ -40,7 +40,7 @@ function FIBHandler( chapterDetails, question ) {
 		for( var i=0; i<numBlanks; i++ ) {
 
 			var strToReplace = "{" + i + "}" ;
-			var replacedText = "<code>" + question.answers[i] + "</code>" ;
+			var replacedText = "<u><b>" + question.answers[i] + "</b></u>" ;
 
 			formattedAnswer   = formattedAnswer.replace( strToReplace, replacedText ) ;
 			formattedQuestion = formattedQuestion.replace( strToReplace, " ______ " ) ;

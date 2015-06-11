@@ -36,6 +36,11 @@ class RemoteFlashMessageAPI extends AbstractJoveNotesAPI {
 			$this->processIncomingMessage( $this->requestObj ) ;
 			$response->responseCode = APIResponse::SC_OK ;
 		}
+		else {
+			$response->responseCode = APIResponse::SC_ERR_UNAUTHORIZED ;
+			$response->responseBody = "User is not authorized to invoke " .
+			                          "RemoteFlashMessage " ;
+		}
 	}
 
 	private function processIncomingMessage( $message ) {

@@ -44,7 +44,7 @@ where
     session_id < $currentSessionId 
 QUERY;
 
-        parent::executeDelete( $query ) ;
+        parent::executeDelete( $query, 0 ) ;
     }
 
     function purgeAllMessages( $userName ) {
@@ -55,7 +55,7 @@ where
     student_name = '$userName' 
 QUERY;
 
-        parent::executeDelete( $query ) ;
+        parent::executeDelete( $query, 0 ) ;
     }
 
     function getLastMessageAgeAndId( $userName ) {

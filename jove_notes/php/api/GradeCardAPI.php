@@ -55,6 +55,12 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 				"score" => $this->score 
 			) ;
 		}
+		else {
+			$response->responseCode = APIResponse::SC_ERR_UNAUTHORIZED ;
+			$response->responseBody = "User is not authorized to invoke " .
+			                          "FlashCard for chapter " . 
+			                          $request->requestPathComponents[0] ;
+		}
 	}
 
 	private function computeLearningEfficiency( $cardLearningSummary ) {

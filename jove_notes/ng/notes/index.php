@@ -3,6 +3,10 @@ require_once( $_SERVER[ "DOCUMENT_ROOT" ] . "/apps/jove_notes/php/app_bootstrap.
 
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/chapter_dao.php" ) ;
 
+global $log ;
+$log->info( "Rendering notes for chapter " . $_REQUEST[ 'chapterId' ] . 
+            " and user " . ExecutionContext::getCurrentUserName() ) ;
+
 // Check if the user has access to notes for the requested chapter.
 $chapterDAO = new ChapterDAO() ;
 $guard = $chapterDAO->getChapterGuard( $_REQUEST[ 'chapterId' ] ) ;

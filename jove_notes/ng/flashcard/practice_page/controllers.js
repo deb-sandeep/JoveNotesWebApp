@@ -171,8 +171,10 @@ $scope.rateCard = function( rating ) {
             }
         }
     })
-    .error( function( data ){
-        $scope.addErrorAlert( "Grade Card API call failed. " + data ) ;
+    .error( function( data, status ){
+        $scope.addErrorAlert( "Grade Card API call failed. " + 
+                              "Status = " + status + ", " + 
+                              "Response = " + response ) ;
     }) ;
 
     showNextCard() ;
@@ -326,10 +328,11 @@ function showNextCard() {
             .success( function( data ){
                 $scope.pushQuestionSuccess = true ;
             })
-            .error( function( data ){
-                var message = "Could not post question for remote view" ;
+            .error( function( data, status ){
+                var message = "Could not post question for remote view. " + 
+                              "Server says status = " + status + " and " + 
+                              "Response = " + data ;
                 log.error( message ) ;
-                log.error( "Server says - " + data ) ;
                 $scope.addErrorAlert( message ) ;
             }) ;
 

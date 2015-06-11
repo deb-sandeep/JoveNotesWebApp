@@ -3,6 +3,7 @@ require_once( $_SERVER[ "DOCUMENT_ROOT" ] . "/apps/jove_notes/php/app_bootstrap.
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/card_learning_summary_dao.php" ) ;
 
 global $log;
+$log->info( "Rendering dashboard for user " . ExecutionContext::getCurrentUserName() ) ;
 
 $log->debug( "Refreshing card learning summaries" ) ;
 $clsDAO = new CardLearningSummaryDAO() ;

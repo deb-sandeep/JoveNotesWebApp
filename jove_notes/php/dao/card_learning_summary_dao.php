@@ -41,7 +41,7 @@ where
     )
 QUERY;
 
-        parent::executeInsert( $query ) ;
+        parent::executeInsert( $query, 0 ) ;
     }
 
     function updateSummary( $userName, $cardId, $level, $rating, $learningEfficiency ) {

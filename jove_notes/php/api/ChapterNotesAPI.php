@@ -25,6 +25,12 @@ class ChapterNotesAPI extends AbstractJoveNotesAPI {
 			$response->responseBody = $respBody ;
 			// $response->responseBody = $this->getReferenceOutput() ;
 		}
+		else {
+			$response->responseCode = APIResponse::SC_ERR_UNAUTHORIZED ;
+			$response->responseBody = "User is not authorized to invoke " .
+			                          "ChapterNotes for chapter " . 
+			                          $request->requestPathComponents[0] ;
+		}
 	}
 
 	private function constructNotesElements() {

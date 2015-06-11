@@ -39,6 +39,12 @@ class ResetLevelAPI extends AbstractJoveNotesAPI {
 				"sessionId" => $sessionId
 			) ;
 		}
+		else {
+			$response->responseCode = APIResponse::SC_ERR_UNAUTHORIZED ;
+			$response->responseBody = "User is not authorized to invoke " .
+			                          "ResetLevel API" ;
+		}
+
 	}
 }
 
