@@ -79,26 +79,6 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 		$this->learningEfficiency = ceil( $totalRatingScores / count( $ratings ) ) ;
 	}
 
-	private function computeScore( $cardLearningSummary ) {
-
-		if( $this->requestObj->numAttempts > 1 ) {
-			$this->score = 0 ;
-		}
-		else {
-			$scoreMatrix = array(
-			   "E"=>array( "NS"=>100, "L0"=> 80, "L1"=> 90, "L2"=> 80, "L3"=>  60 ),
-			   "A"=>array( "NS"=> 80, "L0"=> 60, "L1"=> 50, "L2"=> 40, "L3"=>  30 ),
-			   "P"=>array( "NS"=> 10, "L0"=> -5, "L1"=>-10, "L2"=>-20, "L3"=> -40 ),
-			   "H"=>array( "NS"=>  0, "L0"=>-10, "L1"=>-20, "L2"=>-50, "L3"=>-100 )
-			) ;
-
-			$arr        = $scoreMatrix[ $this->requestObj->rating ] ;
-			$multFactor = $arr[ $cardLearningSummary[ "current_level" ] ] ;
-
-			$this->score = ceil( ($multFactor/100)*$cardLearningSummary[ "difficulty_level" ] ) ;
-		}
-	}
-
 	private function saveCardRating() {
 
 		$this->cardRatingDAO->insertRating( 
@@ -154,6 +134,109 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 			                          $this->requestObj->rating, 
 			                          $this->learningEfficiency ) ;
 	}	
+
+	// $this->requestObj has the following attributes
+    // 		chapterId
+    // 		sessionId
+    // 		cardId
+    // 		currentLevel
+    // 		nextLevel
+    // 		rating
+    // 		timeTaken
+    // 		numAttempts
+    //
+    // $cardLearningSummary has the following attributes
+	// 		current_level
+	// 		num_attempts
+	// 		temporal_ratings
+	// 		learning_efficiency
+	// 		last_attempt_time
+	// 		difficulty_level
+	//
+	// Rules for computing score
+	// 1. If numAttempts is 1, score is computed via the scoring matrix -i.e. 
+	//    as a factor of rating and current level
+	// 
+	// 2. If there are more than one attempt in the session, 
+	private function computeScore( $cardLearningSummary ) {
+
+		$this->logger->debug( "Computing score" ) ;
+		$this->logger->debug( "\tcurrentLevel = " . $this->requestObj->currentLevel ) ;
+		$this->logger->debug( "\tnextLevel    = " . $this->requestObj->nextLevel ) ;
+		$this->logger->debug( "\trating       = " . $this->requestObj->rating ) ;
+
+		if( $this->requestObj->numAttempts == 1 ) {
+			$scoreMatrix = array(
+			   "E"=>array( "NS"=>100, "L0"=> 50, "L1"=> 80, "L2"=> 60, "L3"=>  40 ),
+			   "A"=>array( "NS"=> 75, "L0"=> 20, "L1"=> 60, "L2"=> 30, "L3"=>  10 ),
+			   "P"=>array( "NS"=>  5, "L0"=>-30, "L1"=>-30, "L2"=>-50, "L3"=> -70 ),
+			   "H"=>array( "NS"=>  0, "L0"=>-50, "L1"=>-40, "L2"=>-70, "L3"=>-100 )
+			) ;
+
+			$arr        = $scoreMatrix[ $this->requestObj->rating ] ;
+			$multFactor = $arr[ $this->requestObj->currentLevel ] ;
+
+			$this->score = ceil( ($multFactor/100)*$cardLearningSummary[ "difficulty_level" ] ) ;
+			$this->logger->debug( "First attempt - score = $this->score" ) ;
+		}
+		else {
+        	//          E     A      P     H
+        	// ---------------------------------
+        	// NS : [ 'L1' , 'L1', 'L0',  'L0' ]
+        	// L0 : [ 'L1' , 'L0', 'L0',  'L0' ]
+        	// L1 : [ 'L2' , 'L1', 'L0',  'L0' ]
+        	// L2 : [ 'L3' , 'L1', 'L1',  'L0' ]
+        	// L3 : [ 'MAS', 'L0', 'L0',  'L0' ]
+        	// ---------------------------------
+        	// NS : [  -1,   -1,   0.5,   0.25 ]
+        	// L0 : [  -1,    1,   0.5,   0.25 ]
+        	// L1 : [  -1,    1,   0.5,   0.25 ]
+        	// L2 : [  -1,    1,   0.5,   0.25 ]
+        	// L3 : [  -1,    1,   0.5,   0.25 ]
+			//
+			$jump = $this->getLevelJump( $this->requestObj->currentLevel, 
+				                         $this->requestObj->nextLevel ) ;
+
+			$this->logger->debug( "Rating for attempt = " . 
+				                  $this->requestObj->numAttempts ) ;
+			$this->logger->debug( "Rating jump = $jump" ) ;
+
+			// If the rating is E, we don't give any score - no short term memory
+			// advantage. However, if the rating is not E, then there is an 
+			// associated penalty as a function of the difficulty level and 
+			// the number of attempts till now.
+			if( $this->requestObj->rating != "E" ) {
+
+				$this->logger->debug( "Current rating not E, applying penalty" ) ;
+
+				$diffLevel         = $cardLearningSummary[ "difficulty_level" ] ;
+				$penaltyPercentage = $this->requestObj->numAttempts * 10 ;
+
+				$this->score = ceil( -1*($penaltyPercentage/100)*$diffLevel ) ;
+				
+				$this->logger->debug( "Penalty percentage = $penaltyPercentage" ) ;
+				$this->logger->debug( "Score = " . $this->score ) ;
+			}
+			else {
+				$this->score = 0 ;
+			}
+		}
+	}
+
+	private function getLevelJump( $currentLevel, $nextLevel ) {
+
+		$jumpMatrix = array(
+		   "NS" => array( "NS"=> 0, "L0"=>-1, "L1"=> 1, "L2"=> 2, "L3"=> 3, "MAS"=> 4 ),
+		   "L0" => array( "NS"=> 0, "L0"=> 0, "L1"=> 1, "L2"=> 2, "L3"=> 3, "MAS"=> 4 ),
+		   "L1" => array( "NS"=> 0, "L0"=>-1, "L1"=> 0, "L2"=> 1, "L3"=> 2, "MAS"=> 3 ),
+		   "L2" => array( "NS"=> 0, "L0"=>-2, "L1"=>-1, "L2"=> 0, "L3"=> 1, "MAS"=> 2 ),
+		   "L3" => array( "NS"=> 0, "L0"=>-4, "L1"=>-2, "L2"=>-1, "L3"=> 0, "MAS"=> 1 )
+		) ;
+
+		$arr  = $jumpMatrix[ $currentLevel ] ;
+		$jump = $arr[ $nextLevel ] ;
+		return $jump ;
+	}
 }
 
 ?>

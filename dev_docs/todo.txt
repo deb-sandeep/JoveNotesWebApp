@@ -1,28 +1,32 @@
 Pending dev cards
 --------------------------------------------------------------------------------
-. Change unique object id logig for FIB, Matching, Imglabel.. 
-. Revisit logging and segregate logs into debug, info, warn and error
-. Harden logic - If grade card API fails, push again.. after a threshold if 
-  push is still not going through, then show a manual button.
-  Push button for questions - there are occations where the push API call fails,
-  think of either retrying the call or providing a push button to manually push
-  the question
-. Think about a way to auto clear the error messages or clear all of them in 
-  one go. Also should duplicate entries be merged?
+. Build a feature of linking arbitrary documents using {{@doc ...}}
 . Review the flow of grading.. seems like some cards are getting pushed back
   into the deck even for Easy grades
-. Review computation of scores
-  - If in the same session an answer is wronged more than once - marks should be
-    deducted - think through this requirement. Need clear articulation before
-    implementing
-  - If in session n, a card has moved to L0. If in session n+1, the user fails on
-    a card in L0, marks should be deducted.
+. Change unique object id logig for FIB, Matching, Imglabel.. 
+. Revisit logging and segregate logs into debug, info, warn and error
+. Think about a way to auto clear the error messages or clear all of them in 
+  one go. Also should duplicate entries be merged?
 . Responsive headers - responsive headers are really not working. Change them 
   to static non-floating headers
         
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/12/15 --
+. Harden logic - If grade card API fails, push again.. after a threshold if 
+  push is still not going through, then show a manual button.
+. Push button for questions - there are occations where the push API call fails,
+  think of either retrying the call or providing a push button to manually push
+  the question
+. Review computation of scores
+  - If in the same session an answer is wronged more than once - marks should be
+    deducted - think through this requirement. Need clear articulation before
+    implementing
+  - If in session n, a card has moved to L0. If in session n+1, the user fails on
+    a card in L0, marks should be deducted.
+
+
 6/11/15 --
 . JNP - Text process FIB inputs to take care of any latex expressions
 . Web - FIB answers are no longer embraced by <code> - it makes MathJax expression 

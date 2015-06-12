@@ -3,7 +3,8 @@
     <div class="col-sm-5"
          style="padding-left:0px, padding-right:0px">
 
-        <!-- The End Session button -->
+        <!-- The Push Answer button button. This is shown only if we are  -->
+        <!-- conducting a remote session                                  -->
         <button type="button" 
                 class="btn btn-success btn-lg"
                 ng-click="pushAnswer()"
@@ -11,6 +12,17 @@
                 data-toggle="tooltip" data-placement="top" 
                 title="Push answer">
             <span class="glyphicon glyphicon-share-alt"></span>
+        </button>
+
+        <!-- The Push Question button button. This is shown only if we are  -->
+        <!-- conducting a remote session                                    -->
+        <button type="button" 
+                class="btn btn-success btn-lg"
+                ng-click="pushQuestion()"
+                ng-show="studyCriteria.push"
+                data-toggle="tooltip" data-placement="top" 
+                title="Push question">
+            <span class="glyphicon glyphicon-send"></span>
         </button>
 
         <!-- The toggle header popup -->

@@ -7,6 +7,9 @@ var SSR_DELTA_L1 = SSR_DELTA_L0 * 2 ;
 var SSR_DELTA_L2 = SSR_DELTA_L0 * 3 ;
 var SSR_DELTA_L3 = SSR_DELTA_L0 * 4  ;
 
+var MAX_GRADE_CARD_API_CALL_RETRIES = 3 ;
+var MAX_PUSH_ANS_API_CALL_RETRIES   = 3 ;
+
 // ---------------- Local variables --------------------------------------------
 var ratingMatrix = new RatingMatrix() ;
 
@@ -61,7 +64,12 @@ $scope.questionMode = false ;
         return ;
     }
 
-    startSession( function(){
+    // Publish the start message if required and only after a successful publish,
+    // we start the timer and show the next card. i.e. We don't start the session
+    // till we have published the start session messsage in case push is 
+    // configured. If push is not configured, the callback would be called without
+    // publishing any message to the server.
+    callRFMApiToPublisStartSession( function(){
 
         log.debug( "Starting timer." ) ;
         setTimeout( handleTimerEvent, 1000 ) ;
@@ -130,53 +138,23 @@ $scope.rateCard = function( rating ) {
     log.debug( "Next action   = " + nextAction ) ;
     log.debug( "Num attmepts  = " + numAttempts ) ;
     log.debug( "Time spent    = " + $scope.currentQuestion.learningStats.numSecondsInSession ) ;
+
+    // NOTE: GradeCard API call is asynchronous, that implies that the score 
+    // of the current question will come sometimes when the user is attempting
+    // the next question. This is ok.. the score counter will anyway get updated
+    // in a time lagged fashion.. 
+    callGradeCardAPI( 
+        chapterId, 
+        $scope.$parent.sessionId, 
+        cardId, 
+        curLevel, 
+        nextLevel, 
+        rating, 
+        Math.ceil( ( new Date().getTime() - currentQuestionShowStartTime )/1000 ),
+        numAttempts,
+        0 
+    ) ;
     
-    $http.post( '/jove_notes/api/GradeCard', { 
-        chapterId   : chapterId,
-        sessionId   : $scope.$parent.sessionId,
-        cardId      : cardId,
-        currentLevel: curLevel,
-        nextLevel   : nextLevel,
-        rating      : rating,
-        timeTaken   : Math.ceil( ( new Date().getTime() - currentQuestionShowStartTime )/1000 ),
-        numAttempts : numAttempts
-    })
-    .success( function( data ){
-        if( typeof data === 'string' ) {
-            $scope.addErrorAlert( "Grade Card API call failed. No score " + 
-                                  "returned. Server says - " + data ) ;
-        }
-        else {
-            log.debug( "Grading of card " + cardId + " success." ) ;
-            log.debug( "Score earned = " + data.score ) ;
-            scoreDelta += data.score ;
-
-            // There are times, especially for the last card in the deck that the
-            // server response is received after we have shown the end page.
-            // In these cases $scope.$parent turns out to be null and the following
-            // throws an error. To prevent the mishap, we explicitly check for
-            // a not null parent.
-            if( $scope.$parent != null ) {
-                if( $scope.$parent.studyCriteria.push ) {
-                    pushDeltaScoreToRemote( data.score ) ;
-                }
-                if( data.score > 0 ) {
-                    $scope.$parent.pointsEarnedInThisSession += data.score ;
-                    updateScore() ;
-                }
-                else if( data.score < 0 ) {
-                    $scope.$parent.pointsLostInThisSession += data.score ;
-                    updateScore() ;
-                }
-            }
-        }
-    })
-    .error( function( data, status ){
-        $scope.addErrorAlert( "Grade Card API call failed. " + 
-                              "Status = " + status + ", " + 
-                              "Response = " + response ) ;
-    }) ;
-
     showNextCard() ;
 }
 
@@ -187,80 +165,16 @@ $scope.showAnswer = function() {
 }
 
 $scope.pushAnswer = function() {
+    callRFMApiToPushAnswer( 0 ) ;
+}
 
-    $http.post( '/jove_notes/api/RemoteFlashMessage', { 
-        sessionId   : $scope.$parent.sessionId,
-        chapterId   : chapterId,
-        msgType     : 'answer',
-        msgContent  : null
-    })
-    .success( function( data ){
-        $scope.pushAnswerSuccess = true ;
-    })
-    .error( function( data ){
-        var message = "Could not push show answer message to remote." ;
-        log.error( message ) ;
-        log.error( "Server says - " + data ) ;
-        $scope.addErrorAlert( message ) ;
-    }) ;
+$scope.pushQuestion = function() {
+
+    $scope.pushQuestionSuccess = false ;
+    callRFMApiToPushQuestion() ;
 }
 
 // ---------------- Private functions ------------------------------------------
-function pushDeltaScoreToRemote( deltaScore ) {
-
-    log.debug( "Pushing delta score to remote" ) ;
-
-    $http.post( '/jove_notes/api/RemoteFlashMessage', { 
-        sessionId   : $scope.$parent.sessionId,
-        chapterId   : chapterId,
-        msgType     : 'delta_score',
-        msgContent  : {
-            "deltaScore" : deltaScore
-        }
-    })
-    .error( function( data ){
-        var message = "Could not post delta score to remote." ;
-        log.error( message ) ;
-        log.error( "Server says - " + data ) ;
-        $scope.addErrorAlert( message ) ;
-    }) ;
-}
-
-function startSession( callback ) {
-
-    log.debug( "Starting the session." ) ;
-    if( $scope.$parent.studyCriteria.push ) {
-        log.debug( "Session is configured for remote push. " + 
-                   "Posting start_session message." ) ;
-
-        $http.post( '/jove_notes/api/RemoteFlashMessage', { 
-            sessionId   : $scope.$parent.sessionId,
-            chapterId   : chapterId,
-            msgType     : 'start_session',
-            msgContent  : {
-                "userScore"         : $scope.userScore,
-                "chapterDetails"    : $scope.$parent.chapterDetails,
-                "difficultyStats"   : $scope.$parent.difficultyStats,
-                "progressSnapshot"  : $scope.$parent.progressSnapshot,
-                "learningCurveData" : $scope.$parent.learningCurveData,
-                "studyCriteria"     : $scope.$parent.studyCriteria,
-            }
-        })
-        .success( function( data ){
-            callback() ;
-        })
-        .error( function( data ){
-            var message = "Can't start session. Could not post remote start message" ;
-            log.error( message ) ;
-            log.error( "Server says - " + data ) ;
-            $scope.addErrorAlert( message ) ;
-        }) ;
-    }
-    else {
-        callback() ;
-    }
-}
-
 function updateLearningStatsForCurrentQuestion( rating, nextLevel ) {
 
     var delta = ( new Date().getTime() - currentQuestionShowStartTime )/1000 ;
@@ -314,27 +228,7 @@ function showNextCard() {
             $scope.pushQuestionSuccess = false ;
             $scope.pushAnswerSuccess = false ;
 
-            $http.post( '/jove_notes/api/RemoteFlashMessage', { 
-                sessionId   : $scope.$parent.sessionId,
-                chapterId   : chapterId,
-                msgType     : 'question',
-                msgContent  : {
-                    "progressSnapshot": $scope.$parent.progressSnapshot,
-                    "sessionStats"    : $scope.$parent.sessionStats,
-                    "currentQuestion" : $scope.currentQuestion,
-                    "answerAlign"     : $scope.answerAlign
-                }
-            })
-            .success( function( data ){
-                $scope.pushQuestionSuccess = true ;
-            })
-            .error( function( data, status ){
-                var message = "Could not post question for remote view. " + 
-                              "Server says status = " + status + " and " + 
-                              "Response = " + data ;
-                log.error( message ) ;
-                $scope.addErrorAlert( message ) ;
-            }) ;
+            callRFMApiToPushQuestion() ;
 
             $scope.showAnswer() ;
         }
@@ -620,6 +514,221 @@ function updateScore() {
         scoreDelta       -= delta ;
         setTimeout( updateScore, 10 ) ;
     }
+}
+
+// ---------------- Server calls -----------------------------------------------
+/**
+ * This function calls on the GradeCardAPI, submitting the details of the 
+ * card that was rated and expecting back the score earned from the server.
+ *
+ * NOTE: This call is recursive! Why? There are times when the API invocation
+ * is gracefully disconnected by the server (HTTP??) resulting in a return
+ * status code of 0 and data null. In such cases the server code doesn't even
+ * receive the request (verified through logs.)
+ *   Under such cases, (only if status code is 0), this function calls upon 
+ * itself to retry the call. The retrial will continue for the configured max
+ * number of times. If all the retrial attempts fail, an alert will be 
+ * displayed to the user.
+ */
+function callGradeCardAPI( chapterId, sessionId, cardId, curLevel, nextLevel, 
+                           rating, timeTaken, numAttempts,
+                           previousCallAttemptNumber ) {
+
+    var currentCallAttemptNumber = previousCallAttemptNumber + 1 ;
+
+    log.debug( "Calling grade card API for card " + cardId + " with parameters." ) ;
+    log.debug( "\tchapterId    = " + chapterId   ) ;
+    log.debug( "\tsessionId    = " + sessionId   ) ;
+    log.debug( "\tcardId       = " + cardId      ) ;
+    log.debug( "\tcurrentLevel = " + curLevel    ) ;
+    log.debug( "\tnextLevel    = " + nextLevel   ) ;
+    log.debug( "\trating       = " + rating      ) ;
+    log.debug( "\ttimeTaken    = " + timeTaken   ) ;
+    log.debug( "\tnumAttempts  = " + numAttempts ) ;
+
+    $http.post( '/jove_notes/api/GradeCard', { 
+        "chapterId"    : chapterId,
+        "sessionId"    : sessionId,
+        "cardId"       : cardId,
+        "currentLevel" : curLevel,
+        "nextLevel"    : nextLevel,
+        "rating"       : rating,
+        "timeTaken"    : timeTaken,
+        "numAttempts"  : numAttempts
+    })
+    .success( function( data ){
+        if( typeof data === 'string' ) {
+            $scope.addErrorAlert( "Grade Card API call failed. No score " + 
+                                  "returned. Server says - " + data ) ;
+        }
+        else {
+            log.debug( "Grading of card " + cardId + " success." ) ;
+            log.debug( "Score earned = " + data.score ) ;
+            scoreDelta += data.score ;
+
+            // There are times, especially for the last card in the deck that the
+            // server response is received after we have shown the end page.
+            // In these cases $scope.$parent turns out to be null and the following
+            // throws an error. To prevent the mishap, we explicitly check for
+            // a not null parent.
+            if( $scope.$parent != null ) {
+
+                // The decision to push or not will be determined by the function
+                // based on the push flag for this session.
+                callRFMApiToPublishDeltaScore( chapterId, 
+                                               $scope.$parent.sessionId, 
+                                               data.score ) ;
+
+                if( data.score > 0 ) {
+                    $scope.$parent.pointsEarnedInThisSession += data.score ;
+                    updateScore() ;
+                }
+                else if( data.score < 0 ) {
+                    $scope.$parent.pointsLostInThisSession += data.score ;
+                    updateScore() ;
+                }
+            }
+        }
+    })
+    .error( function( data, status ){
+
+        if( status == 0 ) {
+            log.debug( "Faulty connection determined." ) ;
+            if( currentCallAttemptNumber <= MAX_GRADE_CARD_API_CALL_RETRIES ) {
+                log.debug( "Retrying the call again." ) ;
+                callGradeCardAPI( 
+                    chapterId, sessionId, cardId, curLevel, nextLevel, 
+                    rating, timeTaken, numAttempts, currentCallAttemptNumber 
+                ) ;
+            }
+            log.debug( "Number of retries exceeded. Notifying the user." ) ;
+        }
+
+        $scope.addErrorAlert( "Grade Card API call failed. " + 
+                              "Status = " + status + ", " + 
+                              "Response = " + response ) ;
+    }) ;
+}
+
+function callRFMApiToPublishDeltaScore( chapterId, sessionId, deltaScore ) {
+
+    if( $scope.$parent.studyCriteria.push ) {
+        
+        log.debug( "Pushing delta score to remote" ) ;
+
+        $http.post( '/jove_notes/api/RemoteFlashMessage', { 
+            sessionId   : sessionId,
+            chapterId   : chapterId,
+            msgType     : 'delta_score',
+            msgContent  : {
+                "deltaScore" : deltaScore
+            }
+        })
+        .error( function( data ){
+            var message = "Could not post delta score to remote." ;
+            log.error( message ) ;
+            log.error( "Server says - " + data ) ;
+            $scope.addErrorAlert( message ) ;
+        }) ;
+    }
+}
+
+// Publish the start message if required and only after a successful publish,
+// we start the timer and show the next card. i.e. We don't start the session
+// till we have published the start session messsage in case push is 
+// configured. If push is not configured, the callback would be called without
+// publishing any message to the server.
+function callRFMApiToPublisStartSession( callback ) {
+
+    log.debug( "Starting the session." ) ;
+    if( $scope.$parent.studyCriteria.push ) {
+        log.debug( "Session is configured for remote push. " + 
+                   "Posting start_session message." ) ;
+
+        $http.post( '/jove_notes/api/RemoteFlashMessage', { 
+            sessionId   : $scope.$parent.sessionId,
+            chapterId   : chapterId,
+            msgType     : 'start_session',
+            msgContent  : {
+                "userScore"         : $scope.userScore,
+                "chapterDetails"    : $scope.$parent.chapterDetails,
+                "difficultyStats"   : $scope.$parent.difficultyStats,
+                "progressSnapshot"  : $scope.$parent.progressSnapshot,
+                "learningCurveData" : $scope.$parent.learningCurveData,
+                "studyCriteria"     : $scope.$parent.studyCriteria,
+            }
+        })
+        .success( function( data ){
+            callback() ;
+        })
+        .error( function( data ){
+            var message = "Can't start session. " + 
+                          "Could not post remote start message. " + 
+                          "Server says " + data ;
+            log.error( message ) ;
+            $scope.addErrorAlert( message ) ;
+        }) ;
+    }
+    else {
+        callback() ;
+    }
+}
+
+function callRFMApiToPushAnswer( previousCallAttemptNumber ) {
+
+    var currentCallAttemptNumber = previousCallAttemptNumber + 1 ;
+
+    $http.post( '/jove_notes/api/RemoteFlashMessage', { 
+        sessionId   : $scope.$parent.sessionId,
+        chapterId   : chapterId,
+        msgType     : 'answer',
+        msgContent  : null
+    })
+    .success( function( data ){
+        $scope.pushAnswerSuccess = true ;
+    })
+    .error( function( data, status ){
+        if( status == 0 ) {
+            log.debug( "Faulty connection determined." ) ;
+            if( currentCallAttemptNumber <= MAX_PUSH_ANS_API_CALL_RETRIES ) {
+                log.debug( "Retrying the push answer call again." ) ;
+                callRFMApiToPushAnswer( currentCallAttemptNumber ) ;
+            }
+            log.debug( "Number of retries exceeded. Notifying the user." ) ;
+        }
+
+        $scope.addErrorAlert( "Push Answer API call failed. " + 
+                              "Status = " + status + ", " + 
+                              "Response = " + response ) ;
+
+    }) ;
+}
+
+function callRFMApiToPushQuestion() {
+
+    log.debug( "Pushing question to remote user." ) ;
+
+    $http.post( '/jove_notes/api/RemoteFlashMessage', { 
+        sessionId   : $scope.$parent.sessionId,
+        chapterId   : chapterId,
+        msgType     : 'question',
+        msgContent  : {
+            "progressSnapshot": $scope.$parent.progressSnapshot,
+            "sessionStats"    : $scope.$parent.sessionStats,
+            "currentQuestion" : $scope.currentQuestion,
+            "answerAlign"     : $scope.answerAlign
+        }
+    })
+    .success( function( data ){
+        $scope.pushQuestionSuccess = true ;
+    })
+    .error( function( data, status ){
+        var message = "Could not post question for remote view. " + 
+                      "Server says status = " + status + " and " + 
+                      "Response = " + data ;
+        log.error( message ) ;
+        $scope.addErrorAlert( message ) ;
+    }) ;
 }
 
 // ---------------- End of controller ------------------------------------------
