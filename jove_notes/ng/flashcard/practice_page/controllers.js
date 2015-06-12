@@ -22,6 +22,8 @@ var oldBodyTop       = 0 ;
 var oldBodyBottom    = 0 ;
 var scoreDelta       = 0 ;
 
+var questionChangeTriggerIndex = 0 ;
+
 // ---------------- Controller variables ---------------------------------------
 $scope.showL0Header     = true ;
 $scope.showL1Header     = true ;
@@ -35,6 +37,7 @@ $scope.currentQuestion     = null ;
 $scope.userScore           = userScore ;
 
 $scope.answerChangeTrigger = "" ;
+$scope.questionChangeTrigger = "" ;
 $scope.answerAlign = "center" ;
 
 $scope.pushQuestionSuccess = false ;
@@ -220,6 +223,9 @@ function showNextCard() {
         $scope.answerAlign = answerLength < 100 ? "center" : "left" ;
 
         currentQuestionShowStartTime = new Date().getTime() ;
+
+        questionChangeTriggerIndex++ ;
+        $scope.questionChangeTrigger = "Question-" + questionChangeTriggerIndex ;
 
         if( $scope.$parent.studyCriteria.push ) {
             log.debug( "Session is configured for remote push. " + 

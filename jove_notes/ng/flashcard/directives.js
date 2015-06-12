@@ -41,7 +41,7 @@ flashCardApp.directive( 'renderFlashCardQuestion', function() {
 		restrict : 'E',
 		link : function( $scope, element, attributes ) {
 
-			$scope.$watch( 'currentQuestion', function( newValue, oldValue ){
+			$scope.$watch( 'questionChangeTrigger', function( newValue, oldValue ){
 
 				if( $scope.currentQuestion != null ) {
 

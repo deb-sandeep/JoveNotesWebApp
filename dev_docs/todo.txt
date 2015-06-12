@@ -25,6 +25,12 @@ Completed
     implementing
   - If in session n, a card has moved to L0. If in session n+1, the user fails on
     a card in L0, marks should be deducted.
+. BUG - If the last question in the session is answered H and it goes back into
+  the session, the currentQuestion watch doesn't fire, hence the last question
+  never gets rendered. Actually the old one gets rendered which has already 
+  been operated upon. This is very visible in case of dynamic questions like
+  matching since the question shown is not operable and preserves the state of
+  the last attempt.
 
 
 6/11/15 --
