@@ -1,5 +1,7 @@
 Pending dev cards
 --------------------------------------------------------------------------------
+. In notes index.php - check if the request parameter chapterId is present.
+  If not return an error message or something. Same for flashcard page too.
 . Build a feature of linking arbitrary documents using {{@doc ...}}
 . Review the flow of grading.. seems like some cards are getting pushed back
   into the deck even for Easy grades
@@ -13,6 +15,9 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/13/15 --
+. BUG - question change trigger for remote flash was missed out. Fixed that.
+
 6/12/15 --
 . Harden logic - If grade card API fails, push again.. after a threshold if 
   push is still not going through, then show a manual button.

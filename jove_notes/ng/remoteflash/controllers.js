@@ -9,6 +9,7 @@ var waitingForUserAcceptance = false ;
 var sessionStartTime = 0 ;
 var currentQuestionShowStartTime = 0 ;
 var durationTillNowInMillis = 0 ;
+var questionTriggerIndex = 0 ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.SCREEN_WAITING_TO_START = "waiting_to_start" ;
@@ -119,10 +120,6 @@ function runMessageProcessPump() {
     while( messages.length > 0 && !waitingForUserAcceptance ) {
 
         var message = messages.shift() ;
-        // log.debug( "Processing message." ) ;
-        // log.debug( "    message id   = " + message.id ) ;
-        // log.debug( "    message type = " + message.msgType ) ;
-        // log.debug( "    content      = " + JSON.stringify( message.content ) ) ;
 
         try {
             if( message.msgType == "yet_to_start" ) {
@@ -270,10 +267,12 @@ function processIncomingQuestion( message ) {
         log.error( "Unrecognized question type = " + questionType ) ;
         throw "Unrecognized question type. Can't associate formatter." ;
     }
+
     $scope.currentQuestion.handler = handler ;
 
+    questionTriggerIndex++ ;
     $scope.showQuestionTrigger = message.sessionId + ".Question-" 
-                                 + $scope.currentQuestion.questionId ;
+                                 + questionTriggerIndex ;
     $scope.showAnswerTrigger   = "" ;
 }
 
