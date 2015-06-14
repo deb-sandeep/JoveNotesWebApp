@@ -99,6 +99,8 @@ function runMesssageFetchPump() {
                 if( data[i].msgType == "start_session" ) {
                     messages.length = 0 ;
                     waitingForUserAcceptance = false ;
+                    $scope.pointsEarnedInThisSession = 0 ;
+                    $scope.pointsLostInThisSession = 0 ;
                 } 
 
                 messages.push( data[i] ) ;

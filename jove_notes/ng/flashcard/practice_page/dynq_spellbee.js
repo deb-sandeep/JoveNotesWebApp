@@ -52,7 +52,7 @@ function VirtualTextFieldKeyboardWidget( pronunciation, keyboardConfig, numEntry
 				if( key.length > 2 ) cell.colSpan = key[2] ;
 				if( key.length > 3 ) cell.rowSpan = key[3] ;
 
-				var button = BUTTON( { class : "btn btn-primary" } ) ;
+				var button = BUTTON( { class : "btn btn-default btn-spellbee" } ) ;
 				button.innerHTML = display ;
 				
 				cell.appendChild( button ) ;
