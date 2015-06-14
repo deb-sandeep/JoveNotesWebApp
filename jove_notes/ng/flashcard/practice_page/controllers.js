@@ -100,7 +100,7 @@ $scope.toggleDisplay = function( displayId ) {
 
 $scope.randomizeCards = function() {
     log.debug( "Randomizing remaining cards." ) ;
-    $scope.questionsForSession.shuffle() ;
+    $scope.questionsForSession.shuffleFrom( 1 ) ;
 }
 
 $scope.endSession = function() {

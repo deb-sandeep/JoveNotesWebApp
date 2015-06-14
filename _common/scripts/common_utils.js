@@ -19,6 +19,12 @@ Array.prototype.shuffle = function() {
     this.shufflePart( 0, this.length-1 ) ;
 } ;
 
+Array.prototype.shuffleFrom = function( fromIndex ) {
+    if( fromIndex < this.length-1 ) {
+        this.shufflePart( fromIndex, this.length-1 ) ;
+    }
+} ;
+
 String.prototype.replaceAll = function( substringToBeReplaced, replacementString ) {
 
     // Escape all the regular expression characters before we find

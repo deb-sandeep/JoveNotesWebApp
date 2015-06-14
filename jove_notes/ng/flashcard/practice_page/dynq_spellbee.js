@@ -9,6 +9,8 @@ function VirtualTextFieldKeyboardWidget( pronunciation, keyboardConfig, numEntry
 	var keyCodeButtonDOMMap     = [] ;
 	var currentVTFCellIndex     = -1 ;
 
+	var jnUtils = new JoveNotesUtil() ;
+
 	this.divDOM = null ;
 
 	this.initialize = function() {
@@ -75,6 +77,7 @@ function VirtualTextFieldKeyboardWidget( pronunciation, keyboardConfig, numEntry
 
 	this.defaultKeyPressCallback = function( keyCode ) {
 		
+		jnUtils.playKeyPressClip() ;
 		if( keyCode == "VK_BKSP" ) {
 			if( currentVTFCellIndex > -1 ) {
 				virtualTextFieldCells[ currentVTFCellIndex ].innerHTML = '' ;
