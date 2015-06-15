@@ -25,6 +25,7 @@ class ChapterProgressSnapshot {
 	public $l2Cards ;
 	public $l3Cards ;
 	public $masteredCards ;
+	public $numSSRMaturedCards ;
 
 	function __construct( $meta ) {
 
@@ -41,12 +42,13 @@ class ChapterProgressSnapshot {
 		$this->isFlashcardAuthorized  = Authorizer::hasAccess( $this->guard, "FLASH_CARD" ) ;
 		$this->isStatisticsAuthorized = Authorizer::hasAccess( $this->guard, "CHAPTER_STATS" ) ;
 
-		$this->notStartedCards = 0 ;
-		$this->l0Cards         = 0 ;
-		$this->l1Cards         = 0 ;
-		$this->l2Cards         = 0 ;
-		$this->l3Cards         = 0 ;
-		$this->masteredCards   = 0 ;
+		$this->notStartedCards    = 0 ;
+		$this->l0Cards            = 0 ;
+		$this->l1Cards            = 0 ;
+		$this->l2Cards            = 0 ;
+		$this->l3Cards            = 0 ;
+		$this->masteredCards      = 0 ;
+		$this->numSSRMaturedCards = 0 ;
 	}
 
 	public function isUserEntitled() {
@@ -80,11 +82,13 @@ class ProgressSnapshotAPI extends API {
 		$this->clsDAO->refresh( ExecutionContext::getCurrentUserName() ) ;
 		$this->loadAndClassifyRelevantChapters() ;
 		$this->associateProgressSnapshotWithChapters() ;
+		$this->associateNumSSRMaturedCardsWithChapters() ;
 		
 		$responseObj = $this->constructResponseObj() ;
 
 		$response->responseCode = APIResponse::SC_OK ;
 		$response->responseBody = $responseObj ;
+		//$response->responseBody = $this->getReferenceOutput() ;
 	}
 
 	// Set the responseBody to the output of this function if we want to send 
@@ -177,6 +181,24 @@ class ProgressSnapshotAPI extends API {
 		}
 	}
 
+	private function associateNumSSRMaturedCardsWithChapters() {
+
+		$chapterMaturedCardsMap = $this->clsDAO->getChapterWiseSSRMaturedCards( 
+									  ExecutionContext::getCurrentUserName() ) ;
+
+		foreach( $chapterMaturedCardsMap as $chapterRow ) {
+
+			$chapterId = $chapterRow[ "chapter_id" ] ;
+			$count     = $chapterRow[ "num_ssr_matured_cards" ] ;
+
+			if( array_key_exists( $chapterId, $this->chapters ) ) {
+
+				$chapter = &$this->chapters[ $chapterId ] ;
+				$chapter->numSSRMaturedCards = $count ;
+			}
+		}
+	}
+
 	private function &constructChapterResponseObj( $chapter ) {
 
 		$responseObj = array() ;
@@ -195,6 +217,7 @@ class ProgressSnapshotAPI extends API {
 		$responseObj[ "l2Cards"                ] = $chapter->l2Cards ;
 		$responseObj[ "l3Cards"                ] = $chapter->l3Cards ;
 		$responseObj[ "masteredCards"          ] = $chapter->masteredCards ;
+		$responseObj[ "numSSRMaturedCards"     ] = $chapter->numSSRMaturedCards ;
 
 		return $responseObj ;
 	}

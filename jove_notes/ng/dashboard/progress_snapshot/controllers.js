@@ -16,13 +16,14 @@ function RowData( rowType, name, rowNum, parentRowNum ) {
     this.isFlashcardAuthorized  = false ;
     this.isStatisticsAuthorized = false ;
 
-	this.totalCards      = 0 ;
-	this.notStartedCards = 0 ;
-	this.l0Cards         = 0 ;
-	this.l1Cards         = 0 ;
-	this.l2Cards         = 0 ;
-	this.l3Cards         = 0 ;
-	this.masteredCards   = 0 ;
+	this.totalCards         = 0 ;
+	this.notStartedCards    = 0 ;
+	this.l0Cards            = 0 ;
+	this.l1Cards            = 0 ;
+	this.l2Cards            = 0 ;
+	this.l3Cards            = 0 ;
+	this.masteredCards      = 0 ;
+	this.numSSRMaturedCards = 0 ;
 
 	this.chapterId = 0 ;
 
@@ -196,6 +197,10 @@ function updateCardCounts( chapter, chapterRD, subjectRD, syllabusRD ) {
 	chapterRD.masteredCards    =  chapter.masteredCards ;
 	subjectRD.masteredCards    += chapter.masteredCards ;
 	syllabusRD.masteredCards   += chapter.masteredCards ;
+
+	chapterRD.numSSRMaturedCards  = chapter.numSSRMaturedCards ;
+	subjectRD.numSSRMaturedCards += chapter.numSSRMaturedCards ;
+	syllabusRD.numSSRMaturedCards+= chapter.numSSRMaturedCards ;
 }
 
 // -----------------------------------------------------------------------------

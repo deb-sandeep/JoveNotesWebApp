@@ -18,6 +18,7 @@
     			</th>
                 <th></th>
                 <th class="text-center">Meter</th>
+                <th></th>
     			<th></th>
                 <th class="text-right"><span class="badge"> T  </span></th>
                 <th class="text-right"><span class="badge NS"> NS </span></th>
@@ -40,6 +41,9 @@
                     </a>
                     </span>
                     <span ng-show="!rowData.isNotesAuthorized">{{rowData.name}}</span>
+                </td>
+                <td>
+                    <span class="badge NS">{{rowData.numSSRMaturedCards}}</span>
                 </td>
                 <td>
                     <a type="button" class="btn btn-default btn-xs" 

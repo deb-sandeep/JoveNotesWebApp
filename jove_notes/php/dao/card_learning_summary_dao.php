@@ -142,6 +142,28 @@ QUERY;
         return parent::getResultAsAssociativeArray( $query, 
                         [ "chapter_id", "current_level", "count" ], false ) ;
     }
+
+    function getChapterWiseSSRMaturedCards( $userName ) {
+
+$query = <<<QUERY
+select 
+  chapter_id, count(card_id) as num_ssr_matured_cards
+from 
+  jove_notes.card_learning_summary 
+where 
+  student_name = 'UTUser' and 
+    ( ( current_level = 'L0' and TIMESTAMPDIFF(SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 1 ) or 
+      ( current_level = 'L1' and TIMESTAMPDIFF(SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 2 ) or 
+      ( current_level = 'L2' and TIMESTAMPDIFF(SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 3 ) or 
+      ( current_level = 'L3' and TIMESTAMPDIFF(SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 4 ) or 
+      ( current_level = 'NS' ) )
+group by
+  chapter_id
+QUERY;
+        
+        return parent::getResultAsAssociativeArray( $query, 
+                         [ "chapter_id", "num_ssr_matured_cards" ], false ) ;
+    }
 }
 ?>
 

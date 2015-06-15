@@ -14,6 +14,12 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/15/15 --
+. Feature - the number of spaced sequenced repetition matured cards are displayed
+  in the dashboard. This will help zero down on the relevant chapter without 
+  first to flash card and then figuring out that we don't have anything to study
+  today.
+  
 6/14/15 --
 . Increase the font size of spellbee keyboard
 . BUG - Shuffle cards logic fix. Shuffling the remaining cards from index 1 to
