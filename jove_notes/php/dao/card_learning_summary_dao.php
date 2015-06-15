@@ -151,12 +151,11 @@ select
 from 
   jove_notes.card_learning_summary 
 where 
-  student_name = 'UTUser' and 
+  student_name = '$userName' and 
     ( ( current_level = 'L0' and TIMESTAMPDIFF(SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 1 ) or 
       ( current_level = 'L1' and TIMESTAMPDIFF(SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 2 ) or 
       ( current_level = 'L2' and TIMESTAMPDIFF(SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 3 ) or 
-      ( current_level = 'L3' and TIMESTAMPDIFF(SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 4 ) or 
-      ( current_level = 'NS' ) )
+      ( current_level = 'L3' and TIMESTAMPDIFF(SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 4 ) )
 group by
   chapter_id
 QUERY;
