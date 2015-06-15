@@ -167,10 +167,10 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 
 		if( $this->requestObj->numAttempts == 1 ) {
 			$scoreMatrix = array(
-			   "E"=>array( "NS"=>100, "L0"=> 50, "L1"=> 80, "L2"=> 60, "L3"=>  40 ),
-			   "A"=>array( "NS"=> 75, "L0"=> 20, "L1"=> 60, "L2"=> 30, "L3"=>  10 ),
-			   "P"=>array( "NS"=>  5, "L0"=>-30, "L1"=>-30, "L2"=>-50, "L3"=> -70 ),
-			   "H"=>array( "NS"=>  0, "L0"=>-50, "L1"=>-40, "L2"=>-70, "L3"=>-100 )
+			   "E"=>array( "NS"=> 80, "L0"=> 50, "L1"=> 70, "L2"=> 60, "L3"=>  40 ),
+			   "A"=>array( "NS"=> 50, "L0"=> 20, "L1"=> 40, "L2"=> 30, "L3"=>  10 ),
+			   "P"=>array( "NS"=>-20, "L0"=>-30, "L1"=>-40, "L2"=>-50, "L3"=> -70 ),
+			   "H"=>array( "NS"=>-40, "L0"=>-50, "L1"=>-60, "L2"=>-80, "L3"=>-100 )
 			) ;
 
 			$arr        = $scoreMatrix[ $this->requestObj->rating ] ;
@@ -194,12 +194,6 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
         	// L2 : [  -1,    1,   0.5,   0.25 ]
         	// L3 : [  -1,    1,   0.5,   0.25 ]
 			//
-			$jump = $this->getLevelJump( $this->requestObj->currentLevel, 
-				                         $this->requestObj->nextLevel ) ;
-
-			$this->logger->debug( "Rating for attempt = " . 
-				                  $this->requestObj->numAttempts ) ;
-			$this->logger->debug( "Rating jump = $jump" ) ;
 
 			// If the rating is E, we don't give any score - no short term memory
 			// advantage. However, if the rating is not E, then there is an 
@@ -208,14 +202,24 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 			if( $this->requestObj->rating != "E" ) {
 
 				$this->logger->debug( "Current rating not E, applying penalty" ) ;
+				$jump = $this->getLevelJump( $this->requestObj->currentLevel, 
+					                         $this->requestObj->nextLevel ) ;
 
-				$diffLevel         = $cardLearningSummary[ "difficulty_level" ] ;
-				$penaltyPercentage = $this->requestObj->numAttempts * 10 ;
+				$this->logger->debug( "Rating for attempt = " . 
+					                  $this->requestObj->numAttempts ) ;
+				$this->logger->debug( "Rating jump = $jump" ) ;
 
-				$this->score = ceil( -1*($penaltyPercentage/100)*$diffLevel ) ;
-				
-				$this->logger->debug( "Penalty percentage = $penaltyPercentage" ) ;
-				$this->logger->debug( "Score = " . $this->score ) ;
+				if( $jump <= 0 ) {
+					$jump = $jump - 1 ;
+
+					$diffLevel         = $cardLearningSummary[ "difficulty_level" ] ;
+					$penaltyPercentage = $this->requestObj->numAttempts * 10 ;
+
+					$this->score = ceil( ($penaltyPercentage/100)*$diffLevel*$jump ) ;
+					
+					$this->logger->debug( "Penalty percentage = $penaltyPercentage" ) ;
+					$this->logger->debug( "Score = " . $this->score ) ;
+				}
 			}
 			else {
 				$this->score = 0 ;

@@ -19,7 +19,9 @@ Completed
   in the dashboard. This will help zero down on the relevant chapter without 
   first to flash card and then figuring out that we don't have anything to study
   today.
-  
+. BUG - Sorting (objective/subjective) not working if cards are only NS
+. Feature - tightened the scoring further (increased penalties)
+
 6/14/15 --
 . Increase the font size of spellbee keyboard
 . BUG - Shuffle cards logic fix. Shuffling the remaining cards from index 1 to

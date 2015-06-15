@@ -294,6 +294,15 @@ function computeSessionCards() {
     applyStudyCriteriaFilter() ;
     sortCardsAsPerStudyStrategy() ;
     addNSCards() ;
+
+    var strategy = $scope.studyCriteria.strategy ;
+    if( ( strategy == StudyStrategyTypes.prototype.OBJECTIVE ) ||
+        ( strategy == StudyStrategyTypes.prototype.SUBJECTIVE ) ) {
+        log.debug( "\tSorting cards as per OBJECTIVE study strategy." ) ;
+    
+        sortCardsAsPerStudyStrategy() ;
+    }
+    
     trimCardsAsPerBounds() ;
 
     $scope.$parent.sessionStats.numCards     = $scope.questionsForSession.length ;
