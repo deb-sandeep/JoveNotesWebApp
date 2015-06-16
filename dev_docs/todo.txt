@@ -14,6 +14,10 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/16/16 --
+. Feature - enhanced score capture, to prepare for temporal reporting and
+  catering for score adjustments such as redemption etc.
+
 6/15/15 --
 . Feature - the number of spaced sequenced repetition matured cards are displayed
   in the dashboard. This will help zero down on the relevant chapter without 

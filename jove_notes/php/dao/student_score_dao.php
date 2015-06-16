@@ -16,15 +16,15 @@ class StudentScoreDAO extends AbstractDAO {
 
         $score = parent::selectSingleValue( 
                     "select score from jove_notes.student_score " .
-                    "where student_name = '$userName'" 
+                    "where student_name = '$userName' and score_type = 'TOT'" 
                 ) ;
 
         if( $score == null ) {
             parent::executeInsert( 
                     "insert into jove_notes.student_score " .
-                    "(student_name, score, last_update) " .
+                    "(student_name, score, score_type, last_update) " .
                     "values ".
-                    "( '$userName', 0, CURRENT_TIMESTAMP )" 
+                    "( '$userName', 0, 'TOT', CURRENT_TIMESTAMP )" 
                 ) ;
 
             $score = 0 ;
@@ -32,7 +32,23 @@ class StudentScoreDAO extends AbstractDAO {
 		return $score ;
 	}
 
-    function updateScore( $userName, $incrementValue ) {
+    function updateScore( $chapterId, $userName, $incrementValue ) {
+
+        if( $incrementValue == 0 ) return ;
+
+        parent::executeInsert(
+                "insert into jove_notes.student_score " .
+                "( student_name, score_type, score, subject_name, chapter_id, last_update ) " .
+                "values " .
+                "( " .
+                "  '$userName', " .
+                "  'INC', " .
+                "  $incrementValue, " .
+                "  ( select subject_name from jove_notes.chapter where chapter_id = $chapterId ), " .
+                "  $chapterId, " .
+                "  CURRENT_TIMESTAMP " .
+                ")"
+            ) ;
 
         parent::executeUpdate( 
                 "update jove_notes.student_score " .
@@ -40,7 +56,8 @@ class StudentScoreDAO extends AbstractDAO {
                 " score = score + $incrementValue, " .
                 " last_update = CURRENT_TIMESTAMP " .
                 "where " .
-                " student_name = '$userName'" 
+                " student_name = '$userName' and " .
+                " score_type = 'TOT'"
             ) ;
     }
 }

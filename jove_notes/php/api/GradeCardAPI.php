@@ -42,7 +42,8 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 			$this->logger->debug( "Score for this rating = " . $this->score ) ;
 			$this->logger->debug( "Learning efficiency   = " . $this->learningEfficiency ) ;
 
-			$this->scoreDAO->updateScore( ExecutionContext::getCurrentUserName(), 
+			$this->scoreDAO->updateScore( $this->requestObj->chapterId,
+				                          ExecutionContext::getCurrentUserName(), 
 				                          $this->score ) ;
 			$this->saveCardRating() ;
 			$this->updateSessionSummary() ;
