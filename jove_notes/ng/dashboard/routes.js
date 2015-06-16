@@ -9,9 +9,9 @@ dashboardApp.config(['$routeProvider',
             templateUrl: '/apps/jove_notes/ng/dashboard/progress_snapshot/main.html',
             controller:  'ProgressSnapshotController'
         })
-        .when('/StudyPerDay', {
-            templateUrl: '/apps/jove_notes/ng/dashboard/study_per_day/main.html',
-            controller: 'StudyPerDayController'
+        .when('/Reports', {
+            templateUrl: '/apps/jove_notes/ng/dashboard/reports/main.html',
+            controller: 'ReportsController'
         })
         .when('/ChapterProgressSnapshot/:chapterId', {
             templateUrl: '/apps/jove_notes/ng/dashboard/chapter_progress_snapshot/main.html',

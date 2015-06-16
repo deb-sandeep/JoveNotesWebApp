@@ -39,7 +39,7 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
     <script src="/apps/jove_notes/ng/dashboard/directives.js"></script>   
 
     <script src="/apps/jove_notes/ng/dashboard/progress_snapshot/controllers.js"></script>    
-    <script src="/apps/jove_notes/ng/dashboard/study_per_day/controllers.js"></script>    
+    <script src="/apps/jove_notes/ng/dashboard/reports/controllers.js"></script>    
     <script src="/apps/jove_notes/ng/dashboard/chapter_progress_snapshot/controllers.js"></script>    
 </head>
 <body ng-controller="DashboardController">
@@ -52,14 +52,12 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
   	Progress Snapshot
   	</a>
 
-    <!--
     <a type="button" class="btn btn-default btn-md" 
-       href="#StudyPerDay" 
-       ng-class="getBtnActiveClass( 'StudyPerDay' )"
-       ng-click="setActiveReport( 'StudyPerDay' )">
-  	Study per Day
+       href="#Reports" 
+       ng-class="getBtnActiveClass( 'Reports' )"
+       ng-click="setActiveReport( 'Reports' )">
+  	Reports
   	</a>
-    -->
 
     <a type="button" class="btn btn-info btn-md" 
        href="/apps/jove_notes/ng/remoteflash/index.php">
