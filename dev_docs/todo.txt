@@ -17,6 +17,8 @@ Completed
 6/16/16 --
 . Feature - enhanced score capture, to prepare for temporal reporting and
   catering for score adjustments such as redemption etc.
+. Integrated date picker and did POC for integrating into reports page
+. Feature - If we are pushing a question manually, purge all the alerts.
 
 6/15/15 --
 . Feature - the number of spaced sequenced repetition matured cards are displayed

@@ -174,6 +174,7 @@ $scope.pushAnswer = function() {
 $scope.pushQuestion = function() {
 
     $scope.pushQuestionSuccess = false ;
+    $scope.$parent.purgeAllAlerts() ;
     callRFMApiToPushQuestion() ;
 }
 

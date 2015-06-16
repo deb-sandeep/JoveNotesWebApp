@@ -123,6 +123,11 @@ $scope.closeAlert = function(index) {
     $scope.alerts.splice( index, 1 ) ;
 };
 
+$scope.purgeAllAlerts = function() {
+    log.debug( "Purging all alerts" ) ;
+    $scope.alerts.length = 0 ;
+}
+
 $scope.processServerData = function( serverData ) {
 
     if( typeof serverData === "string" ) {
