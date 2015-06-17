@@ -20,13 +20,13 @@
                 <th class="text-center">Meter</th>
                 <th></th>
     			<th></th>
-                <th class="text-right"><span class="badge"> T  </span></th>
-                <th class="text-right"><span class="badge NS"> NS </span></th>
-                <th class="text-right"><span class="badge L0"> 0 </span></th>
-                <th class="text-right"><span class="badge L1"> 1 </span></th>
-                <th class="text-right"><span class="badge L2"> 2 </span></th>
-                <th class="text-right"><span class="badge L3"> 3 </span></th>
-    			<th class="text-right"><span class="badge MAS"> M  </span></th>
+                <th class="text-right"><span class="badge"    >T  </span></th>
+                <th class="text-right"><span class="badge NS" >NS </span></th>
+                <th class="text-right"><span class="badge L0" >L0 </span></th>
+                <th class="text-right"><span class="badge L1" >L1 </span></th>
+                <th class="text-right"><span class="badge L2" >L2 </span></th>
+                <th class="text-right"><span class="badge L3" >L3 </span></th>
+    			<th class="text-right"><span class="badge MAS">MAS</span></th>
     		</tr>	
     	</thead>	
     	<tbody>
@@ -42,7 +42,7 @@
                     </span>
                     <span ng-show="!rowData.isNotesAuthorized">{{rowData.name}}</span>
                 </td>
-                <td>
+                <td class="text-right">
                     <span class="badge NS">{{rowData.numSSRMaturedCards}}</span>
                 </td>
                 <td>
@@ -63,13 +63,13 @@
                         <span class="glyphicon glyphicon-equalizer"></span>
                     </a>
                 </td>
-                <td class="text-right"> {{rowData.totalCards      }} </td>
-                <td class="text-right"> {{rowData.notStartedCards }} </td>
-                <td class="text-right"> {{rowData.l0Cards         }} </td>
-                <td class="text-right"> {{rowData.l1Cards         }} </td>
-                <td class="text-right"> {{rowData.l2Cards         }} </td>
-                <td class="text-right"> {{rowData.l3Cards         }} </td>
-                <td class="text-right"> {{rowData.masteredCards   }} </td>
+                <td class="text-right"><span class="badge NS" >{{rowData.totalCards      }}</span></td>
+                <td class="text-right"><span class="badge NS" >{{rowData.notStartedCards }}</span></td>
+                <td class="text-right"><span class="badge L0" >{{rowData.l0Cards         }}</span></td>
+                <td class="text-right"><span class="badge L1" >{{rowData.l1Cards         }}</span></td>
+                <td class="text-right"><span class="badge L2" >{{rowData.l2Cards         }}</span></td>
+                <td class="text-right"><span class="badge L3" >{{rowData.l3Cards         }}</span></td>
+                <td class="text-right"><span class="badge MAS">{{rowData.masteredCards   }}</span></td>
     		</tr>	
     	</tbody>
     </table>

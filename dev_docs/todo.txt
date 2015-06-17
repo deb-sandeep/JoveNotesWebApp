@@ -3,11 +3,6 @@ Pending dev cards
 . In notes index.php - check if the request parameter chapterId is present.
   If not return an error message or something. Same for flashcard page too.
 . Build a feature of linking arbitrary documents using {{@doc ...}}
-. Review the flow of grading.. seems like some cards are getting pushed back
-  into the deck even for Easy grades
-. Revisit logging and segregate logs into debug, info, warn and error
-. Think about a way to auto clear the error messages or clear all of them in 
-  one go. Also should duplicate entries be merged?
 . Responsive headers - responsive headers are really not working. Change them 
   to static non-floating headers
         

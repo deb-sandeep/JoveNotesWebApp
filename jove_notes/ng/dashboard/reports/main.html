@@ -1,67 +1,41 @@
-{{pageTitle}}
-<div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-    <span></span> <b class="caret"></b>
+<div class="row">
+    <div class="col-sm-2"
+         style="padding-left:15px; padding-right:15px">
+        <div style="height:10px"></div>
+        <div class="well"
+             style="padding: 5px 5px;margin:2px;">
+            <input type="radio" ng-model="preferences.entityType" value="score" > Points earned <br>
+            <input type="radio" ng-model="preferences.entityType" value="time"> Time spent
+        </div>
+        <div class="well"
+             style="padding: 5px 5px;margin:2px;">
+            <input type="radio" ng-model="preferences.dataFrequency" value="intraday" > Intraday <br>
+            <input type="radio" ng-model="preferences.dataFrequency" value="weekly"   > Weekly <br>
+            <input type="radio" ng-model="preferences.dataFrequency" value="monthly"  > Monthly
+        </div>
+        <div class="well"
+             style="padding: 5px 5px;margin:2px;">
+            <select class="form-control" multiple="true" size="10" 
+                    ng-model="preferences.chosenSubjectNames"
+                    ng-options="obj.id as obj.name for obj in subjectNames">
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-10"
+         style="padding-left:0px;padding-right:0px">
+        <div style="height:10px"></div>
+        <div class="pull-left">
+            <div style="padding: 5px 5px; " class="pull-left">
+                <b>{{reportTitle}} for date range </b>
+            </div>
+            <div id="reportrange" 
+                 style="cursor: pointer; padding: 5px 5px; float:left">
+                <span></span> <b class="caret"></b>
+            </div>
+        </div>
+        <div>
+            <canvas id="reportChart" width="900" height="350" style="width: 100%;">
+            </canvas>        
+        </div>
+    </div>
 </div>
-
-<script type="text/javascript">
-$(function() {
- 
-    $('#reportrange span').html( 
-    	moment().subtract(29, 'days') .format('MMMM D, YYYY') + 
-    	' - ' +
-    	moment().format('MMMM D, YYYY')
-    );
- 
-    setTimeout( function(){
-	    var scope = angular.element($("#reportrange")).scope();
-	    scope.$apply(function(){
-	        scope.dateRange.startDate = moment().subtract(29, 'days').toDate() ;
-	        scope.dateRange.endDate   = moment().toDate() ;
-	    }) ;
-    }, 1 ) ;
-
-    $('#reportrange').daterangepicker({
-        format: 'MM/DD/YYYY',
-        startDate: moment().subtract(29, 'days'),
-        endDate: moment(),
-        showDropdowns: true,
-        showWeekNumbers: true,
-        timePicker: true,
-        timePickerIncrement: 1,
-        timePicker12Hour: true,
-        ranges: {
-           'Today': [moment(), moment()],
-           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-           'This Month': [moment().startOf('month'), moment().endOf('month')],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        },
-        opens: 'left',
-        drops: 'down',
-        buttonClasses: ['btn', 'btn-sm'],
-        applyClass: 'btn-primary',
-        cancelClass: 'btn-default',
-        separator: ' to ',
-        locale: {
-            applyLabel: 'Submit',
-            cancelLabel: 'Cancel',
-            fromLabel: 'From',
-            toLabel: 'To',
-            customRangeLabel: 'Custom',
-            daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-            monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-            firstDay: 1
-        }
-    }, function(start, end, label) {
-        var scope = angular.element($("#reportrange")).scope();
-	    scope.$apply(function(){
-	        scope.dateRange.startDate = start ;
-	        scope.dateRange.endDate   = end ;
-	    }) ;
-    });
-});
-</script>
-
-{{dateRange.startDate}}

@@ -34,6 +34,16 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
     <script src="/lib-ext/jquery/jquery.treegrid.js"></script>
     <script src="/lib-ext/jquery/jquery.treegrid.bootstrap3.js"></script> 
 
+    <script src="/lib-ext/rgraph/RGraph.common.core.js"></script>    
+    <script src="/lib-ext/rgraph/RGraph.common.key.js"></script>    
+    <script src="/lib-ext/rgraph/RGraph.common.dynamic.js"></script>    
+    <script src="/lib-ext/rgraph/RGraph.common.effects.js"></script>    
+    <script src="/lib-ext/rgraph/RGraph.common.tooltips.js"></script>    
+    <script src="/lib-ext/rgraph/RGraph.drawing.yaxis.js"></script>    
+    <script src="/lib-ext/rgraph/RGraph.line.js"></script>    
+    <script src="/lib-ext/rgraph/RGraph.pie.js"></script>    
+    <script src="/lib-ext/rgraph/RGraph.bar.js"></script>    
+
     <script src="/lib-ext/moment/moment.min.js"></script> 
     <script src="/lib-ext/daterangepicker/daterangepicker.js"></script> 
     <link rel="stylesheet" href="/lib-ext/daterangepicker/daterangepicker-bs3.css">

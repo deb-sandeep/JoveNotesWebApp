@@ -12,5 +12,7 @@ dashboardApp.controller( '<Controller Name>', function( $scope, $http ) {
 
 // ---------------- Private functions ------------------------------------------
 
+// ---------------- Server calls -----------------------------------------------
+
 // ---------------- End of controller ------------------------------------------
 } ) ;
