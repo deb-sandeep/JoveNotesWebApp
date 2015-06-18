@@ -1,8 +1,8 @@
-dashboardApp.controller( 'ReportsController', function( $scope ) {
+dashboardApp.controller( 'ReportsController', function( $scope, $http ) {
 
 // ---------------- Constants and inner class definition -----------------------
-var LEFT_GUTTER = 40 ;
-var RIGHT_GUTTER = 40 ;
+var LEFT_GUTTER = 75 ;
+var RIGHT_GUTTER = 75 ;
 
 // ---------------- Local variables --------------------------------------------
 var positiveBarChart = null ;
@@ -13,10 +13,8 @@ var baseLineChartValue = 0 ;
 var dataValues = [] ;
 var chartXLabels = [] ;
 
-var positiveBarValues = [] ;
-var negativeBarValues = [] ;
-var lineChartValues   = [] ;
-var maxLineYValue     = 0 ;
+var barChartValues  = [] ;
+var lineChartValues = [] ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.$parent.pageTitle = "Report Page" ;
@@ -26,25 +24,26 @@ $scope.subjectNames = [] ;
 
 $scope.preferences = {
 
-	entityType : 'score',
+	entityType : 'Score',
 	dateRange : {
 		startDate : moment().startOf('day').toDate(),
 		endDate : moment().endOf('day').toDate()
 	},
 	chosenSubjectNames : [ "All" ],
-	dataFrequency : 'weekly'
+	dataFrequency : 'intraday'
 } ;
 
 $scope.reportTitle = "Report of score earned." ;
 
-initializeDateRange() ;
-callReportSubjectsAPI() ;
-callReportPlotDataAPI() ;
 
 // ---------------- Main logic for the controller ------------------------------
 
+initializeDateRange() ;
+callReportSubjectsAPI() ;
+
 $scope.$watch( 'preferences', function( oldValue, newValue ){
-	console.log( "Configuration changed. Need to refresh the graph." ) ;
+	// NOTE: We don't call report plot data API directly. The watch fires it
+	// for us on the load of the controller.
 	callReportPlotDataAPI() ;
 }, true ) ;
 
@@ -129,84 +128,50 @@ function initializeDateRange() {
 
 function redrawChart() {
 
-	RGraph.ObjectRegistry.Clear() ;
-
-	initializePositiveBarChart() ;
-	initializeNegativeBarChart() ;
-	initializeLineChart() ;
-
-    positiveBarValues.length = 0 ;
-    negativeBarValues.length = 0 ;
-    lineChartValues.length   = 0 ;
+    barChartValues.length = 0 ;
+    lineChartValues.length = 0 ;
     
-    maxLineYValue = 0 ;
     for( var i=0; i<dataValues.length; i++ ) {
     	var val = dataValues[i] ;
-    	if( val > 0 ) {
-    		positiveBarValues.push( val ) ;
-    		negativeBarValues.push( 0 ) ;
-    	}
-    	else {
-    		positiveBarValues.push( 0 ) ;
-    		negativeBarValues.push( val ) ;
-    	}
 
+		barChartValues.push( val ) ;
     	if( i == 0 ) {
     		lineChartValues.push( baseLineChartValue + val ) ;
     	}
     	else {
     		lineChartValues.push( lineChartValues[i-1] + val ) ;
     	}
-
-    	if( lineChartValues[i] > maxLineYValue ) {
-    		maxLineYValue = lineChartValues[i] ;
-    	}
     }
 
-	positiveBarChart.grow() ;
-	negativeBarChart.grow() ;
-	lineChart.trace2() ;
+    RGraph.ObjectRegistry.Clear() ;
+	RGraph.clear( document.getElementById( 'reportChart' ) ) ;
+
+	initializePositiveBarChart() ;
+	initializeLineChart() ;
+
+	positiveBarChart.draw() ;
+	lineChart.draw() ;
 }
 
 function initializePositiveBarChart() {
 
     positiveBarChart = new RGraph.Bar({
         id: 'reportChart',
-        data: positiveBarValues,
+        data: barChartValues,
         options: {
 	        labels: chartXLabels,
         	gutter : {
         		left  : LEFT_GUTTER,
         		right : RIGHT_GUTTER
         	},
-            colors: ['#8AFF88'],
+            colors                   : ['#D7FFD6'],
             'background.grid.vlines' : false,
-            strokestyle: 'rgba(0,0,0,0)',
-            ylabels:true,
-            xaxispos:'center',
-            yaxispos:'right',
-            noxaxis:true
-        }
-    }) ;
-}
-
-function initializeNegativeBarChart() {
-
-    negativeBarChart = new RGraph.Bar({
-        id: 'reportChart',
-        data: negativeBarValues,
-        options: {
-        	gutter : {
-        		left  : LEFT_GUTTER,
-        		right : RIGHT_GUTTER
-        	},
-            colors: ['#FFC2C2'],
-            'background.grid.vlines' : false,
-            strokestyle: 'rgba(0,0,0,0)',
-            ylabels:false,
-            xaxispos:'center',
-            noxaxis:true,
-            noyaxis:true
+            strokestyle              : 'rgba(0,0,0,0)',
+            ylabels                  : true,
+            xaxispos                 : 'center',
+            yaxispos                 : 'left',
+            noxaxis                  : true,
+            shadow                   : false
         }
     }) ;
 }
@@ -225,13 +190,12 @@ function initializeLineChart() {
         		color : 'blue'
         	},
             'background.grid.vlines' : false,
-        	colors : ['blue'],
-            spline: true,
-            shadow: true,
-			tickmarks: 'endcircle',
-			ymax : maxLineYValue,
-			ymin : baseLineChartValue,
-			noxaxis : true
+        	colors    : ['blue'],
+            spline    : true,
+            shadow    : true,
+			tickmarks : 'endcircle',
+            yaxispos  : 'right',
+			noxaxis   : true
 		}
     }) ;
 }
@@ -239,37 +203,57 @@ function initializeLineChart() {
 // ---------------- Server calls -----------------------------------------------
 function callReportPlotDataAPI() {
 
-	log.debug( "Calling ReportPlotDataAPI." ) ;
-	log.debug( "TODO: Implementation pending" ) ;
+	var startMoment = moment( $scope.preferences.dateRange.startDate ) ;
+	var endMoment   = moment( $scope.preferences.dateRange.endDate   ) ;
 
-	dataValues.length = 0 ;
-	chartXLabels.length = 0 ;
+    $http.get( '/jove_notes/api/ReportPlot/' + $scope.preferences.entityType, {
+    	params : {
+    		'startDate'     : startMoment.format( "YYYY-MM-DD HH:mm:ss" ), 
+    		'endDate'       : endMoment.format( "YYYY-MM-DD HH:mm:ss" ),
+    		'dataFrequency' : $scope.preferences.dataFrequency,
+    		'subject'       : $scope.preferences.chosenSubjectNames[0]
+    	}
+    })
+    .success( function( data ){
 
-	dataValues.splice( 0, 0, 4, 5, 3, 8, -4, 9, 6, -8, 3, 7 ) ;
-	chartXLabels.push( "a" ) ;
-	chartXLabels.push( "b" ) ;
-	chartXLabels.push( "c" ) ;
-	chartXLabels.push( "d" ) ;
-	chartXLabels.push( "e" ) ;
-	chartXLabels.push( "f" ) ;
-	chartXLabels.push( "g" ) ;
-	chartXLabels.push( "h" ) ;
-	chartXLabels.push( "i" ) ;
-	chartXLabels.push( "j" ) ;
-	baseLineChartValue = 200 ;
+		dataValues.length = 0 ;
+		chartXLabels.length = 0 ;
 
-    redrawChart() ;
+		baseLineChartValue = data.priorScore ;
+		dataValues   = data.scores ;
+		chartXLabels = data.labels ;
+
+	    redrawChart() ;
+    })
+    .error( function( data ){
+        log.error( "API error " + data ) ;
+        $scope.addErrorAlert( "API error " + data ) ;
+    }) ;
 }
 
 function callReportSubjectsAPI() {
 
-	log.debug( "Calling ReportSubjectAPI." ) ;
-	log.debug( "TODO: Implementation pending" ) ;
+    $http.get( '/jove_notes/api/ReportPlot/Subjects' )
+    .success( function( data ){
 
-    $scope.subjectNames.push( { id : "All",        name : "All Subjects" } ) ;
-    $scope.subjectNames.push( { id : "Hindi",      name : "Hindi"        } ) ;
-    $scope.subjectNames.push( { id : "Language",   name : "Language"     } ) ;
-    $scope.subjectNames.push( { id : "Literature", name : "Literature"   } ) ;
+    	$scope.subjectNames.length = 0 ;
+	    $scope.subjectNames.push( { id : "All", name : "All subjects" } ) ;
+    	if( data instanceof Array ) {
+	        for( var i=0; i<data.length; i++ ) {
+			    $scope.subjectNames.push( { 
+			    	id : data[i],        
+			    	name : data[i] 
+			    });
+	        }
+    	}
+    	else {
+	        $scope.addErrorAlert( "API error " + data ) ;
+    	}
+    })
+    .error( function( data ){
+        log.error( "API error " + data ) ;
+        $scope.addErrorAlert( "API error " + data ) ;
+    }) ;
 }
 // ---------------- End of controller ------------------------------------------
 } ) ;
