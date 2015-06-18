@@ -12,6 +12,8 @@ var lineChart        = null ;
 var baseLineChartValue = 0 ;
 var dataValues = [] ;
 var chartXLabels = [] ;
+var barXAxisPosition = 'center' ;
+var numDecimals = 0 ;
 
 var barChartValues  = [] ;
 var lineChartValues = [] ;
@@ -33,8 +35,8 @@ $scope.preferences = {
 	dataFrequency : 'intraday'
 } ;
 
-$scope.reportTitle = "Report of score earned." ;
-
+$scope.reportTitle = "Score earned " ;
+$scope.maxYValue = 0 ;
 
 // ---------------- Main logic for the controller ------------------------------
 
@@ -75,6 +77,11 @@ function initializeDateRange() {
 	   			  moment().subtract(1, 'days'), 
 	   			  moment().subtract(1, 'days')
 	   			],
+           'This Week' : 
+                [ 
+                  moment().startOf('week'), 
+                  moment().endOf('week')
+                ],
            'Last 7 Days' : 
 	   			[ 
 	   			  moment().subtract(6, 'days'), 
@@ -159,6 +166,7 @@ function initializePositiveBarChart() {
         id: 'reportChart',
         data: barChartValues,
         options: {
+            hmargin:0,
 	        labels: chartXLabels,
         	gutter : {
         		left  : LEFT_GUTTER,
@@ -166,9 +174,10 @@ function initializePositiveBarChart() {
         	},
             colors                   : ['#D7FFD6'],
             'background.grid.vlines' : false,
+            'scale.decimals'         : numDecimals,
             strokestyle              : 'rgba(0,0,0,0)',
             ylabels                  : true,
-            xaxispos                 : 'center',
+            xaxispos                 : barXAxisPosition,
             yaxispos                 : 'left',
             noxaxis                  : true,
             shadow                   : false
@@ -216,12 +225,24 @@ function callReportPlotDataAPI() {
     })
     .success( function( data ){
 
-		dataValues.length = 0 ;
+		dataValues.length   = 0 ;
 		chartXLabels.length = 0 ;
 
-		baseLineChartValue = data.priorScore ;
-		dataValues   = data.scores ;
-		chartXLabels = data.labels ;
+		baseLineChartValue = data.priorValue ;
+		dataValues         = data.values ;
+		chartXLabels       = data.labels ;
+        $scope.maxYValue   = data.maxValue ;
+
+        if( $scope.preferences.entityType == 'Score' ) {
+            $scope.reportTitle = "Score earned " ;
+            barXAxisPosition = 'center' ;
+            numDecimals = 0;
+        }
+        else {
+            $scope.reportTitle = "Time spent (hrs) " ;
+            barXAxisPosition = 'bottom' ;
+            numDecimals = 1;
+        }
 
 	    redrawChart() ;
     })

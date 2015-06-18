@@ -68,20 +68,7 @@ QUERY;
 
     function getCumulativeScores( $userName, $subject, $frequency, $startDate, $endDate ) {
 
-        $partitionFormat = "%m-%d-%y" ;
-
-        if( $frequency == 'intraday' ) {
-            $partitionFormat = "%m-%d-%y:%i" ;
-        }
-        else if( $frequency == 'daily' ) {
-            $partitionFormat = "%m-%d-%y" ;
-        }
-        else if( $frequency == 'weekly' ) {
-            $partitionFormat = "%m-%y:%u" ;
-        }
-        else if( $frequency == 'monthly' ) {
-            $partitionFormat = "%m-%y" ;
-        }
+        $partitionFormat = $this->getPartitionFormat( $frequency ) ;
 
         $subjectClause = "" ;
         if( $subject != 'All' ) {
@@ -103,6 +90,65 @@ QUERY;
 
         return parent::getResultAsMap( $query ) ;
     }
+
+    function getCumulativeTimePriorToDate( $userName, $time ) {
+
+$query = <<<QUERY
+select sum(time_spent)/3600
+from
+    jove_notes.card_rating
+where
+    student_name = '$userName' and
+    timestamp < '$time'
+QUERY;
+
+        return parent::selectSingleValue( $query, 0 ) ;
+    }
+
+    function getCumulativeTime( $userName, $subject, $frequency, $startDate, $endDate ) {
+
+        $partitionFormat = $this->getPartitionFormat( $frequency ) ;
+        if( $frequency == 'intraday' ){ 
+          $partitionFormat = "%m-%d-%y:%H" ; 
+        }
+
+        $subjectWhereClause = "" ;
+        $subjectJoinClause  = "" ;
+        if( $subject != 'All' ) {
+          $subjectJoinClause = ", jove_notes.chapter c " ;
+          $subjectWhereClause = "and cr.chapter_id = c.chapter_id " .
+                           "and c.subject_name = '$subject'" ;
+        }
+
+$query = <<<QUERY
+select date_format( cr.timestamp, '$partitionFormat' ) as partition_name, 
+       sum( cr.time_spent )/3600 as time_spent
+from 
+    jove_notes.card_rating cr $subjectJoinClause 
+where 
+    cr.student_name = '$userName' and 
+    cr.time_spent < 90 and
+    cr.timestamp between '$startDate' and '$endDate' 
+    $subjectWhereClause
+group by
+    partition_name ;
+QUERY;
+
+        return parent::getResultAsMap( $query ) ;
+    }
+
+    private function getPartitionFormat( $frequency ) {
+
+        $partitionFormat = "%m-%d-%y" ;
+
+        if     ($frequency == 'intraday'){ $partitionFormat = "%m-%d-%y:%H%i" ; }
+        else if($frequency == 'daily'   ){ $partitionFormat = "%m-%d-%y"    ; }
+        else if($frequency == 'weekly'  ){ $partitionFormat = "%m-%y:%u"    ; }
+        else if($frequency == 'monthly' ){ $partitionFormat = "%m-%y"       ; }
+
+        return $partitionFormat ;
+    }
+
 }
 ?>
 

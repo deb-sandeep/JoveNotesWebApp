@@ -9,7 +9,10 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
-6/16/16 --
+6/19/15 --
+. Finished reporting feature for time and score
+
+6/16/15 --
 . Feature - enhanced score capture, to prepare for temporal reporting and
   catering for score adjustments such as redemption etc.
 . Integrated date picker and did POC for integrating into reports page

@@ -103,7 +103,7 @@ class ReportPlotAPI extends AbstractJoveNotesAPI {
 			return $this->getScoreResponse() ;
 		}
 		else if( $this->requestEntity == 'Time' ) {
-			throw new Exception( "Time entity report data yet to be implemented." ) ;
+			return $this->getTimeResponse() ;
 		}
 	}
 
@@ -113,14 +113,16 @@ class ReportPlotAPI extends AbstractJoveNotesAPI {
 			              				ExecutionContext::getCurrentUserName(), 
 			              				$this->startDate ) ;
 
+		$maxScore = $this->cardRatingDAO->getCumulativeScorePriorToDate(
+			              				ExecutionContext::getCurrentUserName(), 
+			              				date( 'Y-m-d H:i:s' )) ;
+
 		$scoreMap = $this->cardRatingDAO->getCumulativeScores(
 										ExecutionContext::getCurrentUserName(),
 										$this->subject,
 										$this->dataFrequency,
 										$this->startDate,
 										$this->endDate ) ;
-
-		$this->logger->info( "Score data " . json_encode( $scoreMap ) ) ;
 
 		$labels = array() ;
 		$scores = array() ;
@@ -134,9 +136,47 @@ class ReportPlotAPI extends AbstractJoveNotesAPI {
 
 		$respObj = array() ;
 
-		$respObj[ "priorScore" ] = $priorScore ;
-		$respObj[ "scores"     ] = $scores ;
+		$respObj[ "priorValue" ] = $priorScore ;
+		$respObj[ "values"     ] = $scores ;
 		$respObj[ "labels"     ] = $labels ;
+		$respObj[ "maxValue"   ] = $maxScore ;
+
+		return $respObj ;
+	}
+
+	private function getTimeResponse() {
+
+		$priorTime = $this->cardRatingDAO->getCumulativeTimePriorToDate(
+			              				ExecutionContext::getCurrentUserName(), 
+			              				$this->startDate ) ;
+
+		$maxTime = $this->cardRatingDAO->getCumulativeTimePriorToDate(
+			              				ExecutionContext::getCurrentUserName(), 
+			              				date( 'Y-m-d H:i:s' )) ;
+
+		$scoreMap = $this->cardRatingDAO->getCumulativeTime(
+										ExecutionContext::getCurrentUserName(),
+										$this->subject,
+										$this->dataFrequency,
+										$this->startDate,
+										$this->endDate ) ;
+
+		$labels = array() ;
+		$values = array() ;
+
+    	foreach( $scoreMap as $label => $score ) {
+    		array_push( $values, $score ) ;
+    		if( $this->dataFrequency != 'intraday' ) {
+	    		array_push( $labels, $label ) ;
+    		}
+    	}
+
+		$respObj = array() ;
+
+		$respObj[ "priorValue" ] = $priorTime ;
+		$respObj[ "values"     ] = $values ;
+		$respObj[ "labels"     ] = $labels ;
+		$respObj[ "maxValue"   ] = $maxTime ;
 
 		return $respObj ;
 	}

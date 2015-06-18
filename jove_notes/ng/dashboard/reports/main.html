@@ -25,12 +25,15 @@
     <div class="col-sm-10"
          style="padding-left:0px;padding-right:0px">
         <div style="height:10px"></div>
-        <div class="pull-left">
+        <div style="padding-left:5px">
+            Total {{reportTitle}} = <b>{{maxYValue}}</b>
+        </div>
+        <div>
             <div style="padding: 5px 5px; " class="pull-left">
-                <b>{{reportTitle}} for date range </b>
+                {{reportTitle}} for date range 
             </div>
             <div id="reportrange" 
-                 style="cursor: pointer; padding: 5px 5px; float:left">
+                 style="cursor: pointer; padding: 5px 5px; float:left; border: 1px solid #ccc">
                 <span></span> <b class="caret"></b>
             </div>
         </div>
