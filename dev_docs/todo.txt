@@ -17,6 +17,8 @@ Completed
 . BUG - WM did not take formatted words
 . Chemical equation latex modification for blanks
 . Support for audio tags while formatting text
+. Feature - Report delta in time frame
+. Feature - intraday values are grouped per second, not per minue
 
 6/19/15 --
 . Finished reporting feature for time and score

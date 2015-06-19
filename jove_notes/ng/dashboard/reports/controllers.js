@@ -37,6 +37,7 @@ $scope.preferences = {
 
 $scope.reportTitle = "Score earned " ;
 $scope.maxYValue = 0 ;
+$scope.deltaInPeriod = 0 ;
 
 // ---------------- Main logic for the controller ------------------------------
 
@@ -137,10 +138,12 @@ function redrawChart() {
 
     barChartValues.length = 0 ;
     lineChartValues.length = 0 ;
+    $scope.deltaInPeriod = 0 ;
     
     for( var i=0; i<dataValues.length; i++ ) {
     	var val = dataValues[i] ;
 
+        $scope.deltaInPeriod += val ;
 		barChartValues.push( val ) ;
     	if( i == 0 ) {
     		lineChartValues.push( baseLineChartValue + val ) ;

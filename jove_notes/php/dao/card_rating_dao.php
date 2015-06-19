@@ -141,7 +141,7 @@ QUERY;
 
         $partitionFormat = "%m-%d-%y" ;
 
-        if     ($frequency == 'intraday'){ $partitionFormat = "%m-%d-%y:%H%i" ; }
+        if     ($frequency == 'intraday'){ $partitionFormat = "%m-%d-%y:%H%i%s" ; }
         else if($frequency == 'daily'   ){ $partitionFormat = "%m-%d-%y"    ; }
         else if($frequency == 'weekly'  ){ $partitionFormat = "%m-%y:%u"    ; }
         else if($frequency == 'monthly' ){ $partitionFormat = "%m-%y"       ; }
