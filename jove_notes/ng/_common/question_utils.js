@@ -48,9 +48,10 @@ CardLevels.prototype.MAS = "MAS" ;
 
 // =============================================================================
 // =============================================================================
-function TextFormatter( chapterDetails ) {
+function TextFormatter( chapterDetails, $sce ) {
 
-	var imgResourcePath = new JoveNotesUtil().getImgResourcePath( chapterDetails ) ;
+	var imgResourcePath   = new JoveNotesUtil().getImgResourcePath( chapterDetails ) ;
+	var audioResourcePath = new JoveNotesUtil().getAudioResourcePath( chapterDetails ) ;
 
 	this.stripHTMLTags = function( html ) {
 	   var tmp = document.createElement( "DIV" ) ;
@@ -82,7 +83,12 @@ function TextFormatter( chapterDetails ) {
 
 			match = regexp.exec( inputText ) ;
 		}
-		return formattedStr ;
+
+		var formattedObj = formattedStr ;
+		if( $sce != null ) {
+			formattedObj = $sce.trustAsHtml( formattedStr ) ;
+		}
+		return formattedObj ;
 	}
 
 	function getReplacementContent( hint, parameters ) {
@@ -92,7 +98,11 @@ function TextFormatter( chapterDetails ) {
 		if( hint == "@img" ) {
 			replacementContent = "<img src='" + imgResourcePath + parameters[0] + "'/>" ;
 		}
+		else if( hint == "@audio" ) {
+			replacementContent = "<audio controls><source src='" + 
+			                     audioResourcePath + parameters[0] + "' " +
+			                     "type='audio/mpeg'></audio>" ;
+		}
 		return replacementContent ;
 	}
 }
-

@@ -1,4 +1,4 @@
-notesApp.controller( 'NotesController', function( $scope, $http ) {
+notesApp.controller( 'NotesController', function( $scope, $http, $sce ) {
 
 // ---------------- Constants and inner class definition -----------------------
 function FilterCriteria() {
@@ -134,7 +134,7 @@ function processServerData( data ) {
 	$scope.pageTitle = jnUtil.constructPageTitle( data.chapterDetails ) ;
 	log.debug( "Page title = " + $scope.pageTitle ) ;
 
-	textFormatter = new TextFormatter( data.chapterDetails ) ;
+	textFormatter = new TextFormatter( data.chapterDetails, $sce ) ;
  	processNotesElements() ;
 }
 

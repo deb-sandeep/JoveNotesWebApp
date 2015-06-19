@@ -23,7 +23,7 @@
 // =============================================================================
 function FIBHandler( chapterDetails, question ) {
 
-	var textFormatter = new TextFormatter( chapterDetails ) ;
+	var textFormatter = new TextFormatter( chapterDetails, null ) ;
 
 	var answerLength = -1 ;
 	var formattedQuestion = null ;
@@ -58,7 +58,7 @@ function FIBHandler( chapterDetails, question ) {
 // =============================================================================
 function QAHandler( chapterDetails, question ) {
 
-	var textFormatter = new TextFormatter( chapterDetails ) ;
+	var textFormatter = new TextFormatter( chapterDetails, null ) ;
 
 	var formattedQuestion = textFormatter.format( question.question ) ;
 	var formattedAnswer = textFormatter.format( question.answer ) ;
@@ -74,7 +74,7 @@ function QAHandler( chapterDetails, question ) {
 // =============================================================================
 function TFHandler( chapterDetails, questionObj ) {
 
-	var textFormatter = new TextFormatter( chapterDetails ) ;
+	var textFormatter = new TextFormatter( chapterDetails, null ) ;
 	var jnUtils = new JoveNotesUtil() ;
 
 	var question = questionObj ;
@@ -165,7 +165,7 @@ function TFHandler( chapterDetails, questionObj ) {
 // =============================================================================
 function MatchingHandler( chapterDetails, questionObj ) {
 
-	var textFormatter = new TextFormatter( chapterDetails ) ;
+	var textFormatter = new TextFormatter( chapterDetails, null ) ;
 
 	var question = questionObj ;
 	var chapterDetails = chapterDetails ;
@@ -202,7 +202,7 @@ function MatchingHandler( chapterDetails, questionObj ) {
 // =============================================================================
 function ImageLabelHandler( chapterDetails, questionObj ) {
 
-	var textFormatter = new TextFormatter( chapterDetails ) ;
+	var textFormatter = new TextFormatter( chapterDetails, null ) ;
 
 	var question = questionObj ;
 	var chapterDetails = chapterDetails ;

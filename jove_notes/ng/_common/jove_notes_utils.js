@@ -149,6 +149,10 @@ this.getImgResourcePath = function( chapterDetails ) {
     return  this.getResourcePath( chapterDetails ) + "img/" ;
 }
 
+this.getAudioResourcePath = function( chapterDetails ) {
+    return  this.getResourcePath( chapterDetails ) + "audio/" ;
+}
+
 this.renderLearningProgressPie = function( divName, progressStats ) {
 
     if( isDebug() )return ;

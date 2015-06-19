@@ -1,4 +1,4 @@
-remoteFlashCardApp.controller( 'RemoteFlashCardController', function( $scope, $http, $location ) {
+remoteFlashCardApp.controller( 'RemoteFlashCardController', function( $scope, $http, $location, $sce ) {
 // ---------------- Constants and inner class definition -----------------------
 
 // ---------------- Local variables --------------------------------------------
@@ -243,27 +243,27 @@ function processIncomingQuestion( message ) {
     var handler = null ;
     if( questionType == QuestionTypes.prototype.QT_FIB ) {
         handler = new FIBHandler( $scope.chapterDetails, 
-                                  $scope.currentQuestion ) ;
+                                  $scope.currentQuestion, $sce ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_QA ) {
         handler = new QAHandler( $scope.chapterDetails, 
-                                 $scope.currentQuestion ) ;
+                                 $scope.currentQuestion, $sce ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_TF ) {
         handler = new TFHandler( $scope.chapterDetails, 
-                                 $scope.currentQuestion ) ;
+                                 $scope.currentQuestion, $sce ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_MATCHING ) {
         handler = new MatchingHandler( $scope.chapterDetails, 
-                                       $scope.currentQuestion ) ;
+                                       $scope.currentQuestion, $sce ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_IMGLABEL ) {
         handler = new ImageLabelHandler( $scope.chapterDetails, 
-                                         $scope.currentQuestion ) ;
+                                         $scope.currentQuestion, $sce ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_SPELLBEE ) {
         handler = new SpellBeeHandler( $scope.chapterDetails, 
-                                       $scope.currentQuestion ) ;
+                                       $scope.currentQuestion, $sce ) ;
     }
     else {
         log.error( "Unrecognized question type = " + questionType ) ;

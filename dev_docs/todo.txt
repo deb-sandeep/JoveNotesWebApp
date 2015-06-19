@@ -13,6 +13,10 @@ Completed
 . BUG - Word meaning did not interprete the HTML, use ng-bind-html
 . Feature - Spell bee keyboard should have a space bar for disjoint words like
             'non living', 'human beings'
+. Support for {{@audio ..}} tag
+. BUG - WM did not take formatted words
+. Chemical equation latex modification for blanks
+. Support for audio tags while formatting text
 
 6/19/15 --
 . Finished reporting feature for time and score

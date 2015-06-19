@@ -1,10 +1,10 @@
-notesApp.directive( 'renderImageLabel', function() {
+notesApp.directive( 'renderImageLabel', function( $sce ) {
 
 	return {
 		restrict : 'E',
 		link : function( $scope, element, attributes ) {
 
-			var textFormatter = new TextFormatter( $scope.$parent.$parent.$parent.chapterDetails ) ;
+			var textFormatter = new TextFormatter( $scope.$parent.$parent.$parent.chapterDetails, $sce ) ;
 			var handler = new ImageLabelManager( $scope.element, textFormatter, $scope )
 
 			handler.initialize() ;
