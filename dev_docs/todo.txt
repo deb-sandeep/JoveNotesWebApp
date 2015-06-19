@@ -11,6 +11,8 @@ Completed
 --------------------------------------------------------------------------------
 6/20/15 --
 . BUG - Word meaning did not interprete the HTML, use ng-bind-html
+. Feature - Spell bee keyboard should have a space bar for disjoint words like
+            'non living', 'human beings'
 
 6/19/15 --
 . Finished reporting feature for time and score

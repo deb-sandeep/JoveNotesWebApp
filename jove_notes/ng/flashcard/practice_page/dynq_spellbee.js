@@ -153,9 +153,9 @@ function SpellBeeManager( questionObj, $scope ) {
 
 	var sbKeys = [
 		[
-			['VK_PLAY', '>>', 1, 3 ],
+			['VK_PLAY', '>>', 1, 4 ],
 			['Q'],['W'],['E'],['R'],['T'],['Y'],['U'],['I'],['O'],['P'],
-			['VK_ENTER', '&crarr;', 1, 3 ]
+			['VK_ENTER', '&crarr;', 1, 4 ]
 		],
 		[
 			['A'],['S'],['D'],['F'],['G'],['H'],['J'],['K'],['L'],
@@ -164,6 +164,9 @@ function SpellBeeManager( questionObj, $scope ) {
 		[
 			['Z'],['X'],['C'],['V'],['B'],['N'],['M'],
 			['VK_BKSP', '&larr;', 3, 1]
+		],
+		[
+			[' ', ' ', 10, 1 ]
 		]
 	] ;
 
@@ -188,6 +191,9 @@ function SpellBeeManager( questionObj, $scope ) {
 	} ;
 
 	this.enterPressed = function( keyCode ) {
+
+		var strToCompare = inputWidget.getEnteredText().toUpperCase() ;
+		var answerString = wordToBeSpelled.toUpperCase() ;
 
 		if( inputWidget.getEnteredText().toUpperCase() == wordToBeSpelled.toUpperCase() ) {
 			jnUtils.playCorrectAnswerClip() ;
