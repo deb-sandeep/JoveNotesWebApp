@@ -9,8 +9,17 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/20/15 --
+. BUG - Word meaning did not interprete the HTML, use ng-bind-html
+
 6/19/15 --
 . Finished reporting feature for time and score
+
+6/18/15 --
+. Score report implemented (UI + API + Data access)
+
+6/17/15 --
+. More rgraph libraries added
 
 6/16/15 --
 . Feature - enhanced score capture, to prepare for temporal reporting and

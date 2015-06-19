@@ -15,8 +15,8 @@
         </thead>
         <tbody>
             <tr ng-repeat="element in wordMeanings">
-                <td class="text-primary">{{element.word}}</td>
-                <td>{{element.meaning}}</td>
+                <td class="text-primary" ng-bind-html="element.word"></td>
+                <td ng-bind-html="element.meaning"></td>
                 <td>
                   <div class="pull-right" 
                        ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
