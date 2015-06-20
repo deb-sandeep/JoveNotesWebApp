@@ -51,6 +51,9 @@ $scope.$watch( 'preferences', function( oldValue, newValue ){
 }, true ) ;
 
 // ---------------- Controller methods -----------------------------------------
+$scope.refresh = function() {
+    callReportPlotDataAPI() ;
+}
 
 // ---------------- Private functions ------------------------------------------
 function initializeDateRange() {

@@ -9,6 +9,9 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/21/15 --
+. Provided a manual refresh button on dashboard reports
+
 6/20/15 --
 . BUG - Word meaning did not interprete the HTML, use ng-bind-html
 . Feature - Spell bee keyboard should have a space bar for disjoint words like
