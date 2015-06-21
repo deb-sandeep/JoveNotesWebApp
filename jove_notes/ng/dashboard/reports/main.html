@@ -16,10 +16,40 @@
         </div>
         <div class="well"
              style="padding: 5px 5px;margin:2px;">
-            <select class="form-control" multiple="true" size="10" 
-                    ng-model="preferences.chosenSubjectNames"
+            <select class="form-control" 
+                    ng-model="preferences.chosenSubjectName"
                     ng-options="obj.id as obj.name for obj in subjectNames">
             </select>
+        </div>
+        <hr style="margin:5px;"/>
+        <div class="well well-sm" style="padding:2px;margin:0px;">
+            <div align="center">
+                <b>Add points</b>
+            </div>
+            <select class="form-control"
+                    ng-model="subjectToAddPoints"
+                    ng-options="obj.id as obj.name for obj in subjectNamesForAddScore">
+            </select>
+            <div class="form-group" style="padding:0px;margin:0px;">
+                <label for="points">Points:</label>
+                <input type="number" class="form-control" id="points" ng-model="pointsToAdd">
+            </div>
+            <div class="form-group" style="padding:0px;margin:0px;">
+                <label for="pwd">Password:</label>
+                <input type="password" class="form-control" id="pwd" 
+                       autocomplete="off"
+                       ng-model="pwdToAddPoints">
+            </div>
+            <div class="form-group" style="padding:0px;margin:0px;">
+                <label for="notes">Notes:</label>
+                <input type="text" class="form-control" id="notes"
+                       ng-model="notesToAddPoint">
+            </div>
+            <p>
+            <button type="submit" class="btn btn-default"
+                    ng-click="addScore()">
+                Submit
+            </button>
         </div>
     </div>
     <div class="col-sm-10"

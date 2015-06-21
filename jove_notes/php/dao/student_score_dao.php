@@ -60,6 +60,37 @@ class StudentScoreDAO extends AbstractDAO {
                 " score_type = 'TOT'"
             ) ;
     }
+
+    function addPoints( $userName, $subject, $points, $notes ) {
+
+        global $dbConn ;
+
+        if( $points == 0 ) return ;
+
+        parent::executeInsert(
+                "insert into jove_notes.student_score " .
+                "( student_name, score_type, score, subject_name, last_update, notes ) " .
+                "values " .
+                "( " .
+                "  '$userName', " .
+                "  'INC', " .
+                "  $points, " .
+                "  '$subject', " .
+                "  CURRENT_TIMESTAMP, " .
+                "  '" . $dbConn->real_escape_string( $notes ) . "' " .
+                ")"
+            ) ;
+
+        parent::executeUpdate( 
+                "update jove_notes.student_score " .
+                "set " .
+                " score = score + $points, " .
+                " last_update = CURRENT_TIMESTAMP " .
+                "where " .
+                " student_name = '$userName' and " .
+                " score_type = 'TOT'"
+            ) ;
+    }
 }
 ?>
 

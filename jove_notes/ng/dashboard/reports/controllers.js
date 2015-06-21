@@ -31,13 +31,20 @@ $scope.preferences = {
 		startDate : moment().startOf('day').toDate(),
 		endDate : moment().endOf('day').toDate()
 	},
-	chosenSubjectNames : [ "All" ],
+	chosenSubjectName : "All",
 	dataFrequency : 'intraday'
 } ;
 
 $scope.reportTitle = "Score earned " ;
 $scope.maxYValue = 0 ;
 $scope.deltaInPeriod = 0 ;
+
+$scope.subjectNamesForAddScore = [] ;
+
+$scope.subjectToAddPoints = null ;
+$scope.pointsToAdd = 0 ;
+$scope.pwdToAddPoints = "" ;
+$scope.notesToAddPoint = "" ;
 
 // ---------------- Main logic for the controller ------------------------------
 
@@ -53,6 +60,15 @@ $scope.$watch( 'preferences', function( oldValue, newValue ){
 // ---------------- Controller methods -----------------------------------------
 $scope.refresh = function() {
     callReportPlotDataAPI() ;
+}
+
+$scope.addScore = function() {
+    callAddPointsAPI( function(){
+        callReportPlotDataAPI() ;
+        $scope.pwdToAddPoints = "" ;
+        $scope.pointsToAdd = "" ;
+        $scope.notesToAddPoint = "" ;
+    }) ;
 }
 
 // ---------------- Private functions ------------------------------------------
@@ -226,7 +242,7 @@ function callReportPlotDataAPI() {
     		'startDate'     : startMoment.format( "YYYY-MM-DD HH:mm:ss" ), 
     		'endDate'       : endMoment.format( "YYYY-MM-DD HH:mm:ss" ),
     		'dataFrequency' : $scope.preferences.dataFrequency,
-    		'subject'       : $scope.preferences.chosenSubjectNames[0]
+    		'subject'       : $scope.preferences.chosenSubjectName
     	}
     })
     .success( function( data ){
@@ -263,24 +279,50 @@ function callReportSubjectsAPI() {
     $http.get( '/jove_notes/api/ReportPlot/Subjects' )
     .success( function( data ){
 
-    	$scope.subjectNames.length = 0 ;
-	    $scope.subjectNames.push( { id : "All", name : "All subjects" } ) ;
-    	if( data instanceof Array ) {
-	        for( var i=0; i<data.length; i++ ) {
-			    $scope.subjectNames.push( { 
-			    	id : data[i],        
-			    	name : data[i] 
-			    });
-	        }
-    	}
-    	else {
-	        $scope.addErrorAlert( "API error " + data ) ;
-    	}
+        $scope.subjectNames.length = 0 ;
+        $scope.subjectNamesForAddScore.length = 0 ;
+
+        $scope.subjectNames.push( { id : "All", name : "All subjects" } ) ;
+        if( data instanceof Array ) {
+            for( var i=0; i<data.length; i++ ) {
+                $scope.subjectNames.push( { 
+                    id : data[i],        
+                    name : data[i] 
+                });
+                $scope.subjectNamesForAddScore.push( { 
+                    id : data[i],        
+                    name : data[i] 
+                });
+            }
+            $scope.subjectToAddPoints = "Mathematics" ;
+        }
+        else {
+            $scope.addErrorAlert( "API error " + data ) ;
+        }
     })
     .error( function( data ){
         log.error( "API error " + data ) ;
         $scope.addErrorAlert( "API error " + data ) ;
     }) ;
 }
+
+function callAddPointsAPI( callback ) {
+
+    $http.post( '/jove_notes/api/Points', {
+
+        'subject' : $scope.subjectToAddPoints,
+        'points'  : $scope.pointsToAdd,
+        'password': $scope.pwdToAddPoints,
+        'notes'   : $scope.notesToAddPoint
+    })
+    .success( function( data ){
+        callback() ;
+    })
+    .error( function( data ){
+        log.error( "API error for adding points. " + data ) ;
+        $scope.addErrorAlert( "API error for adding points. " + data ) ;
+    }) ;
+}
+
 // ---------------- End of controller ------------------------------------------
 } ) ;

@@ -55,6 +55,10 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
     <script src="/apps/jove_notes/ng/dashboard/progress_snapshot/controllers.js"></script>    
     <script src="/apps/jove_notes/ng/dashboard/reports/controllers.js"></script>    
     <script src="/apps/jove_notes/ng/dashboard/chapter_progress_snapshot/controllers.js"></script>    
+
+    <script>
+      currentUserName = "<?php echo ExecutionContext::getCurrentUserName(); ?>" ;
+    </script>
 </head>
 <body ng-controller="DashboardController">
     <?php include( NAVBAR_FRAGMENT_PATH ) ; ?>

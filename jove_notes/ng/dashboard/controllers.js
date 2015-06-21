@@ -5,6 +5,8 @@ dashboardApp.controller( 'DashboardController', function( $scope ) {
 
 	$scope.alerts = [] ;
 
+	$scope.currentUserName = currentUserName ;
+
 	$scope.addErrorAlert = function( msgString ) {
 		$scope.alerts.push( { type: 'danger', msg: msgString } ) ;
 	}
