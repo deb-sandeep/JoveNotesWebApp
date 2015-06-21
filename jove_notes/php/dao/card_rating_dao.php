@@ -75,6 +75,8 @@ QUERY;
           $subjectClause = "and subject_name = '$subject'" ;
         }
 
+        if( $frequency != 'intraday' ) {
+          
 $query = <<<QUERY
 select date_format( last_update, '$partitionFormat' ) as partition_name, 
        sum(score) as score
@@ -87,8 +89,24 @@ where
 group by
     partition_name
 QUERY;
+          return parent::getResultAsMap( $query ) ;
+        }
+        else {
 
-        return parent::getResultAsMap( $query ) ;
+$intradayQuery = <<<ITD_QUERY
+select id as partition_name, score
+from jove_notes.student_score
+where 
+    student_name = '$userName' and 
+    score_type = 'INC' and 
+    last_update between '$startDate' and '$endDate' 
+    $subjectClause
+order by 
+    id asc
+ITD_QUERY;
+
+          return parent::getResultAsMap( $intradayQuery ) ;
+        }
     }
 
     function getCumulativeTimePriorToDate( $userName, $time ) {

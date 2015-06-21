@@ -43,6 +43,7 @@ $scope.subjectNamesForAddScore = [] ;
 
 $scope.subjectToAddPoints = null ;
 $scope.pointsToAdd = 0 ;
+$scope.numTimes = 1 ;
 $scope.pwdToAddPoints = "" ;
 $scope.notesToAddPoint = "" ;
 
@@ -70,6 +71,7 @@ $scope.addScore = function() {
         $scope.pwdToAddPoints = "" ;
         $scope.pointsToAdd = "" ;
         $scope.notesToAddPoint = "" ;
+        $scope.numTimes = 1 ;
         setTimeout( function(){
             $scope.$digest() ;
         }, 100 ) ;
@@ -333,10 +335,16 @@ function callReportSubjectsAPI() {
 
 function callAddPointsAPI( callback ) {
 
+    if( $scope.pointsToAdd == 0 || $scope.numTimes < 1 ) {
+        callback() ;
+        return ;
+    }
+
     $http.post( '/jove_notes/api/Points', {
 
         'subject' : $scope.subjectToAddPoints,
         'points'  : $scope.pointsToAdd,
+        'numTimes': $scope.numTimes,
         'password': $scope.pwdToAddPoints,
         'notes'   : $scope.notesToAddPoint
     })

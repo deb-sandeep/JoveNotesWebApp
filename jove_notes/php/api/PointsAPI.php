@@ -21,10 +21,12 @@ class PointsAPI extends AbstractJoveNotesAPI {
 
 		if( $this->isPassswordValid( $this->requestObj->password ) ) {
 
-			$this->scoreDAO->addPoints( ExecutionContext::getCurrentUserName(),
-										$this->requestObj->subject, 
-				                        $this->requestObj->points,
-				                        $this->requestObj->notes ) ;
+			for( $i = 0; $i < $this->requestObj->numTimes; $i++ ) {
+				$this->scoreDAO->addPoints( ExecutionContext::getCurrentUserName(),
+											$this->requestObj->subject, 
+					                        $this->requestObj->points,
+					                        $this->requestObj->notes ) ;
+			}
 
 			$response->responseCode = APIResponse::SC_OK ;
 		}

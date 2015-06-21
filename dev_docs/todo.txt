@@ -15,6 +15,8 @@ Completed
 . Fixed inconsistent behavior with delay in refreshing values after manual 
   addition of points
 . Added a auto refresh button to the report
+. Ability to repeat the scores. Don't want to club scores as they show up as a 
+  huge spike in intra day graphs.
 
 6/20/15 --
 . BUG - Word meaning did not interprete the HTML, use ng-bind-html
