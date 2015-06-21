@@ -36,7 +36,7 @@ $scope.preferences = {
 } ;
 
 $scope.reportTitle = "Score earned " ;
-$scope.maxYValue = 0 ;
+$scope.latestValue = 0 ;
 $scope.deltaInPeriod = 0 ;
 
 $scope.subjectNamesForAddScore = [] ;
@@ -45,6 +45,8 @@ $scope.subjectToAddPoints = null ;
 $scope.pointsToAdd = 0 ;
 $scope.pwdToAddPoints = "" ;
 $scope.notesToAddPoint = "" ;
+
+$scope.refreshFlag = false ;
 
 // ---------------- Main logic for the controller ------------------------------
 
@@ -68,10 +70,33 @@ $scope.addScore = function() {
         $scope.pwdToAddPoints = "" ;
         $scope.pointsToAdd = "" ;
         $scope.notesToAddPoint = "" ;
+        setTimeout( function(){
+            $scope.$digest() ;
+        }, 100 ) ;
     }) ;
 }
 
+$scope.getRefreshBtnClass = function() {
+    return $scope.refreshFlag ? "active" : "" ;
+}
+
+$scope.toggleRefreshFlag = function() {
+    $scope.refreshFlag = !$scope.refreshFlag ;
+
+    if( $scope.refreshFlag ) {
+        doPeriodicRefresh() ;
+    }
+}
+
 // ---------------- Private functions ------------------------------------------
+function doPeriodicRefresh() {
+    callReportPlotDataAPI() ;
+    if( $scope.refreshFlag ) {
+        setTimeout( doPeriodicRefresh, 5000 ) ;
+    }
+}
+
+
 function initializeDateRange() {
 
     $('#reportrange span').html( 
@@ -253,7 +278,7 @@ function callReportPlotDataAPI() {
 		baseLineChartValue = data.priorValue ;
 		dataValues         = data.values ;
 		chartXLabels       = data.labels ;
-        $scope.maxYValue   = data.maxValue ;
+        $scope.latestValue = data.latestValue ;
 
         if( $scope.preferences.entityType == 'Score' ) {
             $scope.reportTitle = "Score earned " ;

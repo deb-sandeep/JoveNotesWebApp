@@ -13,7 +13,6 @@ require_once( APP_ROOT      . "/php/dao/card_rating_dao.php" ) ;
  *
  *    Gets the report data for score and time entity types. The characteristics
  *    of the returned data will depend upon the following parameters
- *
  */
 class ReportPlotAPI extends AbstractJoveNotesAPI {
 
@@ -136,10 +135,10 @@ class ReportPlotAPI extends AbstractJoveNotesAPI {
 
 		$respObj = array() ;
 
-		$respObj[ "priorValue" ] = $priorScore ;
-		$respObj[ "values"     ] = $scores ;
-		$respObj[ "labels"     ] = $labels ;
-		$respObj[ "maxValue"   ] = $maxScore ;
+		$respObj[ "priorValue"  ] = $priorScore ;
+		$respObj[ "values"      ] = $scores ;
+		$respObj[ "labels"      ] = $labels ;
+		$respObj[ "latestValue" ] = $maxScore ;
 
 		return $respObj ;
 	}
@@ -173,10 +172,10 @@ class ReportPlotAPI extends AbstractJoveNotesAPI {
 
 		$respObj = array() ;
 
-		$respObj[ "priorValue" ] = $priorTime ;
-		$respObj[ "values"     ] = $values ;
-		$respObj[ "labels"     ] = $labels ;
-		$respObj[ "maxValue"   ] = $maxTime ;
+		$respObj[ "priorValue"  ] = $priorTime ;
+		$respObj[ "values"      ] = $values ;
+		$respObj[ "labels"      ] = $labels ;
+		$respObj[ "latestValue" ] = $maxTime ;
 
 		return $respObj ;
 	}

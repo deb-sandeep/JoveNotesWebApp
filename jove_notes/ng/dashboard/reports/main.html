@@ -56,7 +56,7 @@
          style="padding-left:0px;padding-right:0px">
         <div style="height:10px"></div>
         <div style="padding-left:5px">
-            Total {{reportTitle}} = <b>{{maxYValue}}</b>, 
+            Total {{reportTitle}} = <b>{{latestValue}}</b>, 
             &nbsp;&nbsp;&nbsp;
             &Delta; in period = <b>{{deltaInPeriod | number : 1 }}</b>
         </div>
@@ -72,6 +72,12 @@
                style="margin-left:10px"
                ng-click="refresh()">
                 <span class="glyphicon glyphicon-refresh"></span>
+            </a>
+            <a type="button" class="btn btn-default btn-md" 
+               style="margin-left:10px"
+               ng-click="toggleRefreshFlag()"
+               ng-class="getRefreshBtnClass()">
+                <span class="glyphicon glyphicon-repeat"></span>
             </a>
         </div>
         <div>

@@ -12,6 +12,9 @@ Completed
 6/21/15 --
 . Provided a manual refresh button on dashboard reports
 . Provision for manually adding points for a user
+. Fixed inconsistent behavior with delay in refreshing values after manual 
+  addition of points
+. Added a auto refresh button to the report
 
 6/20/15 --
 . BUG - Word meaning did not interprete the HTML, use ng-bind-html
