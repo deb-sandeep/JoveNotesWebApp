@@ -104,6 +104,15 @@ $scope.playWordSound = function( word ) {
 	jnUtil.playWordSound( word ) ;
 }
 
+$scope.playSoundClip = function( clipName ) {
+
+	alert( clipName ) ;
+	
+	var audioFolder = jnUtil.getAudioResourcePath( $scope.chapterDetails ) ;
+	var clipPath = audioFolder + clipName ;
+	jnUtil.playSoundClip( clipPath ) ;
+}
+
 // ---------------- Private functions ------------------------------------------
 function refreshData() {
 

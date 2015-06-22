@@ -60,7 +60,7 @@ from
 where
     student_name = '$userName' and
     score_type = 'INC' and
-    last_update < '$time'
+    last_update <= '$time'
 QUERY;
 
         return parent::selectSingleValue( $query, 0 ) ;

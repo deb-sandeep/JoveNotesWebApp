@@ -153,6 +153,10 @@ this.getAudioResourcePath = function( chapterDetails ) {
     return  this.getResourcePath( chapterDetails ) + "audio/" ;
 }
 
+this.getDocResourcePath = function( chapterDetails ) {
+    return  this.getResourcePath( chapterDetails ) + "doc/" ;
+}
+
 this.renderLearningProgressPie = function( divName, progressStats ) {
 
     if( isDebug() )return ;
@@ -322,8 +326,6 @@ this.playWordSound = function( word ) {
     this.playSoundClip( "/apps/jove_notes/workspace/_spellbee/" + word + ".mp3" ) ;
 }
 
-
-
 // -----------------------------------------------------------------------------
 
 function isDebug() {
@@ -341,4 +343,12 @@ function clearCanvas( canvasId ) {
 }
 
 // -----------------------------------------------------------------------------
+}
+
+/**
+ * Global function to play an absolute clip, without the need or dependence of
+ * any scope object.
+ */
+function playSoundClip( clipPath ) {
+    new JoveNotesUtil().playSoundClip( clipPath ) ;
 }

@@ -2,13 +2,26 @@ Pending dev cards
 --------------------------------------------------------------------------------
 . In notes index.php - check if the request parameter chapterId is present.
   If not return an error message or something. Same for flashcard page too.
-. Build a feature of linking arbitrary documents using {{@doc ...}}
 . Responsive headers - responsive headers are really not working. Change them 
   to static non-floating headers
         
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/22/15 --
+. BUG - Latest score for a time marker should include the time marker. Bug was 
+  evident in scenarios where we have immediately refreshed the chart following
+  a manual point addition. It used to show the previous total score.
+. Realization - If we manually (via SQL) add remote points to student_score,
+  the TOT value needs to be manually adjusted.
+. Reduce 150 points from student score for Deba manually (SQL)
+. Feature - support for {{@doc ...}} types
+. Feature - support for arbitrary media files with spaces in them
+. Package JNP, publish to Op, recompile
+. syncdevop for the feature additions
+. {{@audio ..}} render enhancements - now shows a single glyphicon button
+
+
 6/21/15 --
 . Provided a manual refresh button on dashboard reports
 . Provision for manually adding points for a user

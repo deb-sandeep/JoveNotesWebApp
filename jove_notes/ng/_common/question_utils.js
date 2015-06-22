@@ -50,8 +50,11 @@ CardLevels.prototype.MAS = "MAS" ;
 // =============================================================================
 function TextFormatter( chapterDetails, $sce ) {
 
-	var imgResourcePath   = new JoveNotesUtil().getImgResourcePath( chapterDetails ) ;
-	var audioResourcePath = new JoveNotesUtil().getAudioResourcePath( chapterDetails ) ;
+	var jnUtils = new JoveNotesUtil() ;
+
+	var imgResourcePath   = jnUtils.getImgResourcePath( chapterDetails ) ;
+	var audioResourcePath = jnUtils.getAudioResourcePath( chapterDetails ) ;
+	var docResourcePath   = jnUtils.getDocResourcePath( chapterDetails ) ;
 
 	this.stripHTMLTags = function( html ) {
 	   var tmp = document.createElement( "DIV" ) ;
@@ -93,16 +96,31 @@ function TextFormatter( chapterDetails, $sce ) {
 
 	function getReplacementContent( hint, parameters ) {
 
+		var fileName = parameters.join( ' ' ) ;
+
 		var replacementContent = "[[ COULD NOT SUBSTITUTE " + hint + 
 		                         " - " + parameters + " ]]" ;
 		if( hint == "@img" ) {
-			replacementContent = "<img src='" + imgResourcePath + parameters[0] + "'/>" ;
+			replacementContent = "<img src='" + imgResourcePath + fileName + "'/>" ;
 		}
 		else if( hint == "@audio" ) {
-			replacementContent = "<audio controls><source src='" + 
-			                     audioResourcePath + parameters[0] + "' " +
-			                     "type='audio/mpeg'></audio>" ;
+			replacementContent = getAudioPlayButton( audioResourcePath + fileName ) ;
+		}
+		else if( hint == '@doc' ) {
+			replacementContent = "<a target='_blank' href='"  +
+			                     docResourcePath + fileName + "'>" + 
+			                     fileName + 
+			                     "</a>" ;
 		}
 		return replacementContent ;
+	}
+
+	function getAudioPlayButton( clipName ) {
+
+		var btnHTML = "<button type='button' class='btn btn-default' " +
+		              "onClick=\"playSoundClip( '" + clipName + "')\">" + 
+		              "<span class='glyphicon glyphicon-volume-up'></span>" + 
+		              "</button>" ;
+		return btnHTML ;
 	}
 }
