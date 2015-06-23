@@ -68,6 +68,14 @@ function TextFormatter( chapterDetails, $sce ) {
 
 	this.format = function( inputText ) {
 
+		// Why? Because once the input text is fomatted via $sce, it is transformed
+		// into an object. There is no point in trying to process it again. This
+		// scenario is relevant when the notes is being recomputed based on
+		// user selected filter criteria.
+		if( typeof inputText != 'string' ) {
+			return inputText ;
+		}
+
 		var regexp = /{{([^{]*)}}/g ;
 		var formattedStr = inputText ;
 		var match = regexp.exec( inputText ) ;
@@ -117,7 +125,7 @@ function TextFormatter( chapterDetails, $sce ) {
 
 	function getAudioPlayButton( clipName ) {
 
-		var btnHTML = "<button type='button' class='btn btn-default' " +
+		var btnHTML = "<button type='button' class='btn btn-default gi-1-5x' " +
 		              "onClick=\"playSoundClip( '" + clipName + "')\">" + 
 		              "<span class='glyphicon glyphicon-volume-up'></span>" + 
 		              "</button>" ;

@@ -8,6 +8,11 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/23/15 --
+. Audio questions for hindi alphabets - think and implement.
+. Learning efficiency recomputation
+. BUG - Notes filtering was not happening because of repeated $sce transformation.
+
 6/22/15 --
 . BUG - Latest score for a time marker should include the time marker. Bug was 
   evident in scenarios where we have immediately refreshed the chart following

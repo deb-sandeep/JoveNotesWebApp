@@ -36,6 +36,7 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 			$summary = $this->clsDAO->getCardLearningSummary(
 										ExecutionContext::getCurrentUserName(), 
 										$this->requestObj->cardId ) ;
+
 			$this->computeLearningEfficiency( $summary ) ;
 			$this->computeScore( $summary ) ;
 
@@ -68,13 +69,28 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 		
 		$temporalRatings = $cardLearningSummary[ "temporal_ratings" ] ;
 		$ratings = str_split( $temporalRatings ) ;
+
+		// Strange ways of life in different languages, str_split returns an
+		// array of length 1 for null strings :( If left unchecked, for a single
+		// rating the learning efficiency will get halved.
+		if( count( $ratings ) == 1 && $ratings[0] == "" ) {
+			array_shift( $ratings ) ;
+		}
+
 		array_push( $ratings, $this->requestObj->rating ) ;
+
+		// Consider only the last four ratings as inputs for computing the current
+		// learning efficiency. This implies that if the user is learning really
+		// well, he is not being penalized for his earlier mistakes.
+		while( count( $ratings ) > 4 ) {
+			array_shift( $ratings ) ;
+		}
 
 		$totalRatingScores = 0 ;
 		foreach ( $ratings as $rating ) {
 			if     ( $rating == 'E' ) $totalRatingScores += 100 ;
-			else if( $rating == 'A' ) $totalRatingScores +=  75 ;
-			else if( $rating == 'P' ) $totalRatingScores +=  25 ;
+			else if( $rating == 'A' ) $totalRatingScores +=  80 ;
+			else if( $rating == 'P' ) $totalRatingScores +=  50 ;
 			else if( $rating == 'H' ) $totalRatingScores +=   0 ;
 		}
 		$this->learningEfficiency = ceil( $totalRatingScores / count( $ratings ) ) ;
