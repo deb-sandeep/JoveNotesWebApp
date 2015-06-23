@@ -12,6 +12,8 @@ Completed
 . Audio questions for hindi alphabets - think and implement.
 . Learning efficiency recomputation
 . BUG - Notes filtering was not happening because of repeated $sce transformation.
+. Usability - push question and answer buttons moved towards grading buttons
+. Usability - Points earned and lost in a session are shown on the flash card
 
 6/22/15 --
 . BUG - Latest score for a time marker should include the time marker. Bug was 

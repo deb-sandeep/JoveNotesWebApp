@@ -26,10 +26,12 @@
     	<span class="badge L3">{{$parent.progressSnapshot.numL3}}</span>
     	<span class="badge MAS">{{$parent.progressSnapshot.numMAS}}</span>
     </div>
-    <div class="col-sm-1 small">
+    <div class="col-sm-2 small">
+        <span class="badge L1">{{pointsLostInThisSession}}</span>
         <span class="badge NS">{{userScore}}</span>
+        <span class="badge L3">{{pointsEarnedInThisSession}}</span>
     </div>
-    <div class="col-sm-6 small" style="text-align:right;">
+    <div class="col-sm-5 small" style="text-align:right;">
     	NC - <span class="badge muted">{{$parent.sessionStats.numCards}}</span>&nbsp;.&nbsp;
     	NL - <span class="badge muted">{{$parent.sessionStats.numCardsLeft}}</span>&nbsp;.&nbsp;
     	NA - <span class="badge muted">{{$parent.sessionStats.numCardsAnswered}}</span>&nbsp;.&nbsp;
