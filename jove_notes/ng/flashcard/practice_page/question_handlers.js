@@ -141,10 +141,10 @@ function TFHandler( chapterDetails, questionObj ) {
 			justificationText = "" ;
 		}
 
-		return DIV( { 'style' : 'background-color:' + divBackground }, 
+		return DIV( { 'style' : 'background-color:' + divBackground, 'align' : 'center' }, 
 					SPAN( { 'class' : 'glyphicon gi-2x glyphicon-' + truthValueIcon } ),
 					P(),
-					P( justificationText )
+					P( { innerHTML : justificationText } )
 				  ) ;
 	} ;
 

@@ -10,6 +10,9 @@ Completed
 --------------------------------------------------------------------------------
 6/24/15 --
 . Minor usability enhancement - css for M badge
+. BUG - The justification in true/false render was treating HTML formatted tags
+  as literals. 
+. Feature - Need not left align the True False answer
 
 6/23/15 --
 . Audio questions for hindi alphabets - think and implement.
@@ -30,7 +33,6 @@ Completed
 . Package JNP, publish to Op, recompile
 . syncdevop for the feature additions
 . {{@audio ..}} render enhancements - now shows a single glyphicon button
-
 
 6/21/15 --
 . Provided a manual refresh button on dashboard reports
