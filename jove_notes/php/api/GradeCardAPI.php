@@ -185,9 +185,9 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 		if( $this->requestObj->numAttempts == 1 ) {
 			$scoreMatrix = array(
 			   "E"=>array( "NS"=> 80, "L0"=> 50, "L1"=> 70, "L2"=> 60, "L3"=>  40 ),
-			   "A"=>array( "NS"=> 50, "L0"=> 20, "L1"=> 40, "L2"=> 30, "L3"=>  10 ),
-			   "P"=>array( "NS"=>-20, "L0"=>-30, "L1"=>-40, "L2"=>-50, "L3"=> -70 ),
-			   "H"=>array( "NS"=>-40, "L0"=>-50, "L1"=>-60, "L2"=>-80, "L3"=>-100 )
+			   "A"=>array( "NS"=> 50, "L0"=> 20, "L1"=> 30, "L2"=> 10, "L3"=> -50 ),
+			   "P"=>array( "NS"=>-30, "L0"=>-40, "L1"=>-50, "L2"=>-60, "L3"=> -70 ),
+			   "H"=>array( "NS"=>-50, "L0"=>-60, "L1"=>-70, "L2"=>-80, "L3"=>-100 )
 			) ;
 
 			$arr        = $scoreMatrix[ $this->requestObj->rating ] ;
@@ -230,7 +230,7 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 					$jump = $jump - 1 ;
 
 					$diffLevel         = $cardLearningSummary[ "difficulty_level" ] ;
-					$penaltyPercentage = $this->requestObj->numAttempts * 10 ;
+					$penaltyPercentage = $this->requestObj->numAttempts * 20 ;
 
 					$this->score = ceil( ($penaltyPercentage/100)*$diffLevel*$jump ) ;
 					
