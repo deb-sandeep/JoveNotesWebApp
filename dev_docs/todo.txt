@@ -1,5 +1,9 @@
 Pending dev cards
 --------------------------------------------------------------------------------
+. Matching can have multiple keys and values of the same name
+. Think about multiple choice questions.
+. Option to auto promote a card to mastered without scoring
+
 . In notes index.php - check if the request parameter chapterId is present.
   If not return an error message or something. Same for flashcard page too.
 . Responsive headers - responsive headers are really not working. Change them 
@@ -8,6 +12,15 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+6/29/30 --
+. @doc now has an optional way of specifying link label via a | character
+. Found an elegant way to compose test papers - Latex documents converted to
+  PDF
+
+6/25/15 --
+. BUG: If definition term had spaces, it was not getting MD transformed properly
+. Feature: JoveNotes - Steeper rating
+
 6/24/15 --
 . Minor usability enhancement - css for M badge
 . BUG - The justification in true/false render was treating HTML formatted tags

@@ -115,10 +115,7 @@ function TextFormatter( chapterDetails, $sce ) {
 			replacementContent = getAudioPlayButton( audioResourcePath + fileName ) ;
 		}
 		else if( hint == '@doc' ) {
-			replacementContent = "<a target='_blank' href='"  +
-			                     docResourcePath + fileName + "'>" + 
-			                     fileName + 
-			                     "</a>" ;
+			replacementContent = getDocLink( fileName ) ;
 		}
 		return replacementContent ;
 	}
@@ -130,5 +127,26 @@ function TextFormatter( chapterDetails, $sce ) {
 		              "<span class='glyphicon glyphicon-volume-up'></span>" + 
 		              "</button>" ;
 		return btnHTML ;
+	}
+
+	function getDocLink( linkHint ) {
+
+		var fileName ;
+		var displayName ;
+
+		if( linkHint.indexOf( "|" ) != -1 ) {
+			var parts = linkHint.split( "|" ) ;
+			fileName = parts[0].trim() ;
+			displayName = parts[1].trim() ;
+		}
+		else {
+			fileName = linkHint ;
+			displayName = linkHint ;
+		}
+
+		return "<a target='_blank' href='"  +
+			       docResourcePath + fileName + "'>" + 
+			       displayName + 
+			       "</a>" ;
 	}
 }
