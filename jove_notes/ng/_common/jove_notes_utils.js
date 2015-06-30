@@ -110,15 +110,28 @@ function RatingMatrix() {
 
     this.getNextLevel = function( numAttempts, currentLevel, currentRating ) {
         log.debug( "Getting next level" ) ;
+
         if( numAttempts > 1 ) {
             return currentLevel ;
         }
-        return getMatrixValue( this.nextLevelMatrix, currentLevel, currentRating ) ;
+        else if( currentRating == 'APM' ) {
+            return 'MAS' ;
+        }
+        else {
+            return getMatrixValue( this.nextLevelMatrix, 
+                                   currentLevel, currentRating ) ;
+        }
     } ;
 
     this.getNextAction = function( currentLevel, currentRating ) {
         log.debug( "Getting next action" ) ;
-        return getMatrixValue( this.nextActionMatrix, currentLevel, currentRating ) ;
+        if( currentRating == 'APM' ) {
+            return -1 ;
+        }
+        else {
+            return getMatrixValue( this.nextActionMatrix, 
+                                   currentLevel, currentRating ) ;
+        }
     } ;
 }
 

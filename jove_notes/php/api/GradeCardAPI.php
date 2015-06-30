@@ -66,6 +66,15 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 	}
 
 	private function computeLearningEfficiency( $cardLearningSummary ) {
+
+		// If we have an auto-promote to mastered request, we set the learning
+		// efficiency to 100. This is consistent with the alternate case logic
+		// since an auto-promote request implies that for the remaining levels
+		// the rating is by default E
+		if( $this->requestObj->rating == "APM" ) {
+			$this->learningEfficiency = 100 ;
+			return ;
+		}
 		
 		$temporalRatings = $cardLearningSummary[ "temporal_ratings" ] ;
 		$ratings = str_split( $temporalRatings ) ;
@@ -98,13 +107,16 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 
 	private function saveCardRating() {
 
-		$this->cardRatingDAO->insertRating( 
-									$this->requestObj->cardId, 
-									ExecutionContext::getCurrentUserName(), 
-									$this->requestObj->sessionId,
-									$this->requestObj->rating,
-									$this->score,
-									$this->requestObj->timeTaken ) ;
+		// Save the card rating only if we are not grading an auto-promote case.
+		if( $this->requestObj->rating != "APM" ) {
+			$this->cardRatingDAO->insertRating( 
+										$this->requestObj->cardId, 
+										ExecutionContext::getCurrentUserName(), 
+										$this->requestObj->sessionId,
+										$this->requestObj->rating,
+										$this->score,
+										$this->requestObj->timeTaken ) ;
+		}
 	}
 
 	private function updateSessionSummary() {
@@ -118,6 +130,7 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 		else if( $this->requestObj->rating === 'A' ) $incrA = 1 ;
 		else if( $this->requestObj->rating === 'P' ) $incrP = 1 ;
 		else if( $this->requestObj->rating === 'H' ) $incrH = 1 ;
+		else if( $this->requestObj->rating === 'APM')$incrE = 1 ;
 
 		if( $this->requestObj->currentLevel === 'NS' ) $incrNS = -1 ;
 
@@ -152,6 +165,16 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 			                          $this->learningEfficiency ) ;
 	}	
 
+	private function computeScore( $cardLearningSummary ) {
+
+		if( $this->requestObj->rating == "APM" ) {
+			$this->computeScoreForAPMScenario( $cardLearningSummary ) ;
+		}
+		else {
+			$this->computeScoreForNormalScenario( $cardLearningSummary ) ;
+		}
+	}
+
 	// $this->requestObj has the following attributes
     // 		chapterId
     // 		sessionId
@@ -175,9 +198,9 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 	//    as a factor of rating and current level
 	// 
 	// 2. If there are more than one attempt in the session, 
-	private function computeScore( $cardLearningSummary ) {
+	private function computeScoreForNormalScenario( $cardLearningSummary ) {
 
-		$this->logger->debug( "Computing score" ) ;
+		$this->logger->debug( "Computing score for normal scenario" ) ;
 		$this->logger->debug( "\tcurrentLevel = " . $this->requestObj->currentLevel ) ;
 		$this->logger->debug( "\tnextLevel    = " . $this->requestObj->nextLevel ) ;
 		$this->logger->debug( "\trating       = " . $this->requestObj->rating ) ;
@@ -242,6 +265,24 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 				$this->score = 0 ;
 			}
 		}
+	}
+
+	private function computeScoreForAPMScenario( $cardLearningSummary ) {
+
+		$this->logger->debug( "Computing score for APM scenario" ) ;
+		$this->logger->debug( "\tcurrentLevel = " . $this->requestObj->currentLevel ) ;
+		$this->logger->debug( "\tnextLevel    = " . $this->requestObj->nextLevel ) ;
+		$this->logger->debug( "\trating       = " . $this->requestObj->rating ) ;
+
+		$scoreMatrix = array( "NS"=> 80, "L0"=> 50, "L1"=> 70, "L2"=> 60, "L3"=>  40 ) ;
+
+		$multFactor  = $scoreMatrix[ $this->requestObj->currentLevel ] ;
+		$this->score = ceil( ($multFactor/100)*$cardLearningSummary[ "difficulty_level" ] ) ;
+		$jump        = $this->getLevelJump( $this->requestObj->currentLevel, "MAS" ) ;
+
+		$this->score = ceil( ( $this->score * $jump )/2 ) ;
+
+		$this->logger->debug( "APM score = $this->score" ) ;
 	}
 
 	private function getLevelJump( $currentLevel, $nextLevel ) {

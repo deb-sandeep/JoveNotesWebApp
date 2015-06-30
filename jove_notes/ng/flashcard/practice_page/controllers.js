@@ -36,12 +36,14 @@ $scope.questionsForSession = [] ;
 $scope.currentQuestion     = null ;
 $scope.userScore           = userScore ;
 
-$scope.answerChangeTrigger = "" ;
+$scope.answerChangeTrigger   = "" ;
 $scope.questionChangeTrigger = "" ;
-$scope.answerAlign = "center" ;
+$scope.answerAlign           = "center" ;
 
 $scope.pushQuestionSuccess = false ;
 $scope.pushAnswerSuccess   = false ;
+
+$scope.recommendPromoteToMastered = true ;
 
 // questionMode is used by the view to show the appropriate controls when either
 // the question or the answer is shown.
@@ -223,6 +225,8 @@ function showNextCard() {
         $scope.answerChangeTrigger = "" ;
         $scope.answerAlign = answerLength < 100 ? "center" : "left" ;
 
+        computeRecommendPromoteFlag() ;
+
         currentQuestionShowStartTime = new Date().getTime() ;
 
         questionChangeTriggerIndex++ ;
@@ -243,6 +247,62 @@ function showNextCard() {
     else {
         endSession() ;
     }
+}
+
+function computeRecommendPromoteFlag() {
+
+    // We don't recommend promotion to mastered in non-assisted mode.
+    if( !$scope.$parent.studyCriteria.push ) {
+        $scope.recommendPromoteToMastered = false ;
+        return ;
+    }
+
+    var recommendFlag = false ;
+
+    var temporalScores      = $scope.currentQuestion.learningStats.temporalScores ;
+    var numRatings          = temporalScores.length ;
+    var numTrailingERatings = 0 ;
+    var numHorPRatings      = 0 ;
+
+    if( temporalScores.length >= 2 ) {
+
+        var trailingEStreak = true ;
+        for( var i=temporalScores.length-1; i>=0; i-- ) {
+
+            var rating = temporalScores[i] ;
+
+            if( rating != "E" && trailingEStreak ){ trailingEStreak = false ; }
+            if( rating == "E" && trailingEStreak ){ numTrailingERatings++ ;   }
+            if( rating == "H" || rating == "P"   ){ numHorPRatings++ ;        }
+        }
+
+        // Recommendation to promote to mastered is considered if and only if
+        // the student has answered the question Easily for at least the last 
+        // two or more presentments
+        if( numTrailingERatings >=2 ) {
+            recommendFlag = true ;
+
+            // However, if the user has goofed up in the past, we reconsider our
+            // stance of giving him an option to auto promote to mastered.
+            if( numHorPRatings != 0 ) {
+
+                // If he has a charred history, we recommend auto promote if he 
+                // has more than 3 consequtive E's. i.e. He can only auto promote
+                // from L3 to mastered.
+                // Quirky logic - why > 3. Because for the wrong attempt he would 
+                // have likely answered it correctly in the same session once to
+                // close the session.
+                if( numTrailingERatings > 3 ) {
+                    recommendFlag = true ;
+                }
+                else {
+                    recommendFlag = false ;
+                }
+            }
+        }
+    }
+
+    $scope.recommendPromoteToMastered = recommendFlag ;
 }
 
 function endSession() {
