@@ -257,6 +257,13 @@ function computeRecommendPromoteFlag() {
         return ;
     }
 
+    // If the question is already at L3, we can as well press the Easy button
+    // to promote the card to mastered. No need to show the auto promote button
+    if( $scope.currentQuestion.learningStats.currentLevel == 'L3' ) {
+        $scope.recommendPromoteToMastered = false ;
+        return ;
+    }
+
     var recommendFlag = false ;
 
     var temporalScores      = $scope.currentQuestion.learningStats.temporalScores ;
