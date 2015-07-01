@@ -2,6 +2,7 @@
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/api_bootstrap.php" ) ;
 require_once( APP_ROOT      . "/php/dao/chapter_dao.php" ) ;
 require_once( APP_ROOT      . "/php/dao/card_learning_summary_dao.php" ) ;
+require_once( APP_ROOT      . "/php/dao/user_chapter_preferences_dao.php" ) ;
 
 class ChapterProgressSnapshot {
 
@@ -26,6 +27,7 @@ class ChapterProgressSnapshot {
 	public $l3Cards ;
 	public $masteredCards ;
 	public $numSSRMaturedCards ;
+	public $isHidden ;
 
 	function __construct( $meta ) {
 
@@ -49,6 +51,7 @@ class ChapterProgressSnapshot {
 		$this->l3Cards            = 0 ;
 		$this->masteredCards      = 0 ;
 		$this->numSSRMaturedCards = 0 ;
+		$this->isHidden           = false ;
 	}
 
 	public function isUserEntitled() {
@@ -65,6 +68,7 @@ class ProgressSnapshotAPI extends API {
 	private $selectedChapterIdList ;
 	private $chapterDAO ;
 	private $clsDAO ;
+	private $ucpDAO ;
 
 	function __construct() {
 		parent::__construct() ;
@@ -73,6 +77,20 @@ class ProgressSnapshotAPI extends API {
 		$this->selectedChapterIdList = array() ;
 		$this->chapterDAO            = new ChapterDAO() ;
 		$this->clsDAO                = new CardLearningSummaryDAO() ;
+		$this->ucpDAO                = new UserChapterPrefsDAO() ;
+	}
+
+	public function doPost( $request, &$response ) {
+
+		$this->logger->debug( "Executing doPost in ProgressSnapshotAPI" ) ;
+		$this->logger->debug( "action = " . $request->requestBody->action ) ;
+
+		$this->ucpDAO->updateHiddenPreference( ExecutionContext::getCurrentUserName(),
+											   $request->requestBody->chapterId,
+			                                   $request->requestBody->isHidden ) ;
+
+		$response->responseCode = APIResponse::SC_OK ;
+		$response->responseBody = "Success" ;
 	}
 
 	public function doGet( $request, &$response ) {
@@ -83,6 +101,7 @@ class ProgressSnapshotAPI extends API {
 		$this->loadAndClassifyRelevantChapters() ;
 		$this->associateProgressSnapshotWithChapters() ;
 		$this->associateNumSSRMaturedCardsWithChapters() ;
+		$this->associateUserChapterPreferences() ;
 		
 		$responseObj = $this->constructResponseObj() ;
 
@@ -199,6 +218,22 @@ class ProgressSnapshotAPI extends API {
 		}
 	}
 
+	private function associateUserChapterPreferences() {
+
+		$hiddenChapterPrefs = $this->ucpDAO->getHiddenPreferencesForUser( 
+									  ExecutionContext::getCurrentUserName() ) ;
+
+		foreach( $hiddenChapterPrefs as $chapterId => $isHidden ) {
+
+			if( array_key_exists( $chapterId, $this->chapters ) ) {
+				if( $isHidden == 1 ) {
+					$chapter = &$this->chapters[ $chapterId ] ;
+					$chapter->isHidden = true ;
+				}
+			}
+		}
+	}
+
 	private function &constructChapterResponseObj( $chapter ) {
 
 		$responseObj = array() ;
@@ -218,9 +253,13 @@ class ProgressSnapshotAPI extends API {
 		$responseObj[ "l3Cards"                ] = $chapter->l3Cards ;
 		$responseObj[ "masteredCards"          ] = $chapter->masteredCards ;
 		$responseObj[ "numSSRMaturedCards"     ] = $chapter->numSSRMaturedCards ;
+		$responseObj[ "isHidden"               ] = $chapter->isHidden ;
 
 		return $responseObj ;
 	}
+
+	// =========================================================================
+
 }
 
 ?>

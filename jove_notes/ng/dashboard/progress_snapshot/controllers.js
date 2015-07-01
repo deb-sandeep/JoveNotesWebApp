@@ -34,7 +34,17 @@ function RowData( rowType, name, rowNum, parentRowNum ) {
 
 	this.toggleVisibility = function() {
 		this.isHidden = !this.isHidden ;
-		$scope.saveHiddenState( this.chapterId ) ;
+		$http.post( "/jove_notes/api/ProgressSnapshot", {
+			'action'    : 'update_visibility',
+			'chapterId' : this.chapterId,
+			'isHidden'  : this.isHidden
+		} )
+		.success( function( data ){
+			log.debug( "API call returned." ) ;
+		} )
+		.error( function( data ){
+			$scope.addErrorAlert( "API call failed. " + data ) ;
+		});
 	}
 }
 
@@ -89,18 +99,6 @@ $scope.collapseAll = function() {
 
 $scope.toggleHiddenChapters = function() {
 	$scope.showHiddenChapters = !$scope.showHiddenChapters ;
-}
-
-$scope.saveHiddenState = function( chapterId ) {
-	
-	/*
-	$http.post( "/jove_notes/api/ProgressSnapshot", {
-
-	} )
-	.error( function( data ){
-		$scope.addErrorAlert( "API call failed. " + data ) ;
-	});
-	*/
 }
 
 $scope.$on( 'onRenderComplete', function( scope ){
@@ -191,9 +189,7 @@ function prepareDataForDisplay( rawData ) {
 				chapterRD.isNotesAuthorized      = chapter.isNotesAuthorized ;
 				chapterRD.isFlashcardAuthorized  = chapter.isFlashcardAuthorized ;
 				chapterRD.isStatisticsAuthorized = chapter.isStatisticsAuthorized ;
-
-				// TODO: This has to synched with server
-				chapterRD.isHidden               = Math.random() < 0.5 ;
+				chapterRD.isHidden               = chapter.isHidden ;
 
 				chapterRD.chapterId = chapter.chapterId ;
 

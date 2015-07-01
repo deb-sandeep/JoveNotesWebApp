@@ -12,6 +12,8 @@ Pending dev cards
 Completed
 --------------------------------------------------------------------------------
 7/1/15 --
+. User has an option to hide chapters from the dashboard, see all chapter/including
+  hidden ones and by default see only the non-hidden chapters.
 . Teacher notes now has an (optional) user defined caption. Cross cutting change
   starting from grammar, eclipse plugins, JNP and then the front end. Also
   introduced backward compatibility fix.
