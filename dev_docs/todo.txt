@@ -11,6 +11,11 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+7/1/15 --
+. Teacher notes now has an (optional) user defined caption. Cross cutting change
+  starting from grammar, eclipse plugins, JNP and then the front end. Also
+  introduced backward compatibility fix.
+
 6/30/15 --
 . Feature - Machine auto recommends if a question should be skip jumped straight
   to mastered level.

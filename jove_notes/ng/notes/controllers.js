@@ -295,6 +295,16 @@ function formatCharacter( charElement ) {
 
 function formatTeacherNote( tnElement ) {
 	tnElement.note = textFormatter.format( tnElement.note ) ;
+
+	// Backward compatibility for all those teacher notes elements which 
+	// did not get processed with caption
+	if( tnElement.hasOwnProperty( 'caption' ) ){
+		tnElement.caption = textFormatter.format( tnElement.caption ) ;
+	}	
+	else {
+		tnElement.caption = "Teacher Note" ;
+	}
+
 	return tnElement ;
 }
 
