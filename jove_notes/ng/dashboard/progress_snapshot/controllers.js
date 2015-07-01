@@ -11,6 +11,7 @@ function RowData( rowType, name, rowNum, parentRowNum ) {
 	this.name         = name ;
 	this.rowNum       = rowNum ;
 	this.parentRowNum = parentRowNum ;
+	this.isHidden     = true ;
 
     this.isNotesAuthorized      = false ;
     this.isFlashcardAuthorized  = false ;
@@ -30,27 +31,22 @@ function RowData( rowType, name, rowNum, parentRowNum ) {
 	this.isChapterRow = function() {
 		return this.rowType == this.ROW_TYPE_CHAPTER ;
 	}
+
+	this.toggleVisibility = function() {
+		this.isHidden = !this.isHidden ;
+		$scope.saveHiddenState( this.chapterId ) ;
+	}
 }
 
-$scope.$parent.pageTitle = "Progress Dashboard" ;
+$scope.$parent.pageTitle     = "Progress Dashboard" ;
 $scope.$parent.currentReport = 'ProgressSnapshot' ;
-
-$scope.progressSnapshot = null ;
+$scope.showHiddenChapters    = false ;
+$scope.progressSnapshot      = null ;
 
 refreshData() ;
 
 $scope.refreshData = function() {
 	refreshData() ;
-}
-
-function refreshData() {
-	$http.get( "/jove_notes/api/ProgressSnapshot" )
-         .success( function( data ){
-         	$scope.progressSnapshot = prepareDataForDisplay( data ) ;
-         })
-         .error( function( data ){
-         	$scope.addErrorAlert( "API call failed. " + data ) ;
-         });
 }
 
 $scope.getTreeRowClass = function( rowData ) {
@@ -70,12 +66,18 @@ $scope.getTreeRowClass = function( rowData ) {
 	return classStr ;
 }
 
-$scope.$on( 'onRenderComplete', function( scope ){
-    $('.tree').treegrid({
-      'initialState': 'collapsed',
-      'saveState': true,
-    });	
-} ) ;
+$scope.isTreeRowVisible = function( rowData ) {
+
+	if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+		if( rowData.isHidden ) {
+			if( !$scope.showHiddenChapters ) {
+				return false ;
+			}
+		}
+	}
+
+	return true ;
+}
 
 $scope.expandAll = function() {
 	$('.tree').treegrid('expandAll') ;
@@ -84,6 +86,29 @@ $scope.expandAll = function() {
 $scope.collapseAll = function() {
 	$('.tree').treegrid('collapseAll') ;
 }
+
+$scope.toggleHiddenChapters = function() {
+	$scope.showHiddenChapters = !$scope.showHiddenChapters ;
+}
+
+$scope.saveHiddenState = function( chapterId ) {
+	
+	/*
+	$http.post( "/jove_notes/api/ProgressSnapshot", {
+
+	} )
+	.error( function( data ){
+		$scope.addErrorAlert( "API call failed. " + data ) ;
+	});
+	*/
+}
+
+$scope.$on( 'onRenderComplete', function( scope ){
+    $('.tree').treegrid({
+      'initialState': 'collapsed',
+      'saveState': true,
+    });	
+} ) ;
 
 $scope.$on( 'onRowRender', function( scope, rowId ){
 	var rowData = $scope.progressSnapshot[ rowId ] ;
@@ -96,6 +121,16 @@ $scope.$on( 'onRowRender', function( scope, rowId ){
 	                 rowData.l3Cards,
 	                 rowData.masteredCards ) ;
 } ) ;
+
+function refreshData() {
+	$http.get( "/jove_notes/api/ProgressSnapshot" )
+         .success( function( data ){
+         	$scope.progressSnapshot = prepareDataForDisplay( data ) ;
+         })
+         .error( function( data ){
+         	$scope.addErrorAlert( "API call failed. " + data ) ;
+         });
+}
 
 function drawProgressBar( canvasId, total, vN, v0, v1, v2, v3, v4 ) {
 
@@ -156,6 +191,9 @@ function prepareDataForDisplay( rawData ) {
 				chapterRD.isNotesAuthorized      = chapter.isNotesAuthorized ;
 				chapterRD.isFlashcardAuthorized  = chapter.isFlashcardAuthorized ;
 				chapterRD.isStatisticsAuthorized = chapter.isStatisticsAuthorized ;
+
+				// TODO: This has to synched with server
+				chapterRD.isHidden               = Math.random() < 0.5 ;
 
 				chapterRD.chapterId = chapter.chapterId ;
 
