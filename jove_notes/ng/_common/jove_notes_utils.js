@@ -221,8 +221,6 @@ this.renderLearningProgressPie = function( divName, progressStats ) {
         .draw();
 } ;
 
-
-
 this.renderDifficultyStatsBar = function( divName, difficultyStats ) {
 
     if( isDebug() )return ;
@@ -313,6 +311,24 @@ this.getLearningEfficiencyLabel = function( score ) {
     else if ( score >= 50 && score <  60  ) { return "C1" ; }
     else if ( score >= 40 && score <  50  ) { return "C2" ; }
     else                                    { return "D"  ; }
+}
+
+this.getAbsoluteLearningEfficiency = function( temporalScores ) {
+
+    var totalRatingScores = 0 ;
+    var absLE = 0 ;
+
+    if( temporalScores.length != 0 ) {
+        for( var i=0; i<temporalScores.length; i++ ) {
+            var rating = temporalScores[i] ;
+            if     ( rating == 'E' ) totalRatingScores += 100 ;
+            else if( rating == 'A' ) totalRatingScores +=  80 ;
+            else if( rating == 'P' ) totalRatingScores +=  50 ;
+            else if( rating == 'H' ) totalRatingScores +=   0 ;
+        }
+        absLE = Math.ceil( totalRatingScores / temporalScores.length ) ;
+    }
+    return absLE ;
 }
 
 this.playSoundClip = function( clipPath ) {

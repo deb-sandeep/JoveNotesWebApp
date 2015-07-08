@@ -119,9 +119,11 @@ function TFHandler( chapterDetails, questionObj ) {
 
 	this.getQuestionUI = function() {
 
-		return DIV( P( { 'class' : 'text-primary' }, STRONG( question.statement ) ),
-		            P(), 
-		            trueBtn, SPAN( " " ), falseBtn 
+		return DIV( P( { 'class' : 'text-primary' }, 
+			           STRONG( P( { innerHTML : question.statement } ) ),
+		               P(), 
+		               trueBtn, SPAN( " " ), falseBtn 
+		             ) 
 		          ) ;
 	} ;
 

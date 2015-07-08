@@ -7,8 +7,9 @@ var SSR_DELTA_L1 = SSR_DELTA_L0 * 2 ;
 var SSR_DELTA_L2 = SSR_DELTA_L0 * 3 ;
 var SSR_DELTA_L3 = SSR_DELTA_L0 * 4  ;
 
-var MAX_GRADE_CARD_API_CALL_RETRIES = 3 ;
-var MAX_PUSH_ANS_API_CALL_RETRIES   = 3 ;
+var MAX_GRADE_CARD_API_CALL_RETRIES    = 3 ;
+var MAX_PUSH_ANS_API_CALL_RETRIES      = 3 ;
+var MAX_PUSH_QUESTION_API_CALL_RETRIES = 3 ;
 
 // ---------------- Local variables --------------------------------------------
 var ratingMatrix = new RatingMatrix() ;
@@ -177,7 +178,7 @@ $scope.pushQuestion = function() {
 
     $scope.pushQuestionSuccess = false ;
     $scope.$parent.purgeAllAlerts() ;
-    callRFMApiToPushQuestion() ;
+    callRFMApiToPushQuestion( 0 ) ;
 }
 
 // ---------------- Private functions ------------------------------------------
@@ -239,7 +240,7 @@ function showNextCard() {
             $scope.pushQuestionSuccess = false ;
             $scope.pushAnswerSuccess = false ;
 
-            callRFMApiToPushQuestion() ;
+            callRFMApiToPushQuestion( 0 ) ;
 
             $scope.showAnswer() ;
         }
@@ -411,15 +412,15 @@ function sortCardsAsPerStudyStrategy() {
     else if( strategy == StudyStrategyTypes.prototype.EFF_HARD ) {
         log.debug( "\tSorting cards as per EFF_HARD study strategy." ) ;
         $scope.questionsForSession.sort( function( q1, q2 ){
-            return q2.learningStats.learningEfficiency - 
-                   q1.learningStats.learningEfficiency  ;
+            return q1.learningStats.absoluteLearningEfficiency - 
+                   q2.learningStats.absoluteLearningEfficiency ;
         }) ;
     }
     else if( strategy == StudyStrategyTypes.prototype.EFF_EASY ) {
         log.debug( "\tSorting cards as per EFF_EASY study strategy." ) ;
         $scope.questionsForSession.sort( function( q1, q2 ){
-            return q1.learningStats.learningEfficiency - 
-                   q2.learningStats.learningEfficiency  ;
+            return q2.learningStats.absoluteLearningEfficiency - 
+                   q1.learningStats.absoluteLearningEfficiency ;
         }) ;
     }
     else if( strategy == StudyStrategyTypes.prototype.OBJECTIVE ) {
@@ -677,12 +678,13 @@ function callGradeCardAPI( chapterId, sessionId, cardId, curLevel, nextLevel,
 
         if( status == 0 ) {
             log.debug( "Faulty connection determined." ) ;
-            if( currentCallAttemptNumber <= MAX_GRADE_CARD_API_CALL_RETRIES ) {
+            if( currentCallAttemptNumber < MAX_GRADE_CARD_API_CALL_RETRIES ) {
                 log.debug( "Retrying the call again." ) ;
                 callGradeCardAPI( 
                     chapterId, sessionId, cardId, curLevel, nextLevel, 
                     rating, timeTaken, numAttempts, currentCallAttemptNumber 
                 ) ;
+                return ;
             }
             log.debug( "Number of retries exceeded. Notifying the user." ) ;
         }
@@ -773,9 +775,10 @@ function callRFMApiToPushAnswer( previousCallAttemptNumber ) {
     .error( function( data, status ){
         if( status == 0 ) {
             log.debug( "Faulty connection determined." ) ;
-            if( currentCallAttemptNumber <= MAX_PUSH_ANS_API_CALL_RETRIES ) {
+            if( currentCallAttemptNumber < MAX_PUSH_ANS_API_CALL_RETRIES ) {
                 log.debug( "Retrying the push answer call again." ) ;
                 callRFMApiToPushAnswer( currentCallAttemptNumber ) ;
+                return ;
             }
             log.debug( "Number of retries exceeded. Notifying the user." ) ;
         }
@@ -787,9 +790,11 @@ function callRFMApiToPushAnswer( previousCallAttemptNumber ) {
     }) ;
 }
 
-function callRFMApiToPushQuestion() {
+function callRFMApiToPushQuestion( previousCallAttemptNumber ) {
 
-    log.debug( "Pushing question to remote user." ) ;
+    var currentCallAttemptNumber = previousCallAttemptNumber + 1 ;
+
+    log.debug( "Pushing question to remote user. Attempt - " + currentCallAttemptNumber ) ;
 
     $http.post( '/jove_notes/api/RemoteFlashMessage', { 
         sessionId   : $scope.$parent.sessionId,
@@ -806,6 +811,17 @@ function callRFMApiToPushQuestion() {
         $scope.pushQuestionSuccess = true ;
     })
     .error( function( data, status ){
+
+        if( status == 0 ) {
+            log.debug( "Faulty connection determined." ) ;
+            if( currentCallAttemptNumber < MAX_PUSH_QUESTION_API_CALL_RETRIES ) {
+                log.debug( "Retrying the push question call again." ) ;
+                callRFMApiToPushQuestion( currentCallAttemptNumber ) ;
+                return ;
+            }
+            log.debug( "Number of retries exceeded. Notifying the user." ) ;
+        }
+
         var message = "Could not post question for remote view. " + 
                       "Server says status = " + status + " and " + 
                       "Response = " + data ;

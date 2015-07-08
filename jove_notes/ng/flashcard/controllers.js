@@ -175,6 +175,9 @@ function preProcessFlashCardQuestions( questions ) {
         question.learningStats.efficiencyLabel = 
             jnUtil.getLearningEfficiencyLabel( question.learningStats.learningEfficiency ) ;
 
+        question.learningStats.absoluteLearningEfficiency = 
+            jnUtil.getAbsoluteLearningEfficiency( question.learningStats.temporalScores ) ;
+
         associateHandler( question ) ;
         processTestDataHints( question ) ;
     }
