@@ -34,6 +34,8 @@ Completed
 . BUG - True/False did not show MD formatted text. DOM.js semantics.
 . Sorting for learning efficiency needs to consider absolute efficiency, not the
   efficiency based on moving window
+. Fixed the state save of 'assistedStudy'. In the first digest, it was getting
+  reset by the value of push.
 
 7/1/15 --
 . User has an option to hide chapters from the dashboard, see all chapter/including

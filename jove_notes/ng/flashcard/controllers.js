@@ -119,9 +119,15 @@ log.debug( "Executing FlashCardController." ) ;
 $scope.studyCriteria.deserialize() ;
 
 // -------------Scope watch functions ------------------------------------------
+$scope.initialDigestProcess = true ;
 $scope.$watch( 'studyCriteria.push', function( newValue, oldValue ){
-    $scope.studyCriteria.assistedStudy = newValue ;
-    $scope.assistedStudyCBDisabled = ( newValue == true ) ;
+    if( $scope.initialDigestProcess ) {
+        $scope.initialDigestProcess = false ;
+    }
+    else {
+        $scope.studyCriteria.assistedStudy = newValue ;
+        $scope.assistedStudyCBDisabled = ( newValue == true ) ;
+    }
 }) ;
 
 // ---------------- Controller methods -----------------------------------------
