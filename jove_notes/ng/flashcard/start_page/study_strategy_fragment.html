@@ -10,13 +10,20 @@
 </div>
 
 <div class="form-group pad-10px">
-    <label for="push">Push cards:</label>
-    <input id="push" type="checkbox" class="form-control" ng-model="studyCriteria.push"/>
+    <input id="push" type="checkbox" ng-model="studyCriteria.push"/>
+    <label for="push"> Enable remote flash</label>
+</div>
+
+<div class="form-group pad-10px">
+    <input id="assistedStudy" type="checkbox" 
+           ng-model="studyCriteria.assistedStudy"
+           ng-disabled="assistedStudyCBDisabled" />
+    <label for="assistedStudy"> Assisted study</label>
 </div>
 
 <div class="dropdown" align="center">
   <button type="button" 
-          class="btn btn-primary dropdown-toggle" 
+          class="btn btn-default dropdown-toggle" 
           data-toggle="dropdown">
     Apply level to all cards <span class="caret"></span>
   </button>

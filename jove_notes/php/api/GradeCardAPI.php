@@ -71,7 +71,9 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 		// efficiency to 100. This is consistent with the alternate case logic
 		// since an auto-promote request implies that for the remaining levels
 		// the rating is by default E
-		if( $this->requestObj->rating == "APM" ) {
+		if( $this->requestObj->rating == "APM" || 
+			$this->requestObj->rating == "APMNS" ) {
+
 			$this->learningEfficiency = 100 ;
 			return ;
 		}
@@ -108,12 +110,18 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 	private function saveCardRating() {
 
 		// Save the card rating only if we are not grading an auto-promote case.
-		if( $this->requestObj->rating != "APM" ) {
+		if( $this->requestObj->rating != "APMNS" ) {
+
+			$rating = $this->requestObj->rating ;
+			if( $this->requestObj->rating == "APM" ) {
+				$rating = "E" ;
+			}
+
 			$this->cardRatingDAO->insertRating( 
 										$this->requestObj->cardId, 
 										ExecutionContext::getCurrentUserName(), 
 										$this->requestObj->sessionId,
-										$this->requestObj->rating,
+										$rating,
 										$this->score,
 										$this->requestObj->timeTaken ) ;
 		}
@@ -126,13 +134,12 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 		$incrNS = 0 ; $incrL0 = 0 ; $incrL1  = 0 ; 
 		$incrL2 = 0 ; $incrL3 = 0 ; $incrMAS = 0 ;
 
-		if     ( $this->requestObj->rating === 'E' ) $incrE = 1 ;
-		else if( $this->requestObj->rating === 'A' ) $incrA = 1 ;
-		else if( $this->requestObj->rating === 'P' ) $incrP = 1 ;
-		else if( $this->requestObj->rating === 'H' ) $incrH = 1 ;
-		else if( $this->requestObj->rating === 'APM')$incrE = 1 ;
-
-		if( $this->requestObj->currentLevel === 'NS' ) $incrNS = -1 ;
+		if     ( $this->requestObj->rating === 'E'     ) $incrE = 1 ;
+		else if( $this->requestObj->rating === 'A'     ) $incrA = 1 ;
+		else if( $this->requestObj->rating === 'P'     ) $incrP = 1 ;
+		else if( $this->requestObj->rating === 'H'     ) $incrH = 1 ;
+		else if( $this->requestObj->rating === 'APM'   ) $incrE = 1 ;
+		else if( $this->requestObj->rating === 'APMNS' ) $incrE = 1 ;
 
 		if      ( $this->requestObj->currentLevel === 'NS'  ) $incrNS  = -1 ;
 		else if ( $this->requestObj->currentLevel === 'L0'  ) $incrL0  = -1 ;
@@ -158,10 +165,16 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 
 	private function updateCardLearningSummary() {
 
+		$rating = $this->requestObj->rating ;
+		if( $this->requestObj->rating == "APM" || 
+			$this->requestObj->rating == "APMNS" ) {
+			$rating = "E" ;
+		}
+
 		$this->clsDAO->updateSummary( ExecutionContext::getCurrentUserName(),
 			                          $this->requestObj->cardId, 
 			                          $this->requestObj->nextLevel, 
-			                          $this->requestObj->rating, 
+			                          $rating, 
 			                          $this->learningEfficiency ) ;
 	}	
 
@@ -169,6 +182,9 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 
 		if( $this->requestObj->rating == "APM" ) {
 			$this->computeScoreForAPMScenario( $cardLearningSummary ) ;
+		}
+		else if( $this->requestObj->rating == "APMNS" ) {
+			$this->score = 0 ;
 		}
 		else {
 			$this->computeScoreForNormalScenario( $cardLearningSummary ) ;

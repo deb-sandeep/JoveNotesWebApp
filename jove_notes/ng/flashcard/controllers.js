@@ -10,8 +10,9 @@ function StudyCriteria() {
     this.learningEfficiencyFilters = [ "A1", "A2", "B1", "B2", "C1", "C2", "D" ] ;
     this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH"            ] ;
 
-    this.strategy = "SSR" ;
-    this.push     = false ;
+    this.strategy      = "SSR" ;
+    this.push          = false ;
+    this.assistedStudy = false ;
 
     this.setDefaultCriteria = function() {
         this.currentLevelFilters       = [ "L0", "L1", "L2", "L3"                  ] ;
@@ -36,8 +37,9 @@ function StudyCriteria() {
             this.learningEfficiencyFilters = crit.learningEfficiencyFilters ;
             this.difficultyFilters         = crit.difficultyFilters ;
 
-            this.strategy = crit.strategy ;
-            this.push     = crit.push ;
+            this.strategy      = crit.strategy ;
+            this.push          = crit.push ;
+            this.assistedStudy = crit.assistedStudy ;
         } ;
     }
 
@@ -110,9 +112,17 @@ $scope.timePerQuestion = 0 ;
 
 $scope.messageForEndPage = "Session Ended." ;
 
+$scope.assistedStudyCBDisabled = false ;
+
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing FlashCardController." ) ;
 $scope.studyCriteria.deserialize() ;
+
+// -------------Scope watch functions ------------------------------------------
+$scope.$watch( 'studyCriteria.push', function( newValue, oldValue ){
+    $scope.studyCriteria.assistedStudy = newValue ;
+    $scope.assistedStudyCBDisabled = ( newValue == true ) ;
+}) ;
 
 // ---------------- Controller methods -----------------------------------------
 $scope.addErrorAlert = function( msgString ) {

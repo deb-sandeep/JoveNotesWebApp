@@ -114,7 +114,7 @@ function RatingMatrix() {
         if( numAttempts > 1 ) {
             return currentLevel ;
         }
-        else if( currentRating == 'APM' ) {
+        else if( currentRating == 'APM' || currentRating == 'APMNS' ) {
             return 'MAS' ;
         }
         else {
@@ -125,7 +125,7 @@ function RatingMatrix() {
 
     this.getNextAction = function( currentLevel, currentRating ) {
         log.debug( "Getting next action" ) ;
-        if( currentRating == 'APM' ) {
+        if( currentRating == 'APM' || currentRating == 'APMNS' ) {
             return -1 ;
         }
         else {

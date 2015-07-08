@@ -39,9 +39,6 @@ function RowData( rowType, name, rowNum, parentRowNum ) {
 			'chapterId' : this.chapterId,
 			'isHidden'  : this.isHidden
 		} )
-		.success( function( data ){
-			log.debug( "API call returned." ) ;
-		} )
 		.error( function( data ){
 			$scope.addErrorAlert( "API call failed. " + data ) ;
 		});

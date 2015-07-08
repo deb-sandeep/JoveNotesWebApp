@@ -252,7 +252,7 @@ function showNextCard() {
 function computeRecommendPromoteFlag() {
 
     // We don't recommend promotion to mastered in non-assisted mode.
-    if( !$scope.$parent.studyCriteria.push ) {
+    if( !$scope.$parent.studyCriteria.assistedStudy ) {
         $scope.recommendPromoteToMastered = false ;
         return ;
     }

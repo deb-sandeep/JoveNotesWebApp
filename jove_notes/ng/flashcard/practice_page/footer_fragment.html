@@ -1,6 +1,6 @@
 <div class="row">
 
-    <div class="col-sm-6"
+    <div class="col-sm-4"
          style="padding-left:0px, padding-right:0px">
 
         <!-- The toggle header popup -->
@@ -68,7 +68,7 @@
 
     </div>
 
-    <div class="col-sm-6 pull-right">
+    <div class="col-sm-8 pull-right">
         <div class="btn-group btn-group-justified" role="group" ng-show="!questionMode">
           <div class="btn-group" role="group">
             <button type="button" class="btn btn-danger btn-lg"
@@ -88,6 +88,17 @@
                     data-toggle="tooltip" data-placement="top" 
                     title="Almost correct">&nbsp;</button>
           </div>
+          <!-- APMNS - Auto promote to mastered without scoring. -->
+          <div class="btn-group" role="group" ng-show="recommendPromoteToMastered">
+            <button type="button" class="btn btn-success btn-lg"
+                    ng-click="rateCard( 'APMNS' )"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Auto promote to mastered">
+                <span class="glyphicon glyphicon-education"></span>
+                <span class="glyphicon glyphicon-education"></span>
+            </button>
+          </div>
+          <!-- APM - Auto promote to mastered with scoring. -->
           <div class="btn-group" role="group" ng-show="recommendPromoteToMastered">
             <button type="button" class="btn btn-success btn-lg"
                     ng-click="rateCard( 'APM' )"

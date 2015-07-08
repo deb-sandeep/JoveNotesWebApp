@@ -1,16 +1,43 @@
 Pending dev cards
 --------------------------------------------------------------------------------
+. Sorting for learning efficiency needs to consider absolute efficiency, not the
+  moving efficiency window
+. Push question needs to be hardened with retries
+. True false doesn't show formatted questions
 . Matching can have multiple keys and values of the same name
-. Think about multiple choice questions.
-
+. Dashboard tree does not retain expand/collapse status
 . In notes index.php - check if the request parameter chapterId is present.
   If not return an error message or something. Same for flashcard page too.
 . Responsive headers - responsive headers are really not working. Change them 
   to static non-floating headers
-        
+
+. Report to see the number of questions answered
+. Report to see the subject that was studied in a range and the, chapters/time
+  spent on them. angular-grid?
+
+. Create a cheat sheet of the steps once the eclipse plugin is modified
+. Revisit score computation - steepness of sigmoid curve
+. Left justified images in QA?
+. For equation, add the matching question only if the symbols are more than 1 or 2
+. Think about multiple choice questions.
+  
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+7/8/15 --
+. BUG - For APM grades, learning summary was appended with 'APM'. Created a 
+  rectification script to correct the data by replacing APM by E. Repaired the
+  data on production server too.
+
+. For auto promote recommendations a new dynamic button is added which will move
+  the card to mastered without scoring. This is useful in cases where we don't
+  want the student to answer the question, but fast forward instead.  
+
+. Auto promote recommendation button is now displayed in non remote flash mode
+  study is done in assisted mode. A new selection control added to flashcard
+  configuration page.
+
+
 7/1/15 --
 . User has an option to hide chapters from the dashboard, see all chapter/including
   hidden ones and by default see only the non-hidden chapters.
