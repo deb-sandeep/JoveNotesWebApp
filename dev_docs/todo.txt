@@ -6,6 +6,7 @@ Pending dev cards
 . For equation, add the matching question only if the symbols are more than 1 or 2
 . Think about multiple choice questions.
   
+. Save user's preference on show hidden chapters
 . Matching can have multiple keys and values of the same name
 . Dashboard tree does not retain expand/collapse status
 . In notes index.php - check if the request parameter chapterId is present.
@@ -36,6 +37,7 @@ Completed
   efficiency based on moving window
 . Fixed the state save of 'assistedStudy'. In the first digest, it was getting
   reset by the value of push.
+. Added a larger go to dashboard button on start flashcard session page.
 
 7/1/15 --
 . User has an option to hide chapters from the dashboard, see all chapter/including
