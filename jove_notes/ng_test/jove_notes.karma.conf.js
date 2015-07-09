@@ -22,7 +22,7 @@ module.exports = function(config) {
       '/home/sandeep/projects/source/PHPAppFramework/lib-ext/jquery/jquery-2.1.1.min.js',
       '/home/sandeep/projects/source/PHPAppFramework/lib-ext/jquery/jquery.cookie.js',
       '/home/sandeep/projects/source/PHPAppFramework/lib-ext/jquery-ui/1.11.4/jquery-ui.min.js',
-      '/home/sandeep/projects/source/PHPAppFramework/lib-ext/jquery/jquery.treegrid.min.js',
+      '/home/sandeep/projects/source/PHPAppFramework/lib-ext/jquery/jquery.treegrid.js',
       '/home/sandeep/projects/source/PHPAppFramework/lib-ext/jquery/jquery.treegrid.bootstrap3.js',
       '/home/sandeep/projects/source/PHPAppFramework/lib-ext/bootstrap-3.3.4/js/bootstrap.min.js',
       '/home/sandeep/projects/source/PHPAppFramework/lib-ext/bootstrap-3.3.4/angular/ui-bootstrap-custom-0.12.1.min.js',

@@ -225,8 +225,8 @@ function processNotesElements() {
 			}
 		}
 		else {
-			log.debug( "Note element " + element.noteElementId + 
-				       " did not meet filter criteria." ) ;
+			//log.debug( "Note element " + element.noteElementId + 
+			//	       " did not meet filter criteria." ) ;
 		}
 	}
 }

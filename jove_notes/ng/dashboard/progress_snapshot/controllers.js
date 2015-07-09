@@ -5,13 +5,13 @@ RowData.prototype.ROW_TYPE_SYLLABUS = 0 ;
 RowData.prototype.ROW_TYPE_SUBJECT  = 1 ;
 RowData.prototype.ROW_TYPE_CHAPTER  = 2 ;
 
-function RowData( rowType, name, rowNum, parentRowNum ) {
+function RowData( rowType, name, rowId, parentRowId ) {
 
-	this.rowType      = rowType ;
-	this.name         = name ;
-	this.rowNum       = rowNum ;
-	this.parentRowNum = parentRowNum ;
-	this.isHidden     = true ;
+	this.rowType     = rowType ;
+	this.name        = name ;
+	this.rowId       = rowId ;
+	this.parentRowId = parentRowId ;
+	this.isHidden    = true ;
 
     this.isNotesAuthorized      = false ;
     this.isFlashcardAuthorized  = false ;
@@ -57,9 +57,9 @@ $scope.refreshData = function() {
 }
 
 $scope.getTreeRowClass = function( rowData ) {
-	var classStr = "treegrid-" + rowData.rowNum ;
-	if( rowData.parentRowNum != -1 ) {
-		classStr += " treegrid-parent-" + rowData.parentRowNum ;
+	var classStr = "treegrid-" + rowData.rowId ;
+	if( rowData.parentRowId != -1 ) {
+		classStr += " treegrid-parent-" + rowData.parentRowId ;
 	}
 
 	switch( rowData.rowType ) {
@@ -102,12 +102,13 @@ $scope.$on( 'onRenderComplete', function( scope ){
     $('.tree').treegrid({
       'initialState': 'collapsed',
       'saveState': true,
+      'saveStateName' : "treeState-" + currentUserName 
     });	
 } ) ;
 
 $scope.$on( 'onRowRender', function( scope, rowId ){
 	var rowData = $scope.progressSnapshot[ rowId ] ;
-	drawProgressBar( "canvas-" + rowData.rowNum, 
+	drawProgressBar( "canvas-" + rowData.rowId, 
 	                 rowData.totalCards, 
 	                 rowData.notStartedCards,
 	                 rowData.l0Cards,
@@ -161,7 +162,8 @@ function prepareDataForDisplay( rawData ) {
 		rowNum++ ;
 		var syllabus = rawData[ sylIndex ] ;
 		var syllabusRD = new RowData( RowData.prototype.ROW_TYPE_SYLLABUS, 
-			                          syllabus.syllabusName, rowNum, -1 ) ;
+			                          syllabus.syllabusName, syllabus.syllabusName, -1 ) ;
+
 		displayData.push( syllabusRD ) ;
 
 		for( subIndex=0; subIndex<syllabus.subjects.length; subIndex++ ) {
@@ -169,8 +171,9 @@ function prepareDataForDisplay( rawData ) {
 			rowNum++ ;
 			var subject = syllabus.subjects[ subIndex ] ;
 			var subjectRD = new RowData( RowData.prototype.ROW_TYPE_SUBJECT, 
-				                         subject.subjectName, rowNum, 
-				                         syllabusRD.rowNum ) ;
+				                         subject.subjectName, subject.subjectName, 
+				                         syllabus.syllabusName ) ;
+
 			displayData.push( subjectRD ) ;
 
 			for( chpIndex=0; chpIndex<subject.chapters.length; chpIndex++ ) {
@@ -180,8 +183,8 @@ function prepareDataForDisplay( rawData ) {
 				var displayName = chapter.chapterNum + "." + chapter.subChapterNum + 
 				                  " - " + chapter.chapterName ;
 				var chapterRD = new RowData( RowData.prototype.ROW_TYPE_CHAPTER, 
-					                         displayName, rowNum, 
-					                         subjectRD.rowNum ) ;
+					                         displayName, chapter.chapterId, 
+					                         subjectRD.rowId ) ;
 
 				chapterRD.isNotesAuthorized      = chapter.isNotesAuthorized ;
 				chapterRD.isFlashcardAuthorized  = chapter.isFlashcardAuthorized ;

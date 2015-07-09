@@ -21,6 +21,10 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+7/9/15 --
+. Dashboard tree state preservation for individual users. Also, making the 
+  dashboard state save logic more stable.
+
 7/8/15 --
 . BUG - For APM grades, learning summary was appended with 'APM'. Created a 
   rectification script to correct the data by replacing APM by E. Repaired the
