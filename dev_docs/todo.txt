@@ -8,7 +8,6 @@ Pending dev cards
   
 . Save user's preference on show hidden chapters
 . Matching can have multiple keys and values of the same name
-. Dashboard tree does not retain expand/collapse status
 . In notes index.php - check if the request parameter chapterId is present.
   If not return an error message or something. Same for flashcard page too.
 . Responsive headers - responsive headers are really not working. Change them 
@@ -24,6 +23,8 @@ Completed
 7/9/15 --
 . Dashboard tree state preservation for individual users. Also, making the 
   dashboard state save logic more stable.
+. UserPreferences now implemented as a service and API
+. Show hidden chapter state is now saved at the server
 
 7/8/15 --
 . BUG - For APM grades, learning summary was appended with 'APM'. Created a 

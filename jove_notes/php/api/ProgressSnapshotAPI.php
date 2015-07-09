@@ -3,6 +3,7 @@ require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/api_bootstrap.php" ) ;
 require_once( APP_ROOT      . "/php/dao/chapter_dao.php" ) ;
 require_once( APP_ROOT      . "/php/dao/card_learning_summary_dao.php" ) ;
 require_once( APP_ROOT      . "/php/dao/user_chapter_preferences_dao.php" ) ;
+require_once( DOCUMENT_ROOT . "/lib-app/php/services/user_preference_service.php" ) ;
 
 class ChapterProgressSnapshot {
 
@@ -69,6 +70,7 @@ class ProgressSnapshotAPI extends API {
 	private $chapterDAO ;
 	private $clsDAO ;
 	private $ucpDAO ;
+	private $upSvc = NULL ;
 
 	function __construct() {
 		parent::__construct() ;
@@ -78,6 +80,7 @@ class ProgressSnapshotAPI extends API {
 		$this->chapterDAO            = new ChapterDAO() ;
 		$this->clsDAO                = new CardLearningSummaryDAO() ;
 		$this->ucpDAO                = new UserChapterPrefsDAO() ;
+		$this->upSvc                 = new UserPreferenceService() ;
 	}
 
 	public function doPost( $request, &$response ) {
@@ -147,15 +150,31 @@ class ProgressSnapshotAPI extends API {
 
 	private function &constructResponseObj() {
 
-		$responseArray = array() ;
+		$responseObj = array() ;
+		$responseObj[ "preferences" ] = $this->constructPreferenceResponseObj() ;
 
+		$dashboardContent = array() ;
 		foreach( $this->syllabusMap as $syllabusName => $subMap ) {
 			$syllabusObj = array() ;
 			$syllabusObj[ "syllabusName" ] = $syllabusName ;
 			$syllabusObj[ "subjects"     ] = $this->constructSubjectResponseObj( $subMap ) ;
-			array_push( $responseArray, $syllabusObj ) ;
+			array_push( $dashboardContent, $syllabusObj ) ;
 		}
-		return $responseArray ;
+		$responseObj[ "dashboardContent" ] = $dashboardContent ;
+
+		return $responseObj ;
+	}
+
+	private function &constructPreferenceResponseObj() {
+
+		$preferenceKeys = [ "jove_notes.showHiddenChapters" ] ;
+
+		$preferences = array() ;
+		foreach( $preferenceKeys as $key ) {
+			$prefValue = $this->upSvc->getUserPreference( $key ) ;
+			$preferences[ $key ] = $prefValue ;
+		}
+		return $preferences ;
 	}
 
 	private function &constructSubjectResponseObj( $subMap ) {

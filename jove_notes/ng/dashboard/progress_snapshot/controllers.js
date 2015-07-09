@@ -82,7 +82,6 @@ $scope.isTreeRowVisible = function( rowData ) {
 			}
 		}
 	}
-
 	return true ;
 }
 
@@ -96,6 +95,15 @@ $scope.collapseAll = function() {
 
 $scope.toggleHiddenChapters = function() {
 	$scope.showHiddenChapters = !$scope.showHiddenChapters ;
+	$http.put( "/__fw__/api/UserPreference", {
+		'jove_notes.showHiddenChapters' : $scope.showHiddenChapters ? 'true' : 'false'
+	} )
+	.success( function( data ){
+		log.debug( "Updated user preference." ) ;
+	} )
+	.error( function( data ){
+		log.error( "Could not set hidden chapter preferences for user." ) ;
+	});  
 }
 
 $scope.$on( 'onRenderComplete', function( scope ){
@@ -121,7 +129,8 @@ $scope.$on( 'onRowRender', function( scope, rowId ){
 function refreshData() {
 	$http.get( "/jove_notes/api/ProgressSnapshot" )
          .success( function( data ){
-         	$scope.progressSnapshot = prepareDataForDisplay( data ) ;
+         	digestPreferences( data.preferences ) ;
+         	$scope.progressSnapshot = prepareDataForDisplay( data.dashboardContent ) ;
          })
          .error( function( data ){
          	$scope.addErrorAlert( "API call failed. " + data ) ;
@@ -150,6 +159,10 @@ function drawProgressBar( canvasId, total, vN, v0, v1, v2, v3, v4 ) {
         ctx.fillRect( curX, 0, widths[i], c.height ) ;
         curX += widths[i] ;
     }
+}
+
+function digestPreferences( preferences ) {
+	$scope.showHiddenChapters = preferences[ "jove_notes.showHiddenChapters" ] ;
 }
 
 function prepareDataForDisplay( rawData ) {
