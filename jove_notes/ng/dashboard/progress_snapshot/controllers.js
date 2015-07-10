@@ -9,7 +9,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
 
 	this.rowType     = rowType ;
 	this.name        = name ;
-	this.rowId       = rowId ;
+	this.rowId       = String( rowId ).replace( / +/g, "-" ) ;
 	this.parentRowId = parentRowId ;
 	this.isHidden    = true ;
 
@@ -175,7 +175,8 @@ function prepareDataForDisplay( rawData ) {
 		rowNum++ ;
 		var syllabus = rawData[ sylIndex ] ;
 		var syllabusRD = new RowData( RowData.prototype.ROW_TYPE_SYLLABUS, 
-			                          syllabus.syllabusName, syllabus.syllabusName, -1 ) ;
+			                          syllabus.syllabusName, 
+			                          syllabus.syllabusName, -1 ) ;
 
 		displayData.push( syllabusRD ) ;
 
@@ -184,8 +185,9 @@ function prepareDataForDisplay( rawData ) {
 			rowNum++ ;
 			var subject = syllabus.subjects[ subIndex ] ;
 			var subjectRD = new RowData( RowData.prototype.ROW_TYPE_SUBJECT, 
-				                         subject.subjectName, subject.subjectName, 
-				                         syllabus.syllabusName ) ;
+				                         subject.subjectName, 
+				                         syllabus.syllabusName + "-" + subject.subjectName, 
+				                         syllabusRD.rowId ) ;
 
 			displayData.push( subjectRD ) ;
 
@@ -196,7 +198,8 @@ function prepareDataForDisplay( rawData ) {
 				var displayName = chapter.chapterNum + "." + chapter.subChapterNum + 
 				                  " - " + chapter.chapterName ;
 				var chapterRD = new RowData( RowData.prototype.ROW_TYPE_CHAPTER, 
-					                         displayName, chapter.chapterId, 
+					                         displayName, 
+					                         chapter.chapterId, 
 					                         subjectRD.rowId ) ;
 
 				chapterRD.isNotesAuthorized      = chapter.isNotesAuthorized ;

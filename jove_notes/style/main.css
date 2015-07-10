@@ -19,6 +19,14 @@ p {
 	padding-top: 8px;
 }
 
+.cons_ans {
+	border-collapse: collapse;
+}
+
+.cons_ans td {
+	padding: 5px ;
+}
+
 .fib_answer {
 	color: crimson;
 	background-color: #f1f1f1;

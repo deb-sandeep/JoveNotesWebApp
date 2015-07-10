@@ -1,12 +1,6 @@
 Pending dev cards
 --------------------------------------------------------------------------------
-. Create a cheat sheet of the steps once the eclipse plugin is modified
-. Revisit score computation - steepness of sigmoid curve
-. Left justified images in QA?
-. For equation, add the matching question only if the symbols are more than 1 or 2
 . Think about multiple choice questions.
-  
-. Save user's preference on show hidden chapters
 . Matching can have multiple keys and values of the same name
 . In notes index.php - check if the request parameter chapterId is present.
   If not return an error message or something. Same for flashcard page too.
@@ -20,6 +14,14 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+7/10/15 --
+. Plugin - Create a cheat sheet of the steps once the eclipse plugin is modified
+. Plugin - Anwers for QA can now be formatted to fit into multiple columns
+. BUG - Spaces in syllabus or subject names causes dashboard tree to fail
+. JNP - For equation, add the matching question only if the symbols are > 2
+. Feature - difficult level of question answers have been made more sophisticated
+  by considering the unformatted text stripped off any stop words.
+
 7/9/15 --
 . Dashboard tree state preservation for individual users. Also, making the 
   dashboard state save logic more stable.
