@@ -1,6 +1,6 @@
-<div class="row">
+<div class="row" ng-show="gradingButtonPlacement == 'right'">
 
-    <div class="col-sm-4"
+    <div class="col-sm-5"
          style="padding-left:0px, padding-right:0px">
 
         <!-- The toggle header popup -->
@@ -25,7 +25,10 @@
                 <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L1-Hdr')">Toggle Session Header</a>
             </li>
             <li role="presentation">
-                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L2-Hdr')">Toggle Card header</a>
+                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L2-Hdr')">Toggle Card Header</a>
+            </li>
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="toggleFooterDirection()">Toggle Footer Direction</a>
             </li>
             <li role="presentation">
                 <a role="menuitem" tabindex="-1" ng-click="randomizeCards()">
@@ -68,7 +71,7 @@
 
     </div>
 
-    <div class="col-sm-8 pull-right">
+    <div class="col-sm-7 pull-right">
         <div class="btn-group btn-group-justified" role="group" ng-show="!questionMode">
           <div class="btn-group" role="group">
             <button type="button" class="btn btn-danger btn-lg"
@@ -125,3 +128,132 @@
         </div>
     </div>
 </div>
+
+<div class="row" ng-show="gradingButtonPlacement == 'left'">
+    <div class="col-sm-7 pull-left">
+        <div class="btn-group btn-group-justified" role="group" ng-show="!questionMode">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-success btn-lg"
+                    ng-click="rateCard( 'E' )"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Correct">&nbsp;</button>
+          </div>
+          <div class="btn-group" role="group" ng-show="recommendPromoteToMastered">
+            <button type="button" class="btn btn-success btn-lg"
+                    ng-click="rateCard( 'APM' )"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Auto promote to mastered">
+                <span class="glyphicon glyphicon-education"></span>
+            </button>
+          </div>
+          <div class="btn-group" role="group" ng-show="recommendPromoteToMastered">
+            <button type="button" class="btn btn-success btn-lg"
+                    ng-click="rateCard( 'APMNS' )"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Auto promote to mastered">
+                <span class="glyphicon glyphicon-education"></span>
+                <span class="glyphicon glyphicon-education"></span>
+            </button>
+          </div>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-info btn-lg"
+                    ng-click="rateCard( 'A' )"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Almost correct">&nbsp;</button>
+          </div>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-warning btn-lg"
+                    ng-click="rateCard( 'P' )"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Needs practice">&nbsp;</button>
+          </div>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-danger btn-lg"
+                    ng-click="rateCard( 'H' )"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Difficult">&nbsp;</button>
+          </div>
+        </div>
+
+        <div class="btn-group btn-group-justified" role="group" ng-show="questionMode">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-primary btn-lg"
+                    ng-click="showAnswer()">
+                Show Answer
+            </button>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-sm-5"
+         style="padding-left:0px, padding-right:0px">
+
+        <div class="pull-left">
+            <!-- The Push Answer button button. This is shown only if we are  -->
+            <!-- conducting a remote session                                  -->
+            <button type="button" 
+                    class="btn btn-success btn-lg"
+                    ng-click="pushAnswer()"
+                    ng-show="studyCriteria.push"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Push answer">
+                <span class="glyphicon glyphicon-share-alt"></span>
+            </button>
+
+            <!-- The Push Question button button. This is shown only if we are  -->
+            <!-- conducting a remote session                                    -->
+            <button type="button" 
+                    class="btn btn-success btn-lg"
+                    ng-click="pushQuestion()"
+                    ng-show="studyCriteria.push"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Push question">
+                <span class="glyphicon glyphicon-send"></span>
+            </button>
+        </div>
+
+        <!-- The toggle header popup -->
+        <div class="dropup pull-right" style="display:inline" ng-show="showFooterDropup">
+          <button type="button" 
+                  class="btn btn-primary dropdown-toggle btn-lg" 
+                  data-toggle="dropdown">
+            <span class="glyphicon glyphicon-equalizer"></span>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="endSession()">
+                    <span class="glyphicon glyphicon-off"></span>
+                    End session
+                </a>
+            </li>
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L0-Hdr')">Toggle Title Header</a>
+            </li>
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L1-Hdr')">Toggle Session Header</a>
+            </li>
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L2-Hdr')">Toggle Card Header</a>
+            </li>
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="toggleFooterDirection()">Toggle Footer Direction</a>
+            </li>
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="randomizeCards()">
+                    <span class="glyphicon glyphicon-random"></span>
+                    Randomize cards
+                </a>
+            </li>
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="purgeCard()">
+                    <span class="glyphicon glyphicon-share"></span>
+                    Purge Card
+                </a>
+            </li>
+          </ul>
+        </div>
+
+    </div>
+</div>
+

@@ -50,6 +50,9 @@ $scope.recommendPromoteToMastered = true ;
 // the question or the answer is shown.
 $scope.questionMode = false ;
 
+// The direction of the footer buttons on the flashcard page.
+$scope.gradingButtonPlacement = "left" ;
+
 // ---------------- Main logic for the controller ------------------------------
 {
     log.debug( "Executing PracticePageController." ) ;
@@ -87,6 +90,11 @@ $scope.questionMode = false ;
 }
 
 // ---------------- Controller methods -----------------------------------------
+$scope.toggleFooterDirection = function() {
+    $scope.gradingButtonPlacement = ( $scope.gradingButtonPlacement == 'left' ) ?
+                                    'right' : 'left' ;
+}
+
 $scope.toggleDisplay = function( displayId ) {
 
     if( displayId == "L0-Hdr" ) { 

@@ -1,5 +1,6 @@
 Pending dev cards
 --------------------------------------------------------------------------------
+. Audio questions and how do we effetivize written answers?
 . Think about multiple choice questions.
 . Matching can have multiple keys and values of the same name
 . In notes index.php - check if the request parameter chapterId is present.
@@ -14,6 +15,14 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+7/16/15 --
+. Usability - flashcard footer now has option to change direction. Mighty useful
+  if you are lying down on your (either) side and studying.
+
+7/15/15 --
+. Notes page fails gracefully by redirecting to dashboard in case chapterId 
+  is missing.
+
 7/10/15 --
 . Plugin - Create a cheat sheet of the steps once the eclipse plugin is modified
 . Plugin - Anwers for QA can now be formatted to fit into multiple columns
