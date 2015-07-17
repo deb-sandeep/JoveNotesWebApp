@@ -15,6 +15,10 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+7/17/15 --
+. Keyboard enhancements - spacebar moved to right, '-' added for hyphenated words
+  like thank-you.
+  
 7/16/15 --
 . Usability - flashcard footer now has option to change direction. Mighty useful
   if you are lying down on your (either) side and studying.
