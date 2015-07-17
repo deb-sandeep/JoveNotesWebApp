@@ -18,6 +18,7 @@ Completed
 7/17/15 --
 . Keyboard enhancements - spacebar moved to right, '-' added for hyphenated words
   like thank-you.
+. Added print feature to notes.
   
 7/16/15 --
 . Usability - flashcard footer now has option to change direction. Mighty useful

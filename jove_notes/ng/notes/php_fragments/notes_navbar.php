@@ -11,8 +11,12 @@
         [ <?php echo ExecutionContext::getCurrentUserName(); ?> ]
         </span>
         <div class="pull-right" style="margin-top: 3px">
+            <a target="_blank" href="/apps/jove_notes/ng/notes/print.php?chapterId=<?php echo $_REQUEST[ 'chapterId' ] ?>">
+                <span class="glyphicon glyphicon-print gi-1-5x"></span>
+            </a>
+            &nbsp;
             <a ng-click="toggleFilterForm()">
-                <span class="glyphicon glyphicon glyphicon-filter gi-1-5x"></span>
+                <span class="glyphicon glyphicon-filter gi-1-5x"></span>
             </a>
             &nbsp;
             <a ng-click="toggleUserStatistics()">
