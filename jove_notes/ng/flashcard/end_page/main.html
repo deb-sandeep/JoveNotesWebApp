@@ -63,13 +63,30 @@
     </div>
 </div>
 
+<!-- Load next flashcard if chapterIds for next flascard is not null         -->
+<!-- ======================================================================= -->
+<div class="row" ng-show="$parent.chapterIdsForNextSessions != null">
+    <div class="col-sm-12" style="height:70px;">
+        <p>
+        <p style="padding-left:10px;padding-right:10px;">
+        <a type="button" class="btn btn-success btn-block gi-2x"
+           href="/apps/jove_notes/ng/flashcard/index.php?chapterId={{$parent.chapterIdsForNextSessions}}"
+           style="height:50px;">
+            Load next flashcard.
+            <span class="glyphicon glyphicon-play"></span>
+        </a>
+        </p>
+        <p>
+    </div>
+</div>
+
 <!-- Return to Dashboard button                                              -->
 <!-- ======================================================================= -->
 <div class="row">
     <div class="col-sm-12" style="height:70px;">
         <p>
         <p style="padding-left:10px;padding-right:10px;">
-        <a type="button" class="btn btn-success btn-block gi-2x"
+        <a type="button" class="btn btn-info btn-block gi-2x"
            href="/apps/jove_notes/ng/dashboard/index.php"
            style="height:50px;">
             Return to Dashboard.

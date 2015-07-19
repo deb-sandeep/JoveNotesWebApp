@@ -56,6 +56,10 @@ $scope.refreshData = function() {
 	refreshData() ;
 }
 
+$scope.doSSRStudy = function() {
+	alert( "Doing SSR study." ) ;
+}
+
 $scope.getTreeRowClass = function( rowData ) {
 	var classStr = "treegrid-" + rowData.rowId ;
 	if( rowData.parentRowId != -1 ) {
@@ -180,6 +184,9 @@ function prepareDataForDisplay( rawData ) {
 
 		displayData.push( syllabusRD ) ;
 
+		var syllabusLevelSSRStudyChapters = [] ;
+		var atleastOneSubjectIsFlashcardAuthorized = false ;
+
 		for( subIndex=0; subIndex<syllabus.subjects.length; subIndex++ ) {
 
 			rowNum++ ;
@@ -190,6 +197,9 @@ function prepareDataForDisplay( rawData ) {
 				                         syllabusRD.rowId ) ;
 
 			displayData.push( subjectRD ) ;
+
+			var subjectLevelSSRStudyChapters = [] ;
+			var atleastOneChapterIsFlashcardAuthorized = false ;
 
 			for( chpIndex=0; chpIndex<subject.chapters.length; chpIndex++ ) {
 
@@ -212,7 +222,34 @@ function prepareDataForDisplay( rawData ) {
 				displayData.push( chapterRD ) ;
 
 				updateCardCounts( chapter, chapterRD, subjectRD, syllabusRD ) ;
+
+				if( chapterRD.isFlashcardAuthorized ) {
+					if( !atleastOneChapterIsFlashcardAuthorized ) {
+						atleastOneChapterIsFlashcardAuthorized = true ;
+					}
+					if( chapterRD.numSSRMaturedCards > 0 ) {
+						subjectLevelSSRStudyChapters.push( chapterRD.chapterId ) ;
+					}
+				}
 			}
+
+			if( atleastOneChapterIsFlashcardAuthorized && subjectRD.numSSRMaturedCards > 0 ) {
+				subjectRD.isFlashcardAuthorized = true ;
+				subjectRD.chapterId = subjectLevelSSRStudyChapters.join() ;
+			}
+
+			if( !atleastOneSubjectIsFlashcardAuthorized ) {
+				atleastOneSubjectIsFlashcardAuthorized = true ;
+			}
+
+			if( subjectRD.numSSRMaturedCards > 0 ) {
+				syllabusLevelSSRStudyChapters = syllabusLevelSSRStudyChapters.concat( subjectLevelSSRStudyChapters ) ;
+			}
+		}
+
+		if( atleastOneSubjectIsFlashcardAuthorized && syllabusRD.numSSRMaturedCards > 0 ) {
+			syllabusRD.isFlashcardAuthorized = true ;
+			syllabusRD.chapterId = syllabusLevelSSRStudyChapters.join() ;
 		}
 	}
 	return displayData ;

@@ -84,6 +84,11 @@ $scope.alerts = [] ;
 
 $scope.userName  = userName ;
 $scope.chapterId = chapterId ;
+$scope.chapterIdsForNextSessions = null ;
+
+if( chapterIdsForNextSessions != null ) {
+    $scope.chapterIdsForNextSessions = chapterIdsForNextSessions.join() ;
+}
 
 $scope.pageTitle = '' ;
 

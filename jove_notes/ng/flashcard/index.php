@@ -6,12 +6,28 @@ require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/learning_session_dao.php
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/student_score_dao.php" ) ;
 
 global $log ;
+
+if( !isset( $_REQUEST['chapterId'] ) ) {
+    $log->warn( "chapterId not found as request paramter. Redirecting to home page." ) ;
+    HTTPUtils::redirectTo( "/" ) ;
+    return ;
+}
+
 $log->info( "Rendering flashcard for chapter " . $_REQUEST[ 'chapterId' ] . 
             " and user " . ExecutionContext::getCurrentUserName() ) ;
 
+$requestedChapters         = explode( ",", $_REQUEST[ 'chapterId' ] ) ;
+$chapterIdForThisSession   = $requestedChapters[0] ;
+$chapterIdsForNextSessions = null ;
+
+if( count( $requestedChapters ) > 0 ) {
+    array_shift( $requestedChapters ) ;
+    $chapterIdsForNextSessions = $requestedChapters ;
+}
+
 // Check if the user has access to flash cards for the requested chapter.
 $chapterDAO = new ChapterDAO() ;
-$guard = $chapterDAO->getChapterGuard( $_REQUEST[ 'chapterId' ] ) ;
+$guard = $chapterDAO->getChapterGuard( $chapterIdForThisSession ) ;
 if( !Authorizer::hasAccess( $guard, "FLASH_CARD" ) ) {
     HTTPUtils::redirectTo( ServerContext::getUnauthRedirPage() ) ;
     return ;
@@ -21,7 +37,7 @@ if( !Authorizer::hasAccess( $guard, "FLASH_CARD" ) ) {
 // session.
 $learningSessionDAO = new LearningSessionDAO() ;
 $sessionId = $learningSessionDAO->createNewSession( 
-            ExecutionContext::getCurrentUserName(), $_REQUEST[ 'chapterId' ] ) ;
+            ExecutionContext::getCurrentUserName(), $chapterIdForThisSession ) ;
 
 $pageConfig = array(
 	"tab_title"  => "Flash Card"
@@ -71,9 +87,17 @@ $score = $scoreDAO->getScore( ExecutionContext::getCurrentUserName() ) ;
 
     <script>
     var userName  = '<?php echo ExecutionContext::getCurrentUserName() ?>' ;
-    var chapterId = <?php echo $_REQUEST[ 'chapterId' ] ?> ;
+    var chapterId = <?php echo $chapterIdForThisSession ?> ;
     var sessionId = <?php echo $sessionId ?> ;
     var userScore = <?php echo $score ?> ;
+    <?php
+    if( $chapterIdsForNextSessions != null ) {
+        echo "var chapterIdsForNextSessions = [" . implode( ",", $chapterIdsForNextSessions ) . "] ;\n" ;
+    }
+    else {
+        echo "var chapterIdsForNextSessions = null ;\n" ;
+    }
+    ?>
     </script>
 </head>
 

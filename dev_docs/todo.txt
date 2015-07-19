@@ -19,6 +19,10 @@ Completed
 7/19/15 --
 . Notes page has a floating menu on the right bottom corner which can be used
   for various actions, including navating back to the dashboard.
+. Now there is a way to run through the complete set of SSR matured cards 
+  right from the dashboard - at a syllabus and subject level. It will cycle
+  through the flashcards for whom SSR matured cards exist without the need
+  to keep jumping back to the dashboard to start the next one
   
 7/17/15 --
 . Keyboard enhancements - spacebar moved to right, '-' added for hyphenated words

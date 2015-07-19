@@ -5,6 +5,7 @@ require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/chapter_dao.php" ) ;
 
 if( !isset( $_REQUEST['chapterId'] ) ) {
     HTTPUtils::redirectTo( "/" ) ;
+    return ;
 }
 
 global $log ;
