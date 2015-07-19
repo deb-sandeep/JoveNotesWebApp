@@ -19,6 +19,14 @@ p {
 	padding-top: 8px;
 }
 
+.floating_notes_menu {
+  position: fixed;
+  right: 0;
+  bottom: 0%;
+  width: 40px;
+  margin-top: 0em;	
+}
+
 .cons_ans {
 	border-collapse: collapse;
 }

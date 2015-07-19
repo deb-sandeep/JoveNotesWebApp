@@ -1,4 +1,4 @@
-notesApp.controller( 'NotesController', function( $scope, $http, $sce ) {
+notesApp.controller( 'NotesController', function( $scope, $http, $sce, $location, $anchorScroll ) {
 
 // ---------------- Constants and inner class definition -----------------------
 function FilterCriteria() {
@@ -73,6 +73,11 @@ $scope.referenceToContexts   = [] ;
 }
 
 // ---------------- Controller methods -----------------------------------------
+$scope.scrollTo = function( id ) {
+  $location.hash( id ) ; 
+  $anchorScroll() ;
+}
+
 $scope.addErrorAlert = function( msgString ) {
 	$scope.alerts.push( { type: 'danger', msg: msgString } ) ;
 }

@@ -1,5 +1,6 @@
 Pending dev cards
 --------------------------------------------------------------------------------
+. Report of subjects studied per day and time spent and number of quesitons
 . Audio questions and how do we effetivize written answers?
 . Think about multiple choice questions.
 . Matching can have multiple keys and values of the same name
@@ -15,6 +16,10 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+7/19/15 --
+. Notes page has a floating menu on the right bottom corner which can be used
+  for various actions, including navating back to the dashboard.
+  
 7/17/15 --
 . Keyboard enhancements - spacebar moved to right, '-' added for hyphenated words
   like thank-you.

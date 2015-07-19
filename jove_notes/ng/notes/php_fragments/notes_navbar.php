@@ -1,3 +1,5 @@
+<a name="top"></a>
+
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-9 nav_element">
@@ -30,3 +32,19 @@
     </div>
   </div>
 </div>
+
+<div class="floating_notes_menu">
+    <a ng-click="scrollTo('top')">
+        <span class="glyphicon glyphicon-arrow-up gi-2x"></span>
+    </a>
+    <p>
+    <a ng-click="toggleUserStatistics()">
+        <span class="glyphicon glyphicon-screenshot gi-2x"></span>
+    </a>
+    <p>
+    <a href="/apps/jove_notes/ng/dashboard/index.php">
+        <span class="glyphicon glyphicon-eye-open gi-2x"></span>
+    </a>
+</div>
+
+
