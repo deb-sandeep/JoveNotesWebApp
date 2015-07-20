@@ -235,6 +235,7 @@ function prepareDataForDisplay( rawData ) {
 
 			if( atleastOneChapterIsFlashcardAuthorized && subjectRD.numSSRMaturedCards > 0 ) {
 				subjectRD.isFlashcardAuthorized = true ;
+				subjectLevelSSRStudyChapters.shuffle() ;
 				subjectRD.chapterId = subjectLevelSSRStudyChapters.join() ;
 			}
 
@@ -249,6 +250,7 @@ function prepareDataForDisplay( rawData ) {
 
 		if( atleastOneSubjectIsFlashcardAuthorized && syllabusRD.numSSRMaturedCards > 0 ) {
 			syllabusRD.isFlashcardAuthorized = true ;
+			syllabusLevelSSRStudyChapters.shuffle() ;
 			syllabusRD.chapterId = syllabusLevelSSRStudyChapters.join() ;
 		}
 	}

@@ -16,6 +16,10 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+7/20/15 --
+. Clustered SSR flash cards are randomized. That is, the subjects are not in the
+  sequence of display but can pop up anytime.. surprise, surprise.
+
 7/19/15 --
 . Notes page has a floating menu on the right bottom corner which can be used
   for various actions, including navating back to the dashboard.
