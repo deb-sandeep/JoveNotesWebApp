@@ -24,6 +24,7 @@ $scope.$parent.currentReport = 'Reports' ;
 
 $scope.subjectNames = [] ;
 
+// preferences.entityType can take on the following values [Score, Time, NumQuestions]
 $scope.preferences = {
 
 	entityType : 'Score',
@@ -285,6 +286,11 @@ function callReportPlotDataAPI() {
         if( $scope.preferences.entityType == 'Score' ) {
             $scope.reportTitle = "Score earned " ;
             barXAxisPosition = 'center' ;
+            numDecimals = 0;
+        }
+        else if( $scope.preferences.entityType == 'NumQuestions' ) {
+            $scope.reportTitle = "Number of questions attempted " ;
+            barXAxisPosition = 'bottom' ;
             numDecimals = 0;
         }
         else {

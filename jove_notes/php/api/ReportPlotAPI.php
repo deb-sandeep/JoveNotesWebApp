@@ -1,6 +1,6 @@
 <?php
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/abstract_jove_notes_api.php" ) ;
-require_once( APP_ROOT      . "/php/dao/card_rating_dao.php" ) ;
+require_once( APP_ROOT      . "/php/dao/report_plot_dao.php" ) ;
 
 /**
  * This API can be called in the following modes
@@ -10,6 +10,7 @@ require_once( APP_ROOT      . "/php/dao/card_rating_dao.php" ) ;
  *    
  * 2. GET ReportPlot/Score
  *    GET ReportPlot/Time
+ *    GET ReportPlot/NumQuestions
  *
  *    Gets the report data for score and time entity types. The characteristics
  *    of the returned data will depend upon the following parameters
@@ -17,7 +18,7 @@ require_once( APP_ROOT      . "/php/dao/card_rating_dao.php" ) ;
 class ReportPlotAPI extends AbstractJoveNotesAPI {
 
 	private $requestEntity = null ;
-	private $cardRatingDAO = null ;
+	private $reportPlotDAO = null ;
 
 	private $startDate     = null ;
 	private $endDate       = null ;
@@ -26,7 +27,7 @@ class ReportPlotAPI extends AbstractJoveNotesAPI {
 
 	function __construct() {
 		parent::__construct() ;
-		$this->cardRatingDAO = new CardRatingDAO() ;
+		$this->reportPlotDAO = new ReportPlotDAO() ;
 	}
 
 	public function doGet( $request, &$response ) {
@@ -62,13 +63,14 @@ class ReportPlotAPI extends AbstractJoveNotesAPI {
 		$this->logger->info( "Parsing request parameters." ) ;
 
 		if( count( $request->requestPathComponents ) == 0 ) {
-			throw new Exception( "Entity [Subjects|Score|Time] not specified." ) ;
+			throw new Exception( "Entity [Subjects|Score|Time|NumQuestions] not specified." ) ;
 		}
 		else{
 			$this->requestEntity = $request->requestPathComponents[0] ;
 			if( !( $this->requestEntity == 'Subjects' || 
-				   $this->requestEntity == 'Score' ||
-				   $this->requestEntity == 'Time' ) ) {
+				   $this->requestEntity == 'Score'    ||
+				   $this->requestEntity == 'Time'     || 
+				   $this->requestEntity == 'NumQuestions' ) ) {
 
 				throw new Exception( "Invalid entity '$this->requestEntity' specified." ) ;
 			}
@@ -95,7 +97,7 @@ class ReportPlotAPI extends AbstractJoveNotesAPI {
 
 		$this->logger->info( "Processing request for entity $this->requestEntity" ) ;
 		if( $this->requestEntity == 'Subjects' ) {
-			return $this->cardRatingDAO->getDistinctSubjectNames(
+			return $this->reportPlotDAO->getDistinctSubjectNames(
 				                      ExecutionContext::getCurrentUserName() ) ;
 		}
 		else if( $this->requestEntity == 'Score' ) {
@@ -104,67 +106,78 @@ class ReportPlotAPI extends AbstractJoveNotesAPI {
 		else if( $this->requestEntity == 'Time' ) {
 			return $this->getTimeResponse() ;
 		}
+		else if( $this->requestEntity == 'NumQuestions' ) {
+			return $this->getNumQuestionsResponse() ;
+		}
 	}
 
 	private function getScoreResponse() {
 
-		$priorScore = $this->cardRatingDAO->getCumulativeScorePriorToDate(
+		$priorScore = $this->reportPlotDAO->getCumulativeScorePriorToDate(
 			              				ExecutionContext::getCurrentUserName(), 
 			              				$this->startDate ) ;
 
-		$maxScore = $this->cardRatingDAO->getCumulativeScorePriorToDate(
+		$maxScore = $this->reportPlotDAO->getCumulativeScorePriorToDate(
 			              				ExecutionContext::getCurrentUserName(), 
 			              				date( 'Y-m-d H:i:s' )) ;
 
-		$scoreMap = $this->cardRatingDAO->getCumulativeScores(
+		$scoreMap = $this->reportPlotDAO->getCumulativeScores(
 										ExecutionContext::getCurrentUserName(),
 										$this->subject,
 										$this->dataFrequency,
 										$this->startDate,
 										$this->endDate ) ;
 
-		$labels = array() ;
-		$scores = array() ;
-
-    	foreach( $scoreMap as $label => $score ) {
-    		array_push( $scores, $score ) ;
-    		if( $this->dataFrequency != 'intraday' ) {
-	    		array_push( $labels, $label ) ;
-    		}
-    	}
-
-		$respObj = array() ;
-
-		$respObj[ "priorValue"  ] = $priorScore ;
-		$respObj[ "values"      ] = $scores ;
-		$respObj[ "labels"      ] = $labels ;
-		$respObj[ "latestValue" ] = $maxScore ;
-
-		return $respObj ;
+		return $this->constructResponse( $scoreMap, $priorScore, $maxScore ) ;
 	}
 
 	private function getTimeResponse() {
 
-		$priorTime = $this->cardRatingDAO->getCumulativeTimePriorToDate(
+		$priorTime = $this->reportPlotDAO->getCumulativeTimePriorToDate(
 			              				ExecutionContext::getCurrentUserName(), 
 			              				$this->startDate ) ;
 
-		$maxTime = $this->cardRatingDAO->getCumulativeTimePriorToDate(
+		$maxTime = $this->reportPlotDAO->getCumulativeTimePriorToDate(
 			              				ExecutionContext::getCurrentUserName(), 
 			              				date( 'Y-m-d H:i:s' )) ;
 
-		$scoreMap = $this->cardRatingDAO->getCumulativeTime(
+		$timeMap = $this->reportPlotDAO->getCumulativeTime(
 										ExecutionContext::getCurrentUserName(),
 										$this->subject,
 										$this->dataFrequency,
 										$this->startDate,
 										$this->endDate ) ;
 
+		return $this->constructResponse( $timeMap, $priorTime, $maxTime ) ;
+	}
+
+	private function getNumQuestionsResponse() {
+
+		$priorNumQ = $this->reportPlotDAO->getCumulativeNumQuestionsPriorToDate(
+			              				ExecutionContext::getCurrentUserName(), 
+			              				$this->startDate ) ;
+
+		$maxNumQ = $this->reportPlotDAO->getCumulativeNumQuestionsPriorToDate(
+			              				ExecutionContext::getCurrentUserName(), 
+			              				date( 'Y-m-d H:i:s' )) ;
+
+		$numQMap = $this->reportPlotDAO->getCumulativeNumQuestions(
+										ExecutionContext::getCurrentUserName(),
+										$this->subject,
+										$this->dataFrequency,
+										$this->startDate,
+										$this->endDate ) ;
+
+		return $this->constructResponse( $numQMap, $priorNumQ, $maxNumQ ) ;
+	}
+
+	private function constructResponse( &$valueMap, $priorValue, $latestValue ) {
+
 		$labels = array() ;
 		$values = array() ;
 
-    	foreach( $scoreMap as $label => $score ) {
-    		array_push( $values, $score ) ;
+    	foreach( $valueMap as $label => $value ) {
+    		array_push( $values, $value ) ;
     		if( $this->dataFrequency != 'intraday' ) {
 	    		array_push( $labels, $label ) ;
     		}
@@ -172,10 +185,10 @@ class ReportPlotAPI extends AbstractJoveNotesAPI {
 
 		$respObj = array() ;
 
-		$respObj[ "priorValue"  ] = $priorTime ;
+		$respObj[ "priorValue"  ] = $priorValue ;
 		$respObj[ "values"      ] = $values ;
 		$respObj[ "labels"      ] = $labels ;
-		$respObj[ "latestValue" ] = $maxTime ;
+		$respObj[ "latestValue" ] = $latestValue ;
 
 		return $respObj ;
 	}
