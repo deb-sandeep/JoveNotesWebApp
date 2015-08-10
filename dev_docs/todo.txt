@@ -1,11 +1,9 @@
 Pending dev cards
 --------------------------------------------------------------------------------
+. Think of better visualization using D3
 . Report of subjects studied per day and time spent and number of quesitons
-. Audio questions and how do we effetivize written answers?
 . Think about multiple choice questions.
 . Matching can have multiple keys and values of the same name
-. In notes index.php - check if the request parameter chapterId is present.
-  If not return an error message or something. Same for flashcard page too.
 . Responsive headers - responsive headers are really not working. Change them 
   to static non-floating headers
 
@@ -16,6 +14,17 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+7/27/15 --
+. JNP - YouTube video embed support 
+
+7/22/15 -- 
+. Support for textual UML diagrams via PlantUML incorporated
+
+7/21/15 --
+. JNP - Multi line jovenotes tags supported
+. JNP - Concept maps can now be inline withtin any processable text element in
+        notes
+
 7/20/15 --
 . Clustered SSR flash cards are randomized. That is, the subjects are not in the
   sequence of display but can pop up anytime.. surprise, surprise.
