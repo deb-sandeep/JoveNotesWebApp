@@ -64,6 +64,9 @@ $scope.gradingButtonPlacement = "right" ;
     log.debug( "Serializing study criteria." ) ;
     $scope.$parent.studyCriteria.serialize() ;
 
+    // Load the local state, which might include footer direction etc.
+    loadLocalState() ;
+
     log.debug( "Computing session cards." ) ;
     computeSessionCards() ;
 
@@ -93,6 +96,7 @@ $scope.gradingButtonPlacement = "right" ;
 $scope.toggleFooterDirection = function() {
     $scope.gradingButtonPlacement = ( $scope.gradingButtonPlacement == 'left' ) ?
                                     'right' : 'left' ;
+    $.cookie( 'flashCardFooterDir', $scope.gradingButtonPlacement, { expires: 30 } ) ;
 }
 
 $scope.toggleDisplay = function( displayId ) {
@@ -190,6 +194,17 @@ $scope.pushQuestion = function() {
 }
 
 // ---------------- Private functions ------------------------------------------
+function loadLocalState() {
+
+    var crit = $.cookie( 'flashCardFooterDir' ) ;
+    if( typeof crit != 'undefined' ) {
+        $scope.gradingButtonPlacement = crit ;
+    }
+    else {
+        $scope.gradingButtonPlacement = "right" ;
+    } ;
+}
+
 function updateLearningStatsForCurrentQuestion( rating, nextLevel ) {
 
     var delta = ( new Date().getTime() - currentQuestionShowStartTime )/1000 ;
