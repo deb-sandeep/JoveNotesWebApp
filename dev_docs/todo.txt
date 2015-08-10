@@ -17,6 +17,7 @@ Completed
 8/10/15 --
 . Persisting flashcard footer direction state 
 . Added num questions to the report plot
+. Increase the div width of the points display on the flashcard page
 
 7/27/15 --
 . JNP - YouTube video embed support 
