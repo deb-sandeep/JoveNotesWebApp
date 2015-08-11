@@ -175,7 +175,8 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 			                          $this->requestObj->cardId, 
 			                          $this->requestObj->nextLevel, 
 			                          $rating, 
-			                          $this->learningEfficiency ) ;
+			                          $this->learningEfficiency,
+			                          $this->requestObj->timeTaken ) ;
 	}	
 
 	private function computeScore( $cardLearningSummary ) {

@@ -18,6 +18,7 @@ Completed
 . Auto promote logic enhancemnet
 . Auto promote without score recommendation for L3 cards
 . Remove flashing of page on tutor side during remote push due to cloud icon visibility
+. Updated total time spent in card learning summary
 
 8/10/15 --
 . Persisting flashcard footer direction state 
