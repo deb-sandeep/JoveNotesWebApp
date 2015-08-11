@@ -42,7 +42,13 @@
 <div class="container-fluid">
     <div ng-show="showL2Header"
          class="row" 
-         style="padding-bottom:5px;padding-top:5px;background-color:white;">
+         style="padding-bottom:5px;padding-top:0px;background-color:white;">
+
+        <div class="progress" style="height:3px;padding:0px;margin-bottom:2px">
+            <div id="card_pb_good"  class="progress-bar progress-bar-success" style="width: 0%"></div>
+            <div id="card_pb_bad"   class="progress-bar progress-bar-warning" style="width: 0%"></div>
+            <div id="card_pb_worst" class="progress-bar progress-bar-danger"  style="width: 0%"></div>
+        </div>         
 
         <div class="col-sm-12 small">
             <span class="badge {{currentQuestion.difficultyLabel}}">{{currentQuestion.difficultyLabel}}</span>

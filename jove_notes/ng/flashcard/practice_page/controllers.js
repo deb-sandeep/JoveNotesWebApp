@@ -551,6 +551,7 @@ function trimCardsAsPerBounds() {
 function handleTimerEvent() {
     if( sessionActive ) {
         refreshClocks() ;
+        refreshCardTimeProgressBars() ;
         setTimeout( handleTimerEvent, 1000 ) ;
     }
 }
@@ -577,6 +578,14 @@ function refreshClocks() {
         $scope.$parent.sessionDuration = durationTillNowInMillis ;
     }
     $scope.$digest() ;
+}
+
+function refreshCardTimeProgressBars() {
+
+    var delta = Math.ceil(( new Date().getTime() - currentQuestionShowStartTime )/1000) ;
+    var percent = Math.ceil( (delta / 120)*100 ) ;
+
+    $( "#card_pb_good" ).css( "width", percent + "%" ) ;
 }
 
 function onWindowResize() {
