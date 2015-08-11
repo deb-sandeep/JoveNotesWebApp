@@ -2,6 +2,9 @@
 	<span class="glyphicon glyphicon-cloud-upload" 
 		  style="color: #6464FF"
 	      ng-show="pushQuestionSuccess"></span>
+	<span class="glyphicon glyphicon-cloud-upload" 
+		  style="color: #FFFFFF"
+	      ng-show="$parent.studyCriteria.push && !pushQuestionSuccess"></span>
 	<render-flash-card-question></render-flash-card-question>
 </div>
 <hr>
