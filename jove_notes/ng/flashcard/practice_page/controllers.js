@@ -45,6 +45,7 @@ $scope.pushQuestionSuccess = false ;
 $scope.pushAnswerSuccess   = false ;
 
 $scope.recommendPromoteToMastered = true ;
+$scope.recommendPromoteToMasteredWithoutScore = true ;
 
 // questionMode is used by the view to show the appropriate controls when either
 // the question or the answer is shown.
@@ -275,16 +276,17 @@ function showNextCard() {
 
 function computeRecommendPromoteFlag() {
 
-    // We don't recommend promotion to mastered in non-assisted mode.
-    if( !$scope.$parent.studyCriteria.assistedStudy ) {
-        $scope.recommendPromoteToMastered = false ;
-        return ;
-    }
+    $scope.recommendPromoteToMastered = false ;
+    $scope.recommendPromoteToMasteredWithoutScore = false ;
 
-    // If the question is already at L3, we can as well press the Easy button
-    // to promote the card to mastered. No need to show the auto promote button
+    // We don't recommend promotion to mastered in non-assisted mode.
+    if( !$scope.$parent.studyCriteria.assistedStudy ) return ;
+
+    // If the question is already at L3 show the auto promote without score
+    // button. Saving one attempt and more importantly getting free points in case
+    // the tutor decides that the question has been sufficiently practiced.
     if( $scope.currentQuestion.learningStats.currentLevel == 'L3' ) {
-        $scope.recommendPromoteToMastered = false ;
+        $scope.recommendPromoteToMasteredWithoutScore = true ;
         return ;
     }
 
@@ -302,9 +304,18 @@ function computeRecommendPromoteFlag() {
 
             var rating = temporalScores[i] ;
 
-            if( rating != "E" && trailingEStreak ){ trailingEStreak = false ; }
-            if( rating == "E" && trailingEStreak ){ numTrailingERatings++ ;   }
-            if( rating == "H" || rating == "P"   ){ numHorPRatings++ ;        }
+            if( rating == "E" || rating == "A" ) {
+                if( trailingEStreak ){ 
+                    numTrailingERatings++ ;
+                }
+            }
+            else {
+                trailingEStreak = false ; 
+            }
+
+            if( rating == "H" || rating == "P"   ){ 
+                numHorPRatings++ ;        
+            }
         }
 
         // Recommendation to promote to mastered is considered if and only if
@@ -323,7 +334,7 @@ function computeRecommendPromoteFlag() {
                 // Quirky logic - why > 3. Because for the wrong attempt he would 
                 // have likely answered it correctly in the same session once to
                 // close the session.
-                if( numTrailingERatings > 3 ) {
+                if( numTrailingERatings >= 3 ) {
                     recommendFlag = true ;
                 }
                 else {
@@ -334,6 +345,7 @@ function computeRecommendPromoteFlag() {
     }
 
     $scope.recommendPromoteToMastered = recommendFlag ;
+    $scope.recommendPromoteToMasteredWithoutScore = recommendFlag ;
 }
 
 function endSession() {
