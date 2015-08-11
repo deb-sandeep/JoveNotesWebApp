@@ -189,6 +189,12 @@ function preProcessFlashCardQuestions( questions ) {
         question.learningStats.absoluteLearningEfficiency = 
             jnUtil.getAbsoluteLearningEfficiency( question.learningStats.temporalScores ) ;
 
+        question.learningStats.averageTimeSpent = 0 ;
+        if( question.learningStats.numAttempts != 0 ) {
+            question.learningStats.averageTimeSpent = Math.ceil( question.learningStats.totalTimeSpent / 
+                                                                 question.learningStats.numAttempts ) ;
+        }
+
         associateHandler( question ) ;
         processTestDataHints( question ) ;
     }

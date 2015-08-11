@@ -50,7 +50,11 @@
             <span class="badge {{currentQuestion.learningStats.efficiencyLabel}}">{{currentQuestion.learningStats.efficiencyLabel}}</span>
             <span class="badge muted">{{currentQuestion.learningStats.numAttempts}}</span>
             <span class="badge muted">{{currentQuestion.learningStats.lastAttemptTime | elapsedDuration}}</span>
-            {{currentQuestion.learningStats.absoluteLearningEfficiency}}
+            {{currentQuestion.learningStats.absoluteLearningEfficiency}} 
+            <span style="color:white">
+                Avg Time: {{currentQuestion.learningStats.averageTimeSpent}} | 
+                ID : {{currentQuestion.questionId}}
+            </span>
             <table class="temporal">
                 <tr>
                     <td ng-repeat="score in currentQuestion.learningStats.temporalScores track by $index"

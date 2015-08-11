@@ -155,6 +155,7 @@ class FlashCardAPI extends AbstractJoveNotesAPI {
 		$learningStats[ "currentLevel"       ] = $card[ "current_level" ] ;
 		$learningStats[ "temporalScores"     ] = str_split( $card[ "temporal_ratings" ] ) ;
 		$learningStats[ "lastAttemptTime"    ] = $lastAttemptTime ;
+		$learningStats[ "totalTimeSpent"     ] = $card[ "total_time_spent" ] ;
 
 		$question[ "learningStats" ] = $learningStats ;
 
