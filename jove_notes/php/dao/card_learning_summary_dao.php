@@ -165,6 +165,33 @@ QUERY;
         return parent::getResultAsAssociativeArray( $query, 
                          [ "chapter_id", "num_ssr_matured_cards" ], false ) ;
     }
+
+    function getDifficultyTimeAveragesForChapter( $userName, $chapterId ) {
+
+$query = <<<QUERY
+SELECT 
+    c.card_type, c.difficulty_level, ceil(avg( cls.total_time_spent )) as avg_time
+FROM 
+    jove_notes.card_learning_summary cls,
+    jove_notes.card c,
+    jove_notes.chapter ch
+WHERE
+    c.card_id = cls.card_id and
+    c.chapter_id = ch.chapter_id and
+    cls.num_attempts > 0 and
+    cls.student_name = '$userName' and
+    ch.subject_name = ( select subject_name from jove_notes.chapter where chapter_id = $chapterId )
+GROUP BY
+    c.card_type, c.difficulty_level
+ORDER BY
+    ch.subject_name asc, 
+    c.card_type asc, 
+    c.difficulty_level asc
+QUERY;
+
+        return parent::getResultAsAssociativeArray( $query, 
+                      [ "card_type", "difficulty_level", "avg_time" ], false ) ;
+    }
 }
 ?>
 

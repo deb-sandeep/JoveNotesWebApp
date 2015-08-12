@@ -53,6 +53,7 @@ class FlashCardAPI extends AbstractJoveNotesAPI {
 		$deckDetailsObj[ "difficultyStats"   ] = $this->constructDifficultyStats() ;
 
 		$this->attachProgressSnapshots( $deckDetailsObj ) ;
+		$this->attachDifficultyTimeAverages( $deckDetailsObj ) ;
 
 		return $deckDetailsObj ;
 	}
@@ -116,6 +117,31 @@ class FlashCardAPI extends AbstractJoveNotesAPI {
 		}
 		$deckDetailsObj[ "progressSnapshot"  ] = $progressSnapshotObj ;
 		$deckDetailsObj[ "learningCurveData" ] = $learningCurveDataObj ;
+	}
+
+	private function attachDifficultyTimeAverages( &$deckDetailsObj ) {
+
+		$this->logger->warn( "Getting difficulty time averages for chapter " . $this->chapterId ) ;
+		$diffTimeAverages = array() ;
+
+		$tupules = $this->clsDAO->getDifficultyTimeAveragesForChapter( 
+										ExecutionContext::getCurrentUserName(), 
+										$this->chapterId ) ;
+		
+		for( $i=0; $i < count( $tupules ); $i++ ) {
+			$cardType        = $tupules[$i][ "card_type" ] ;
+			$difficultyLevel = $tupules[$i][ "difficulty_level" ] ;
+			$avgTime         = $tupules[$i][ "avg_time" ] ;
+			
+			if( !array_key_exists( $cardType, $diffTimeAverages ) ) {
+				$diffTimeAverages[ $cardType ] = array() ;
+			}
+			$values = &$diffTimeAverages[ $cardType ] ;
+
+			array_push( $values, $difficultyLevel ) ;
+			array_push( $values, $avgTime ) ;
+		}
+		$deckDetailsObj[ "difficultyTimeAverages" ] = $diffTimeAverages ;
 	}
 
 	private function constructQuestions() {

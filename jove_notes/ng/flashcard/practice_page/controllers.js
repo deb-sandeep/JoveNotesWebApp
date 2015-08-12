@@ -585,7 +585,7 @@ function refreshCardTimeProgressBars() {
     var delta = Math.ceil(( new Date().getTime() - currentQuestionShowStartTime )/1000) ;
     var percent = Math.ceil( (delta / 120)*100 ) ;
 
-    $( "#card_pb_good" ).css( "width", percent + "%" ) ;
+    //$( "#card_pb_good" ).css( "width", percent + "%" ) ;
 }
 
 function onWindowResize() {

@@ -1,159 +1,1333 @@
-{
-	"chapterDetails" : { 
-		"chapterId"        : 23,
-		"syllabusName"     : "Class-8",
-		"subjectName"      : "Biology",
-		"chapterNumber"    : 3,
-		"subChapterNumber" : 0,
-		"chapterName"      : "Digestion, absorption, assimilation"
-	},
-	"deckDetails" : {
-		"numCards" : 100,
-		"difficultyStats"  : {
-			"numVE" : 20,
-			"numE"  : 10,
-			"numM"  : 10,
-			"numH"  : 25,
-			"numVH" : 25
-		},
-		"progressSnapshot" : {
-			"numNS"  :  20 ,
-			"numL0"  :  20 ,
-			"numL1"  :  10 ,
-			"numL2"  :  10 ,
-			"numL3"  :  20 ,
-			"numMAS" :  20
-		},
-		"learningCurveData" : [
-	        [ 100,   0,   0,  0,  0,   0 ],
-	        [  50,  10,  40,  0,  0,   0 ],
-	        [  30,   5,  10, 55,  0,   0 ],
-	        [  10,  10,  20, 40, 20,   0 ],
-	        [   0,   5,   0, 50, 30,  15 ],
-	        [   0,   0,   0, 10, 50,  40 ],
-	        [   0,   0,   0,  0, 30,  70 ],
-	        [   0,   0,   0,  0,  0, 100 ]
-		]
-	},
-	"questions" : [
-		{
-			"questionId"      : 1,
-			"questionType"    : "question_answer",
-			"question"        : "What is the meaning of <p><code>Cat</code>",
-			"answer"          : "हमारे राष्ट्रीय प्रतीक",
-			"difficultyLevel" : 25,
-			"learningStats"   : {
-				"numAttempts"        : 2,
-				"learningEfficiency" : 95,
-				"currentLevel"       : "L2",
-				"temporalScores"     : [ "H" ],
-				"lastAttemptTime"    : -1,
-				"_testLATLag"        : -5
-			}
-		},
-		{
-			"questionId"      : 2,
-			"questionType"    : "question_answer",
-			"question"        : "What is the answer to life?",
-			"answer"          : "The answer to life is <p>$$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}$$",
-			"difficultyLevel" : 40,
-			"learningStats"   : {
-				"numAttempts"        : 4,
-				"learningEfficiency" : 85,
-				"currentLevel"       : "L0",
-				"temporalScores"     : [ "A", "P" ],
-				"lastAttemptTime"    : -1,
-				"_testLATLag"        : -5
-			}
-		},
-		{
-			"questionId"      : 7,
-			"questionType"    : "fib",
-			"question"        : "The shortcut for copy is {0} and that of paste is {1}.",
-			"answers"         : [ "ctrl-c", "ctrl-v" ],
-			"difficultyLevel" : 90,
-			"learningStats"   : {
-				"numAttempts"        : 7,
-				"learningEfficiency" : 99,
-				"currentLevel"       : "L3",
-				"temporalScores"     : [ "H", "A", "P", "E", "E" ],
-				"lastAttemptTime"    : -1,
-				"_testLATLag"        : -5
-			}
-		},
-		{
-			"questionId"      : 8,
-			"questionType"    : "true_false",
-			"statement"       : "Sun is a star.",
-			"truthValue"      : true,
-			"justification"   : "Sun is a celestial body and emits its own light. Hence it is a star.",
-			"difficultyLevel" : 100,
-			"learningStats"   : {
-				"numAttempts"        : 0,
-				"learningEfficiency" : 0,
-				"currentLevel"       : "NS",
-				"temporalScores"     : [],
-				"lastAttemptTime"    : -1,
-				"_testLATLag"        : 0
-			}
-		},
-		{
-			"questionId"      : 9,
-			"questionType"    : "matching",
-			"caption"         : "Match the following",
-			"matchData"       : [
-				[ "1", "One"   ],
-				[ "2", "Two"   ],
-				[ "3", "Three" ],
-				[ "4", "Four"  ],
-				[ "5", "Five"  ],
-				[ "Smily", "{{@img smily.png}}" ]
-			],
-			"difficultyLevel" : 100,
-			"learningStats"   : {
-				"numAttempts"        : 0,
-				"learningEfficiency" : 0,
-				"currentLevel"       : "NS",
-				"temporalScores"     : [],
-				"lastAttemptTime"    : -1,
-				"_testLATLag"        : 0
-			}
-		},
-		{
-			"questionId"      : 10,
-			"questionType"    : "image_label",
-			"caption"         : "Label the image",
-			"imageName"       : "teeths.png",
-			"hotSpots"        : [
-			    [ 104,  21, "Molars"    ],
-			    [ 242,  20, "Premolars" ],
-			    [ 364,  24, "Incisors"  ],
-			    [ 305, 201, "Canines"   ]
-			],
-			"difficultyLevel" : 100,
-			"learningStats"   : {
-				"numAttempts"        : 0,
-				"learningEfficiency" : 0,
-				"currentLevel"       : "NS",
-				"temporalScores"     : [],
-				"lastAttemptTime"    : -1,
-				"_testLATLag"        : 0
-			}
-		},
-		{
-			"questionId"      : 11,
-			"questionType"    : "spellbee",
-			"word"            : "abbreviate",
-			"pronunciation"   : "(ə-brēˈvē-ātˌ)",
-			"difficultyLevel" : 100,
-			"learningStats"   : {
-				"numAttempts"        : 0,
-				"learningEfficiency" : 0,
-				"currentLevel"       : "NS",
-				"temporalScores"     : [],
-				"lastAttemptTime"    : -1,
-				"_testLATLag"        : 0
-			}
-		}
-	]
-}
+ {
+     "chapterDetails": {
+         "chapterId": 67,
+         "syllabusName": "Class-8",
+         "subjectName": "Chemistry",
+         "chapterNumber": 3,
+         "subChapterNumber": 0,
+         "chapterName": "Elements, Compunds and Mixtures"
+     },
+     "deckDetails": {
+         "numCards": 89,
+         "difficultyStats": {
+             "numVE": 62,
+             "numE": 14,
+             "numM": 10,
+             "numH": 3,
+             "numVH": 0
+         },
+         "progressSnapshot": {
+             "numNS": 0,
+             "numL0": 0,
+             "numL1": 0,
+             "numL2": 1,
+             "numL3": 5,
+             "numMAS": 83
+         },
+         "learningCurveData": [
+             [50, 8, 8, 0, 0, 0],
+             [46, 10, 13, 0, 0, 0],
+             [13, 19, 37, 0, 0, 0],
+             [0, 22, 47, 0, 0, 0],
+             [0, 19, 43, 7, 0, 0],
+             [0, 6, 56, 7, 0, 0],
+             [0, 6, 51, 12, 0, 0],
+             [0, 10, 21, 38, 0, 0],
+             [6, 12, 17, 40, 0, 0],
+             [0, 4, 31, 40, 0, 0],
+             [0, 3, 20, 44, 1, 7],
+             [0, 1, 18, 43, 2, 11],
+             [4, 3, 26, 40, 2, 14],
+             [4, 3, 26, 36, 2, 18],
+             [4, 4, 13, 29, 10, 29],
+             [2, 6, 13, 29, 10, 29],
+             [2, 4, 12, 30, 12, 29],
+             [1, 3, 14, 19, 23, 29],
+             [1, 2, 8, 22, 24, 32],
+             [0, 3, 8, 22, 24, 32],
+             [0, 1, 10, 22, 24, 32],
+             [0, 4, 6, 14, 22, 43],
+             [0, 5, 3, 14, 13, 54],
+             [0, 2, 4, 9, 13, 61],
+             [0, 0, 5, 10, 13, 61],
+             [0, 0, 0, 6, 13, 70],
+             [0, 0, 0, 6, 10, 73],
+             [0, 1, 0, 5, 7, 76],
+             [0, 0, 1, 5, 7, 76],
+             [0, 0, 1, 0, 12, 76],
+             [0, 0, 0, 1, 5, 83],
+             [0, 0, 0, 1, 5, 83]
+         ],
+         "difficultyTimeAverages": {
+             "fib": [22, 69, 37, 45, 47, 33],
+             "matching": [37, 103, 60, 292],
+             "question_answer": [2, 42, 4, 31, 6, 80, 8, 72, 10, 114, 12, 84, 14, 101, 15, 112, 17, 213, 19, 173, 21, 208, 23, 325, 24, 315, 26, 136, 28, 222, 30, 321, 31, 232, 33, 237, 35, 563, 36, 244, 38, 249, 40, 284, 41, 432, 43, 331, 49, 166, 50, 294, 51, 299, 57, 345, 59, 371, 63, 292, 64, 125, 65, 615, 70, 403, 71, 1073, 76, 659, 79, 877, 81, 345],
+             "true_false": [20, 78]
+         }
+     },
+     "questions": [{
+         "questionId": 4080,
+         "questionType": "question_answer",
+         "difficultyLevel": 10,
+         "question": "<em>Define<\/em><\/p><p>&lsquo;<strong>Matter<\/strong>&rsquo;",
+         "answer": "Matter is any substance which has mass and occupies space.",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437661715000,
+             "totalTimeSpent": 55
+         }
+     }, {
+         "questionId": 4081,
+         "questionType": "question_answer",
+         "difficultyLevel": 6,
+         "question": "What are the two broad categories matter can be classified into?",
+         "answer": "<strong>Mixtures<\/strong> and <strong>Pure substances<\/strong>",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437661718000,
+             "totalTimeSpent": 18
+         }
+     }, {
+         "questionId": 4082,
+         "questionType": "question_answer",
+         "difficultyLevel": 14,
+         "question": "<em>Define<\/em><\/p><p>&lsquo;<strong>Pure substances<\/strong>&rsquo;",
+         "answer": "Matter which is made of only one type of particle and is homogeneous in composition",
+         "learningStats": {
+             "numAttempts": 5,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438435051000,
+             "totalTimeSpent": 101
+         }
+     }, {
+         "questionId": 4083,
+         "questionType": "question_answer",
+         "difficultyLevel": 24,
+         "question": "<em>Define<\/em><\/p><p>&lsquo;<strong>Mixture<\/strong>&rsquo;",
+         "answer": "Matter which is made of one or multiple types of particle which can be separated by physical or mechanical methods is called Mixture",
+         "learningStats": {
+             "numAttempts": 8,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "A", "H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438870415000,
+             "totalTimeSpent": 372
+         }
+     }, {
+         "questionId": 4084,
+         "questionType": "question_answer",
+         "difficultyLevel": 71,
+         "question": "Compare the characteristics of pure substances and mixtures.",
+         "answer": "<table class='pure-table pure-table-horizontal'>\n<thead>\n<tr>\n    <th>Pure substance<\/th>\n    <th>Mixture<\/th>\n<\/tr>\n<\/thead>\n<tbody>\n    <tr>\n        <td>It is made of only one type of particle and is always homogeneous<\/td>\n        <td>It many be homogeneous or heterogeneous<\/td>\n    <\/tr>\n    <tr>\n        <td>It cannot be separated into any simpler substances by physical or mechanical means<\/td>\n        <td>It can be separated into simpler substances by physical or mechanical means<\/td>\n    <\/tr>\n    <tr>\n        <td>Properties of pure substances remain constant throughout the whole sample<\/td>\n        <td>A mixture displays the properties of the constituting pure substances<\/td>\n    <\/tr>\n    <tr>\n        <td>It has a sharp melting and boiling point<\/td>\n        <td>It does not have a sharp melting and boiling point<\/td>\n    <\/tr>\n<\/tbody>\n<\/table>",
+         "learningStats": {
+             "numAttempts": 13,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "H", "E", "P", "E", "E", "H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1439216202000,
+             "totalTimeSpent": 1073
+         }
+     }, {
+         "questionId": 4085,
+         "questionType": "question_answer",
+         "difficultyLevel": 4,
+         "question": "Into what categories can pure substances be classified?",
+         "answer": "<strong>Elements<\/strong> and <strong>Compounds<\/strong>",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437661803000,
+             "totalTimeSpent": 32
+         }
+     }, {
+         "questionId": 4086,
+         "questionType": "question_answer",
+         "difficultyLevel": 31,
+         "question": "<em>Define<\/em><\/p><p>&lsquo;<strong>Element<\/strong>&rsquo;",
+         "answer": "An element is a pure substance consisting of one type of atom distinguished by its atomic number. Element cannot be split into simpler substances by any physical or chemical means.",
+         "learningStats": {
+             "numAttempts": 8,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["P", "H", "P", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438528318000,
+             "totalTimeSpent": 326
+         }
+     }, {
+         "questionId": 4087,
+         "questionType": "question_answer",
+         "difficultyLevel": 21,
+         "question": "<em>Define<\/em><\/p><p>&lsquo;<strong>Compound<\/strong>&rsquo;",
+         "answer": "A chemical compound is a pure substance formed by the chemical combination of two or more elements in a definite ratio.",
+         "learningStats": {
+             "numAttempts": 11,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "H", "E", "E", "H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1439216147000,
+             "totalTimeSpent": 411
+         }
+     }, {
+         "questionId": 4088,
+         "questionType": "question_answer",
+         "difficultyLevel": 2,
+         "question": "What is the number of known elements today?",
+         "answer": 118,
+         "learningStats": {
+             "numAttempts": 5,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438435066000,
+             "totalTimeSpent": 63
+         }
+     }, {
+         "questionId": 4089,
+         "questionType": "question_answer",
+         "difficultyLevel": 2,
+         "question": "How many of the known elements are naturally occurring?",
+         "answer": 92,
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437661811000,
+             "totalTimeSpent": 18
+         }
+     }, {
+         "questionId": 4090,
+         "questionType": "question_answer",
+         "difficultyLevel": 2,
+         "question": "How many of the known elements are artificially created?",
+         "answer": 26,
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437661815000,
+             "totalTimeSpent": 15
+         }
+     }, {
+         "questionId": 4091,
+         "questionType": "fib",
+         "difficultyLevel": 22,
+         "question": "The most abundant element in the earth&rsquo;s crust is {0}.",
+         "answers": ["Oxygen"],
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437661817000,
+             "totalTimeSpent": 21
+         }
+     }, {
+         "questionId": 4092,
+         "questionType": "question_answer",
+         "difficultyLevel": 10,
+         "question": "What are the categories into which elements are classified?",
+         "answer": "<strong>Metals<\/strong>, <strong>Non-metals<\/strong>, <strong>Metalliods<\/strong> and <strong>Noble gases<\/strong>.",
+         "learningStats": {
+             "numAttempts": 5,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438435073000,
+             "totalTimeSpent": 129
+         }
+     }, {
+         "questionId": 4093,
+         "questionType": "question_answer",
+         "difficultyLevel": 28,
+         "question": "<em>Define<\/em><\/p><p>&lsquo;<strong>Metal<\/strong>&rsquo;",
+         "answer": "A pure substance with high electrical and thermal conductivity, luster, and malleability, which readily loses electrons to form positive ions (cations).",
+         "learningStats": {
+             "numAttempts": 4,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E", "E"],
+             "lastAttemptTime": 1438014458000,
+             "totalTimeSpent": 95
+         }
+     }, {
+         "questionId": 4094,
+         "questionType": "question_answer",
+         "difficultyLevel": 70,
+         "question": "Write a comparison of properties of metals and non-metals.",
+         "answer": "<table class=\"pure-table pure-table-horizontal\">\n  <thead>\n    <tr>\n      <th>Property <\/th>\n      <th>Metal <\/th>\n      <th>Non metal<\/th>\n    <\/tr>\n  <\/thead>\n  <tbody>\n    <tr>\n      <td>Appearance <\/td>\n      <td>Shiny <\/td>\n      <td>Dull<\/td>\n    <\/tr>\n    <tr>\n      <td>Melting and boiling points <\/td>\n      <td>High <\/td>\n      <td>Low<\/td>\n    <\/tr>\n    <tr>\n      <td>Density <\/td>\n      <td>High <\/td>\n      <td>Low<\/td>\n    <\/tr>\n    <tr>\n      <td>Strength <\/td>\n      <td>Strong <\/td>\n      <td>Not strong<\/td>\n    <\/tr>\n    <tr>\n      <td>Malleability <\/td>\n      <td>Malleable <\/td>\n      <td>Brittle<\/td>\n    <\/tr>\n    <tr>\n      <td>Ductility <\/td>\n      <td>Ductile <\/td>\n      <td>Nonductile<\/td>\n    <\/tr>\n    <tr>\n      <td>Heat conductivity <\/td>\n      <td>Good conductor <\/td>\n      <td>Poor conductor<\/td>\n    <\/tr>\n    <tr>\n      <td>Electrical conductivity <\/td>\n      <td>Good conductor <\/td>\n      <td>Poor conductor<\/td>\n    <\/tr>\n    <tr>\n      <td>Charge on ions <\/td>\n      <td>Form positive ions (generally) <\/td>\n      <td>Form negative ions (generally)<\/td>\n    <\/tr>\n  <\/tbody>\n<\/table>",
+         "learningStats": {
+             "numAttempts": 5,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438435120000,
+             "totalTimeSpent": 244
+         }
+     }, {
+         "questionId": 4095,
+         "questionType": "question_answer",
+         "difficultyLevel": 23,
+         "question": "<em>Define<\/em><\/p><p>&lsquo;<strong>Metalliods<\/strong>&rsquo;",
+         "answer": "Elements which show characteristics of both metals and non-metals are called Metalliods.<\/p><p>example Boron, Silicon, Germanium, Arsenic",
+         "learningStats": {
+             "numAttempts": 8,
+             "learningEfficiency": 75,
+             "currentLevel": "L3",
+             "temporalScores": ["H", "E", "E", "E", "H", "E", "E", "E"],
+             "lastAttemptTime": 1439051343000,
+             "totalTimeSpent": 223
+         }
+     }, {
+         "questionId": 4096,
+         "questionType": "fib",
+         "difficultyLevel": 22,
+         "question": "Metalliods also known as {0}.",
+         "answers": ["Semiconductors"],
+         "learningStats": {
+             "numAttempts": 4,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E", "E"],
+             "lastAttemptTime": 1438434639000,
+             "totalTimeSpent": 31
+         }
+     }, {
+         "questionId": 4097,
+         "questionType": "question_answer",
+         "difficultyLevel": 12,
+         "question": "<em>Define<\/em><\/p><p>&lsquo;<strong>Semiconductors<\/strong>&rsquo;",
+         "answer": "Substances whose conductivity is intermediate between those of metals and non-metals",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437731953000,
+             "totalTimeSpent": 25
+         }
+     }, {
+         "questionId": 4098,
+         "questionType": "question_answer",
+         "difficultyLevel": 26,
+         "question": "How are semiconductors useful?",
+         "answer": "Semiconductors due to their intermediate conductivity find extensive use in the electronics industry for making computer chips, transistors and lasers",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437731956000,
+             "totalTimeSpent": 21
+         }
+     }, {
+         "questionId": 4099,
+         "questionType": "question_answer",
+         "difficultyLevel": 17,
+         "question": "What are noble gases",
+         "answer": "Helium, Neon, Argon, Krypton, Xenon and Radon are called noble gases.",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437731958000,
+             "totalTimeSpent": 56
+         }
+     }, {
+         "questionId": 4100,
+         "questionType": "question_answer",
+         "difficultyLevel": 31,
+         "question": "What are the properties of noble gases?",
+         "answer": "<ol>\n  <li>They are inert elements. They don&rsquo;t react with other elements under ordinary conditions.<\/li>\n  <li>They exist as monoatomic gases.<\/li>\n  <li>They have very low melting and boiling points.<\/li>\n  <li>They have very low solubility in water.<\/li>\n<\/ol>",
+         "learningStats": {
+             "numAttempts": 5,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438499493000,
+             "totalTimeSpent": 216
+         }
+     }, {
+         "questionId": 4101,
+         "questionType": "question_answer",
+         "difficultyLevel": 12,
+         "question": "Name the noble gases.",
+         "answer": "<ul>\n  <li>Helium<\/li>\n  <li>Neon<\/li>\n  <li>Argon<\/li>\n  <li>Krypton<\/li>\n  <li>Xenon<\/li>\n  <li>Radon<\/li>\n<\/ul>",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437731961000,
+             "totalTimeSpent": 14
+         }
+     }, {
+         "questionId": 4102,
+         "questionType": "question_answer",
+         "difficultyLevel": 26,
+         "question": "Mention the characteristics of atoms.",
+         "answer": "<ul>\n  <li>All atoms of an element are alike.<\/li>\n  <li>Atoms cannot be converted from one kind to another.<\/li>\n  <li>Atoms of an element possess the chemical properties of the element.<\/li>\n<\/ul>",
+         "learningStats": {
+             "numAttempts": 5,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438499555000,
+             "totalTimeSpent": 212
+         }
+     }, {
+         "questionId": 4103,
+         "questionType": "question_answer",
+         "difficultyLevel": 35,
+         "question": "What are the characteristics of compounds.",
+         "answer": "<ul>\n  <li>Components in a compound do not retain their original properties.<\/li>\n  <li>Components in a compound can be separated by chemical means only.<\/li>\n  <li>Compounds have a sharp melting and boiling point.<\/li>\n  <li>Compounds are pure substances.<\/li>\n<\/ul>",
+         "learningStats": {
+             "numAttempts": 10,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "E", "H", "H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438870449000,
+             "totalTimeSpent": 572
+         }
+     }, {
+         "questionId": 4104,
+         "questionType": "fib",
+         "difficultyLevel": 37,
+         "question": "The modern system of assigning symbols to elements was suggested by a {0} chemist, named {1}.",
+         "answers": ["Swedish", "Jons Jacob Berzelins"],
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437755577000,
+             "totalTimeSpent": 29
+         }
+     }, {
+         "questionId": 4105,
+         "questionType": "question_answer",
+         "difficultyLevel": 30,
+         "question": "<em>Define<\/em><\/p><p>&lsquo;<strong>Atomicity<\/strong>&rsquo;",
+         "answer": "The number of atoms present in one molecule of substance.<\/p><p>example Atomicity of Nitrogen is 2. Nitrogen molecule comprises of two atoms of Nitrogen.",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437755580000,
+             "totalTimeSpent": 31
+         }
+     }, {
+         "questionId": 4106,
+         "questionType": "question_answer",
+         "difficultyLevel": 31,
+         "question": "<em>Define<\/em><\/p><p>&lsquo;<strong>Molecule<\/strong>&rsquo;",
+         "answer": "A group of atoms bonded together, representing the smallest fundamental unit of a chemical compound that can take part in a chemical reaction, is called a Molecule",
+         "learningStats": {
+             "numAttempts": 11,
+             "learningEfficiency": 75,
+             "currentLevel": "L2",
+             "temporalScores": ["E", "H", "E", "E", "E", "A", "E", "H", "E", "E", "E"],
+             "lastAttemptTime": 1439216317000,
+             "totalTimeSpent": 433
+         }
+     }, {
+         "questionId": 4107,
+         "questionType": "question_answer",
+         "difficultyLevel": 36,
+         "question": "<em>Define<\/em><\/p><p>&lsquo;<strong>Ion<\/strong>&rsquo;",
+         "answer": "An atom or molecule with a net electric charge due to the loss or gain of one or more electrons. Positively charged ions are called cations, while negatively charged ions are called anions.",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437755582000,
+             "totalTimeSpent": 70
+         }
+     }, {
+         "questionId": 4108,
+         "questionType": "question_answer",
+         "difficultyLevel": 21,
+         "question": "What are the <strong>metals<\/strong> which show divergent behavior as compared to general characteristics of metals. Explain the divergence in their behavior.",
+         "answer": "<ol>\n  <li>Mercury - Liquid at room temperature.<\/li>\n  <li>Zinc - non-malleable, non-ductile.<\/li>\n  <li>Tungsten - Poor conductor of electricity.<\/li>\n<\/ol>",
+         "learningStats": {
+             "numAttempts": 5,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "A", "E", "E", "E"],
+             "lastAttemptTime": 1438014350000,
+             "totalTimeSpent": 172
+         }
+     }, {
+         "questionId": 4109,
+         "questionType": "question_answer",
+         "difficultyLevel": 14,
+         "question": "What are the <strong>non-metals<\/strong> which show divergent behavior as compared to general characteristics of non-metals. Explain the divergence in their behavior.",
+         "answer": "<ol>\n  <li>Iodine, Graphite - Lustrous<\/li>\n  <li>Graphite - Good conductor of electricity<\/li>\n<\/ol>",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437798298000,
+             "totalTimeSpent": 135
+         }
+     }, {
+         "questionId": 4110,
+         "questionType": "question_answer",
+         "difficultyLevel": 21,
+         "question": "<em>Define<\/em><\/p><p>&lsquo;<strong>Homogeneous<\/strong>&rsquo;",
+         "answer": "A substance can be defined as homogeneous if it contains only one kind of particles. Homogeneous is Latin for &lsquo;the same kind&rsquo;.",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437798314000,
+             "totalTimeSpent": 69
+         }
+     }, {
+         "questionId": 4111,
+         "questionType": "question_answer",
+         "difficultyLevel": 19,
+         "question": "<em>Define<\/em><\/p><p>&lsquo;<strong>Heterogeneous<\/strong>&rsquo;",
+         "answer": "A substance can be defined as heterogeneous if it contains multiple kinds of particles. Opposite of homogeneous.",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437798317000,
+             "totalTimeSpent": 22
+         }
+     }, {
+         "questionId": 4112,
+         "questionType": "fib",
+         "difficultyLevel": 22,
+         "question": "An example of a homogeneous mixture is {0}.",
+         "answers": ["Bronze"],
+         "learningStats": {
+             "numAttempts": 7,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438789639000,
+             "totalTimeSpent": 145
+         }
+     }, {
+         "questionId": 4113,
+         "questionType": "fib",
+         "difficultyLevel": 22,
+         "question": "An example of a heterogeneous mixture is {0}.",
+         "answers": ["Gunpowder"],
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437798324000,
+             "totalTimeSpent": 23
+         }
+     }, {
+         "questionId": 4114,
+         "questionType": "fib",
+         "difficultyLevel": 37,
+         "question": "Examples of a homogeneous mixture of <strong>two solids<\/strong> is {0} and {1}.",
+         "answers": ["Brass", "Bronze"],
+         "learningStats": {
+             "numAttempts": 4,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E", "E"],
+             "lastAttemptTime": 1438435008000,
+             "totalTimeSpent": 89
+         }
+     }, {
+         "questionId": 4115,
+         "questionType": "fib",
+         "difficultyLevel": 22,
+         "question": "An example of a heterogeneous mixture of <strong>two solids<\/strong> is {0}",
+         "answers": ["Iron + Sulphur"],
+         "learningStats": {
+             "numAttempts": 4,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E", "E"],
+             "lastAttemptTime": 1438435026000,
+             "totalTimeSpent": 92
+         }
+     }, {
+         "questionId": 4116,
+         "questionType": "fib",
+         "difficultyLevel": 22,
+         "question": "An example of a homogeneous mixture of <strong>solid and Liquid<\/strong> is {0}",
+         "answers": ["Salt in water"],
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437801151000,
+             "totalTimeSpent": 29
+         }
+     }, {
+         "questionId": 4117,
+         "questionType": "fib",
+         "difficultyLevel": 22,
+         "question": "An example of a heterogeneous mixture of <strong>solid and Liquid<\/strong> is {0}",
+         "answers": ["Sand and water"],
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437801160000,
+             "totalTimeSpent": 26
+         }
+     }, {
+         "questionId": 4118,
+         "questionType": "fib",
+         "difficultyLevel": 22,
+         "question": "An example of a homogeneous mixture of <strong>two liquids<\/strong> is {0}",
+         "answers": ["Water and Ethyl alcohol"],
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437801169000,
+             "totalTimeSpent": 31
+         }
+     }, {
+         "questionId": 4119,
+         "questionType": "fib",
+         "difficultyLevel": 22,
+         "question": "An example of a heterogeneous mixture of <strong>two liquids<\/strong> is {0}",
+         "answers": ["Petrol and Kerosene"],
+         "learningStats": {
+             "numAttempts": 7,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438789645000,
+             "totalTimeSpent": 157
+         }
+     }, {
+         "questionId": 4120,
+         "questionType": "fib",
+         "difficultyLevel": 22,
+         "question": "An example of a homogeneous mixture of <strong>liquid and gas<\/strong> is {0}",
+         "answers": ["Water and ammonia"],
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437801177000,
+             "totalTimeSpent": 53
+         }
+     }, {
+         "questionId": 4121,
+         "questionType": "fib",
+         "difficultyLevel": 22,
+         "question": "An example of a homogeneous mixture of <strong>two gases<\/strong> is {0}",
+         "answers": ["Air or any gases mixed together"],
+         "learningStats": {
+             "numAttempts": 5,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "A", "E", "E", "E"],
+             "lastAttemptTime": 1438014356000,
+             "totalTimeSpent": 79
+         }
+     }, {
+         "questionId": 4122,
+         "questionType": "fib",
+         "difficultyLevel": 22,
+         "question": "An example of a heterogeneous mixture of <strong>solid and gas<\/strong> is {0}",
+         "answers": ["Smoke"],
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437801184000,
+             "totalTimeSpent": 24
+         }
+     }, {
+         "questionId": 4123,
+         "questionType": "question_answer",
+         "difficultyLevel": 26,
+         "question": "Can we have a non-homogeneous mixture of liquid and gas?",
+         "answer": "No, either a gas is dissolvable in liquid in which case the solution will be homogeneous. If the gas is not dissolvable then the gas will escape from the liquid.",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437801201000,
+             "totalTimeSpent": 59
+         }
+     }, {
+         "questionId": 4124,
+         "questionType": "question_answer",
+         "difficultyLevel": 79,
+         "question": "State the differences between compounds and mixtures.",
+         "answer": "<table class=\"pure-table pure-table-horizontal\">\n  <thead>\n    <tr>\n      <th>Compounds <\/th>\n      <th>Mixtures<\/th>\n    <\/tr>\n  <\/thead>\n  <tbody>\n    <tr>\n      <td>Components present in definite ratio <\/td>\n      <td>Components present in varying ratio<\/td>\n    <\/tr>\n    <tr>\n      <td>Compound is always homogeneous <\/td>\n      <td>Mixture can be homogeneous and heterogeneous<\/td>\n    <\/tr>\n    <tr>\n      <td>Particles are of one type <\/td>\n      <td>Particles are of more than one type<\/td>\n    <\/tr>\n    <tr>\n      <td>Have definite set of properties <\/td>\n      <td>No definite set of properties<\/td>\n    <\/tr>\n    <tr>\n      <td>Components do not retain their original properties <\/td>\n      <td>Components retain their original properties<\/td>\n    <\/tr>\n    <tr>\n      <td>Have a sharp melting and boiling point<\/td>\n      <td>No sharp melting and boiling point<\/td>\n    <\/tr>\n    <tr>\n      <td>Components can be separated chemically<\/td>\n      <td>Components can be separated chemically and physically<\/td>\n    <\/tr>\n  <\/tbody>\n<\/table><p><p>{{@img 712613b3edcf9a7ad153d8738d648ea3.cmap.png}}<\/p>",
+         "learningStats": {
+             "numAttempts": 10,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "E", "P", "H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438878086000,
+             "totalTimeSpent": 1224
+         }
+     }, {
+         "questionId": 4139,
+         "questionType": "question_answer",
+         "difficultyLevel": 6,
+         "question": "Name three metals which are liquid at room temperature.",
+         "answer": "<ol>\n  <li>Mercury<\/li>\n  <li>Caesium<\/li>\n  <li>Gallium<\/li>\n<\/ol>",
+         "learningStats": {
+             "numAttempts": 6,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438499561000,
+             "totalTimeSpent": 89
+         }
+     }, {
+         "questionId": 4140,
+         "questionType": "question_answer",
+         "difficultyLevel": 4,
+         "question": "Name two elements that comprise &frac34; of Earth&rsquo;s crust.",
+         "answer": "Silicon and Oxygen",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437801214000,
+             "totalTimeSpent": 46
+         }
+     }, {
+         "questionId": 4141,
+         "questionType": "question_answer",
+         "difficultyLevel": 6,
+         "question": "Name three elements which make up of more than 90% of human body.",
+         "answer": "Hydrogen, Carbon and Oxygen",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437801225000,
+             "totalTimeSpent": 57
+         }
+     }, {
+         "questionId": 4142,
+         "questionType": "question_answer",
+         "difficultyLevel": 2,
+         "question": "Give an example of octa-atomic molecule.",
+         "answer": "S<sub>8<\/sub>",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437801247000,
+             "totalTimeSpent": 33
+         }
+     }, {
+         "questionId": 4143,
+         "questionType": "question_answer",
+         "difficultyLevel": 2,
+         "question": "Name a non-metallic element which is liquid at room temperature.",
+         "answer": "Bromine",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437801258000,
+             "totalTimeSpent": 89
+         }
+     }, {
+         "questionId": 4144,
+         "questionType": "question_answer",
+         "difficultyLevel": 8,
+         "question": "Name three metalliods.",
+         "answer": "Silicon, Arsenic (As) and Antimony (Sb)",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437661272000,
+             "totalTimeSpent": 57
+         }
+     }, {
+         "questionId": 4145,
+         "questionType": "question_answer",
+         "difficultyLevel": 10,
+         "question": "What are the different categories into which a solution is classified based on the size of the dissolved or dispersed particles.",
+         "answer": "<ol>\n  <li>True solution<\/li>\n  <li>Colliodal solution<\/li>\n  <li>Suspensions<\/li>\n<\/ol>",
+         "learningStats": {
+             "numAttempts": 6,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438499680000,
+             "totalTimeSpent": 171
+         }
+     }, {
+         "questionId": 4146,
+         "questionType": "question_answer",
+         "difficultyLevel": 65,
+         "question": "Draw a comparison between true solution, colloidal solution and suspensions.",
+         "answer": "<table class=\"pure-table pure-table-horizontal\">\n  <thead>\n    <tr>\n      <th>Attribute <\/th>\n      <th>True Sol. <\/th>\n      <th>Colliodal <\/th>\n      <th>Suspension<\/th>\n    <\/tr>\n  <\/thead>\n  <tbody>\n    <tr>\n      <td>Visual property <\/td>\n      <td>Clear <\/td>\n      <td>Turbid <\/td>\n      <td>Turbid \/ Translucent<\/td>\n    <\/tr>\n    <tr>\n      <td>Homogeneous <\/td>\n      <td>Yes <\/td>\n      <td>No <\/td>\n      <td>No<\/td>\n    <\/tr>\n    <tr>\n      <td>Particles visible to naked eye <\/td>\n      <td>No <\/td>\n      <td>No <\/td>\n      <td>Yes<\/td>\n    <\/tr>\n    <tr>\n      <td>Particles can pass through filter paper <\/td>\n      <td>Yes <\/td>\n      <td>Yes <\/td>\n      <td>No<\/td>\n    <\/tr>\n    <tr>\n      <td>Particles can pass through semi-permiable <\/td>\n      <td>Yes <\/td>\n      <td>No <\/td>\n      <td>No<\/td>\n    <\/tr>\n    <tr>\n      <td>Particles settle down with time <\/td>\n      <td>No <\/td>\n      <td>No <\/td>\n      <td>Yes<\/td>\n    <\/tr>\n    <tr>\n      <td>Particles can be seen with ultra-microscope <\/td>\n      <td>Yes <\/td>\n      <td>Yes <\/td>\n      <td>Yes<\/td>\n    <\/tr>\n  <\/tbody>\n<\/table>",
+         "learningStats": {
+             "numAttempts": 9,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "H", "E", "P", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438789684000,
+             "totalTimeSpent": 615
+         }
+     }, {
+         "questionId": 4147,
+         "questionType": "question_answer",
+         "difficultyLevel": 35,
+         "question": "<em>Define<\/em><\/p><p>&lsquo;<strong>Brownian movement<\/strong>&rsquo;",
+         "answer": "Colliodal particles demonstrate constant random movement due to the continuous bombardment of the molecules of the dispersion medium on the colliodal molecules.<\/p><p>Such random motion is called brownian motion.",
+         "learningStats": {
+             "numAttempts": 10,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "H", "H", "E", "A", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438789698000,
+             "totalTimeSpent": 553
+         }
+     }, {
+         "questionId": 4148,
+         "questionType": "question_answer",
+         "difficultyLevel": 24,
+         "question": "<em>Define<\/em><\/p><p>&lsquo;<strong>Tyndall effect<\/strong>&rsquo;",
+         "answer": "A colliodal solution scatters a beam of light, due to reflection of light on the colliodal particles. This is called Tyndall effect.",
+         "learningStats": {
+             "numAttempts": 7,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438528620000,
+             "totalTimeSpent": 286
+         }
+     }, {
+         "questionId": 4149,
+         "questionType": "question_answer",
+         "difficultyLevel": 76,
+         "question": "List different methods of separating solid-solid mixtures, mention the criteria for usage and an example of each.",
+         "answer": "<table class=\"pure-table pure-table-horizontal\">\n  <thead>\n    <tr>\n      <th>Method <\/th>\n      <th>Criteria <\/th>\n      <th>Example<\/th>\n    <\/tr>\n  <\/thead>\n  <tbody>\n    <tr>\n      <td>Handpicking <\/td>\n      <td>Different size and color <\/td>\n      <td>Coloured marbles<\/td>\n    <\/tr>\n    <tr>\n      <td>Magnetic separation <\/td>\n      <td>Different magnetic properties <\/td>\n      <td>Iron filings and powdered Sulphur<\/td>\n    <\/tr>\n    <tr>\n      <td>Gravity separation <\/td>\n      <td>Different relative densities <\/td>\n      <td>Rice and husk, Salt and sawdust<\/td>\n    <\/tr>\n    <tr>\n      <td>Solvent extraction <\/td>\n      <td>Different solubility in a given solution <\/td>\n      <td>Sulphur and Sand<\/td>\n    <\/tr>\n    <tr>\n      <td>Sublimation <\/td>\n      <td>Mixture on a sublimate and non-sublimate <\/td>\n      <td>Camphor and Sand<\/td>\n    <\/tr>\n    <tr>\n      <td>Fractional crystallization <\/td>\n      <td>Soluble in same solvent but have different solubility at a given temperature <\/td>\n      <td>Sodium Nitrate and Sodium Chloride<\/td>\n    <\/tr>\n  <\/tbody>\n<\/table>",
+         "learningStats": {
+             "numAttempts": 9,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "H", "E", "H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438789682000,
+             "totalTimeSpent": 659
+         }
+     }, {
+         "questionId": 4150,
+         "questionType": "question_answer",
+         "difficultyLevel": 63,
+         "question": "Explain in steps how would you separate a mixture of common salt and sand.",
+         "answer": "<p>Since common salt and sand show different solubility in water, we can use the <strong>solvent extraction<\/strong> method to separate them.<\/p>\n<ol>\n  <li>Add the mixture in a beaker of water. Stir well till common salt dissolves.<\/li>\n  <li>Using a filter, separate out the insoluble sand.<\/li>\n  <li>The filtrate is slowly evaporated till all the water evaporates, leaving  behind NaCl crystals.<\/li>\n<\/ol>",
+         "learningStats": {
+             "numAttempts": 5,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438499617000,
+             "totalTimeSpent": 292
+         }
+     }, {
+         "questionId": 4306,
+         "questionType": "question_answer",
+         "difficultyLevel": 79,
+         "question": "Explain in steps how would you separate a solid-solid mixture of Potassium Nitrate and Potassium Chlorate.",
+         "answer": "<p>Since Potassium Nitrate and Potassium Chlorate are both soluble in water but demonstrate widely different solubilities, we can use <strong>fractional crystallization<\/strong> method to separate the components.<\/p>\n<ol>\n  <li>Add the Mixture of \\(\\ce{KNO3}\\) and \\(\\ce{KClO3}\\) to water.<\/li>\n  <li>Warm the above solution to obtain a hot <strong>saturated<\/strong> solution.<\/li>\n  <li>Cool the hot saturated solution - crystals of the less soluble component  \\(\\ce{KClO3}\\) will crystallize.<\/li>\n  <li>Filter out the \\(\\ce{KClO3}\\) crystals using normal filtration techniques.<\/li>\n  <li>The filtrate is heated to make it concentrated and saturated. This is then  cooled to crystallize out the \\(\\ce{KNO3}\\) crystals.<\/li>\n<\/ol>",
+         "learningStats": {
+             "numAttempts": 7,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "P", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438499944000,
+             "totalTimeSpent": 529
+         }
+     }, {
+         "questionId": 4307,
+         "questionType": "question_answer",
+         "difficultyLevel": 8,
+         "question": "Which method can be used to separate a solid-solid mixture of Sodium Nitrate and Sodium Chloride",
+         "answer": "Fractional crystallization with water as solvent",
+         "learningStats": {
+             "numAttempts": 11,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "A", "H", "E", "H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438789694000,
+             "totalTimeSpent": 293
+         }
+     }, {
+         "questionId": 4308,
+         "questionType": "question_answer",
+         "difficultyLevel": 8,
+         "question": "Which method can be used to separate a solid-solid mixture of Potassium Nitrate and Potassium Chlorate",
+         "answer": "Fractional crystallization with water as solvent",
+         "learningStats": {
+             "numAttempts": 6,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438499692000,
+             "totalTimeSpent": 132
+         }
+     }, {
+         "questionId": 4309,
+         "questionType": "question_answer",
+         "difficultyLevel": 2,
+         "question": "Which method can be used to separate a solid-solid mixture of Ammonium chloride and Sodium chloride",
+         "answer": "Sublimation",
+         "learningStats": {
+             "numAttempts": 7,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438789656000,
+             "totalTimeSpent": 189
+         }
+     }, {
+         "questionId": 4310,
+         "questionType": "question_answer",
+         "difficultyLevel": 2,
+         "question": "Which method can be used to separate a solid-solid mixture of Camphor and Sodium chloride",
+         "answer": "Sublimation",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1437801267000,
+             "totalTimeSpent": 48
+         }
+     }, {
+         "questionId": 4311,
+         "questionType": "question_answer",
+         "difficultyLevel": 12,
+         "question": "Name some compounds which sublimate.",
+         "answer": "<ol>\n  <li>Ammonium chloride<\/li>\n  <li>Camphor<\/li>\n  <li>Iodine crystals<\/li>\n  <li>Napthalene<\/li>\n<\/ol>",
+         "learningStats": {
+             "numAttempts": 4,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E", "E"],
+             "lastAttemptTime": 1438435036000,
+             "totalTimeSpent": 107
+         }
+     }, {
+         "questionId": 4312,
+         "questionType": "matching",
+         "difficultyLevel": 60,
+         "caption": "Substances and their solvent",
+         "matchData": [
+             ["Sulphur", "Carbon disulphide"],
+             ["Paint", "Turpentine oil"],
+             ["Rust", "Oxalic acid"],
+             ["Nail polish", "Acetone"],
+             ["Rubber", "Benzene"],
+             ["Grease \/ Oil", "Petrol"],
+             ["Iodine", "Ethyl alcohol"],
+             ["Chlorophyll", "Methylated Spirit"]
+         ],
+         "learningStats": {
+             "numAttempts": 9,
+             "learningEfficiency": 95,
+             "currentLevel": "L3",
+             "temporalScores": ["H", "E", "E", "E", "E", "A", "E", "E", "E"],
+             "lastAttemptTime": 1439051442000,
+             "totalTimeSpent": 358
+         }
+     }, {
+         "questionId": 4313,
+         "questionType": "matching",
+         "difficultyLevel": 60,
+         "caption": "Substances and their solvent",
+         "matchData": [
+             ["Carbon disulphide", "Sulphur"],
+             ["Turpentine oil", "Paint"],
+             ["Oxalic acid", "Rust"],
+             ["Acetone", "Nail polish"],
+             ["Benzene", "Rubber"],
+             ["Petrol", "Grease \/ Oil"],
+             ["Ethyl alcohol", "Iodine"],
+             ["Methylated Spirit", "Chlorophyll"]
+         ],
+         "learningStats": {
+             "numAttempts": 6,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438499753000,
+             "totalTimeSpent": 225
+         }
+     }, {
+         "questionId": 4314,
+         "questionType": "question_answer",
+         "difficultyLevel": 70,
+         "question": "Explain how an industrial magnetic roller type separator works.",
+         "answer": "<table class=\"cons_ans\"><tr><td style=\"vertical-align:top\">{{@img magnetic_roller.png}}<\/td><td style=\"vertical-align:top\"><ol>\n  <li>An industrial magnetic roller type separator consists of a feeder, which  feeds pulverized mixture of magnetic ore and impurities onto a conveyor belt.<\/li>\n  <li>The conveyor belt is driven by a electro magnetic roller on the far end.<\/li>\n  <li>There are collection bins under the conveyor belt where the separated  copmonents are collected. The magnetic particles being attracted to the  electro-magnetic roller are collected on the inside bin, where as the  non-magnetic particles are collected in the outside bin.<\/li>\n<\/ol><\/td><\/tr><\/table>",
+         "learningStats": {
+             "numAttempts": 6,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438499896000,
+             "totalTimeSpent": 562
+         }
+     }, {
+         "questionId": 4335,
+         "questionType": "question_answer",
+         "difficultyLevel": 38,
+         "question": "List different methods of separating solid-liquid mixtures, mention the criteria for usage and an example of each.",
+         "answer": "<table class=\"pure-table pure-table-horizontal\">\n  <thead>\n    <tr>\n      <th>Method <\/th>\n      <th>Solubility <\/th>\n      <th>Example<\/th>\n    <\/tr>\n  <\/thead>\n  <tbody>\n    <tr>\n      <td>Evaportaion <\/td>\n      <td>Soluble <\/td>\n      <td>Common salt and water<\/td>\n    <\/tr>\n    <tr>\n      <td>Distillation <\/td>\n      <td>Soluble <\/td>\n      <td>Iodine and Ethanol<\/td>\n    <\/tr>\n    <tr>\n      <td>Filtration <\/td>\n      <td>Insoluble <\/td>\n      <td>Sawdust and water<\/td>\n    <\/tr>\n    <tr>\n      <td>Sedimentation &amp; Decantation<\/td>\n      <td>Insoluble <\/td>\n      <td>Mud and water<\/td>\n    <\/tr>\n  <\/tbody>\n<\/table>",
+         "learningStats": {
+             "numAttempts": 6,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438499920000,
+             "totalTimeSpent": 327
+         }
+     }, {
+         "questionId": 4336,
+         "questionType": "question_answer",
+         "difficultyLevel": 36,
+         "question": "Under what conditions would you use evaporation and distillation as separation techniques?",
+         "answer": "Evaporation and distillation are both used for separating components of a solid-liquid mixture.<\/p><p>Evaporation is preferred when the objective is to separate out the solid component. Distillation is used when the objective is to separate out both the solid and liquid components.",
+         "learningStats": {
+             "numAttempts": 8,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "A", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438528641000,
+             "totalTimeSpent": 418
+         }
+     }, {
+         "questionId": 4337,
+         "questionType": "question_answer",
+         "difficultyLevel": 30,
+         "question": "When is filtration more effective than sedimentation?",
+         "answer": "When the solid particles are difficult to settle down by the action of gravity, either because they are too small or because of their relative density being almost equal or less than water, filtration is used.",
+         "learningStats": {
+             "numAttempts": 6,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438499978000,
+             "totalTimeSpent": 281
+         }
+     }, {
+         "questionId": 4425,
+         "questionType": "question_answer",
+         "difficultyLevel": 23,
+         "question": "What is the <strong>principle<\/strong> behind the method of separation of two solids by <strong>solvent extraction<\/strong> method?",
+         "answer": "Separation of one <strong>insoluble solid<\/strong> from the other <strong>soluble solid<\/strong> by using a particular liquid [solvent], followed by <strong>filtration<\/strong>.",
+         "learningStats": {
+             "numAttempts": 7,
+             "learningEfficiency": 100,
+             "currentLevel": "L3",
+             "temporalScores": ["E", "E", "H", "E", "E", "E", "E"],
+             "lastAttemptTime": 1439051246000,
+             "totalTimeSpent": 401
+         }
+     }, {
+         "questionId": 4426,
+         "questionType": "question_answer",
+         "difficultyLevel": 21,
+         "question": "What is the <strong>principle<\/strong> behind the method of separation of two solids by <strong>fractional crystallization<\/strong> method?",
+         "answer": "Separation of one <strong>soluble solid<\/strong> from the other <strong>soluble solid<\/strong> (in the same solvent) with widely different solubilities in the solvent.",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1438434386000,
+             "totalTimeSpent": 94
+         }
+     }, {
+         "questionId": 4427,
+         "questionType": "question_answer",
+         "difficultyLevel": 12,
+         "question": "What is the <strong>principle<\/strong> behind the method of separation of two solids by <strong>sublimation<\/strong> method?",
+         "answer": "Separation of one <strong>sublimable solid<\/strong> from the other <strong>non-sublimable solid<\/strong>.",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1438434395000,
+             "totalTimeSpent": 74
+         }
+     }, {
+         "questionId": 4428,
+         "questionType": "question_answer",
+         "difficultyLevel": 24,
+         "question": "What is the <strong>principle<\/strong> behind the method of separation of a solid-liquid mixture by the process of <strong>evaporation<\/strong>?",
+         "answer": "Separation of a <strong>solid non-volatile constituent<\/strong> [generally soluble] of a mixture from its <strong>liquid constituent<\/strong> by allowing the solvent to vaporize completely.",
+         "learningStats": {
+             "numAttempts": 6,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["P", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1438870471000,
+             "totalTimeSpent": 282
+         }
+     }, {
+         "questionId": 4429,
+         "questionType": "question_answer",
+         "difficultyLevel": 26,
+         "question": "What is the <strong>principle<\/strong> behind the method of separation of a solid-liquid mixture by the process of <strong>distillation<\/strong>?",
+         "answer": "Separation of a <strong>solid solid constituent<\/strong> of a mixture from its <strong>liquid constituent<\/strong> by evaporation of the liquid component followed by recondenstation of the vapours obtained.",
+         "learningStats": {
+             "numAttempts": 5,
+             "learningEfficiency": 95,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "A", "E", "E", "E"],
+             "lastAttemptTime": 1438878184000,
+             "totalTimeSpent": 250
+         }
+     }, {
+         "questionId": 4430,
+         "questionType": "question_answer",
+         "difficultyLevel": 64,
+         "question": "What is a <strong>leibigs condenser<\/strong> and where and how is it used?",
+         "answer": "<table class=\"cons_ans\"><tr><td style=\"vertical-align:top\">{{@img leibig-condenser.png}}<\/td><td style=\"vertical-align:top\">Leibigs condenser is a laboratory condenser consisting of a glass tube enclosing glass envelope, which has inlet and outlet for continuous liquid flow.<\/p><p>Leigibs condenser is used in laboratory distillation. The vapors are made to pass through the inner tube with water running through the condenser&rsquo;s glass sleeve. The water takes away the heat from the vapor and enables it to condense quickly.<\/td><\/tr><\/table>",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1438434427000,
+             "totalTimeSpent": 153
+         }
+     }, {
+         "questionId": 4533,
+         "questionType": "question_answer",
+         "difficultyLevel": 24,
+         "question": "What is fractional distillation?",
+         "answer": "Fraction distillation is a mechanism for separating two miscible liquid components using a distilliation flask with a fractionating column.",
+         "learningStats": {
+             "numAttempts": 6,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1439216047000,
+             "totalTimeSpent": 320
+         }
+     }, {
+         "questionId": 4534,
+         "questionType": "question_answer",
+         "difficultyLevel": 40,
+         "question": "What mechanism is used to separate a liquid-gas mixture?",
+         "answer": "We can separate the liquid-gas mixture by boiling the mixture and collecting the escaped gas by downward displacement of water or upward displacement of air, depending upon the density of the collected gas w.r.t. air.",
+         "learningStats": {
+             "numAttempts": 6,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "H", "E", "E", "E", "E"],
+             "lastAttemptTime": 1439216075000,
+             "totalTimeSpent": 526
+         }
+     }, {
+         "questionId": 4535,
+         "questionType": "question_answer",
+         "difficultyLevel": 10,
+         "question": "Name some gases which are lighter than air.",
+         "answer": "<ol>\n  <li>Hydrogen<\/li>\n  <li>Ammonia<\/li>\n  <li>Carbon monoxide<\/li>\n  <li>Nitrogen<\/li>\n<\/ol>",
+         "learningStats": {
+             "numAttempts": 4,
+             "learningEfficiency": 95,
+             "currentLevel": "MAS",
+             "temporalScores": ["A", "E", "E", "E"],
+             "lastAttemptTime": 1438877973000,
+             "totalTimeSpent": 98
+         }
+     }, {
+         "questionId": 4536,
+         "questionType": "question_answer",
+         "difficultyLevel": 15,
+         "question": "Name some gases which are heavier than air.",
+         "answer": "<ol>\n  <li>Oxygen<\/li>\n  <li>Hydrogen Chloride<\/li>\n  <li>Carbon dioxide<\/li>\n  <li>Sulphur dioxide<\/li>\n  <li>Chlorine<\/li>\n<\/ol>",
+         "learningStats": {
+             "numAttempts": 5,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "A", "E", "E", "E"],
+             "lastAttemptTime": 1438789571000,
+             "totalTimeSpent": 157
+         }
+     }, {
+         "questionId": 4537,
+         "questionType": "question_answer",
+         "difficultyLevel": 8,
+         "question": "Name some gases which are almost insoluble in water.",
+         "answer": "<ol>\n  <li>Nitrogen<\/li>\n  <li>Hydrogen<\/li>\n  <li>Carbon-monoxide<\/li>\n  <li>Oxygen<\/li>\n<\/ol>",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1438528343000,
+             "totalTimeSpent": 53
+         }
+     }, {
+         "questionId": 4538,
+         "questionType": "question_answer",
+         "difficultyLevel": 14,
+         "question": "Name some gases which are highly soluble in water.",
+         "answer": "<ol>\n  <li>Carbon-dioxide<\/li>\n  <li>Chlorine<\/li>\n  <li>Sulphur dioxide<\/li>\n  <li>Hydrogen chloride<\/li>\n  <li>Ammonia<\/li>\n<\/ol>",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1438528362000,
+             "totalTimeSpent": 93
+         }
+     }, {
+         "questionId": 4539,
+         "questionType": "question_answer",
+         "difficultyLevel": 14,
+         "question": "Name some gases which are easy to liquefy.",
+         "answer": "<ol>\n  <li>Carbon-dioxide<\/li>\n  <li>Chlorine<\/li>\n  <li>Hydrogen chloride<\/li>\n  <li>Sulphur dioxide<\/li>\n  <li>Ammonia<\/li>\n<\/ol>",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1438528400000,
+             "totalTimeSpent": 88
+         }
+     }, {
+         "questionId": 4540,
+         "questionType": "question_answer",
+         "difficultyLevel": 8,
+         "question": "Name some gases which are difficult to liquefy.",
+         "answer": "<ol>\n  <li>Oxygen<\/li>\n  <li>Carbon-monoxide<\/li>\n  <li>Nitrogen<\/li>\n  <li>Hydrogen<\/li>\n<\/ol>",
+         "learningStats": {
+             "numAttempts": 3,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "E", "E"],
+             "lastAttemptTime": 1438528411000,
+             "totalTimeSpent": 62
+         }
+     }, {
+         "questionId": 4541,
+         "questionType": "question_answer",
+         "difficultyLevel": 59,
+         "question": "List some separation techniques for separating gas-gas mixtures.",
+         "answer": "<p>Gas-gas mixtures can be separated by using one of the folowing methods:<\/p>\n<ol>\n  <li><strong>Diffusion<\/strong> - Passing the mixture through porous partition, which helps  diffuse the lighter gas.<\/li>\n  <li><strong>Solubility<\/strong> - Passing the mixture through a solvent which dissolves one  of the components.<\/li>\n  <li><strong>Liquefaction<\/strong> - Passing the mixture through a low temperature container,  which helps liquify the gas with a higher freezing point.<\/li>\n<\/ol>",
+         "learningStats": {
+             "numAttempts": 5,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["E", "A", "E", "E", "E"],
+             "lastAttemptTime": 1438789597000,
+             "totalTimeSpent": 371
+         }
+     }, {
+         "questionId": 4542,
+         "questionType": "question_answer",
+         "difficultyLevel": 19,
+         "question": "<em>Define<\/em><\/p><p>&lsquo;<strong>Adsorption<\/strong>&rsquo;",
+         "answer": "Adsorption is the adhesion of atoms, ions, or molecules from a gas, liquid or dissolved solid to a surface.",
+         "learningStats": {
+             "numAttempts": 9,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "H", "E", "H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1439216304000,
+             "totalTimeSpent": 349
+         }
+     }, {
+         "questionId": 4543,
+         "questionType": "question_answer",
+         "difficultyLevel": 23,
+         "question": "What is the principle underlying the separation technique of Chromatography?",
+         "answer": "Chromatography is based on selective adsorption of various components between the two phases, i.e. solid and mobile phase.",
+         "learningStats": {
+             "numAttempts": 9,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "H", "E", "H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1439216254000,
+             "totalTimeSpent": 351
+         }
+     }, {
+         "questionId": 4544,
+         "questionType": "fib",
+         "difficultyLevel": 22,
+         "question": "The term chromatography literally means {0}.",
+         "answers": ["color writing"],
+         "learningStats": {
+             "numAttempts": 6,
+             "learningEfficiency": 100,
+             "currentLevel": "MAS",
+             "temporalScores": ["H", "E", "E", "E", "E", "E"],
+             "lastAttemptTime": 1439216151000,
+             "totalTimeSpent": 48
+         }
+     }, {
+         "questionId": 4545,
+         "questionType": "question_answer",
+         "difficultyLevel": 41,
+         "question": "What is the concept of fixed and mobile phases in chromatography?",
+         "answer": "The mobile phase of chromatography refers to the fluid that carries the mixture of substances in the sample through the fixed phase or adsorptive material. <\/p><p>The fixed or adsorbent phase refers to the solid material that takes up the particles of the substance passing through it.",
+         "learningStats": {
+             "numAttempts": 7,
+             "learningEfficiency": 100,
+             "currentLevel": "L3",
+             "temporalScores": ["H", "H", "H", "E", "E", "E", "E"],
+             "lastAttemptTime": 1439051376000,
+             "totalTimeSpent": 490
+         }
+     }, {
+         "questionId": 4546,
+         "questionType": "question_answer",
+         "difficultyLevel": 51,
+         "question": "Describe the process of centrifugation.",
+         "answer": "Centrifugation is a process used to separate materials suspended in a liquid medium by using centrifugal force to increase the effect of gravity on the constituent particles. <\/p><p>The principle behind this technique is the effect of gravity on particles in suspension. The heavier particle settles faster as compared to the lighter component.",
+         "learningStats": {
+             "numAttempts": 5,
+             "learningEfficiency": 75,
+             "currentLevel": "L3",
+             "temporalScores": ["E", "H", "E", "E", "E"],
+             "lastAttemptTime": 1439051331000,
+             "totalTimeSpent": 387
+         }
+     }]
+ }
