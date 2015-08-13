@@ -109,6 +109,7 @@ function DifficultyAverageTimeManager( baseData ) {
 
 			if( currentDiffLevel == difficultyLevel ) {
 				avgTime = currentAvgTime ;
+				break ;
 			}
 			else if( currentDiffLevel < difficultyLevel ) {
 				prevToLastDiffLevel = lastDiffLevel ;
@@ -123,6 +124,7 @@ function DifficultyAverageTimeManager( baseData ) {
 
 				values.push( [ difficultyLevel, 0, avgTime ] ) ;
 				values.sort( function( a, b ){ a[0] - b[0] ; } ) ;
+				break ;
 			}
 		}
 
