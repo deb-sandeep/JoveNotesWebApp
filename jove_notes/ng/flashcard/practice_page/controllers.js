@@ -902,7 +902,9 @@ function callRFMApiToPushQuestion( previousCallAttemptNumber ) {
             "progressSnapshot": $scope.$parent.progressSnapshot,
             "sessionStats"    : $scope.$parent.sessionStats,
             "currentQuestion" : $scope.currentQuestion,
-            "answerAlign"     : $scope.answerAlign
+            "answerAlign"     : $scope.answerAlign,
+            "predictedTime"   : currentQuestionAvPredictedTime,
+            "avgSelfTime"     : currentQuestionAvSelfTime
         }
     })
     .success( function( data ){

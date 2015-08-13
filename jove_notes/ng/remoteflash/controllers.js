@@ -10,6 +10,8 @@ var sessionStartTime = 0 ;
 var currentQuestionShowStartTime = 0 ;
 var durationTillNowInMillis = 0 ;
 var questionTriggerIndex = 0 ;
+var predictedTime = 0 ;
+var avgSelfTime = 0 ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.SCREEN_WAITING_TO_START = "waiting_to_start" ;
@@ -239,6 +241,8 @@ function processIncomingQuestion( message ) {
     $scope.sessionStats     = message.content.sessionStats ;
     $scope.currentQuestion  = message.content.currentQuestion ;
     $scope.answerAlign      = message.content.answerAlign ;
+    predictedTime           = message.content.predictedTime ;
+    avgSelfTime             = message.content.avgSelfTime ;
 
     var questionType = message.content.currentQuestion.questionType ;
     var handler = null ;
@@ -277,12 +281,51 @@ function processIncomingQuestion( message ) {
     $scope.showQuestionTrigger = message.sessionId + ".Question-" 
                                  + questionTriggerIndex ;
     $scope.showAnswerTrigger   = "" ;
+    currentQuestionShowStartTime = new Date() ;
+    renderTimeMarkersForCurrentQuestion() ;
 }
 
 function handleTimerEvent() {
     if( $scope.currentScreen == $scope.SCREEN_PRACTICE ) {
         refreshClocks() ;
+        refreshCardTimeProgressBars() ;
         setTimeout( handleTimerEvent, 1000 ) ;
+    }
+}
+
+function renderTimeMarkersForCurrentQuestion() {
+
+    if( avgSelfTime > 0 ) {
+        var selfAvPercentage = 33*avgSelfTime/predictedTime ;
+        selfAvPercentage = Math.ceil( selfAvPercentage ) ;
+
+        $( "#self_av_pb_left" ).css( "width", selfAvPercentage + "%" ) ;
+        $( "#self_av_pb_padding" ).css( "width", (100 - selfAvPercentage -1 ) + "%" ) ;
+    }
+    $( "#curr_pb" ).removeClass() ;
+    $( "#curr_pb" ).addClass( "progress-bar progress-bar-success" ) ;
+}
+
+function refreshCardTimeProgressBars() {
+
+    var delta = Math.ceil(( new Date().getTime() - currentQuestionShowStartTime )/1000) ;
+
+    if( delta > 0 ) {
+        var percent = 33*delta/predictedTime ;
+        percent = Math.ceil( percent ) ;
+        if( percent <= 105 ) {
+            $( "#curr_pb" ).css( "width", percent + "%" ) ;
+        }
+
+        if( delta > avgSelfTime && 
+            delta < (1.5 * avgSelfTime) ) {
+            $( "#curr_pb" ).removeClass( "progress-bar-success" ) ;
+            $( "#curr_pb" ).addClass( "progress-bar-warning" ) ;
+        }
+        else if( delta > (1.5*avgSelfTime) ) {
+            $( "#curr_pb" ).removeClass( "progress-bar-warning" ) ;
+            $( "#curr_pb" ).addClass( "progress-bar-danger" ) ;
+        }
     }
 }
 
