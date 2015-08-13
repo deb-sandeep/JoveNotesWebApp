@@ -295,13 +295,38 @@ function handleTimerEvent() {
 
 function renderTimeMarkersForCurrentQuestion() {
 
-    if( avgSelfTime > 0 ) {
-        var selfAvPercentage = 33*avgSelfTime/predictedTime ;
-        selfAvPercentage = Math.ceil( selfAvPercentage ) ;
+    var selfAvgTimePct   = (5/9)*avgSelfTime ;
+    var predictedTimePct = (5/9)*predictedTime ;
 
-        $( "#self_av_pb_left" ).css( "width", selfAvPercentage + "%" ) ;
-        $( "#self_av_pb_padding" ).css( "width", (100 - selfAvPercentage -1 ) + "%" ) ;
+    var mark1 = 0 ; var mark1Class = "" ; var fill1Pct = 0 ;
+    var mark2 = 0 ; var mark2Class = "" ; var fill2Pct = 0 ;
+
+    if( selfAvgTimePct == 0 ) { selfAvgTimePct = predictedTimePct ; }
+
+    if( selfAvgTimePct > predictedTimePct ) {
+        mark1 = predictedTimePct ;
+        mark2 = selfAvgTimePct ;
+        mark1Class = "progress-bar progress-bar-info" ;
+        mark2Class = "progress-bar progress-bar-warning" ;
     }
+    else {
+        mark1 = selfAvgTimePct ;
+        mark2 = predictedTimePct ;
+        mark1Class = "progress-bar progress-bar-warning" ;
+        mark2Class = "progress-bar progress-bar-info" ;
+    }
+
+    fill1Pct = mark1 - 1 ;
+    fill2Pct = mark2 - mark1 -1 ;
+
+    $( "#pb_av_fill1" ).css( "width", fill1Pct + "%" ) ;
+    $( "#pb_av_fill2" ).css( "width", fill2Pct + "%" ) ;
+
+    $( "#pb_av_mark1" ).removeClass() ;
+    $( "#pb_av_mark2" ).removeClass() ;
+    $( "#pb_av_mark1" ).addClass( mark1Class ) ;
+    $( "#pb_av_mark2" ).addClass( mark2Class ) ;
+
     $( "#curr_pb" ).removeClass() ;
     $( "#curr_pb" ).addClass( "progress-bar progress-bar-success" ) ;
 }
@@ -310,9 +335,8 @@ function refreshCardTimeProgressBars() {
 
     var delta = Math.ceil(( new Date().getTime() - currentQuestionShowStartTime )/1000) ;
 
-    if( delta > 0 ) {
-        var percent = 33*delta/predictedTime ;
-        percent = Math.ceil( percent ) ;
+     if( delta > 0 ) {
+        var percent = (5/9)*delta ;
         if( percent <= 105 ) {
             $( "#curr_pb" ).css( "width", percent + "%" ) ;
         }
