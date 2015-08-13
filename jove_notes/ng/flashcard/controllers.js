@@ -95,13 +95,14 @@ $scope.pageTitle = '' ;
 $scope.studyCriteria = new StudyCriteria() ;
 $scope.filterOptions = new CardsFilterOptions() ;
 
-$scope.sessionId         = sessionId ;
-$scope.chapterDetails    = null ;
-$scope.numCardsInDeck    = 0 ;
-$scope.difficultyStats   = null ;
-$scope.progressSnapshot  = null ;
-$scope.learningCurveData = null ;
-$scope.questions         = null ;
+$scope.sessionId              = sessionId ;
+$scope.chapterDetails         = null ;
+$scope.numCardsInDeck         = 0 ;
+$scope.difficultyStats        = null ;
+$scope.progressSnapshot       = null ;
+$scope.difficultyTimeAverages = null ;
+$scope.learningCurveData      = null ;
+$scope.questions              = null ;
 
 $scope.pointsEarnedInThisSession = 0 ;
 $scope.pointsLostInThisSession = 0 ;
@@ -158,12 +159,13 @@ $scope.processServerData = function( serverData ) {
 
     log.debug( "Session id = " + $scope.sessionId ) ;
     
-    $scope.chapterDetails    = serverData.chapterDetails ;
-    $scope.numCardsInDeck    = serverData.deckDetails.numCards ;
-    $scope.difficultyStats   = serverData.deckDetails.difficultyStats ;
-    $scope.progressSnapshot  = serverData.deckDetails.progressSnapshot ;
-    $scope.learningCurveData = serverData.deckDetails.learningCurveData ;
-    $scope.questions         = serverData.questions ;
+    $scope.chapterDetails         = serverData.chapterDetails ;
+    $scope.numCardsInDeck         = serverData.deckDetails.numCards ;
+    $scope.difficultyStats        = serverData.deckDetails.difficultyStats ;
+    $scope.progressSnapshot       = serverData.deckDetails.progressSnapshot ;
+    $scope.difficultyTimeAverages = serverData.deckDetails.difficultyTimeAverages ;
+    $scope.learningCurveData      = serverData.deckDetails.learningCurveData ;
+    $scope.questions              = serverData.questions ;
 
     $scope.pageTitle = jnUtil.constructPageTitle( $scope.chapterDetails ) ;
 

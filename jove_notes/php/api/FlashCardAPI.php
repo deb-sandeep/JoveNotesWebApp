@@ -121,16 +121,16 @@ class FlashCardAPI extends AbstractJoveNotesAPI {
 
 	private function attachDifficultyTimeAverages( &$deckDetailsObj ) {
 
-		$this->logger->warn( "Getting difficulty time averages for chapter " . $this->chapterId ) ;
 		$diffTimeAverages = array() ;
 
 		$tupules = $this->clsDAO->getDifficultyTimeAveragesForChapter( 
 										ExecutionContext::getCurrentUserName(), 
 										$this->chapterId ) ;
-		
+
 		for( $i=0; $i < count( $tupules ); $i++ ) {
 			$cardType        = $tupules[$i][ "card_type" ] ;
 			$difficultyLevel = $tupules[$i][ "difficulty_level" ] ;
+			$numAttempts     = $tupules[$i][ "num_attempts" ] ;
 			$avgTime         = $tupules[$i][ "avg_time" ] ;
 			
 			if( !array_key_exists( $cardType, $diffTimeAverages ) ) {
@@ -138,8 +138,7 @@ class FlashCardAPI extends AbstractJoveNotesAPI {
 			}
 			$values = &$diffTimeAverages[ $cardType ] ;
 
-			array_push( $values, $difficultyLevel ) ;
-			array_push( $values, $avgTime ) ;
+			array_push( $values, array( $difficultyLevel, $numAttempts, $avgTime ) ) ;
 		}
 		$deckDetailsObj[ "difficultyTimeAverages" ] = $diffTimeAverages ;
 	}

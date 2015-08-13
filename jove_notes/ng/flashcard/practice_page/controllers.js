@@ -14,8 +14,10 @@ var MAX_PUSH_QUESTION_API_CALL_RETRIES = 3 ;
 // ---------------- Local variables --------------------------------------------
 var ratingMatrix = new RatingMatrix() ;
 
-var currentQuestionShowStartTime = 0 ;
-var durationTillNowInMillis = 0 ;
+var currentQuestionShowStartTime   = 0 ;
+var currentQuestionAvPredictedTime = 0 ;
+var currentQuestionAvSelfTime      = 0 ;
+var durationTillNowInMillis        = 0 ;
 
 var sessionStartTime = new Date().getTime() ;
 var sessionActive    = true ;
@@ -24,6 +26,8 @@ var oldBodyBottom    = 0 ;
 var scoreDelta       = 0 ;
 
 var questionChangeTriggerIndex = 0 ;
+
+var diffAvgTimeManager = null ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.showL0Header     = true ;
@@ -67,6 +71,9 @@ $scope.gradingButtonPlacement = "right" ;
 
     // Load the local state, which might include footer direction etc.
     loadLocalState() ;
+
+    diffAvgTimeManager = new DifficultyAverageTimeManager( 
+                                       $scope.$parent.difficultyTimeAverages ) ;
 
     log.debug( "Computing session cards." ) ;
     computeSessionCards() ;
@@ -137,12 +144,15 @@ $scope.purgeCard = function() {
 $scope.rateCard = function( rating ) {
     log.debug( "Rating current card as " + rating )  ;
 
-    var cardId     = $scope.currentQuestion.questionId ;
-    var curLevel   = $scope.currentQuestion.learningStats.currentLevel ;
-    var numAttempts= $scope.currentQuestion.learningStats.numAttemptsInSession+1 ;
+    var cardId      = $scope.currentQuestion.questionId ;
+    var curLevel    = $scope.currentQuestion.learningStats.currentLevel ;
+    var numAttempts = $scope.currentQuestion.learningStats.numAttemptsInSession+1 ;
+    var timeSpent   =  Math.ceil( ( new Date().getTime() - currentQuestionShowStartTime )/1000 ) ;   
 
     var nextLevel  = ratingMatrix.getNextLevel( numAttempts, curLevel, rating ) ;
     var nextAction = ratingMatrix.getNextAction( curLevel, rating ) ;
+
+    diffAvgTimeManager.updateStatistics( $scope.currentQuestion, timeSpent ) ;
 
     $scope.questionsForSession.shift() ;
 
@@ -169,7 +179,7 @@ $scope.rateCard = function( rating ) {
         curLevel, 
         nextLevel, 
         rating, 
-        Math.ceil( ( new Date().getTime() - currentQuestionShowStartTime )/1000 ),
+        timeSpent,
         numAttempts,
         0 
     ) ;
@@ -244,7 +254,21 @@ function showNextCard() {
 
         log.debug( "Showing next question." ) ;
         $scope.currentQuestion = $scope.questionsForSession[0] ;
+
         var answerLength = $scope.currentQuestion.handler.getAnswerLength() ;
+        currentQuestionAvPredictedTime = diffAvgTimeManager.getPredictedAverageTime( $scope.currentQuestion ) ;
+        log.debug( "Predicted average time = " + currentQuestionAvPredictedTime + " sec." ) ;
+
+        currentQuestionAvSelfTime = 0 ;
+        if( $scope.currentQuestion.learningStats.numAttempts > 0 ) {
+            currentQuestionAvSelfTime = $scope.currentQuestion.learningStats.totalTimeSpent / 
+                                        $scope.currentQuestion.learningStats.numAttempts ;
+            currentQuestionAvSelfTime = Math.ceil( currentQuestionAvSelfTime ) ;
+        }
+        else {
+            currentQuestionAvSelfTime = currentQuestionAvPredictedTime ;
+        }
+        log.debug( "Self average time = " + currentQuestionAvSelfTime + " sec." ) ;
 
         $scope.questionMode = true ;
         $scope.answerChangeTrigger = "" ;
@@ -256,6 +280,8 @@ function showNextCard() {
 
         questionChangeTriggerIndex++ ;
         $scope.questionChangeTrigger = "Question-" + questionChangeTriggerIndex ;
+
+        renderTimeMarkersForCurrentQuestion() ;
 
         if( $scope.$parent.studyCriteria.push ) {
             log.debug( "Session is configured for remote push. " + 
@@ -272,6 +298,19 @@ function showNextCard() {
     else {
         endSession() ;
     }
+}
+
+function renderTimeMarkersForCurrentQuestion() {
+
+    if( currentQuestionAvSelfTime > 0 ) {
+        var selfAvPercentage = 33*currentQuestionAvSelfTime/currentQuestionAvPredictedTime ;
+        selfAvPercentage = Math.ceil( selfAvPercentage ) ;
+
+        $( "#self_av_pb_left" ).css( "width", selfAvPercentage + "%" ) ;
+        $( "#self_av_pb_padding" ).css( "width", (100 - selfAvPercentage -1 ) + "%" ) ;
+    }
+    $( "#curr_pb" ).removeClass() ;
+    $( "#curr_pb" ).addClass( "progress-bar progress-bar-success" ) ;
 }
 
 function computeRecommendPromoteFlag() {
@@ -583,9 +622,24 @@ function refreshClocks() {
 function refreshCardTimeProgressBars() {
 
     var delta = Math.ceil(( new Date().getTime() - currentQuestionShowStartTime )/1000) ;
-    var percent = Math.ceil( (delta / 120)*100 ) ;
 
-    //$( "#card_pb_good" ).css( "width", percent + "%" ) ;
+    if( delta > 0 ) {
+        var percent = 33*delta/currentQuestionAvPredictedTime ;
+        percent = Math.ceil( percent ) ;
+        if( percent <= 105 ) {
+            $( "#curr_pb" ).css( "width", percent + "%" ) ;
+        }
+
+        if( delta > currentQuestionAvSelfTime && 
+            delta < (1.5 * currentQuestionAvSelfTime) ) {
+            $( "#curr_pb" ).removeClass( "progress-bar-success" ) ;
+            $( "#curr_pb" ).addClass( "progress-bar-warning" ) ;
+        }
+        else if( delta > (1.5*currentQuestionAvSelfTime) ) {
+            $( "#curr_pb" ).removeClass( "progress-bar-warning" ) ;
+            $( "#curr_pb" ).addClass( "progress-bar-danger" ) ;
+        }
+    }
 }
 
 function onWindowResize() {

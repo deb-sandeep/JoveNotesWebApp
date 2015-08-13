@@ -170,7 +170,9 @@ QUERY;
 
 $query = <<<QUERY
 SELECT 
-    c.card_type, c.difficulty_level, ceil(avg( cls.total_time_spent )) as avg_time
+    c.card_type, c.difficulty_level, 
+    sum( cls.num_attempts) as num_attempts, 
+    ceil(avg( cls.total_time_spent/cls.num_attempts )) as avg_time
 FROM 
     jove_notes.card_learning_summary cls,
     jove_notes.card c,
@@ -190,7 +192,7 @@ ORDER BY
 QUERY;
 
         return parent::getResultAsAssociativeArray( $query, 
-                      [ "card_type", "difficulty_level", "avg_time" ], false ) ;
+                      [ "card_type", "difficulty_level", "num_attempts", "avg_time" ], false ) ;
     }
 }
 ?>
