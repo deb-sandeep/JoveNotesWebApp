@@ -87,6 +87,16 @@ $pageConfig = array(
     <div ng-show="currentScreen == SCREEN_SESSION_END" class="ng-hide"
          ng-include="'/apps/jove_notes/ng/remoteflash/fragments/session_end.html'">
     </div>
+
+    <div id="modalResume" class="modal fade" data-backdrop="static">
+      <div class="modal-dialog" style="width:80px;height:95px;top:200px;">
+        <div class="modal-content">
+          <div class="modal-body" style="padding:2px">
+              <span class="glyphicon glyphicon-play-circle" style="font-size: 5em;color: #FF0000"></span>
+          </div>
+        </div>
+      </div>
+    </div>
 </body>
 
 </html>

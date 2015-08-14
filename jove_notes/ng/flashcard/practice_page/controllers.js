@@ -29,6 +29,10 @@ var questionChangeTriggerIndex = 0 ;
 
 var diffAvgTimeManager = null ;
 
+var resumeModalShowTime    = 0 ;
+var totalSessionPauseTime  = 0 ;
+var totalQuestionPauseTime = 0 ;
+
 // ---------------- Controller variables ---------------------------------------
 $scope.showL0Header     = true ;
 $scope.showL1Header     = true ;
@@ -101,6 +105,35 @@ $scope.gradingButtonPlacement = "right" ;
 }
 
 // ---------------- Controller methods -----------------------------------------
+$scope.pauseSession = function() {
+
+    $( '#modalResume' ).modal( 'show' ) ;
+    callRFMApiToPauseResumeSession( 'pause_session', 0, function(){
+        resumeModalShowTime = new Date() ;
+    } ) ;
+}
+
+// This deserves some commentary. See, I have put the bootstrap modal div
+// in index.php - that is as a child of the body tag. This is so, because if
+// I put it inside the flashcard body, showing creates problem with the z
+// order of the dialog. Now, ng-click of the resume button acts on the 
+// root flash card scope, which is a parent (ancestor) of this scope. As per
+// angular design, we can't access a child scope from inside a parent scope and
+// hence I use $broadcast to percolate an event down to the children.
+// Hence we catch the resume trigger via an $on.
+$scope.$on( 'resumeSession.button.click', function( event, args ){
+
+    $( '#modalResume' ).modal( 'hide' ) ;
+
+    callRFMApiToPauseResumeSession( 'resume_session', 0, function(){
+        var pauseTime = new Date() - resumeModalShowTime ;
+        totalSessionPauseTime  += pauseTime ;
+        totalQuestionPauseTime += pauseTime ;
+
+        resumeModalShowTime = 0 ;
+    } ) ;
+} ) ;
+
 $scope.toggleFooterDirection = function() {
     $scope.gradingButtonPlacement = ( $scope.gradingButtonPlacement == 'left' ) ?
                                     'right' : 'left' ;
@@ -147,7 +180,7 @@ $scope.rateCard = function( rating ) {
     var cardId      = $scope.currentQuestion.questionId ;
     var curLevel    = $scope.currentQuestion.learningStats.currentLevel ;
     var numAttempts = $scope.currentQuestion.learningStats.numAttemptsInSession+1 ;
-    var timeSpent   =  Math.ceil( ( new Date().getTime() - currentQuestionShowStartTime )/1000 ) ;   
+    var timeSpent   =  Math.ceil( ( new Date().getTime() - currentQuestionShowStartTime - totalQuestionPauseTime )/1000 ) ;   
 
     var nextLevel  = ratingMatrix.getNextLevel( numAttempts, curLevel, rating ) ;
     var nextAction = ratingMatrix.getNextAction( curLevel, rating ) ;
@@ -218,7 +251,7 @@ function loadLocalState() {
 
 function updateLearningStatsForCurrentQuestion( rating, nextLevel ) {
 
-    var delta = ( new Date().getTime() - currentQuestionShowStartTime )/1000 ;
+    var delta = ( new Date().getTime() - currentQuestionShowStartTime - totalQuestionPauseTime )/1000 ;
 
     $scope.currentQuestion.learningStats.numAttempts++ ;
     $scope.currentQuestion.learningStats.numAttemptsInSession++ ;
@@ -282,6 +315,7 @@ function showNextCard() {
         $scope.questionChangeTrigger = "Question-" + questionChangeTriggerIndex ;
 
         renderTimeMarkersForCurrentQuestion() ;
+        totalQuestionPauseTime = 0 ;
 
         if( $scope.$parent.studyCriteria.push ) {
             log.debug( "Session is configured for remote push. " + 
@@ -576,15 +610,20 @@ function trimCardsAsPerBounds() {
 
 function handleTimerEvent() {
     if( sessionActive ) {
-        refreshClocks() ;
-        refreshCardTimeProgressBars() ;
-        setTimeout( handleTimerEvent, 1000 ) ;
+        if( resumeModalShowTime == 0 ) {
+            refreshClocks() ;
+            refreshCardTimeProgressBars() ;
+            setTimeout( handleTimerEvent, 1000 ) ;
+        }
+        else {
+            setTimeout( handleTimerEvent, 500 ) ;
+        }
     }
 }
 
 function refreshClocks() {
 
-    durationTillNowInMillis = new Date().getTime() - sessionStartTime ;
+    durationTillNowInMillis = new Date().getTime() - sessionStartTime - totalSessionPauseTime ;
 
     $scope.$parent.timePerQuestion = durationTillNowInMillis / 
                              ( $scope.$parent.sessionStats.numCardsAnswered + 1 ) ;
@@ -646,7 +685,7 @@ function renderTimeMarkersForCurrentQuestion() {
 
 function refreshCardTimeProgressBars() {
 
-    var delta = Math.ceil(( new Date().getTime() - currentQuestionShowStartTime )/1000) ;
+    var delta = Math.ceil(( new Date().getTime() - currentQuestionShowStartTime - totalQuestionPauseTime )/1000) ;
 
     if( delta > 0 ) {
         var percent = (5/9)*delta ;
@@ -947,6 +986,47 @@ function callRFMApiToPushQuestion( previousCallAttemptNumber ) {
         }
 
         var message = "Could not post question for remote view. " + 
+                      "Server says status = " + status + " and " + 
+                      "Response = " + data ;
+        log.error( message ) ;
+        $scope.addErrorAlert( message ) ;
+    }) ;
+}
+
+function callRFMApiToPauseResumeSession( action, previousCallAttemptNumber, callbackFn ) {
+
+    if( !$scope.$parent.studyCriteria.push ) {
+        callbackFn() ;
+        return ;
+    } ;
+
+    var currentCallAttemptNumber = previousCallAttemptNumber + 1 ;
+
+    log.debug( "Pushing " + action + " session message to remote user. Attempt - " + 
+               currentCallAttemptNumber ) ;
+
+    $http.post( '/jove_notes/api/RemoteFlashMessage', { 
+        sessionId   : $scope.$parent.sessionId,
+        chapterId   : chapterId,
+        msgType     : action,
+        msgContent  : {}
+    })
+    .success( function( data ){
+        callbackFn() ;
+    })
+    .error( function( data, status ){
+
+        if( status == 0 ) {
+            log.debug( "Faulty connection determined." ) ;
+            if( currentCallAttemptNumber < MAX_PUSH_QUESTION_API_CALL_RETRIES ) {
+                log.debug( "Retrying the push " + action + " session call again." ) ;
+                callRFMApiToPauseSession( currentCallAttemptNumber ) ;
+                return ;
+            }
+            log.debug( "Number of retries exceeded. Notifying the user." ) ;
+        }
+
+        var message = "Could not post " + action + " session for remote view. " + 
                       "Server says status = " + status + " and " + 
                       "Response = " + data ;
         log.error( message ) ;

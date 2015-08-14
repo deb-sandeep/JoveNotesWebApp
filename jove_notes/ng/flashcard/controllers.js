@@ -137,6 +137,10 @@ $scope.$watch( 'studyCriteria.push', function( newValue, oldValue ){
 }) ;
 
 // ---------------- Controller methods -----------------------------------------
+$scope.resumeSession = function() {
+    $scope.$broadcast( 'resumeSession.button.click' ) ;
+}
+
 $scope.addErrorAlert = function( msgString ) {
     $scope.alerts.push( { type: 'danger', msg: msgString } ) ;
 }

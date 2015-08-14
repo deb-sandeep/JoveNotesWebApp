@@ -31,7 +31,6 @@ class FlashCardAPI extends AbstractJoveNotesAPI {
 			                          "FlashCard for chapter " . 
 			                          $request->requestPathComponents[0] ;
 		}
-
 	}
 
 	private function constructResponseBody() {

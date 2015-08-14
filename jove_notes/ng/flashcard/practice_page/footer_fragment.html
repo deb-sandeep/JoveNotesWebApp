@@ -46,6 +46,15 @@
         </div>
 
         <div class="pull-right">
+
+            <button type="button" 
+                    class="btn btn-warning btn-lg"
+                    ng-click="pauseSession()"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Pause Session">
+                <span class="glyphicon glyphicon-pause"></span>
+            </button>
+
             <!-- The Push Question button button. This is shown only if we are  -->
             <!-- conducting a remote session                                    -->
             <button type="button" 
@@ -209,6 +218,14 @@
                     data-toggle="tooltip" data-placement="top" 
                     title="Push question">
                 <span class="glyphicon glyphicon-send"></span>
+            </button>
+            
+            <button type="button" 
+                    class="btn btn-warning btn-lg"
+                    ng-click="pauseSession()"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Pause Session">
+                <span class="glyphicon glyphicon-pause"></span>
             </button>
         </div>
 

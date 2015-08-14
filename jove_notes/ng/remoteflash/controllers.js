@@ -13,6 +13,10 @@ var questionTriggerIndex = 0 ;
 var predictedTime = 0 ;
 var avgSelfTime = 0 ;
 
+var resumeModalShowTime    = 0 ;
+var totalSessionPauseTime  = 0 ;
+var totalQuestionPauseTime = 0 ;
+
 // ---------------- Controller variables ---------------------------------------
 $scope.SCREEN_WAITING_TO_START = "waiting_to_start" ;
 $scope.SCREEN_SESSION_SETTINGS = "session_settings" ;
@@ -142,6 +146,12 @@ function runMessageProcessPump() {
             else if( message.msgType == "end_session" ) {
                 processEndSessionMessage( message ) ;
             }
+            else if( message.msgType == "pause_session" ) {
+                pauseSession() ;
+            }
+            else if( message.msgType == "resume_session" ) {
+                resumeSession() ;
+            }
             else {
                 throw "Unknown message type " + message.msgType ;
             }
@@ -151,6 +161,23 @@ function runMessageProcessPump() {
         }
     }
     setTimeout( runMessageProcessPump, 300 ) ;
+}
+
+function pauseSession() {
+    $( '#modalResume' ).modal( 'show' ) ;
+    resumeModalShowTime = new Date() ;
+}
+
+function resumeSession() {
+    $( '#modalResume' ).modal( 'hide' ) ;
+    $( 'body' ).removeClass('modal-open') ;
+    $( '.modal-backdrop' ).remove() ;
+
+    var pauseTime = new Date() - resumeModalShowTime ;
+    totalSessionPauseTime  += pauseTime ;
+    totalQuestionPauseTime += pauseTime ;
+
+    resumeModalShowTime = 0 ;
 }
 
 function processEndSessionMessage( message ) {
@@ -282,13 +309,16 @@ function processIncomingQuestion( message ) {
                                  + questionTriggerIndex ;
     $scope.showAnswerTrigger   = "" ;
     currentQuestionShowStartTime = new Date() ;
+    totalQuestionPauseTime = 0 ;
     renderTimeMarkersForCurrentQuestion() ;
 }
 
 function handleTimerEvent() {
     if( $scope.currentScreen == $scope.SCREEN_PRACTICE ) {
-        refreshClocks() ;
-        refreshCardTimeProgressBars() ;
+        if( resumeModalShowTime == 0 ) {
+            refreshClocks() ;
+            refreshCardTimeProgressBars() ;
+        }
         setTimeout( handleTimerEvent, 1000 ) ;
     }
 }
@@ -333,7 +363,7 @@ function renderTimeMarkersForCurrentQuestion() {
 
 function refreshCardTimeProgressBars() {
 
-    var delta = Math.ceil(( new Date().getTime() - currentQuestionShowStartTime )/1000) ;
+    var delta = Math.ceil(( new Date().getTime() - currentQuestionShowStartTime - totalQuestionPauseTime )/1000) ;
 
      if( delta > 0 ) {
         var percent = (5/9)*delta ;
@@ -355,7 +385,7 @@ function refreshCardTimeProgressBars() {
 
 function refreshClocks() {
 
-    durationTillNowInMillis = new Date().getTime() - sessionStartTime ;
+    durationTillNowInMillis = new Date().getTime() - sessionStartTime - totalSessionPauseTime ;
 
     $scope.sessionDuration = durationTillNowInMillis ;
     $scope.timePerQuestion = durationTillNowInMillis / 

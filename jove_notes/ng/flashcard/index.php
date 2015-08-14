@@ -106,6 +106,19 @@ $score = $scoreDAO->getScore( ExecutionContext::getCurrentUserName() ) ;
     <?php include( ALERT_DIV_FILE ) ; ?>
     <audio id="audio"></audio>
   	<div class="ng-view"></div>	
+    <div id="modalResume" class="modal fade" data-backdrop="static">
+      <div class="modal-dialog" style="width:100px;height:100px;top:200px;">
+        <div class="modal-content">
+          <div class="modal-body" style="padding:0px">
+            <button type="button" class="btn btn-info btn-lg" 
+                    style="width:100px;height:100px;padding:3px" 
+                    ng-click="resumeSession()">
+              <span class="glyphicon glyphicon-play-circle" style="font-size: 5em" ></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 </body>
 
 </html>
