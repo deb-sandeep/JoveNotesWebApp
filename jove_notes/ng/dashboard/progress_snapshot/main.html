@@ -22,16 +22,22 @@
                     </button>
     			</th>
                 <th></th>
-                <th class="text-center">Meter</th>
                 <th></th>
+                <th class="text-center">Meter</th>
     			<th></th>
-                <th class="text-right"><span class="badge"    >T  </span></th>
-                <th class="text-right"><span class="badge NS" >NS </span></th>
-                <th class="text-right"><span class="badge L0" >L0 </span></th>
-                <th class="text-right"><span class="badge L1" >L1 </span></th>
-                <th class="text-right"><span class="badge L2" >L2 </span></th>
-                <th class="text-right"><span class="badge L3" >L3 </span></th>
-    			<th class="text-right"><span class="badge MAS">MAS</span></th>
+                <th>
+                    <table class="dashboard-stats">
+                        <tr>
+                            <td class="text-right TOT">T  </td>
+                            <td class="text-right NS" >NS </td>
+                            <td class="text-right L0" >L0 </td>
+                            <td class="text-right L1" >L1 </td>
+                            <td class="text-right L2" >L2 </td>
+                            <td class="text-right L3" >L3 </td>
+                            <td class="text-right MAS">MAS</td>
+                        </tr>
+                    </table>
+                </th>
     		</tr>	
     	</thead>	
     	<tbody>
@@ -70,13 +76,19 @@
                         <span class="glyphicon glyphicon-eye-open"  ng-show="rowData.isHidden"></span>
                     </a>
                 </td>
-                <td class="text-right"><span class="badge NS" >{{rowData.totalCards      }}</span></td>
-                <td class="text-right"><span class="badge NS" >{{rowData.notStartedCards }}</span></td>
-                <td class="text-right"><span class="badge L0" >{{rowData.l0Cards         }}</span></td>
-                <td class="text-right"><span class="badge L1" >{{rowData.l1Cards         }}</span></td>
-                <td class="text-right"><span class="badge L2" >{{rowData.l2Cards         }}</span></td>
-                <td class="text-right"><span class="badge L3" >{{rowData.l3Cards         }}</span></td>
-                <td class="text-right"><span class="badge MAS">{{rowData.masteredCards   }}</span></td>
+                <td>
+                    <table class="dashboard-stats">
+                        <tr>
+                            <td class="text-right TOT">{{rowData.totalCards      }}</td>
+                            <td class="text-right NS" >{{rowData.notStartedCards }}</td>
+                            <td class="text-right L0" >{{rowData.l0Cards         }}</td>
+                            <td class="text-right L1" >{{rowData.l1Cards         }}</td>
+                            <td class="text-right L2" >{{rowData.l2Cards         }}</td>
+                            <td class="text-right L3" >{{rowData.l3Cards         }}</td>
+                            <td class="text-right MAS">{{rowData.masteredCards   }}</td>
+                            </tr>
+                    </table>
+                </td>
     		</tr>	
     	</tbody>
     </table>

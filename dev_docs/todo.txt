@@ -14,6 +14,10 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+8/15/15 --
+. Made more space in the dashboard by replacing badges in statistics with a
+  colored table
+  
 8/14/15 --
 . Pause feature implemented
 
