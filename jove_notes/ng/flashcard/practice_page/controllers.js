@@ -185,7 +185,7 @@ $scope.rateCard = function( rating ) {
     var nextLevel  = ratingMatrix.getNextLevel( numAttempts, curLevel, rating ) ;
     var nextAction = ratingMatrix.getNextAction( curLevel, rating ) ;
 
-    diffAvgTimeManager.updateStatistics( $scope.currentQuestion, timeSpent ) ;
+    diffAvgTimeManager.updateStatistics( $scope.currentQuestion, rating, timeSpent ) ;
 
     $scope.questionsForSession.shift() ;
 
@@ -199,7 +199,7 @@ $scope.rateCard = function( rating ) {
     log.debug( "Next level    = " + nextLevel ) ;
     log.debug( "Next action   = " + nextAction ) ;
     log.debug( "Num attmepts  = " + numAttempts ) ;
-    log.debug( "Time spent    = " + $scope.currentQuestion.learningStats.numSecondsInSession ) ;
+    log.debug( "Time spent    = " + timeSpent ) ;
 
     // NOTE: GradeCard API call is asynchronous, that implies that the score 
     // of the current question will come sometimes when the user is attempting

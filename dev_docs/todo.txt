@@ -14,6 +14,11 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+8/16/15 --
+. Slight bug fix on average time calculation
+. Color tweaking on NS, L0 classes
+. APMNS rated cards time not being captured
+
 8/15/15 --
 . Made more space in the dashboard by replacing badges in statistics with a
   colored table

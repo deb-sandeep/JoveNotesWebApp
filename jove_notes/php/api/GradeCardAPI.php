@@ -110,6 +110,8 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 	private function saveCardRating() {
 
 		// Save the card rating only if we are not grading an auto-promote case.
+		// This also implies that the time spent for cards which have APMNS ratings
+		// are not captured - intended behavior.
 		if( $this->requestObj->rating != "APMNS" ) {
 
 			$rating = $this->requestObj->rating ;
@@ -155,8 +157,15 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 		else if ( $this->requestObj->nextLevel === 'L3'  ) $incrL3  += 1 ;
 		else if ( $this->requestObj->nextLevel === 'MAS' ) $incrMAS += 1 ;
 
+		// If we have an auto promote card without scoring, we consider the
+		// time taken to be zero.
+		$timeTaken = $this->requestObj->timeTaken ;
+		if( $this->requestObj->rating === 'APMNS' ) {
+			$timeTaken = 0 ;
+		}
+
 		$this->lsDAO->updateSessionStat( $this->requestObj->sessionId,
-			                             $this->requestObj->timeTaken,
+			                             $timeTaken,
 			                             $incrE, $incrA, $incrP, $incrH,
 										 $incrNS, $incrL0, $incrL1, 
 										 $incrL2, $incrL3, $incrMAS, 
@@ -171,12 +180,19 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 			$rating = "E" ;
 		}
 
+		// If we have an auto promote card without scoring, we consider the
+		// time taken to be zero.
+		$timeTaken = $this->requestObj->timeTaken ;
+		if( $this->requestObj->rating === 'APMNS' ) {
+			$timeTaken = 0 ;
+		}
+
 		$this->clsDAO->updateSummary( ExecutionContext::getCurrentUserName(),
 			                          $this->requestObj->cardId, 
 			                          $this->requestObj->nextLevel, 
 			                          $rating, 
 			                          $this->learningEfficiency,
-			                          $this->requestObj->timeTaken ) ;
+			                          $timeTaken ) ;
 	}	
 
 	private function computeScore( $cardLearningSummary ) {

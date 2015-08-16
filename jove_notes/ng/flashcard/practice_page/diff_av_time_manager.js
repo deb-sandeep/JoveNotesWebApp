@@ -68,7 +68,14 @@ function DifficultyAverageTimeManager( baseData ) {
 		return getAverageTime( question.difficultyLevel, values ) ;
 	} ;
 
-	this.updateStatistics = function( question, timeTaken ) {
+	this.updateStatistics = function( question, rating, timeTaken ) {
+
+		// As an APMNS rated card implies the student has not expended any 
+		// effort, it should not influence the average time. Hence, we consider
+		// the time taken to be zero in case the card is rated APMNS
+		if( rating == 'APMNS' ) {
+			return ;
+		}
 
 		var values = getValuesArray( question.questionType ) ;
 		for( var i=0; i<values.length; i++ ) {
@@ -77,7 +84,7 @@ function DifficultyAverageTimeManager( baseData ) {
 			var currentAvgTime   = values[i][2] ;
 
 			if( currentDiffLevel == question.difficultyLevel ) {
-				var totalTime = values[i][1] * values[i][2] + timeTaken ;
+				var totalTime = ( values[i][1] * values[i][2] ) + timeTaken ;
 				var newAvg    = totalTime / ( values[i][1] + 1 ) ;
 				values[i][1] = values[i][1] + 1 ;
 				values[i][2] = newAvg ;

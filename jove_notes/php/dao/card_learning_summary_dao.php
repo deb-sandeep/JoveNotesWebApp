@@ -172,7 +172,7 @@ $query = <<<QUERY
 SELECT 
     c.card_type, c.difficulty_level, 
     sum( cls.num_attempts) as num_attempts, 
-    ceil(avg( cls.total_time_spent/cls.num_attempts )) as avg_time
+    ceil( sum( cls.total_time_spent )/sum( cls.num_attempts ) ) as avg_time
 FROM 
     jove_notes.card_learning_summary cls,
     jove_notes.card c,
