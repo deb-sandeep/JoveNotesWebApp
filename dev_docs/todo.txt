@@ -14,6 +14,10 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+8/17/15 --
+. Time reward/penalty implemented
+. Tiny bug fix in the time chasers
+
 8/16/15 --
 . Slight bug fix on average time calculation
 . Color tweaking on NS, L0 classes

@@ -206,6 +206,46 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 		else {
 			$this->computeScoreForNormalScenario( $cardLearningSummary ) ;
 		}
+
+		if( $this->score != 0 ) {
+			$this->addOvershootRewardOrPenalty() ;
+		}
+
+		$this->score = round( $this->score ) ;
+	}
+
+	private function addOvershootRewardOrPenalty() {
+
+		$overshootPct = $this->requestObj->overshootPct ;
+		$penalty = 0 ;
+
+		if( $overshootPct > 0.25 ) {
+
+			// If student has taken more than 1.5 times the average, we should
+			// penalize him - as a percentage of the score earned
+			if      ( $overshootPct > 1.0 ) { $penalty = $this->score * 0.6 ; }
+			else if ( $overshootPct > 0.8 ) { $penalty = $this->score * 0.5 ; }
+			else if ( $overshootPct > 0.7 ) { $penalty = $this->score * 0.4 ; }
+			else if ( $overshootPct > 0.6 ) { $penalty = $this->score * 0.3 ; }
+			else if ( $overshootPct > 0.5 ) { $penalty = $this->score * 0.2 ; }
+			else                            { $penalty = $this->score * 0.1 ; }
+
+			$this->score -= $penalty ;
+
+		}
+		else if( $overshootPct < 0 ) {
+			// If student has answered faster than the average time, we should
+			// reward him as a percentage of the score earned
+
+			if      ( $overshootPct < -0.5 ) { $penalty = $this->score * 0.25  ; }
+			else if ( $overshootPct < -0.4 ) { $penalty = $this->score * 0.2   ; }
+			else if ( $overshootPct < -0.3 ) { $penalty = $this->score * 0.15  ; }
+			else if ( $overshootPct < -0.2 ) { $penalty = $this->score * 0.1   ; }
+			else if ( $overshootPct < -0.1 ) { $penalty = $this->score * 0.05  ; }
+			else                             { $penalty = $this->score * 0.025 ; }
+
+			$this->score += $penalty ;
+		}
 	}
 
 	// $this->requestObj has the following attributes
@@ -217,6 +257,7 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
     // 		rating
     // 		timeTaken
     // 		numAttempts
+    //      overshootPct
     //
     // $cardLearningSummary has the following attributes
 	// 		current_level

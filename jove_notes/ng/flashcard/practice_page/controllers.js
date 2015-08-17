@@ -182,8 +182,12 @@ $scope.rateCard = function( rating ) {
     var numAttempts = $scope.currentQuestion.learningStats.numAttemptsInSession+1 ;
     var timeSpent   =  Math.ceil( ( new Date().getTime() - currentQuestionShowStartTime - totalQuestionPauseTime )/1000 ) ;   
 
-    var nextLevel  = ratingMatrix.getNextLevel( numAttempts, curLevel, rating ) ;
-    var nextAction = ratingMatrix.getNextAction( curLevel, rating ) ;
+    var nextLevel    = ratingMatrix.getNextLevel( numAttempts, curLevel, rating ) ;
+    var nextAction   = ratingMatrix.getNextAction( curLevel, rating ) ;
+    var overshootPct = ( timeSpent - currentQuestionAvSelfTime )/currentQuestionAvSelfTime ;
+
+    // Rounding off overshoot percentage to two decimal places.
+    overshootPct = Math.round( overshootPct * 100 )/100 ;
 
     diffAvgTimeManager.updateStatistics( $scope.currentQuestion, rating, timeSpent ) ;
 
@@ -200,6 +204,7 @@ $scope.rateCard = function( rating ) {
     log.debug( "Next action   = " + nextAction ) ;
     log.debug( "Num attmepts  = " + numAttempts ) ;
     log.debug( "Time spent    = " + timeSpent ) ;
+    log.debug( "Overshoot pct = " + overshootPct ) ;
 
     // NOTE: GradeCard API call is asynchronous, that implies that the score 
     // of the current question will come sometimes when the user is attempting
@@ -214,6 +219,7 @@ $scope.rateCard = function( rating ) {
         rating, 
         timeSpent,
         numAttempts,
+        overshootPct,
         0 
     ) ;
     
@@ -671,16 +677,21 @@ function renderTimeMarkersForCurrentQuestion() {
     fill1Pct = mark1 - 1 ;
     fill2Pct = mark2 - mark1 -1 ;
 
-    $( "#pb_av_fill1" ).css( "width", fill1Pct + "%" ) ;
-    $( "#pb_av_fill2" ).css( "width", fill2Pct + "%" ) ;
+    // Why setTimeout - because for the first question, since Angular is 
+    // executing, the div id is not yet accessible and hence the we are sequencing
+    // it after Angular digest runs.
+    setTimeout( function(){
+        $( "#pb_av_fill1" ).css( "width", fill1Pct + "%" ) ;
+        $( "#pb_av_fill2" ).css( "width", fill2Pct + "%" ) ;
 
-    $( "#pb_av_mark1" ).removeClass() ;
-    $( "#pb_av_mark2" ).removeClass() ;
-    $( "#pb_av_mark1" ).addClass( mark1Class ) ;
-    $( "#pb_av_mark2" ).addClass( mark2Class ) ;
+        $( "#pb_av_mark1" ).removeClass() ;
+        $( "#pb_av_mark2" ).removeClass() ;
+        $( "#pb_av_mark1" ).addClass( mark1Class ) ;
+        $( "#pb_av_mark2" ).addClass( mark2Class ) ;
 
-    $( "#curr_pb" ).removeClass() ;
-    $( "#curr_pb" ).addClass( "progress-bar progress-bar-success" ) ;
+        $( "#curr_pb" ).removeClass() ;
+        $( "#curr_pb" ).addClass( "progress-bar progress-bar-success" ) ;
+    }, 50 ) ;
 }
 
 function refreshCardTimeProgressBars() {
@@ -776,7 +787,7 @@ function updateScore() {
  * displayed to the user.
  */
 function callGradeCardAPI( chapterId, sessionId, cardId, curLevel, nextLevel, 
-                           rating, timeTaken, numAttempts,
+                           rating, timeTaken, numAttempts, overshootPct,
                            previousCallAttemptNumber ) {
 
     var currentCallAttemptNumber = previousCallAttemptNumber + 1 ;
@@ -790,6 +801,7 @@ function callGradeCardAPI( chapterId, sessionId, cardId, curLevel, nextLevel,
     log.debug( "\trating       = " + rating      ) ;
     log.debug( "\ttimeTaken    = " + timeTaken   ) ;
     log.debug( "\tnumAttempts  = " + numAttempts ) ;
+    log.debug( "\tovershootPct = " + overshootPct ) ;
 
     $http.post( '/jove_notes/api/GradeCard', { 
         "chapterId"    : chapterId,
@@ -799,7 +811,8 @@ function callGradeCardAPI( chapterId, sessionId, cardId, curLevel, nextLevel,
         "nextLevel"    : nextLevel,
         "rating"       : rating,
         "timeTaken"    : timeTaken,
-        "numAttempts"  : numAttempts
+        "numAttempts"  : numAttempts,
+        "overshootPct" : overshootPct
     })
     .success( function( data ){
         if( typeof data === 'string' ) {
