@@ -20,7 +20,8 @@ class NotesElementDAO extends AbstractDAO {
 $query = <<< QUERY
 select 
 	ne.notes_element_id, ne.element_type, ne.difficulty_level, ne.content,
-	CEIL( AVG( cls.learning_efficiency ) ) as learning_efficiency
+	CEIL( AVG( cls.learning_efficiency ) ) as learning_efficiency,
+	CEIL( AVG( cls.abs_learning_efficiency ) ) as abs_learning_efficiency
 from 
 	jove_notes.notes_element ne left join
 	jove_notes.card_learning_summary cls
@@ -38,7 +39,8 @@ order by
 QUERY;
 
 		$colNames = [ "notes_element_id", "element_type", 
-		              "difficulty_level", "content", "learning_efficiency" ] ;
+		              "difficulty_level", "content", "learning_efficiency",
+		              "abs_learning_efficiency" ] ;
 
 		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
 	}

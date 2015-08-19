@@ -7,13 +7,15 @@ Pending dev cards
 . Responsive headers - responsive headers are really not working. Change them 
   to static non-floating headers
 
-. Report to see the number of questions answered
 . Report to see the subject that was studied in a range and the, chapters/time
   spent on them. angular-grid?
 
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+8/19/15 --
+. User can now filter notes based on absolute learning efficiency
+
 8/17/15 --
 . Time reward/penalty implemented
 . Tiny bug fix in the time chasers

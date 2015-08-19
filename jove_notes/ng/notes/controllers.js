@@ -3,6 +3,7 @@ notesApp.controller( 'NotesController', function( $scope, $http, $sce, $location
 // ---------------- Constants and inner class definition -----------------------
 function FilterCriteria() {
 
+	this.useAbsoluteEfficiency     = false ;
 	this.learningEfficiencyFilters = [ "A1", "A2", "B1", "B2", "C1", "C2", "D" ] ;
 	this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH" ] ;
 
@@ -16,6 +17,7 @@ function FilterCriteria() {
         var crit = $.cookie( 'notesCriteria' ) ;
         if( typeof crit != 'undefined' ) {
 	        log.debug( "Deserialized filter criteria." ) ;
+	        this.useAbsoluteEfficiency     = crit.useAbsoluteEfficiency ;
 			this.learningEfficiencyFilters = crit.learningEfficiencyFilters ;
 			this.difficultyFilters         = crit.difficultyFilters ;
         } ;
@@ -246,10 +248,18 @@ function qualifiesFilter( element ) {
 	element.learningStats.efficiencyLabel = 
 		jnUtil.getLearningEfficiencyLabel( element.learningStats.learningEfficiency ) ;
 
+	element.learningStats.absEfficiencyLabel =
+		jnUtil.getLearningEfficiencyLabel( element.learningStats.absLearningEfficiency ) ;
+
 	var lrnEffLabelFilters = $scope.filterCriteria.learningEfficiencyFilters ;
 	var diffLabelFilters   = $scope.filterCriteria.difficultyFilters ;
 
-	if( lrnEffLabelFilters.indexOf( element.learningStats.efficiencyLabel ) != -1 ) {
+	var efficiencyLabel = element.learningStats.efficiencyLabel ;
+	if( $scope.filterCriteria.useAbsoluteEfficiency ) {
+		efficiencyLabel = element.learningStats.absEfficiencyLabel ;
+	}
+
+	if( lrnEffLabelFilters.indexOf( efficiencyLabel ) != -1 ) {
 		if( diffLabelFilters.indexOf( element.difficultyLabel ) != -1 ) {
 			return true ;
 		}

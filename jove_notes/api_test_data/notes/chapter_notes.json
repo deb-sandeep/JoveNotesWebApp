@@ -1,377 +1,1445 @@
-{
-	"chapterDetails" : { 
-		"chapterId"        : 23,
-		"syllabusName"     : "Class-8",
-		"subjectName"      : "Biology",
-		"chapterNumber"    : 3,
-		"subChapterNumber" : 0,
-		"chapterName"      : "Digestion, absorption, assimilation"
-	},
-
-	"notesElements" : [	
-		{
-			"noteElementId"   : 1,
-			"elementType"     : "word_meaning",
-			"word"            : "Cat",
-			"meaning"         : "A feline animal",
-			"difficultyLevel" : 25,
-			"learningStats" : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"   : 2,
-			"elementType"     : "question_answer",
-			"question"        : "What is the answer to life? \\( ax^2 + 2bx + c = 0 \\)",
-			"answer"          : "$$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}$$",
-			"difficultyLevel" : 25,
-			"learningStats" : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"   : 3,
-			"elementType"     : "word_meaning",
-			"word"            : "शेर",
-			"meaning"         : "हमारे राष्ट्रीय प्रतीक",
-			"difficultyLevel" : 40,
-			"learningStats" : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"   : 4,
-			"elementType"     : "word_meaning",
-			"word"            : "Vi",
-			"meaning"         : "Visual Editor",
-			"difficultyLevel" : 40,
-			"learningStats" : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"   : 5,
-			"elementType"     : "chem_equation",
-			"equation"        : "$$\\ce{CO2 + C -> 2 CO}$$",
-			"description"     : "Carbon di-oxide reacts with Carbon to produce Carbon Monooxide.",
-			"difficultyLevel" : 60,
-			"learningStats" : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"   : 6,
-			"elementType"     : "fib",
-			"question"        : "The {0} of India is {1}.",
-			"answers"         : [ "capital", "Delhi" ],
-			"difficultyLevel" : 60,
-			"learningStats" : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"   : 7,
-			"elementType"     : "fib",
-			"question"        : "The shortcut for copy is {0} and that of paste is {1}.",
-			"answers"         : [ "ctrl-c", "ctrl-v" ],
-			"difficultyLevel" : 80,
-			"learningStats" : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"   : 8,
-			"elementType"     : "definition",
-			"term"            : "Water cycle",
-			"definition"      : "The cycle of processes by which water circulates between the earth's oceans, atmosphere, and land, involving precipitation as rain and snow, drainage in streams and rivers, and return to the atmosphere by evaporation and transpiration.<p>{{@img WaterCycle.jpg}}",
-			"difficultyLevel" : 40,
-			"learningStats" : {
-				"learningEfficiency" : 90
-			}
-		},
-		{
-			"noteElementId"   : 9,
-			"elementType"     : "character",
-			"character"       : "Akbar",
-			"estimate"        : "Akbar, the third generation Moghal emperor who lived from 1542-1605 A.D, has been extolled as the greatest of all Moghals, righteous in deed and noble in character. He is praised to be the only and truly secular Emperor of the times, very caring and protective of his subjects.",
-			"difficultyLevel" : 40,
-			"learningStats" : {
-				"learningEfficiency" : 90
-			}
-		},
-		{
-			"noteElementId"   : 10,
-			"elementType"     : "teacher_note",
-			"note"            : "Study the salient points of Akbar. This is important.",
-			"difficultyLevel" : 40,
-			"learningStats" : {
-				"learningEfficiency" : 90
-			}
-		},
-		{
-			"noteElementId"   : 11,
-			"elementType"     : "matching",
-			"matchData"       : [
-				[ "1", "One"   ],
-				[ "2", "Two"   ],
-				[ "3", "Three" ],
-				[ "4", "Four"  ],
-				[ "5", "Five"  ],
-				[ "Smily", "{{@img smily.png}}" ]
-			],
-			"difficultyLevel" : 40,
-			"learningStats" : {
-				"learningEfficiency" : 90
-			}
-		},
-		{
-			"noteElementId"   : 12,
-			"elementType"     : "matching",
-			"matchData"       : [
-			    [ "Bairam Khan",       "Regent or Akbar"              ],
-			    [ "Adil Shah Suri",    "Nephew of Sher Shah Suri"     ],
-			    [ "Hemu",              "Army chief of Adil Shal Suri" ],
-			    [ "Baz Bahadur",       "King of Malwa"                ],
-			    [ "Queen Durgawati",   "Regent ruler of Gondwana"     ],
-			    [ "Jodha Bai",         "Daughter of Bharamal"         ],
-			    [ "Raja Man Singh",    "Son of Raja Bhagwant Das"     ],
-			    [ "Udai Singh",        "Ruler of Mewar"               ],
-			    [ "Rana Pratap Singh", "Son of Udai Singh"            ]
-			],
-			"difficultyLevel" : 80,
-			"learningStats" : {
-				"learningEfficiency" : 20
-			}
-		},
-		{
-			"noteElementId"    : 13,
-			"elementType"      : "event",
-			"time"             : "1191 AD",
-			"event"            : "First Battle of Tarain",
-			"difficultyLevel"  : 30,
-			"learningStats"    : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"    : 14,
-			"elementType"      : "event",
-			"time"             : "1192 AD",
-			"event"            : "Second Battle of Tarain",
-			"difficultyLevel"  : 30,
-			"learningStats"    : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"    : 15,
-			"elementType"      : "event",
-			"time"             : "1206 AD",
-			"event"            : "Accession of Qutub-ud-Din Aibak to tde tdrone oof Delhi",
-			"difficultyLevel"  : 30,
-			"learningStats"    : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"    : 16,
-			"elementType"      : "event",
-			"time"             : "1210 AD",
-			"event"            : "Deatd of Qutub-ud-Din Aibak",
-			"difficultyLevel"  : 30,
-			"learningStats"    : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"    : 17,
-			"elementType"      : "event",
-			"time"             : "1221 AD",
-			"event"            : "Changez Khan invaded India (Mongol invasion)",
-			"difficultyLevel"  : 30,
-			"learningStats"    : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"    : 18,
-			"elementType"      : "event",
-			"time"             : "1236 AD",
-			"event"            : "Accession of Razia Sultan to tde tdrone of Delhi",
-			"difficultyLevel"  : 30,
-			"learningStats"    : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"    : 19,
-			"elementType"      : "event",
-			"time"             : "1240 AD",
-			"event"            : "Deatd of Razia Sultan",
-			"difficultyLevel"  : 30,
-			"learningStats"    : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"    : 20,
-			"elementType"      : "event",
-			"time"             : "1296 AD",
-			"event"            : "Accession of Ala-ud-Din Khilji",
-			"difficultyLevel"  : 30,
-			"learningStats"    : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"    : 21,
-			"elementType"      : "event",
-			"time"             : "1316 AD",
-			"event"            : "Deatd of Ala-ud-Din Khilji",
-			"difficultyLevel"  : 30,
-			"learningStats"    : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"    : 22,
-			"elementType"      : "event",
-			"time"             : "1325 AD",
-			"event"            : "Accession of Muhammad-bin Tughlaq",
-			"difficultyLevel"  : 30,
-			"learningStats"    : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"    : 23,
-			"elementType"      : "true_false",
-			"statement"        : "Sun is a star.",
-			"truthValue"       : false,
-			"justification"    : "Sun is a celestial body and emits its own light. Hence it is a star.",
-			"difficultyLevel"  : 30,
-			"learningStats"    : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"   : 24,
-			"elementType"     : "chem_equation",
-			"equation"        : "$$\\ce{$x\\,$ Na(NH4)HPO4 ->[\\Delta](NaPO3)_{$x$} + $x\\,$ NH3 ^ + $x\\,$ H2O}$$",
-			"description"     : "Some arbitrary complex equation.",
-			"difficultyLevel" : 60,
-			"learningStats" : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"   : 25,
-			"elementType"     : "chem_compound",
-			"symbol"          : "$$\\ce{NaHCO3}$$",
-			"chemicalName"    : "Sodium Bi-Carbonate.",
-			"commonName"      : "Baking soda",
-			"difficultyLevel" : 60,
-			"learningStats" : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"   : 26,
-			"elementType"     : "chem_compound",
-			"symbol"          : "$$\\ce{CaSO4.2H2O}$$",
-			"chemicalName"    : "Calcium Sulfate Dihydrate.",
-			"commonName"      : "Gypsum",
-			"difficultyLevel" : 60,
-			"learningStats" : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"   : 27,
-			"elementType"     : "spellbee",
-			"word"            : "abbreviate",
-			"pronunciation"   : "(ə-brēˈvē-ātˌ)",
-			"difficultyLevel" : 60,
-			"learningStats" : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"   : 28,
-			"elementType"     : "spellbee",
-			"word"            : "abyss",
-			"pronunciation"   : "(ə-bĭsˈ)",
-			"difficultyLevel" : 60,
-			"learningStats" : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"   : 29,
-			"elementType"     : "image_label",
-			"caption"         : "Label the image",
-			"imageName"       : "teeths.png",
-			"hotSpots"        : [
-			    [ 106,  22, "Molars"    ],
-			    [ 242,  21, "Premolars" ],
-			    [ 365,  24, "Incisors"  ],
-			    [ 305, 202, "Canines"   ]
-			],
-			"difficultyLevel" : 60,
-			"learningStats" : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"   : 30,
-			"elementType"     : "equation",
-			"equation"        : "$$s = ut + \\frac{1}{2}at^2$$",
-			"description"     : "The equation of displacement given the initial velocity and acceleration.",
-			"symbols"         : [
-				[ "\\(s\\)", "The displacement" ],
-				[ "\\(u\\)", "Initial velocity" ],
-				[ "\\(t\\)", "Time" ],
-				[ "\\(a\\)", "Acceleration" ]
-			],
-			"difficultyLevel" : 60,
-			"learningStats" : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"   : 31,
-			"elementType"     : "equation",
-			"equation"        : "$$v = u + at$$",
-			"description"     : "Final velocity as a function of initial velocity, acceleration and time.",
-			"symbols"         : [
-				[ "\\(v\\)", "Final velocity" ],
-				[ "\\(u\\)", "Initial velocity" ],
-				[ "\\(t\\)", "Time" ],
-				[ "\\(a\\)", "Acceleration" ]
-			],
-			"difficultyLevel" : 60,
-			"learningStats" : {
-				"learningEfficiency" : 80
-			}
-		},
-		{
-			"noteElementId"   : 32,
-			"elementType"     : "rtc",
-			"context"         : "This is the context",
-			"questions"       : [
-				{
-					"question" : "This is question1",
-					"answer"   : "This is answer1"
-				},
-				{
-					"question" : "This is question2",
-					"answer"   : "This is answer2"
-				}
-			],
-			"difficultyLevel" : 60,
-			"learningStats" : {
-				"learningEfficiency" : 80
-			}
-		}
-	]
-}
+ {
+     "chapterDetails": {
+         "chapterId": 20,
+         "syllabusName": "Class-8",
+         "subjectName": "Biology",
+         "chapterNumber": 3,
+         "subChapterNumber": 0,
+         "chapterName": "Cell - The unit of life"
+     },
+     "notesElements": [{
+         "noteElementId": 864,
+         "elementType": "question_answer",
+         "difficultyLevel": 10,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "The ideas of which two scientists form the basis of cell theory?",
+         "answer": "<strong>Matthias Jakob Schleiden<\/strong> and <strong>Theodor Schwann<\/strong>"
+     }, {
+         "noteElementId": 865,
+         "elementType": "question_answer",
+         "difficultyLevel": 40,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the features of cell theory?",
+         "answer": "<ul>\n  <li>The bodies of all living organisms are made-up of cells.<\/li>\n  <li>The cell is a structural and functional unit of living things.<\/li>\n  <li>All cells come from pre-existing cells.<\/li>\n  <li>Every living organism starts its life as a single cell.<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 873,
+         "elementType": "definition",
+         "difficultyLevel": 10,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "term": "Cell",
+         "definition": "A cell is the structural and functional unit of life."
+     }, {
+         "noteElementId": 875,
+         "elementType": "question_answer",
+         "difficultyLevel": 12,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What is the smallest cell?",
+         "answer": "Smallest cell is a type of bacteria known as mycoplasma."
+     }, {
+         "noteElementId": 876,
+         "elementType": "question_answer",
+         "difficultyLevel": 12,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "How big is an ostrich egg?",
+         "answer": "Its about 180mm long, 140mm wide and weighs about 1.2kg."
+     }, {
+         "noteElementId": 877,
+         "elementType": "question_answer",
+         "difficultyLevel": 2,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Name an unicellular animal.",
+         "answer": "Amoeba"
+     }, {
+         "noteElementId": 878,
+         "elementType": "question_answer",
+         "difficultyLevel": 2,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Name an unicellular plant.",
+         "answer": "Chlamydomonas"
+     }, {
+         "noteElementId": 879,
+         "elementType": "question_answer",
+         "difficultyLevel": 14,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the basic parts of a cell?",
+         "answer": "<ul>\n  <li>Cell membrane and\/or cell wall<\/li>\n  <li>Nucleus<\/li>\n  <li>Cytoplasm<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 880,
+         "elementType": "question_answer",
+         "difficultyLevel": 6,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What is cell membrane also known as?",
+         "answer": "Plasma membrane or plasmalemma."
+     }, {
+         "noteElementId": 881,
+         "elementType": "question_answer",
+         "difficultyLevel": 24,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What is &lsquo;Cell Membrane&rsquo;",
+         "answer": "The thin, outer, flexible, semipermiable living membrane that surrounds the cell is called cell membrane.<p>{{@img ddbf2c54dada724a3941232a073db794.cmap.png}}"
+     }, {
+         "noteElementId": 882,
+         "elementType": "definition",
+         "difficultyLevel": 8,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "term": "Plasmalemma",
+         "definition": "Another name for cell membrane."
+     }, {
+         "noteElementId": 888,
+         "elementType": "word_meaning",
+         "difficultyLevel": 6,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "word": "Permeable",
+         "meaning": "Allowing fluids or gases to pass or diffuse through"
+     }, {
+         "noteElementId": 909,
+         "elementType": "word_meaning",
+         "difficultyLevel": 7,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "word": "Metabolism",
+         "meaning": "The organic processes (in a cell or organism) that are necessary for life"
+     }, {
+         "noteElementId": 910,
+         "elementType": "definition",
+         "difficultyLevel": 19,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "term": "Cytoplasm",
+         "definition": "The viscous, homogenous, granular living material surrounding the nucleus of a cell is called Cytoplasm."
+     }, {
+         "noteElementId": 911,
+         "elementType": "definition",
+         "difficultyLevel": 21,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "term": "Protoplasm",
+         "definition": "The sum of cytoplasm and nucleoplasm is called Protoplasm. It is the living matter, the total substance of a living cell."
+     }, {
+         "noteElementId": 913,
+         "elementType": "question_answer",
+         "difficultyLevel": 15,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What is cytoplasm made up of?",
+         "answer": "Cytoplasm is made of proteins, carbohydrates, lipids and certain inorganic substances."
+     }, {
+         "noteElementId": 915,
+         "elementType": "word_meaning",
+         "difficultyLevel": 6,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "word": "Organelle",
+         "meaning": "A specialized part of a cell; analogous to an organ."
+     }, {
+         "noteElementId": 916,
+         "elementType": "word_meaning",
+         "difficultyLevel": 6,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "word": "Ergastic substances",
+         "meaning": "The non-living substances inside the protoplasm."
+     }, {
+         "noteElementId": 917,
+         "elementType": "question_answer",
+         "difficultyLevel": 30,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What is Endoplasmic Reticulum?",
+         "answer": "{{@img endoplasmic-reticulum.png}}<\/p><p>Endoplasmic Reticulum (ER) is the system of complex folded network of membranes in the cytoplasm. It connects the nuclear membrance with the plasma membrane."
+     }, {
+         "noteElementId": 918,
+         "elementType": "question_answer",
+         "difficultyLevel": 33,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the different types of Endoplasmic Reticulum?",
+         "answer": "<p>ER is of two types:<\/p>\n<ul>\n  <li>Smooth Endoplasmic Reticulum - ER having a smooth surface.<\/li>\n  <li>Rough Endoplasmic Reticulum - ER with rough surface due to the attachment of Ribosomes.<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 921,
+         "elementType": "question_answer",
+         "difficultyLevel": 44,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are Ribosomes?",
+         "answer": "Ribosomes are extremely minute, granular, almost spherical cell organelles. They are either attached to the endoplasmic reticulum or dispersed freely in the cytoplasm.<\/p><p>They are the main sites of protein synthesis in the cell. They are also called the <strong>Protein Factories<\/strong> of the cell."
+     }, {
+         "noteElementId": 922,
+         "elementType": "question_answer",
+         "difficultyLevel": 4,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are Ribosomes also known as?",
+         "answer": "Protein Factories"
+     }, {
+         "noteElementId": 924,
+         "elementType": "question_answer",
+         "difficultyLevel": 49,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are Mitochondria?",
+         "answer": "{{@img mitochondria.png}}<\/p><p>Mitochondria are specialized, double membraned cell organelles which are primarily responsible for converting the energy stored in food into a form of energy which the cell can use to grow, divide and perform its functions.<\/p><p>It is also known as the <strong>power house of the cell.<\/strong>"
+     }, {
+         "noteElementId": 925,
+         "elementType": "question_answer",
+         "difficultyLevel": 4,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What is Mitochondrion also known as?",
+         "answer": "Powerhouse of the cell"
+     }, {
+         "noteElementId": 926,
+         "elementType": "question_answer",
+         "difficultyLevel": 36,
+         "learningStats": {
+             "learningEfficiency": 75,
+             "absLearningEfficiency": 75
+         },
+         "question": "Describe the structure of Mitocondrion.",
+         "answer": "<ul>\n  <li>Each mitochondrion is enclosed by a double membrane.<\/li>\n  <li>The inner membrane has several folds <em>(cristae)<\/em> makings its surface area  many times more than the outer membrane.<\/li>\n  <li>The inner membrane is filled with fluid.<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 928,
+         "elementType": "question_answer",
+         "difficultyLevel": 40,
+         "learningStats": {
+             "learningEfficiency": 75,
+             "absLearningEfficiency": 75
+         },
+         "question": "What are Golgi Bodies?",
+         "answer": "Golgi bodies are large organelles, comprising of multiple flat membraned sacs. They play an important function in processing, modifying and packaging the outputs of cell synthesis for secretions or use inside the cell."
+     }, {
+         "noteElementId": 933,
+         "elementType": "question_answer",
+         "difficultyLevel": 14,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are Lysosomes?",
+         "answer": "Lysosomes are submicroscopic saclike organelles containing digestive enzymes."
+     }, {
+         "noteElementId": 935,
+         "elementType": "question_answer",
+         "difficultyLevel": 26,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are Lysosomes also known as and why?",
+         "answer": "Lysosomes are also known as <strong>suicide-bags<\/strong> or <strong>suicide-sacs<\/strong> because they act to destroy worn out cell organelles often resulting in the death of the cell."
+     }, {
+         "noteElementId": 936,
+         "elementType": "question_answer",
+         "difficultyLevel": 23,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are Centrosomes?",
+         "answer": "Centrosomes are minute organelles lying close to the nucleus. They are only found in animal cells. They are exposed only during cell divisions."
+     }, {
+         "noteElementId": 937,
+         "elementType": "question_answer",
+         "difficultyLevel": 26,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What do Centrosomes consist of?",
+         "answer": "Centrosomes consist of two bright and very small granules called <strong>centrioles<\/strong>. Centrioles are hollow, cylindrical structures which are made of microtubules."
+     }, {
+         "noteElementId": 939,
+         "elementType": "question_answer",
+         "difficultyLevel": 31,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are Plastids?",
+         "answer": "Plastids are granular cell organelles used by plants to manufacture food. They are found only in plant cells, except few lower groups of plants like fungi."
+     }, {
+         "noteElementId": 940,
+         "elementType": "question_answer",
+         "difficultyLevel": 14,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the different types of plastids?",
+         "answer": "<p>Plastids are mainly of three types:<\/p>\n<ul>\n  <li>Leucoplasts<\/li>\n  <li>Chromoplasts<\/li>\n  <li>Chloroplasts<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 941,
+         "elementType": "question_answer",
+         "difficultyLevel": 19,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are Chloroplasts?",
+         "answer": "Chloroplasts are plastids containing the green pigment Chlorophyll. Chloroplasts are essential for manufacturing food."
+     }, {
+         "noteElementId": 943,
+         "elementType": "question_answer",
+         "difficultyLevel": 14,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are Leucoplasts?",
+         "answer": "Leucoplasts are colorless plastids found in the underground parts of the plants."
+     }, {
+         "noteElementId": 944,
+         "elementType": "question_answer",
+         "difficultyLevel": 14,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are Chromoplasts?",
+         "answer": "Chromoplasts are coloured plastids present in petals and skins of fruits."
+     }, {
+         "noteElementId": 945,
+         "elementType": "question_answer",
+         "difficultyLevel": 2,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Name an animal cell where Plastids are present?",
+         "answer": "Euglena"
+     }, {
+         "noteElementId": 946,
+         "elementType": "question_answer",
+         "difficultyLevel": 2,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Name a plant cell where Plastids are absent?",
+         "answer": "Fungi"
+     }, {
+         "noteElementId": 948,
+         "elementType": "question_answer",
+         "difficultyLevel": 33,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are Vacuoles?",
+         "answer": "Vacuoles are membrane-bound, non-living cavities or spaces in the cytoplasm that contain watery cell sap, which is made up on amino acids, enzymes, salts and nitrogenous waste etc."
+     }, {
+         "noteElementId": 950,
+         "elementType": "question_answer",
+         "difficultyLevel": 4,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are Ergastic substances also known as?",
+         "answer": "Cell inclusions"
+     }, {
+         "noteElementId": 951,
+         "elementType": "question_answer",
+         "difficultyLevel": 41,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Why is a cell called the structural and functional unit of life?",
+         "answer": "All the living organisms are made up of cells. Not only the cell contributes to the building up of a living body, but also shares the responsibility for all vital activities necessary for life.<\/p><p>Therefore cells are called the structural and functional units of life."
+     }, {
+         "noteElementId": 955,
+         "elementType": "question_answer",
+         "difficultyLevel": 38,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Why are mitochondria called the power house of the cell?",
+         "answer": "Mitochondria are primarily responsible for converting the energy stored in food into a form of energy which the cell can use to grow, divide and perform its functions.<\/p><p>Hence they are called the power house of the cells."
+     }, {
+         "noteElementId": 956,
+         "elementType": "question_answer",
+         "difficultyLevel": 38,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Why are Chloroplasts present only in plant cells?",
+         "answer": "Chloroplasts are Plastids whose primary function is to convert sunlight, carbon-di-oxide and minerals into carbohydrades by a process called photosynthesis. <\/p><p>Since animals can&rsquo;t synthesize their own food, chloroplasts are not found in animals."
+     }, {
+         "noteElementId": 957,
+         "elementType": "question_answer",
+         "difficultyLevel": 12,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "How to multicellular organisms grow?",
+         "answer": "Multicellular organisms grow by the process of cell division."
+     }, {
+         "noteElementId": 964,
+         "elementType": "true_false",
+         "difficultyLevel": 20,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "statement": "The cell organelle associated with the secretory activity of a cell is known as the golgi body.",
+         "truthValue": true
+     }, {
+         "noteElementId": 965,
+         "elementType": "true_false",
+         "difficultyLevel": 20,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "statement": "Ribosomes in the white blood cell can destroy harmful bacteria.",
+         "truthValue": false,
+         "justification": "Lysosomes destory harmful bacteria."
+     }, {
+         "noteElementId": 966,
+         "elementType": "true_false",
+         "difficultyLevel": 20,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "statement": "Vacuoles are living cavities in the cytoplasm.",
+         "truthValue": false,
+         "justification": "Vacuoles are non-living organelles"
+     }, {
+         "noteElementId": 967,
+         "elementType": "true_false",
+         "difficultyLevel": 20,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "statement": "The endoplasmic reticulum provides a large surface area upon which numerous biochemical reactions can occur.",
+         "truthValue": true
+     }, {
+         "noteElementId": 968,
+         "elementType": "true_false",
+         "difficultyLevel": 20,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "statement": "Lysosomes digest bacteria and work-out cell organelles.",
+         "truthValue": true
+     }, {
+         "noteElementId": 969,
+         "elementType": "true_false",
+         "difficultyLevel": 20,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "statement": "Ribosomes are the sites of respiration in a cell.",
+         "truthValue": false,
+         "justification": "Mitochondira are sites for cell respiration."
+     }, {
+         "noteElementId": 970,
+         "elementType": "true_false",
+         "difficultyLevel": 20,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "statement": "Chloroplasts are responsible for trapping solar energy and converting it into chemical energy.",
+         "truthValue": true
+     }, {
+         "noteElementId": 971,
+         "elementType": "true_false",
+         "difficultyLevel": 20,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "statement": "Cell division produces cells needed to make an adult organism from a fertilized egg.",
+         "truthValue": true
+     }, {
+         "noteElementId": 972,
+         "elementType": "question_answer",
+         "difficultyLevel": 4,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "One word for &lsquo;Controls exit and entry of chemical substances in the cell&rsquo;",
+         "answer": "Cell membrane"
+     }, {
+         "noteElementId": 973,
+         "elementType": "question_answer",
+         "difficultyLevel": 4,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "One word for &lsquo;Helps to protect the cell and maintain its shape&rsquo;",
+         "answer": "Cell wall"
+     }, {
+         "noteElementId": 975,
+         "elementType": "question_answer",
+         "difficultyLevel": 2,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "One word for &lsquo;A solution of protein and other substances in which metabolic reactions take place continuously&rsquo;",
+         "answer": "Cytoplasm"
+     }, {
+         "noteElementId": 989,
+         "elementType": "image_label",
+         "difficultyLevel": 66,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "hotSpots": [
+             [431, 20, "Cell membrane"],
+             [20, 142, "Golgi body"],
+             [431, 233, "Rough endoplasmic reticulum"],
+             [20, 22, "Lysosome"],
+             [20, 302, "Nuclear membrane"],
+             [20, 88, "Mitocondrion"],
+             [431, 74, "Centrioles"],
+             [20, 198, "Nucleolus"],
+             [20, 250, "Chromatin fibres"],
+             [431, 179, "Smooth endoplasmic reticulum"]
+         ],
+         "imageName": "animal-cell-internal.png",
+         "caption": "Label the parts of an animal cell"
+     }, {
+         "noteElementId": 990,
+         "elementType": "image_label",
+         "difficultyLevel": 66,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "hotSpots": [
+             [357, 20, "Cell wall"],
+             [357, 174, "Golgi body"],
+             [20, 255, "Mitochondrion"],
+             [357, 255, "Smooth endoplasmic reticulum"],
+             [20, 174, "Vacuole"],
+             [20, 20, "Cell membrane"],
+             [20, 91, "Rough endoplasmic reticulum"],
+             [357, 329, "Chloroplast"],
+             [357, 91, "Nucleus"],
+             [20, 329, "Cytoplasm"]
+         ],
+         "imageName": "plant-cell-internal.png",
+         "caption": "Label the parts of a plant cell"
+     }, {
+         "noteElementId": 991,
+         "elementType": "question_answer",
+         "difficultyLevel": 6,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Who constructed the first microscope?",
+         "answer": "Antony Van Leeuwenhoek"
+     }, {
+         "noteElementId": 992,
+         "elementType": "question_answer",
+         "difficultyLevel": 38,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What is the difference between simple and compound microscopes?",
+         "answer": "<ul>\n  <li>A simple microscope consists of a single lens or several lenses grouped in  one unit.<\/li>\n  <li>A compound microscope consists of series of lenses or lense assemblies  separated from each other within the optic tube.<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 993,
+         "elementType": "question_answer",
+         "difficultyLevel": 40,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Why did Robert Hooke conclude that cells are tiny <em>box like<\/em> compartments enclosed by cell walls?",
+         "answer": "Robert Hooke examined dead cork cells, hence he saw dead cells which were mainly cells walls and hence concluded that cells are made of empty spaces surrounded by cell walls."
+     }, {
+         "noteElementId": 994,
+         "elementType": "image_label",
+         "difficultyLevel": 66,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "hotSpots": [
+             [31, 29, "Coarse adjustment"],
+             [31, 95, "Fine adjustment"],
+             [31, 166, "Arm"],
+             [31, 247, "Stage"],
+             [31, 320, "Mirror"],
+             [301, 29, "Eyepiece"],
+             [301, 95, "Body tube"],
+             [301, 166, "High power objective lens"],
+             [301, 247, "Low power objective lens"],
+             [301, 320, "Base"]
+         ],
+         "imageName": "microscope.png",
+         "caption": "Label parts of an ordinary compound microscope."
+     }, {
+         "noteElementId": 995,
+         "elementType": "question_answer",
+         "difficultyLevel": 28,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What is the difference between ordinary compound microscope and an electron microscope?",
+         "answer": "An ordinary compound microscope uses light which is bent by glass lenses, while an electron microscope uses electrom beams which are bent by magnets."
+     }, {
+         "noteElementId": 998,
+         "elementType": "question_answer",
+         "difficultyLevel": 21,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Who made additions to the cell theory?",
+         "answer": "Rudolf Vichrow made an addition to the cell theory by saying that all cells come from pre-existing cells."
+     }, {
+         "noteElementId": 999,
+         "elementType": "question_answer",
+         "difficultyLevel": 36,
+         "learningStats": {
+             "learningEfficiency": 75,
+             "absLearningEfficiency": 75
+         },
+         "question": "Give few reasons why cells generally remain small in size",
+         "answer": "<ol>\n  <li>Different regions of a cell can communicate with each other rapidly. This  This helps the cell to function effectively.<\/li>\n  <li>Cells have a large surface area\/volume ratio. This helps in greater diffusion  of substances in and out of the cell.<\/li>\n<\/ol>"
+     }, {
+         "noteElementId": 1000,
+         "elementType": "question_answer",
+         "difficultyLevel": 12,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Give reason why <strong>Human red blood cells are circular and biconcave<\/strong>.",
+         "answer": "So that they can pass through narrow capillaries and transport oxygen."
+     }, {
+         "noteElementId": 1001,
+         "elementType": "question_answer",
+         "difficultyLevel": 8,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Give reason why <strong>White blood cells are ameoboid<\/strong>.",
+         "answer": "So that they can squeeze out through capillary walls."
+     }, {
+         "noteElementId": 1002,
+         "elementType": "question_answer",
+         "difficultyLevel": 21,
+         "learningStats": {
+             "learningEfficiency": 75,
+             "absLearningEfficiency": 75
+         },
+         "question": "Give reason why <strong>Nerve cells are long<\/strong>.",
+         "answer": "So that they can conduct electrical impulses from distant parts of the body to the brain and spinal cord (and vice-versa)."
+     }, {
+         "noteElementId": 1003,
+         "elementType": "question_answer",
+         "difficultyLevel": 12,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Give reason why <strong>Guard cells of stomatal pore are bean-shaped?<\/strong>.",
+         "answer": "So that they can expand and collapse to open and close the pore."
+     }, {
+         "noteElementId": 1004,
+         "elementType": "question_answer",
+         "difficultyLevel": 28,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Name some living parts of a cell.",
+         "answer": "<ol>\n  <li>Cell membrane<\/li>\n  <li>Endoplasmic reticulum<\/li>\n  <li>Mitochondria<\/li>\n  <li>Golgo apparatues<\/li>\n  <li>Ribosomes<\/li>\n  <li>Centrosome<\/li>\n  <li>Plastids<\/li>\n  <li>Nuclear membrane<\/li>\n  <li>Nucleoli<\/li>\n  <li>Chromatin fibres<\/li>\n<\/ol>"
+     }, {
+         "noteElementId": 1005,
+         "elementType": "question_answer",
+         "difficultyLevel": 14,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Name some non-living parts of a cell",
+         "answer": "<ol>\n  <li>Cell wall<\/li>\n  <li>Granules<\/li>\n  <li>Vacuoles<\/li>\n  <li>Fat droplest<\/li>\n  <li>Nucleoplasm<\/li>\n<\/ol>"
+     }, {
+         "noteElementId": 1006,
+         "elementType": "question_answer",
+         "difficultyLevel": 15,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Name some parts of a cell which are exclusively present in either plant or animal cells.",
+         "answer": "<table class=\"pure-table pure-table-horizontal\">\n  <thead>\n    <tr>\n      <th>Plant cell <\/th>\n      <th>Animal cell <\/th>\n    <\/tr>\n  <\/thead>\n  <tbody>\n    <tr>\n      <td>Cell wall <\/td>\n      <td>Centrosomes <\/td>\n    <\/tr>\n    <tr>\n      <td>Plastids <\/td>\n      <td> <\/td>\n    <\/tr>\n  <\/tbody>\n<\/table>"
+     }, {
+         "noteElementId": 1010,
+         "elementType": "question_answer",
+         "difficultyLevel": 33,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are <strong>anthocyanins<\/strong>?",
+         "answer": "Some colouring pigments such as blue, violet and purple are not associated with plastids; instead, they remain dissolved in the cell-sap and give that color to the plant structure. <\/p><p>Such pigments are called <strong>anthocyanins<\/strong>"
+     }, {
+         "noteElementId": 1011,
+         "elementType": "question_answer",
+         "difficultyLevel": 28,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Why do unripe tomatoes and chilli change their color to red when they ripen?",
+         "answer": "Unripe tomatoes contain chlorophyll when unripe and hence show as green, as they ripen the chlorophyll degenerates and the masked red (carotene) takes over."
+     }, {
+         "noteElementId": 1647,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "The kind of microscope that consists of a single bi-convex lens is called {0}",
+         "answers": ["Simple microscope"]
+     }, {
+         "noteElementId": 1648,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "The kind of mirror used for throwing light on the object in Hooke&rsquo;s experiment is called {0}",
+         "answers": ["Concave mirror"]
+     }, {
+         "noteElementId": 1649,
+         "elementType": "fib",
+         "difficultyLevel": 37,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "The average size of a cell ranges from {0} to {1} micrometer",
+         "answers": [3, 30]
+     }, {
+         "noteElementId": 1650,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "In a plant cell, golgi bodies are called {0}. ",
+         "answers": ["Dictyosomes"]
+     }, {
+         "noteElementId": 1651,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "{0} is the colouring substance associated with yellow coloured chromoplasts.",
+         "answers": ["Xanthophyll"]
+     }, {
+         "noteElementId": 1652,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "{0} is the colouring substance associated with orange-red coloured chromoplasts.",
+         "answers": ["Carotene"]
+     }, {
+         "noteElementId": 1653,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "The cell is the structural and {0} unit of life.",
+         "answers": ["Functional"]
+     }, {
+         "noteElementId": 1654,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "The {0} controls the inner and outer movements of different materials into the cell.",
+         "answers": ["cell membrane"]
+     }, {
+         "noteElementId": 1655,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Two important structures present in the nucleus are {0} and nucleoli",
+         "answers": ["chromosomes"]
+     }, {
+         "noteElementId": 1656,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Ribosomes are either attachd to the endoplasmic reticulum or dispersed freely in the {0}",
+         "answers": ["Cytoplasm"]
+     }, {
+         "noteElementId": 1657,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "{0} contain several digestive enzymes which bring about the breakdown of several endoplasmic structures.",
+         "answers": ["Lysosomes"]
+     }, {
+         "noteElementId": 1658,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Mitochondria are basically {0} convertors.",
+         "answers": ["Energy"]
+     }, {
+         "noteElementId": 1740,
+         "elementType": "definition",
+         "difficultyLevel": 30,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "term": "Nucleus",
+         "definition": "Cell nucleus is a centrally located, dense, spherical, living body in a cell which is enclosed by a double layer membrane called the nuclear membrane."
+     }, {
+         "noteElementId": 1741,
+         "elementType": "definition",
+         "difficultyLevel": 21,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "term": "Nucleoplasm",
+         "definition": "The nucleoplasm is a highly viscous liquid that surrounds the chromosomes and nucleoli and is contained within the nuclear membrane."
+     }, {
+         "noteElementId": 1742,
+         "elementType": "definition",
+         "difficultyLevel": 30,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "term": "Chromosomes",
+         "definition": "Chromosomes are long, thread like strands inside the cell nucleus. They are made of a substance called chromatin which contains DNA and certain proteins."
+     }, {
+         "noteElementId": 1743,
+         "elementType": "definition",
+         "difficultyLevel": 26,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "term": "Chromatin",
+         "definition": "Chromatin is a substance found inside the cell nucleus. Chromatin contains DNA and certain proteins. It forms the chromosomes of the cells."
+     }, {
+         "noteElementId": 1745,
+         "elementType": "question_answer",
+         "difficultyLevel": 2,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Give one word for - highly viscous liquid filling the nuclear membrane",
+         "answer": "Nucleoplasm"
+     }, {
+         "noteElementId": 1746,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "{0} is the basic unit of heredity.",
+         "answers": ["Genes"]
+     }, {
+         "noteElementId": 1747,
+         "elementType": "word_meaning",
+         "difficultyLevel": 9,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "word": "Heredity",
+         "meaning": "The biological process whereby genetic traits are passed on from one generation to the next"
+     }, {
+         "noteElementId": 1748,
+         "elementType": "question_answer",
+         "difficultyLevel": 40,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What makes cells of different living organisms different?",
+         "answer": "In each living cell, there is a definite number of chromosomes which is different from the number in the cells of other organisms. Also chromosomes of different organisms contain different sequence of genes. <\/p><p>This is how cells of one organism are different from another."
+     }, {
+         "noteElementId": 1749,
+         "elementType": "definition",
+         "difficultyLevel": 23,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "term": "Nucleoli",
+         "definition": "Nucleoli are round bodies present in the nucleus. Each nucleus may contain one or more nucleoli, through some cells have none."
+     }, {
+         "noteElementId": 1750,
+         "elementType": "question_answer",
+         "difficultyLevel": 2,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Give one word for - Round bodies present in the nucleus",
+         "answer": "Nucleoli"
+     }, {
+         "noteElementId": 1751,
+         "elementType": "question_answer",
+         "difficultyLevel": 14,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Why are Nuclioli called &lsquo;messengers&rsquo;?",
+         "answer": "They are called messengers because they help in transmitting messages from the nucleus to the cytoplasm."
+     }, {
+         "noteElementId": 1752,
+         "elementType": "question_answer",
+         "difficultyLevel": 2,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Give one word for - They are also called messengers",
+         "answer": "Nuclioli"
+     }, {
+         "noteElementId": 1753,
+         "elementType": "question_answer",
+         "difficultyLevel": 41,
+         "learningStats": {
+             "learningEfficiency": 75,
+             "absLearningEfficiency": 75
+         },
+         "question": "What are the <strong>main characteristics<\/strong> of cell membrane?",
+         "answer": "<ol>\n  <li>It is the outermost organelle in animal cells<\/li>\n  <li>It lies next to and inside the cell walls in plant cells<\/li>\n  <li>It is a living membrane<\/li>\n  <li>It is very thin, flexible and possesses fine pores<\/li>\n  <li>It is semi-permiable<\/li>\n  <li>It is made up of lipoproteins<\/li>\n<\/ol><p>{{@img a8cd92a5bda4176a686419eb6b2a7baa.cmap.png}}"
+     }, {
+         "noteElementId": 1754,
+         "elementType": "question_answer",
+         "difficultyLevel": 44,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>chief functions<\/strong> of cell membrane?",
+         "answer": "<ul>\n  <li><strong>Protection<\/strong> - It provides protection to cell by separating the contents  of the cell from its surrounding.<\/li>\n  <li><strong>Regulatory<\/strong> - It helps in the removal of waste products and absorption of  useful chemicals from and into the cell, through its fine pores.<\/li>\n  <li><strong>Structure<\/strong> - It maintains the shape of the cell <em>(in animal cells)<\/em><\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1815,
+         "elementType": "question_answer",
+         "difficultyLevel": 30,
+         "learningStats": {
+             "learningEfficiency": 75,
+             "absLearningEfficiency": 75
+         },
+         "question": "What are the <strong>main characteristics<\/strong> of a cell wall?",
+         "answer": "<ul>\n  <li>It is a non-living, rigid layer surrounding the plasma membrane<\/li>\n  <li>It is mainly composed of cellulose<\/li>\n  <li>It is freely permeable and allows all substances to enter and leave the cell<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1816,
+         "elementType": "question_answer",
+         "difficultyLevel": 26,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>chief functions<\/strong> of a cell wall?",
+         "answer": "<ul>\n  <li>It gives rigidity and shape to the plant cell.<\/li>\n  <li>It protects all the substances present in the cytoplasm.<\/li>\n  <li>It allows all substances to enter and leave the cell.<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1817,
+         "elementType": "question_answer",
+         "difficultyLevel": 30,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>main characteristics<\/strong> of cytoplasm?",
+         "answer": "<ul>\n  <li>Cytoplasm is made of proteins, carbohydrates, lipids and certain inorganic  substances.<\/li>\n  <li>It is a thick, viscous liquid which fills the space between the cell  membrane and the nucleus.<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1818,
+         "elementType": "question_answer",
+         "difficultyLevel": 38,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>chief functions<\/strong> of the Cytoplasm?",
+         "answer": "<ul>\n  <li>It supplies proper nutrition to the living parts of the cell.<\/li>\n  <li>It stores food in the form of starch grains.<\/li>\n  <li>It is the seat of many chemical reactions which are essential for life.  Eg. Protein synthesis and respiration.<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1819,
+         "elementType": "question_answer",
+         "difficultyLevel": 36,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>main characteristics<\/strong> of Endoplasmic Reticulum?",
+         "answer": "<ul>\n  <li>It is an irregular network of tubular double membrane<\/li>\n  <li>It is continuous with the plasma membrane on the outside and the nuclear  membrane on the inside<\/li>\n  <li>It may be smooth or rough depending on the absense or presence of attached  ribosomes<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1820,
+         "elementType": "question_answer",
+         "difficultyLevel": 41,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>chief functions<\/strong> of Endoplasmic Reticulum?",
+         "answer": "<ul>\n  <li>The ER provides a large surface are upon which numerous biochemical  reactions can occur.<\/li>\n  <li>The space enclosed by the membranes constitutes a channel for the substances  to move within the cell.<\/li>\n  <li>It forms a supporting framework for the cell.<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1821,
+         "elementType": "question_answer",
+         "difficultyLevel": 41,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>main characteristics<\/strong> of Mitochondria?",
+         "answer": "<ul>\n  <li>It can occur in various shapes but is usually sausage-like<\/li>\n  <li>It is a double membraned structure, with the inner membrane folding itself  into finger like projections called <strong>cristae<\/strong><\/li>\n  <li>It has it&rsquo;s own DNA containing several genes<\/li>\n  <li>It contains its own ribosomes<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1822,
+         "elementType": "question_answer",
+         "difficultyLevel": 2,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Which organelle other than the nucleus contains genes?",
+         "answer": "Mitochondria"
+     }, {
+         "noteElementId": 1823,
+         "elementType": "question_answer",
+         "difficultyLevel": 36,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>chief functions<\/strong> of Mitochondrion?",
+         "answer": "<ul>\n  <li>They convert the chemical energy stored in food into a form of energy  that the cell can use to grow, divide and perform its functions.<\/li>\n  <li>They are the sites of cell respiration.<\/li>\n  <li>They synthesize respiratory enzymes<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1850,
+         "elementType": "question_answer",
+         "difficultyLevel": 68,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>main characteristics<\/strong> of Golgi bodies.",
+         "answer": "<p>{{@img golgi-bodies.png}}<\/p><p>Golgi bodies are large organelles, comprising of multiple flat membraned sacs<\/p><p>The structure of golgi bodies can be be divided into three main parts:<\/p>\n<ul>\n  <li><strong>Cisternae<\/strong> - These are large flat membraned sacs which processes proteins<\/li>\n  <li><strong>Vacuoles<\/strong> - These are large membraneous bodies which acts as storage areas<\/li>\n  <li><strong>Vesicles<\/strong> - These are spherical bodies which detach themselves from Cisternae  and move around the cytoplasm for delivering their packaged contents.<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1851,
+         "elementType": "question_answer",
+         "difficultyLevel": 35,
+         "learningStats": {
+             "learningEfficiency": 75,
+             "absLearningEfficiency": 75
+         },
+         "question": "What are the <strong>chief functions<\/strong> of Golgi apparatus?",
+         "answer": "<ul>\n  <li>Synthesis of secretion of enzymes, hormones, etc.<\/li>\n  <li>Formation of acrosome of sperm.<\/li>\n  <li>Play a role in metabolism of fats<\/li>\n  <li>Involved in the synthesis of cell wall, plasma membrane and lysosomes.<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1852,
+         "elementType": "question_answer",
+         "difficultyLevel": 31,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>main characteristics<\/strong> of Ribosomes?",
+         "answer": "<ul>\n  <li><strong>Small granules<\/strong> either scattered in the cytoplasm or attached to the outiside  of endoplasmic reticulum<\/li>\n  <li><strong>Single walled<\/strong> dense, spherical bodies composed mainly of DNA.<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1853,
+         "elementType": "question_answer",
+         "difficultyLevel": 21,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What is the main function of Ribosomes?",
+         "answer": "Ribosomes are the main sites of protein synthesis in the cell. They are also called the <strong>Protein Factories<\/strong> of the cell."
+     }, {
+         "noteElementId": 1854,
+         "elementType": "question_answer",
+         "difficultyLevel": 19,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>main characteristics<\/strong> of Lysosomes?",
+         "answer": "<ul>\n  <li>They are membraneous sacs budded off from Golgi bodies<\/li>\n  <li>They contain 40 different types of enzymes<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1855,
+         "elementType": "question_answer",
+         "difficultyLevel": 30,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>chief functions<\/strong> of Lysosomes?",
+         "answer": "<ul>\n  <li>They are involved in the intracellular digestion.<\/li>\n  <li>They defend the cell against bacteria and viruses.<\/li>\n  <li>They destroy worn out organelles of the cell.<\/li>\n  <li>They help in formation of bones by digesting cartilages.<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1856,
+         "elementType": "question_answer",
+         "difficultyLevel": 30,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>main characteristics<\/strong> of Centrosomes?",
+         "answer": "<ul>\n  <li>A region surrounding the centrioles, located near nucleus.<\/li>\n  <li>Contains one or two centrioles.<\/li>\n  <li>Centrioles are surrounded by radiating microtubules to form a &lsquo;star&rsquo;<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1857,
+         "elementType": "question_answer",
+         "difficultyLevel": 17,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>chief functions<\/strong> of Centrosomes?",
+         "answer": "<ul>\n  <li>Initiates and regulates cell division<\/li>\n  <li>Forms spindle fibres, with the help of aster<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1858,
+         "elementType": "question_answer",
+         "difficultyLevel": 23,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>main characteristics<\/strong> of Plastids?",
+         "answer": "<ul>\n  <li>They are double membraned, protenaceous matrix, containing DNA<\/li>\n  <li>They are disk-like structures called thylakoids contain chlorophyll<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1859,
+         "elementType": "question_answer",
+         "difficultyLevel": 50,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>chief functions<\/strong> functions of Plastids?",
+         "answer": "<ul>\n  <li>Chloroplasts trap solar energy to convert carbon dioxide and water to  carbohydrates by the process of photosynthesis.<\/li>\n  <li>Leucoplasts store food like starch, proteins and fats.<\/li>\n  <li>Chromoplasts provide colours to flowers to attract insects for  pollination.<\/li>\n  <li>Imparts colors to flowers and fruits<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1860,
+         "elementType": "question_answer",
+         "difficultyLevel": 63,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>main characteristics<\/strong> of Nucleus?",
+         "answer": "<ul>\n  <li>Largest cell organelle<\/li>\n  <li>Has an outer double layered membrane called the <strong>Nuclear membrane<\/strong>.<\/li>\n  <li>Has a highly viscous liquid filling the nuclear membrane called <strong>Nucleoplasm<\/strong>.<\/li>\n  <li>Has round bodies suspended in the nucleoplasm called <strong>Nucleoli<\/strong><\/li>\n  <li>Has fine strand like structures called <strong>Chromosomes<\/strong><\/li>\n  <li>Contains network of thread-like structures called chromatin fibres which  contain DNA<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 1861,
+         "elementType": "question_answer",
+         "difficultyLevel": 15,
+         "learningStats": {
+             "learningEfficiency": 75,
+             "absLearningEfficiency": 75
+         },
+         "question": "What are the <strong>chief functions<\/strong> of Nucleus?",
+         "answer": "<ul>\n  <li>Regulates cell functions<\/li>\n  <li>If removed, the cell dies<\/li>\n  <li>Contains chromosomes<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 2152,
+         "elementType": "question_answer",
+         "difficultyLevel": 23,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>chief functions<\/strong> of Nucleoli?",
+         "answer": "<ul>\n  <li>It produces ribosomes<\/li>\n  <li>Participates in protein synthesis by forming and storing DNA<\/li>\n  <li>Dictates ribosomes to synthesize proteins<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 2153,
+         "elementType": "question_answer",
+         "difficultyLevel": 31,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>main characteristics<\/strong> of Vacuoles?",
+         "answer": "<ul>\n  <li>They are clear spaces with water or other substances in solution.<\/li>\n  <li>In aquatic plants, vacuoles store gases to keep the plant afloat.<\/li>\n  <li>Covered by a coverting called <em><strong>tonoplast<\/strong><\/em><\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 2154,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Vacuoles have a covering called {0}.",
+         "answers": ["tonoplast"]
+     }, {
+         "noteElementId": 2155,
+         "elementType": "question_answer",
+         "difficultyLevel": 21,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "What are the <strong>chief functions<\/strong> of Vacuoles?",
+         "answer": "<ul>\n  <li>They store sugar, mineral salts, organic acids and various gases.<\/li>\n  <li>They maintain the shape of the cell.<\/li>\n<\/ul>"
+     }, {
+         "noteElementId": 2156,
+         "elementType": "question_answer",
+         "difficultyLevel": 68,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Write the differences between plant and animal cells.",
+         "answer": "<table class=\"pure-table pure-table-horizontal\">\n  <thead>\n    <tr>\n      <th>Feature <\/th>\n      <th>Plant cell <\/th>\n      <th>Animal cell<\/th>\n    <\/tr>\n  <\/thead>\n  <tbody>\n    <tr>\n      <td><strong>Cell wall<\/strong> <\/td>\n      <td>A definite cell wall made of cellulose <\/td>\n      <td>No cell wall<\/td>\n    <\/tr>\n    <tr>\n      <td><strong>Centrosome<\/strong> <\/td>\n      <td>Not present <\/td>\n      <td>Present<\/td>\n    <\/tr>\n    <tr>\n      <td><strong>Vacuoles<\/strong> <\/td>\n      <td>Prominent, one or more. <\/td>\n      <td>Largely absent. If present, are small and temporary<\/td>\n    <\/tr>\n    <tr>\n      <td><strong>Plastids<\/strong> <\/td>\n      <td>Present <\/td>\n      <td>Absent<\/td>\n    <\/tr>\n    <tr>\n      <td><strong>Size<\/strong> <\/td>\n      <td>Usually larger, with distinct outlines <\/td>\n      <td>No plastids<\/td>\n    <\/tr>\n    <tr>\n      <td><strong>Cytoplasm<\/strong> <\/td>\n      <td>Not so dense. Thin layer pushed to the periphery. <\/td>\n      <td>Fills almost entire cell<\/td>\n    <\/tr>\n  <\/tbody>\n<\/table>"
+     }, {
+         "noteElementId": 2157,
+         "elementType": "question_answer",
+         "difficultyLevel": 10,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Why is it impossible to make an accurate chemical analysis of the protoplasm?",
+         "answer": "This is so because as soon as it is removed from the organism, it ceases to be protoplasm."
+     }, {
+         "noteElementId": 2158,
+         "elementType": "definition",
+         "difficultyLevel": 31,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "term": "Prokaryotic",
+         "definition": "Cells containing primitive nucleus, where the nucleus is not well defined and nuclear material is spread around the cytoplasm are called Prokaryotic cells.<\/p><p>E.g. Bacteria"
+     }, {
+         "noteElementId": 2159,
+         "elementType": "definition",
+         "difficultyLevel": 35,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "term": "Eukaryotic",
+         "definition": "Cells containing a well defined nucleus, where the nuclear material is bounded by a well defined nuclear membrane are called Eukaryotic cells.<\/p><p>E.g. Plant and Animal cells"
+     }, {
+         "noteElementId": 2160,
+         "elementType": "question_answer",
+         "difficultyLevel": 66,
+         "learningStats": {
+             "learningEfficiency": 75,
+             "absLearningEfficiency": 75
+         },
+         "question": "Write the differences between prokaryotic and eukaryotic cells.",
+         "answer": "<table class=\"pure-table pure-table-horizontal\">\n  <thead>\n    <tr>\n      <th>Prokaryotic cells <\/th>\n      <th>Eukaryotic cells<\/th>\n    <\/tr>\n  <\/thead>\n  <tbody>\n    <tr>\n      <td>No well defined nucleus <\/td>\n      <td>Well defined nucleus with a nuclear membrane<\/td>\n    <\/tr>\n    <tr>\n      <td>A single length of only DNA <\/td>\n      <td>Several lengths of chromosomes containing DNA<\/td>\n    <\/tr>\n    <tr>\n      <td>Small ribosomes <\/td>\n      <td>Larger ribosomes<\/td>\n    <\/tr>\n    <tr>\n      <td>No other cell organelles <\/td>\n      <td>Several organelles like Mitochondria, ER, etc.<\/td>\n    <\/tr>\n    <tr>\n      <td>E.g. Bacteria, Blue green Algae <\/td>\n      <td>Euglena, Amoeba, Plant and animal cells<\/td>\n    <\/tr>\n  <\/tbody>\n<\/table>"
+     }, {
+         "noteElementId": 2161,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Another name for blue green algae is {0}",
+         "answers": ["Cyanobacteria"]
+     }, {
+         "noteElementId": 2163,
+         "elementType": "matching",
+         "difficultyLevel": 45,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "matchData": [
+             ["Vacuoles", "Covered by tonoplast"],
+             ["Nucleolus", "Forms RNA"],
+             ["Lysosome", "Intracellular digestion"],
+             ["Anthocyanin", "Dissolved in the cytoplasm"],
+             ["Cristae", "Respiratory enzymes"]
+         ]
+     }, {
+         "noteElementId": 2164,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "{0} consists of membraneous sacs and secrete 40 types of digestive enzymes.",
+         "answers": ["Lysosomes"]
+     }, {
+         "noteElementId": 2165,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "{0} is surrounded by microtubules, located near the nucleus.",
+         "answers": ["Centriole"]
+     }, {
+         "noteElementId": 2166,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Very thin, flexible, living membrane which is differentially permeable, is called {0}.",
+         "answers": ["cell membrane"]
+     }, {
+         "noteElementId": 2167,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "More than 1000 chromosomes are found in the nucleus of certain {0}.",
+         "answers": ["insects"]
+     }, {
+         "noteElementId": 2168,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "{0} are heriditary units.",
+         "answers": ["Genes"]
+     }, {
+         "noteElementId": 2169,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Chromosomes are made up of {0}",
+         "answers": ["chromatin"]
+     }, {
+         "noteElementId": 2170,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Chromatin is composed of hereditary units called {0}.",
+         "answers": ["genes"]
+     }, {
+         "noteElementId": 2171,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "Genes are made of a complex checmical substance called {0}.",
+         "answers": ["DNA"]
+     }, {
+         "noteElementId": 2172,
+         "elementType": "fib",
+         "difficultyLevel": 22,
+         "learningStats": {
+             "learningEfficiency": 100,
+             "absLearningEfficiency": 100
+         },
+         "question": "{0} is the plastid which stores starch.",
+         "answers": ["Leucoplast"]
+     }]
+ }

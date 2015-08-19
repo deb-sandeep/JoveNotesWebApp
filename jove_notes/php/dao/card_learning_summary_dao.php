@@ -44,7 +44,9 @@ QUERY;
         parent::executeInsert( $query, 0 ) ;
     }
 
-    function updateSummary( $userName, $cardId, $level, $rating, $learningEfficiency, $timeTaken ) {
+    function updateSummary( $userName, $cardId, $level, $rating, 
+                            $learningEfficiency, $absoluteLearningEfficiency,
+                            $timeTaken ) {
 
 $query = <<< QUERY
 update jove_notes.card_learning_summary
@@ -53,6 +55,7 @@ set
   num_attempts  = num_attempts + 1,
   temporal_ratings = CONCAT( temporal_ratings, '$rating' ),
   learning_efficiency = $learningEfficiency,
+  abs_learning_efficiency = $absoluteLearningEfficiency,
   last_attempt_time = CURRENT_TIMESTAMP,
   total_time_spent = total_time_spent + $timeTaken
 where

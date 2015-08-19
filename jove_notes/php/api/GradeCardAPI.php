@@ -10,6 +10,7 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 	private $requestObj = null ;
 	private $score = 0 ;
 	private $learningEfficiency = 0 ;
+	private $absoluteLearningEfficiency = 0 ;
 
 	private $cardRatingDAO = null ;
 	private $lsDAO         = null ;
@@ -89,6 +90,17 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 		}
 
 		array_push( $ratings, $this->requestObj->rating ) ;
+
+		// Calculate the absolute learning efficiency taking into consideration
+		// all the temporal ratings.
+		$totalRatingScores = 0 ;
+		foreach ( $ratings as $rating ) {
+			if     ( $rating == 'E' ) $totalRatingScores += 100 ;
+			else if( $rating == 'A' ) $totalRatingScores +=  80 ;
+			else if( $rating == 'P' ) $totalRatingScores +=  50 ;
+			else if( $rating == 'H' ) $totalRatingScores +=   0 ;
+		}
+		$this->absoluteLearningEfficiency = ceil( $totalRatingScores / count( $ratings ) ) ;
 
 		// Consider only the last four ratings as inputs for computing the current
 		// learning efficiency. This implies that if the user is learning really
@@ -192,6 +204,7 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 			                          $this->requestObj->nextLevel, 
 			                          $rating, 
 			                          $this->learningEfficiency,
+			                          $this->absoluteLearningEfficiency,
 			                          $timeTaken ) ;
 	}	
 
