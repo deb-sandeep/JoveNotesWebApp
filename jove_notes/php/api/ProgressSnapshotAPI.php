@@ -101,10 +101,14 @@ class ProgressSnapshotAPI extends API {
 		$this->logger->debug( "Executing doGet in ProgressSnapshotAPI" ) ;
 
 		$this->clsDAO->refresh( ExecutionContext::getCurrentUserName() ) ;
+
 		$this->loadAndClassifyRelevantChapters() ;
-		$this->associateProgressSnapshotWithChapters() ;
-		$this->associateNumSSRMaturedCardsWithChapters() ;
-		$this->associateUserChapterPreferences() ;
+
+		if( !empty( $this->chapters ) ) {
+			$this->associateProgressSnapshotWithChapters() ;
+			$this->associateNumSSRMaturedCardsWithChapters() ;
+			$this->associateUserChapterPreferences() ;
+		}
 		
 		$responseObj = $this->constructResponseObj() ;
 

@@ -13,6 +13,11 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+8/25/15 --
+. JNP - Now accepts multiple source folders
+. JNP - Can take srcDir as command line argument
+. JN - Bug fix - System error when no chapters are entitled for a given user
+
 8/19/15 --
 . User can now filter notes based on absolute learning efficiency
 

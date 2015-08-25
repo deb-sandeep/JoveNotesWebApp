@@ -78,17 +78,19 @@ function DifficultyAverageTimeManager( baseData ) {
 		}
 
 		var values = getValuesArray( question.questionType ) ;
-		for( var i=0; i<values.length; i++ ) {
+		if( values != null ) {
+			for( var i=0; i<values.length; i++ ) {
 
-			var currentDiffLevel = values[i][0] ;
-			var currentAvgTime   = values[i][2] ;
+				var currentDiffLevel = values[i][0] ;
+				var currentAvgTime   = values[i][2] ;
 
-			if( currentDiffLevel == question.difficultyLevel ) {
-				var totalTime = ( values[i][1] * values[i][2] ) + timeTaken ;
-				var newAvg    = totalTime / ( values[i][1] + 1 ) ;
-				values[i][1] = values[i][1] + 1 ;
-				values[i][2] = newAvg ;
-				break ;
+				if( currentDiffLevel == question.difficultyLevel ) {
+					var totalTime = ( values[i][1] * values[i][2] ) + timeTaken ;
+					var newAvg    = totalTime / ( values[i][1] + 1 ) ;
+					values[i][1] = values[i][1] + 1 ;
+					values[i][2] = newAvg ;
+					break ;
+				}
 			}
 		}
 	} ;
