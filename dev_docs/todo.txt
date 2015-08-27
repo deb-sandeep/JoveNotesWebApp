@@ -4,8 +4,6 @@ Pending dev cards
 . Report of subjects studied per day and time spent and number of quesitons
 . Think about multiple choice questions.
 . Matching can have multiple keys and values of the same name
-. Responsive headers - responsive headers are really not working. Change them 
-  to static non-floating headers
 
 . Report to see the subject that was studied in a range and the, chapters/time
   spent on them. angular-grid?
@@ -13,6 +11,9 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+8/27/15 --
+. Removed responsive headers
+
 8/25/15 --
 . JNP - Now accepts multiple source folders
 . JNP - Can take srcDir as command line argument

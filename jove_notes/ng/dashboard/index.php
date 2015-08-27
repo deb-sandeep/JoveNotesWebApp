@@ -21,13 +21,6 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
 <html ng-app="dashboardApp">
 <head>
     <?php include( HEAD_CONTENT_FILE ); ?>
-    <style>
-      body {
-        padding-top: 45px ;
-        padding-left: 10px ;
-        padding-right: 10px ;
-      }
-    </style>
 
     <link rel="stylesheet" href="/lib-ext/jquery/css/jquery.treegrid.css">
 
@@ -63,11 +56,12 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
 <body ng-controller="DashboardController">
     <?php include( NAVBAR_FRAGMENT_PATH ) ; ?>
     <?php include( ALERT_DIV_FILE ) ; ?>
+    <div style="height:2px"></div>
     <a type="button" class="btn btn-default btn-md" 
        href="#ProgressSnapshot"
        ng-class="getBtnActiveClass( 'ProgressSnapshot' )"
        ng-click="setActiveReport( 'ProgressSnapshot' )">
-  	Progress Snapshot
+  	Snapshot
   	</a>
 
     <a type="button" class="btn btn-default btn-md" 
