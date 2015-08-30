@@ -5,13 +5,10 @@ function MultiChoiceManager( questionObj, textFormatter, $scope ) {
 		this.isCorrect = isCorrect ;
 	} ;
 
-	var numOptionsToShow  = 4 ;
-	var numOptionsColumns = 2 ;
+	var numOptionsToShow = 4 ;
+	var numOptionsPerRow = 2 ;
 
 	var jnUtils = null ;
-
-	var numCols = 0 ;
-	var numRows = 0 ;
 
 	var formattedQuestion    = null ;
 	var formattedExplanation = null ;
@@ -30,6 +27,10 @@ function MultiChoiceManager( questionObj, textFormatter, $scope ) {
 	var construct = function( questionObj, textFormatter, $scope ) {
 
 		jnUtils = new JoveNotesUtil() ;
+
+		numOptionsToShow = questionObj.numOptionsToShow ;
+		numOptionsPerRow = questionObj.numOptionsPerRow ;
+
 		formattedQuestion    = textFormatter.format( questionObj.question ) ;
 		formattedExplanation = textFormatter.format( questionObj.explanation ) ;
 
@@ -121,7 +122,7 @@ function MultiChoiceManager( questionObj, textFormatter, $scope ) {
 		var questionP = P( { innerHTML : formattedQuestion } ) ;
 		var tdDOMs    = [] ;
 		var trDOMs    = [] ;
-		var numRows   = Math.ceil( optionsToDisplay.length / numOptionsColumns ) ;
+		var numRows   = Math.ceil( optionsToDisplay.length / numOptionsPerRow ) ;
 
 		displayedOptionCells.length = 0 ;
 
@@ -134,14 +135,14 @@ function MultiChoiceManager( questionObj, textFormatter, $scope ) {
 			tdDOMs.push( td ) ;
 			displayedOptionCells.push( td ) ;
 
-			if( tdDOMs.length == numOptionsColumns ) {
+			if( tdDOMs.length == numOptionsPerRow ) {
 				trDOMs.push( TR( tdDOMs ) ) ;
 				tdDOMs.length = 0 ;
 			}
 		}
 
 		if( tdDOMs.length != 0 ) {
-			while( tdDOMs.length < numOptionsColumns ) {
+			while( tdDOMs.length < numOptionsPerRow ) {
 				tdDOMs.push( TD() ) ;
 			}
 			trDOMs.push( TR( tdDOMs ) ) ;
