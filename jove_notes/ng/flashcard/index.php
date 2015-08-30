@@ -75,6 +75,7 @@ $score = $scoreDAO->getScore( ExecutionContext::getCurrentUserName() ) ;
     <script src="/apps/jove_notes/ng/flashcard/practice_page/dynq_matching.js"></script>    
     <script src="/apps/jove_notes/ng/flashcard/practice_page/dynq_imglabel.js"></script>    
     <script src="/apps/jove_notes/ng/flashcard/practice_page/dynq_spellbee.js"></script>    
+    <script src="/apps/jove_notes/ng/flashcard/practice_page/dynq_multichoice.js"></script>    
     <script src="/apps/jove_notes/ng/flashcard/practice_page/diff_av_time_manager.js"></script>    
 
     <script src="/apps/jove_notes/ng/flashcard/routes.js"></script>    

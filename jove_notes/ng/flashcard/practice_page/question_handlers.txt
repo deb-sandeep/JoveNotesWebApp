@@ -1,0 +1,72 @@
+=============================================================================
+This file defines all the question handlers. Question handlers are called
+upon by the renderFlashCardQuestion and renderFlashCardAnswer directives 
+to provide the logic of displaying and interacting with the question.
+Different types of question handlers are associated with each question based 
+on their question type. 
+A question handler is expected to optionally implement the following methods.
+- Constructor logic
+     Usually a handler is supplied with the chapter details (which provide
+     the base data required for text formatter) and the question which the
+     handler instance needs to be responsible for. 
+     Any one time initialization logic should be done here.
+- initialize( $scope )
+	This method is called by the renderFlashCardQuestion when a card is 
+     to be rendered on the (remote) flash card page. It is guaranteed that 
+     this is the first method that will be called before any of the below
+     methods are invoked in a display session.
+     It is very important to keep in mind that a card may be displayed MULTIPLE
+     times in a session, hence the same handler instance can be called upon 
+     multiple times (e.g. if a card is being put back into the stack due to 
+     a wrong answer.). Each time a card is about to be displayed, the 
+     initialize method will be called.
+     This method should contain the logic of resetting any display state. 
+- getQuestionUI()
+	This method is called immediately after the initialize method as is 
+	expected to return a DOM object which represents the user interface of 
+     the question. The render directive injects the returned DOM as is into
+     the flash card interface. NOTE that at this point, the DOM is not associated
+     with the root document and hence any logic that relies on root document
+     will not work in this method.
+- initializeQuestionUI()
+	This method is called immediately after the DOM returned by the 
+	getQuestionUI method has been attached to the overall DOM. If there is
+     any logic which relies on the DOM being attached to the root document,
+     this is the place for such logic.
+ After the above method, user interaction commences till the  time the trigger 
+ (manual or automated) arrives to display the answer.
+- freezeQuestionUI()
+	This is the first method to be called on the handler before the answer
+     is displayed. This method is expected to freeze the state the question
+     DOM so that it looses all interactivity. Once the answer is shown, the
+     user should not be playing with the question anyway.
+- getAnswerUI()
+	This method is called after the question UI is frozen. This method is
+     expected to return a DOM which will be attached to the root dom. Please
+     note that within this method, the DOM is not yet attached to the root
+     document.
+- initializeAnswerUI()
+     Once the answer DOM is attached to the root document, this method is 
+     called to give a chance for any post initialization logic.
+--------------
+- getAnswerLength()
+	This method can be called any time after construction and should return
+     the text length of the answer.
+
+=============================================================================
+function XXXHandler( chapterDetails, question ) {
+
+	var textFormatter = new TextFormatter( chapterDetails ) ;
+
+	this.question = question ;
+	this.chapterDetails = chapterDetails ;
+	this.scope = null ;
+
+	this.getAnswerLength = function() { return 0 ; } ;
+	this.initialize = function( $scope ){ this.scope = $scope ; }
+	this.getQuestionUI = function() {} ;
+	this.initializeQuestionUI = function() {} ;
+	this.freezeQuestionUI = function() {} ;
+	this.getAnswerUI = function() {} ;
+	this.initializeAnswerUI = function() {} ;
+}

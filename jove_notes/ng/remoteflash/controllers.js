@@ -1,4 +1,4 @@
-remoteFlashCardApp.controller( 'RemoteFlashCardController', function( $scope, $http, $location, $sce ) {
+remoteFlashCardApp.controller( 'RemoteFlashCardController', function( $scope, $http, $location ) {
 // ---------------- Constants and inner class definition -----------------------
 
 // ---------------- Local variables --------------------------------------------
@@ -274,28 +274,25 @@ function processIncomingQuestion( message ) {
     var questionType = message.content.currentQuestion.questionType ;
     var handler = null ;
     if( questionType == QuestionTypes.prototype.QT_FIB ) {
-        handler = new FIBHandler( $scope.chapterDetails, 
-                                  $scope.currentQuestion, $sce ) ;
+        handler = new FIBHandler( $scope.chapterDetails, $scope.currentQuestion ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_QA ) {
-        handler = new QAHandler( $scope.chapterDetails, 
-                                 $scope.currentQuestion, $sce ) ;
+        handler = new QAHandler( $scope.chapterDetails, $scope.currentQuestion ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_TF ) {
-        handler = new TFHandler( $scope.chapterDetails, 
-                                 $scope.currentQuestion, $sce ) ;
+        handler = new TFHandler( $scope.chapterDetails, $scope.currentQuestion ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_MATCHING ) {
-        handler = new MatchingHandler( $scope.chapterDetails, 
-                                       $scope.currentQuestion, $sce ) ;
+        handler = new MatchingHandler( $scope.chapterDetails, $scope.currentQuestion ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_IMGLABEL ) {
-        handler = new ImageLabelHandler( $scope.chapterDetails, 
-                                         $scope.currentQuestion, $sce ) ;
+        handler = new ImageLabelHandler( $scope.chapterDetails, $scope.currentQuestion ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_SPELLBEE ) {
-        handler = new SpellBeeHandler( $scope.chapterDetails, 
-                                       $scope.currentQuestion, $sce ) ;
+        handler = new SpellBeeHandler( $scope.chapterDetails, $scope.currentQuestion ) ;
+    }
+    else if( questionType == QuestionTypes.prototype.MULTI_CHOICE ) {
+        handler = new MultiChoiceHandler( $scope.chapterDetails, $scope.currentQuestion ) ;
     }
     else {
         log.error( "Unrecognized question type = " + questionType ) ;

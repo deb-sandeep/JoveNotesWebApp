@@ -66,6 +66,7 @@ $scope.spellbeeWords         = [] ;
 $scope.imageLabels           = [] ;
 $scope.equations             = [] ;
 $scope.referenceToContexts   = [] ;
+$scope.multiChoiceQuestions  = [] ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -175,6 +176,7 @@ function processNotesElements() {
 	$scope.imageLabels.length           = 0 ;
 	$scope.equations.length             = 0 ;
 	$scope.referenceToContexts.length   = 0 ;
+	$scope.multiChoiceQuestions.length  = 0 ;
 
 	for( index=0; index<$scope.notesElements.length; index++ ) {
 
@@ -229,6 +231,9 @@ function processNotesElements() {
 			}
 			else if( type == NotesElementsTypes.prototype.REF_TO_CONTEXT ) {
 				$scope.referenceToContexts.push( formatRTC( element ) ) ;
+			}
+			else if( type == NotesElementsTypes.prototype.MULTI_CHOICE ) {
+				$scope.multiChoiceQuestions.push( formatMultiChoiceQuestion( element ) ) ;
 			}
 		}
 		else {
@@ -383,6 +388,14 @@ function formatRTC( rtcElement ) {
 		qa.answer   = textFormatter.format( qa.answer ) ;
 	}
 	return rtcElement ;
+}
+
+function formatMultiChoiceQuestion( mcElement ) {
+
+	mcElement.question = textFormatter.format( mcElement.question ) ;
+	mcElement.answer = textFormatter.format( mcElement.answer ) ;
+
+	return mcElement ;
 }
 
 // ---------------- End of controller ------------------------------------------

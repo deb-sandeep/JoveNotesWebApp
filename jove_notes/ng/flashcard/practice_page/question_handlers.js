@@ -1,24 +1,4 @@
 // =============================================================================
-
-// =============================================================================
-// function XXXHandler( chapterDetails, question ) {
-
-// 	var textFormatter = new TextFormatter( chapterDetails ) ;
-
-// 	this.question = question ;
-// 	this.chapterDetails = chapterDetails ;
-// 	this.scope = null ;
-
-// 	this.initialize = function( $scope ){ this.scope = $scope ; }
-// 	this.getAnswerLength = function() { return 0 ; } ;
-// 	this.getQuestionUI = function() {} ;
-// 	this.initializeQuestionUI = function() {} ;
-// 	this.getAnswerUI = function() {} ;
-// 	this.initializeAnswerUI = function() {} ;
-// 	this.freezeQuestionUI = function() {} ;
-// }
-
-// =============================================================================
 // Fill in the blanks formatter
 // =============================================================================
 function FIBHandler( chapterDetails, question ) {
@@ -183,7 +163,6 @@ function MatchingHandler( chapterDetails, questionObj ) {
 	}
 
 	this.initialize = function( $scope ){ 
-		log.debug( "Initializing matching handler." ) ;
 		manager = new MatchQuestionManager( questionObj, textFormatter, $scope ) ;
 		manager.initialize() ;
 	}
@@ -220,7 +199,6 @@ function ImageLabelHandler( chapterDetails, questionObj ) {
 	}
 
 	this.initialize = function( $scope ){ 
-		log.debug( "Initializing image label handler." ) ;
 		manager = new ImageLabelManager( questionObj, textFormatter, $scope ) ;
 		manager.initialize() ;
 	}
@@ -241,7 +219,6 @@ function SpellBeeHandler( chapterDetails, questionObj ) {
 	var manager = null ;
 
 	this.initialize = function( $scope ){ 
-		log.debug( "Initializing SpellBee handler." ) ;
 		manager = new SpellBeeManager( questionObj, $scope ) ;
 		manager.initialize() ;
 	}
@@ -255,4 +232,27 @@ function SpellBeeHandler( chapterDetails, questionObj ) {
 	this.getAnswerUI = function() { return manager.getAnswerUI() ; } ;
 
 	this.initializeAnswerUI = function(){ manager.initializeAnswerUI() ; } ;
+}
+
+// =============================================================================
+// Multi Choice Handler
+// =============================================================================
+function MultiChoiceHandler( chapterDetails, question ) {
+
+	var manager       = null ;
+	var textFormatter = new TextFormatter( chapterDetails ) ;
+	var answerLength  = textFormatter.stripHTMLTags( question.explanation ).length ;
+
+	this.getAnswerLength = function() { return answerLength ; } ;
+
+	this.initialize = function( $scope ){ 
+		manager = new MultiChoiceManager( question, textFormatter, $scope ) ;
+		manager.initialize() ;
+	}	
+	
+	this.getQuestionUI = function() { return manager.getQuestionUI() ; } ;
+	
+	this.freezeQuestionUI = function() { manager.freezeQuestionUI() ; } ;
+	
+	this.getAnswerUI = function() { return manager.getAnswerUI() ; } ;
 }

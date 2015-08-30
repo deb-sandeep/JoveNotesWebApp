@@ -2,7 +2,6 @@ Pending dev cards
 --------------------------------------------------------------------------------
 . Think of better visualization using D3
 . Report of subjects studied per day and time spent and number of quesitons
-. Think about multiple choice questions.
 . Matching can have multiple keys and values of the same name
 
 . Report to see the subject that was studied in a range and the, chapters/time
@@ -11,6 +10,9 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+8/30/15 --
+. MCQ implementation
+
 8/27/15 --
 . Removed responsive headers
 

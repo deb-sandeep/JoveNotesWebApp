@@ -206,3 +206,33 @@ table.temporal {
 .temporal .rating-H {
 	background-color: #FF0000;
 }
+
+.mcq_option_table {
+	border-collapse:separate;
+	border-spacing: 5px;
+}
+
+.mcq_option_table tr td {
+    border-radius: 6px 6px 6px 6px;
+	padding:10px;
+}
+
+.mcq_option_table .unselected {
+    background-color: #F3F3F3;
+    border: 1px solid #C5C2C2;
+}
+
+.mcq_option_table .selected {
+    background-color: #CEFFCD;
+    border: 1px solid #92FF91;
+}
+
+.mcq_option_table .incorrect_selected {
+    background-color: #FF7C68;
+    border: 1px solid #FC755D;
+}
+
+.mcq_option_table .correct_not_selected {
+    background-color: #42F749;
+    border: 1px solid #62FD47;
+}

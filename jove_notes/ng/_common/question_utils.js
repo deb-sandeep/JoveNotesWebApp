@@ -16,16 +16,18 @@ NotesElementsTypes.prototype.SPELLBEE      = "spellbee" ;
 NotesElementsTypes.prototype.IMAGE_LABEL   = "image_label" ;
 NotesElementsTypes.prototype.EQUATION      = "equation" ;
 NotesElementsTypes.prototype.REF_TO_CONTEXT= "rtc" ;
+NotesElementsTypes.prototype.MULTI_CHOICE  = "multi_choice" ;
 
 // -----------------------------------------------------------------------------
 function QuestionTypes(){}
 
-QuestionTypes.prototype.QT_FIB      = "fib" ;
-QuestionTypes.prototype.QT_QA       = "question_answer" ;
-QuestionTypes.prototype.QT_TF       = "true_false" ;
-QuestionTypes.prototype.QT_MATCHING = "matching" ;
-QuestionTypes.prototype.QT_IMGLABEL = "image_label" ;
-QuestionTypes.prototype.QT_SPELLBEE = "spellbee" ;
+QuestionTypes.prototype.QT_FIB       = "fib" ;
+QuestionTypes.prototype.QT_QA        = "question_answer" ;
+QuestionTypes.prototype.QT_TF        = "true_false" ;
+QuestionTypes.prototype.QT_MATCHING  = "matching" ;
+QuestionTypes.prototype.QT_IMGLABEL  = "image_label" ;
+QuestionTypes.prototype.QT_SPELLBEE  = "spellbee" ;
+QuestionTypes.prototype.MULTI_CHOICE = "multi_choice" ;
 
 // -----------------------------------------------------------------------------
 function StudyStrategyTypes(){}
