@@ -31,13 +31,13 @@ function FilterCriteria() {
 
 // ---------------- Local variables --------------------------------------------
 var jnUtil = new JoveNotesUtil() ;
-var textFormatter = null ;
 
 // ---------------- Controller variables ---------------------------------------
-$scope.alerts    = [] ;
-$scope.userName  = userName ;
-$scope.chapterId = chapterId ;
-$scope.pageTitle = null ;
+$scope.textFormatter = null ;
+$scope.alerts        = [] ;
+$scope.userName      = userName ;
+$scope.chapterId     = chapterId ;
+$scope.pageTitle     = null ;
 
 $scope.filterCriteria = new FilterCriteria() ;
 $scope.filterOptions  = new NotesFilterOptions() ;
@@ -151,7 +151,7 @@ function processServerData( data ) {
 	$scope.pageTitle = jnUtil.constructPageTitle( data.chapterDetails ) ;
 	log.debug( "Page title = " + $scope.pageTitle ) ;
 
-	textFormatter = new TextFormatter( data.chapterDetails, $sce ) ;
+	$scope.textFormatter = new TextFormatter( data.chapterDetails, $sce ) ;
  	processNotesElements() ;
 }
 
@@ -274,7 +274,7 @@ function qualifiesFilter( element ) {
 
 function getPrintRulers( formattedText ) {
 
-	var ansLength = textFormatter.stripHTMLTags( formattedText ).length ;
+	var ansLength = $scope.textFormatter.stripHTMLTags( formattedText ).length ;
 	var numLines  = Math.round( ansLength / 35 ) ;
 	var ansRuler  = "" ;
 
@@ -301,7 +301,7 @@ function formatFIB( fibElement ){
 
 		formattedAnswer = formattedAnswer.replace( strToReplace, replacedText ) ;
 
-		var ansLength = textFormatter.stripHTMLTags( replacedText ).length ;
+		var ansLength = $scope.textFormatter.stripHTMLTags( replacedText ).length ;
 		var blank = "" ;
 		for( var j=0; j<ansLength; j++ ) {
 			blank += "__" ;
@@ -315,36 +315,36 @@ function formatFIB( fibElement ){
 }
 
 function formatQA( qaElement ){
-	qaElement.question = textFormatter.format( qaElement.question ) ;
-	qaElement.answer   = textFormatter.format( qaElement.answer ) ;
+	qaElement.question = $scope.textFormatter.format( qaElement.question ) ;
+	qaElement.answer   = $scope.textFormatter.format( qaElement.answer ) ;
 	qaElement.ansRuler = getPrintRulers( qaElement.answer ) ;
 
 	return qaElement ;
 }
 
 function formatDefinition( defElement ) {
-	defElement.term       = textFormatter.format( defElement.term ) ;
-	defElement.definition = textFormatter.format( defElement.definition ) ;
+	defElement.term       = $scope.textFormatter.format( defElement.term ) ;
+	defElement.definition = $scope.textFormatter.format( defElement.definition ) ;
 	defElement.ansRuler   = getPrintRulers( defElement.definition ) ;
 
 	return defElement ;
 }
 
 function formatCharacter( charElement ) {
-	charElement.character = textFormatter.format( charElement.character ) ;
-	charElement.estimate  = textFormatter.format( charElement.estimate ) ;
+	charElement.character = $scope.textFormatter.format( charElement.character ) ;
+	charElement.estimate  = $scope.textFormatter.format( charElement.estimate ) ;
 	charElement.ansRuler  = getPrintRulers( charElement.estimate ) ;
 
 	return charElement ;
 }
 
 function formatTeacherNote( tnElement ) {
-	tnElement.note = textFormatter.format( tnElement.note ) ;
+	tnElement.note = $scope.textFormatter.format( tnElement.note ) ;
 
 	// Backward compatibility for all those teacher notes elements which 
 	// did not get processed with caption
 	if( tnElement.hasOwnProperty( 'caption' ) ){
-		tnElement.caption = textFormatter.format( tnElement.caption ) ;
+		tnElement.caption = $scope.textFormatter.format( tnElement.caption ) ;
 	}	
 	else {
 		tnElement.caption = "Teacher Note" ;
@@ -356,29 +356,29 @@ function formatTeacherNote( tnElement ) {
 function formatMatching( matchElement ) {
 	for( var i=0; i<matchElement.matchData.length; i++ ) {
 		var pair = matchElement.matchData[i] ;
-		pair[0] = textFormatter.format( pair[0] ) ;
-		pair[1] = textFormatter.format( pair[1] ) ;
+		pair[0] = $scope.textFormatter.format( pair[0] ) ;
+		pair[1] = $scope.textFormatter.format( pair[1] ) ;
 	}
 	return matchElement ;
 }
 
 function formatEvent( eventElement ) {
-	eventElement.time = textFormatter.format( eventElement.time ) ;
-	eventElement.event = textFormatter.format( eventElement.event ) ;
+	eventElement.time = $scope.textFormatter.format( eventElement.time ) ;
+	eventElement.event = $scope.textFormatter.format( eventElement.event ) ;
 
 	return eventElement ;
 }
 
 function formatTrueFalse( tfElement ) {
-	tfElement.statement = textFormatter.format( tfElement.statement ) ;
-	tfElement.justification = textFormatter.format( tfElement.justification ) ;
+	tfElement.statement = $scope.textFormatter.format( tfElement.statement ) ;
+	tfElement.justification = $scope.textFormatter.format( tfElement.justification ) ;
 
 	return tfElement ;
 }
 
 function formatChemEquation( chemEqElement ) {
-	chemEqElement.description = textFormatter.format( chemEqElement.description ) ;
-	chemEqElement.notes = textFormatter.format( chemEqElement.notes ) ;
+	chemEqElement.description = $scope.textFormatter.format( chemEqElement.description ) ;
+	chemEqElement.notes = $scope.textFormatter.format( chemEqElement.notes ) ;
 
 	return chemEqElement ;
 }
@@ -411,21 +411,21 @@ function formatImageLabel( imageLabelElement ) {
 }
 
 function formatEquation( eqElement ) {
-	eqElement.description = textFormatter.format( eqElement.description ) ;
+	eqElement.description = $scope.textFormatter.format( eqElement.description ) ;
 	for( var i=0; i<eqElement.symbols.length; i++ ) {
 		var symbol = eqElement.symbols[i] ;
-		symbol[1] = textFormatter.format( symbol[1] ) ;
+		symbol[1] = $scope.textFormatter.format( symbol[1] ) ;
 	}
 	return eqElement ;
 }
 
 function formatRTC( rtcElement ) {
 
-	rtcElement.context = textFormatter.format( rtcElement.context ) ;
+	rtcElement.context = $scope.textFormatter.format( rtcElement.context ) ;
 	for( var i=0; i<rtcElement.questions.length; i++ ) {
 		var qa = rtcElement.questions[i] ;
-		qa.question = textFormatter.format( qa.question ) ;
-		qa.answer   = textFormatter.format( qa.answer ) ;
+		qa.question = $scope.textFormatter.format( qa.question ) ;
+		qa.answer   = $scope.textFormatter.format( qa.answer ) ;
 		qa.ansRuler = getPrintRulers( qa.answer ) ;
 	}
 	return rtcElement ;
@@ -433,8 +433,8 @@ function formatRTC( rtcElement ) {
 
 function formatMultiChoiceQuestion( mcElement ) {
 
-	mcElement.question = textFormatter.format( mcElement.question ) ;
-	mcElement.answer = textFormatter.format( mcElement.answer ) ;
+	mcElement.question = $scope.textFormatter.format( mcElement.question ) ;
+	mcElement.answer = $scope.textFormatter.format( mcElement.answer ) ;
 
 	return mcElement ;
 }

@@ -4,8 +4,7 @@ notesApp.directive( 'renderImageLabel', function( $sce ) {
 		restrict : 'E',
 		link : function( $scope, element, attributes ) {
 
-			var textFormatter = new TextFormatter( $scope.$parent.$parent.$parent.chapterDetails, $sce ) ;
-			var handler = new ImageLabelManager( $scope.element, textFormatter, $scope )
+			var handler = new ImageLabelManager( $scope.element, $scope.textFormatter, $scope )
 
 			handler.initialize() ;
 			var answerUI = handler.getAnswerUI() ;
@@ -22,8 +21,7 @@ notesApp.directive( 'renderPracticeImageLabel', function( $sce ) {
 		restrict : 'E',
 		link : function( $scope, element, attributes ) {
 
-			var textFormatter = new TextFormatter( $scope.$parent.$parent.$parent.chapterDetails, $sce ) ;
-			var handler = new ImageLabelManager( $scope.element, textFormatter, $scope )
+			var handler = new ImageLabelManager( $scope.element, $scope.textFormatter, $scope )
 
 			handler.initialize() ;
 			var questionUI = handler.getQuestionUI() ;

@@ -13,6 +13,7 @@ Completed
 8/31/15 --
 . Bug in time penalty fixed 
 . Practice print page functionality added
+. Notes now uses one instance of textFormatter
 
 8/30/15 --
 . MCQ implementation
