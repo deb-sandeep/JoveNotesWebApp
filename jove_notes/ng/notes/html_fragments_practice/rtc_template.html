@@ -1,0 +1,21 @@
+<div class="panel panel-default"
+     ng-repeat="element in referenceToContexts">
+  <div class="panel-heading">
+    <span class="glyphicon glyphicon-question-sign"></span>&nbsp;&nbsp;
+    <span class="text-primary">Reference to Context</span>
+    <div class="pull-right" 
+         ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
+    </div>
+  </div>
+  <div class="panel-body">
+    <blockquote ng-bind-html="element.context"></blockquote>
+    <table class="table table-condensed table-hover">
+      <tr ng-repeat="question in element.questions">
+          <td>
+            <p ng-bind-html="question.question" class="text-primary"></p>
+            <p ng-bind-html="question.ansRuler" style="padding-left:10px"></p>
+          </td>
+      </tr>
+    </table>
+  </div>
+</div> 

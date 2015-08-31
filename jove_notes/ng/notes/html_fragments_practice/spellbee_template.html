@@ -1,0 +1,36 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;
+    <span class="panel-title">Spellbee</span>
+  </div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table table-condensed table-striped table-hover">
+        <thead>
+            <tr class="default">
+                <th>Play</th>
+                <th>Word</th>
+                <th>Pronunciation</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="element in spellbeeWords">
+                <td width="60px">
+                  <button type="button" class="btn btn-default" ng-click="playWordSound(element.word)">
+                    <span class="glyphicon glyphicon-volume-up"></span>
+                  </button>                  
+                </td>
+                <td class="text-primary" style="letter-spacing:3px"><b>{{element.word | uppercase}}</b></td>
+                <td>{{element.pronunciation}}</td>
+                <td>
+                  <div class="pull-right" 
+                       ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
+                  </div>
+                </td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> 

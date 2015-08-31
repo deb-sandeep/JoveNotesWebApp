@@ -1,0 +1,12 @@
+<div class="panel panel-success" ng-repeat="element in characters">
+  <div class="panel-heading">
+    <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;
+    <span class="panel-title" ng-bind-html="element.character"></span>&nbsp;&nbsp;[Character]
+    <div class="pull-right" 
+         ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
+    </div>
+  </div>
+  <div class="panel-body">
+    <p ng-bind-html="element.ansRuler"></p>
+  </div>
+</div> 

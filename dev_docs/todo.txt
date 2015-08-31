@@ -12,6 +12,7 @@ Completed
 --------------------------------------------------------------------------------
 8/31/15 --
 . Bug in time penalty fixed 
+. Practice print page functionality added
 
 8/30/15 --
 . MCQ implementation

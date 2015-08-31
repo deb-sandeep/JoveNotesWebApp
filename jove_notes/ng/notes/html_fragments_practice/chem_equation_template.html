@@ -1,0 +1,24 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <span class="glyphicon glyphicon-fire"></span>&nbsp;&nbsp;
+    <span class="panel-title">Chemical Equations</span>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-condensed table-hover">
+      <tr ng-repeat="element in chemEquations">
+          <td>
+            <span><span class="glyphicon glyphicon-hand-right"></span></span>
+          </td>
+          <td>
+          <p ng-bind-html="element.equation"></p>
+          <p class="text-muted" ng-bind-html="element.description"></p>
+          </td>
+          <td>
+            <div class="pull-right" 
+                 ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
+            </div>
+          </td>
+      </tr>
+    </table>
+  </div>
+</div> 

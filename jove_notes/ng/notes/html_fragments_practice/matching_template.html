@@ -1,0 +1,24 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;
+    <span class="panel-title">Associations</span>
+  </div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table table-condensed table-striped table-hover">
+        <tbody ng-repeat="element in matchings">
+            <tr ng-repeat="pair in element.matchData">
+                <td class="text-primary"><span ng-bind-html="pair[0]"></span></td>
+                <td style="vertical-align:middle">=</td>
+                <td style="color:#BBBBBB;">_______________________________________</td>
+                <td>
+                  <div class="pull-right" 
+                       ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
+                  </div>
+                </td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> 

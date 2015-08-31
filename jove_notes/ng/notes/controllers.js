@@ -272,43 +272,67 @@ function qualifiesFilter( element ) {
 	return false ;
 }
 
+function getPrintRulers( formattedText ) {
+
+	var ansLength = textFormatter.stripHTMLTags( formattedText ).length ;
+	var numLines  = Math.round( ansLength / 35 ) ;
+	var ansRuler  = "" ;
+
+	for( var i=0; i<numLines; i++ ) {
+		ansRuler += "<hr class='print_rule'>" ;
+	}
+	return ansRuler ;
+}
+
 function formatWM( wmElement ){
 	return wmElement ;
 }
 
 function formatFIB( fibElement ){
 	
-	var formattedAnswer = "&ctdot;&nbsp;" + fibElement.question ;
-	var numBlanks       = fibElement.answers.length ;
+	var formattedAnswer         = "&ctdot;&nbsp;" + fibElement.question ;
+	var formattedPracticeAnswer = "&ctdot;&nbsp;" + fibElement.question ;
+	var numBlanks               = fibElement.answers.length ;
 
 	for( var i=0; i<numBlanks; i++ ) {
 		var strToReplace = "{" + i + "}" ;
 		var replacedText = "<span class='fib_answer'>" + fibElement.answers[i] + "</span>" ;
 
-		formattedAnswer   = formattedAnswer.replace( strToReplace, replacedText ) ;
+		formattedAnswer = formattedAnswer.replace( strToReplace, replacedText ) ;
+
+		var ansLength = textFormatter.stripHTMLTags( replacedText ).length ;
+		var blank = "" ;
+		for( var j=0; j<ansLength; j++ ) {
+			blank += "__" ;
+		}
+		formattedPracticeAnswer = formattedPracticeAnswer.replace( strToReplace, blank ) ; 
 	}
 	fibElement.question = formattedAnswer ;
+	fibElement.practiceQuestion = formattedPracticeAnswer ;
 
 	return fibElement ;
 }
 
 function formatQA( qaElement ){
 	qaElement.question = textFormatter.format( qaElement.question ) ;
-	qaElement.answer = textFormatter.format( qaElement.answer ) ;
+	qaElement.answer   = textFormatter.format( qaElement.answer ) ;
+	qaElement.ansRuler = getPrintRulers( qaElement.answer ) ;
 
 	return qaElement ;
 }
 
 function formatDefinition( defElement ) {
-	defElement.term = textFormatter.format( defElement.term ) ;
+	defElement.term       = textFormatter.format( defElement.term ) ;
 	defElement.definition = textFormatter.format( defElement.definition ) ;
+	defElement.ansRuler   = getPrintRulers( defElement.definition ) ;
 
 	return defElement ;
 }
 
 function formatCharacter( charElement ) {
 	charElement.character = textFormatter.format( charElement.character ) ;
-	charElement.estimate = textFormatter.format( charElement.estimate ) ;
+	charElement.estimate  = textFormatter.format( charElement.estimate ) ;
+	charElement.ansRuler  = getPrintRulers( charElement.estimate ) ;
 
 	return charElement ;
 }
@@ -359,6 +383,21 @@ function formatChemEquation( chemEqElement ) {
 }
 
 function formatChemCompound( chemCompoundElement ) {
+
+	if( chemCompoundElement.chemicalName == null ) {
+		chemCompoundElement.chemicalNamePrompt = "" ;
+	}
+	else {
+		chemCompoundElement.chemicalNamePrompt = "___________________" ;
+	}
+
+	if( chemCompoundElement.commonName == null ) {
+		chemCompoundElement.commonNamePrompt = "" ;
+	}
+	else {
+		chemCompoundElement.commonNamePrompt = "___________________" ;
+	}
+
 	return chemCompoundElement ;
 }
 
@@ -383,9 +422,10 @@ function formatRTC( rtcElement ) {
 
 	rtcElement.context = textFormatter.format( rtcElement.context ) ;
 	for( var i=0; i<rtcElement.questions.length; i++ ) {
-		var qa = rtcElement.questions[i].question ;
+		var qa = rtcElement.questions[i] ;
 		qa.question = textFormatter.format( qa.question ) ;
 		qa.answer   = textFormatter.format( qa.answer ) ;
+		qa.ansRuler = getPrintRulers( qa.answer ) ;
 	}
 	return rtcElement ;
 }

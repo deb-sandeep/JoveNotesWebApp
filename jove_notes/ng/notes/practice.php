@@ -24,20 +24,17 @@ $pageConfig = array(
 	"tab_title"  => "Chapter Notes"
 ) ;
 
-define( "FRAGMENT_PATH",          "/apps/jove_notes/ng/notes/html_fragments" ) ;
+define( "FRAGMENT_PATH",          "/apps/jove_notes/ng/notes/html_fragments_practice" ) ;
 
 define( "WM_FRAGMENT_PATH",       FRAGMENT_PATH . "/wm_template.html" ) ;
 define( "QA_FRAGMENT_PATH",       FRAGMENT_PATH . "/qa_template.html" ) ;
 define( "FIB_FRAGMENT_PATH",      FRAGMENT_PATH . "/fib_template.html" ) ;
 define( "DEFN_FRAGMENT_PATH",     FRAGMENT_PATH . "/definition_template.html" ) ;
 define( "CHAR_FRAGMENT_PATH",     FRAGMENT_PATH . "/character_template.html" ) ;
-define( "TN_FRAGMENT_PATH",       FRAGMENT_PATH . "/teacher_note_template.html" ) ;
 define( "MATCH_FRAGMENT_PATH",    FRAGMENT_PATH . "/matching_template.html" ) ;
 define( "EVENT_FRAGMENT_PATH",    FRAGMENT_PATH . "/event_template.html" ) ;
 define( "TF_FRAGMENT_PATH",       FRAGMENT_PATH . "/true_false_template.html" ) ;
-define( "CHEM_EQ_FRAGMENT_PATH",  FRAGMENT_PATH . "/chem_equation_template.html" ) ;
 define( "CHEM_CMP_FRAGMENT_PATH", FRAGMENT_PATH . "/chem_compound_template.html" ) ;
-define( "SPELLBEE_FRAGMENT_PATH", FRAGMENT_PATH . "/spellbee_template.html" ) ;
 define( "IMGLABEL_FRAGMENT_PATH", FRAGMENT_PATH . "/image_label_template.html" ) ;
 define( "EQUATION_FRAGMENT_PATH", FRAGMENT_PATH . "/equation_template.html" ) ;
 define( "RTC_FRAGMENT_PATH",      FRAGMENT_PATH . "/rtc_template.html" ) ;
@@ -88,16 +85,9 @@ define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
         <b style="font-size:20px">{{pageTitle}}</b>
     </div>
     <p>
-    <div ng-if="teacherNotes.length">
-        <div ng-include="'<?php echo TN_FRAGMENT_PATH ?>'"></div>
-    </div>
 
     <div ng-if="wordMeanings.length">
         <div ng-include="'<?php echo WM_FRAGMENT_PATH ?>'"></div>
-    </div>
-
-    <div ng-if="spellbeeWords.length">
-        <div ng-include="'<?php echo SPELLBEE_FRAGMENT_PATH ?>'"></div>
     </div>
 
     <div ng-if="chemCompounds.length">
@@ -146,10 +136,6 @@ define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
 
     <div ng-if="referenceToContexts.length">
         <div ng-include="'<?php echo RTC_FRAGMENT_PATH ?>'"></div>
-    </div>
-
-    <div ng-if="chemEquations.length">
-        <div ng-include="'<?php echo CHEM_EQ_FRAGMENT_PATH ?>'"></div>
     </div>
 </body>
 

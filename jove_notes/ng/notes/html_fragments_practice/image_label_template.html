@@ -1,0 +1,13 @@
+<div class="panel panel-success" ng-repeat="element in imageLabels"
+     style="page-break-inside:avoid;">
+  <div class="panel-heading">
+    <span class="glyphicon glyphicon-picture"></span>&nbsp;&nbsp;
+    <span class="panel-title" ng-bind-html="element.caption"></span>
+    <div class="pull-right" 
+         ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
+    </div>
+  </div>
+  <div class="panel-body">
+    <render-practice-image-label></render-practice-image-label>
+  </div>
+</div> 

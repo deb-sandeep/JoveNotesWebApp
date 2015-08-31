@@ -1,0 +1,9 @@
+<div class="panel panel-danger" ng-repeat="element in teacherNotes">
+  <div class="panel-heading">
+    <span class="glyphicon glyphicon-education"></span>&nbsp;&nbsp;
+    <span class="panel-title" ng-bind-html="element.caption"></span>
+  </div>
+  <div class="panel-body">
+    <p ng-bind-html="element.note"></p>
+  </div>
+</div> 
