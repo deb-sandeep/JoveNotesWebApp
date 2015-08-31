@@ -278,6 +278,7 @@ function getPrintRulers( formattedText ) {
 	var numLines  = Math.round( ansLength / 35 ) ;
 	var ansRuler  = "" ;
 
+	if( numLines == 0 ) numLines = 1 ;
 	for( var i=0; i<numLines; i++ ) {
 		ansRuler += "<hr class='print_rule'>" ;
 	}
