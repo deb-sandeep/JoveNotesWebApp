@@ -234,8 +234,6 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 
 		if( $overshootPct > 0.25 ) {
 
-			// If student has taken more than 1.5 times the average, we should
-			// penalize him - as a percentage of the score earned
 			if      ( $overshootPct > 1.0 ) { $penalty = $this->score * 0.6 ; }
 			else if ( $overshootPct > 0.8 ) { $penalty = $this->score * 0.5 ; }
 			else if ( $overshootPct > 0.7 ) { $penalty = $this->score * 0.4 ; }
@@ -243,8 +241,12 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 			else if ( $overshootPct > 0.5 ) { $penalty = $this->score * 0.2 ; }
 			else                            { $penalty = $this->score * 0.1 ; }
 
-			$this->score -= $penalty ;
-
+			if( $this->score < 0 ) {
+				$this->score += $penalty ;
+			}
+			else {
+				$this->score -= $penalty ;
+			}
 		}
 		else if( $overshootPct < 0 ) {
 			// If student has answered faster than the average time, we should
@@ -257,7 +259,12 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 			else if ( $overshootPct < -0.1 ) { $penalty = $this->score * 0.05  ; }
 			else                             { $penalty = $this->score * 0.025 ; }
 
-			$this->score += $penalty ;
+			if( $this->score < 0 ) {
+				$this->score -= $penalty ;
+			}
+			else {
+				$this->score += $penalty ;
+			}
 		}
 	}
 

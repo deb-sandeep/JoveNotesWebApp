@@ -89,7 +89,7 @@ function MultiChoiceManager( questionObj, textFormatter, $scope ) {
 
 		var correctOptionsTDs = [] ;
 		for( var i=0; i<correctOptions.length; i++ ) {
-			correctOptionsTDs.push( TD( { "class" : "selected" }, correctOptions[i].value ) ) ;
+			correctOptionsTDs.push( TD( { "class" : "selected", "innerHTML" : correctOptions[i].value } ) ) ;
 		}
 
 		return DIV( { 'style' : 'background-color:' + divBackground, 'align' : 'center' }, 

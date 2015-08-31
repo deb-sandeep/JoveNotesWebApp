@@ -856,7 +856,8 @@ function callGradeCardAPI( chapterId, sessionId, cardId, curLevel, nextLevel,
                 log.debug( "Retrying the call again." ) ;
                 callGradeCardAPI( 
                     chapterId, sessionId, cardId, curLevel, nextLevel, 
-                    rating, timeTaken, numAttempts, currentCallAttemptNumber 
+                    rating, timeTaken, numAttempts, overshootPct, 
+                    currentCallAttemptNumber 
                 ) ;
                 return ;
             }

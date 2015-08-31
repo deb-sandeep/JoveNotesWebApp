@@ -10,8 +10,12 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+8/31/15 --
+. Bug in time penalty fixed 
+
 8/30/15 --
 . MCQ implementation
+. MCQ enhancement to @matching
 
 8/27/15 --
 . Removed responsive headers
