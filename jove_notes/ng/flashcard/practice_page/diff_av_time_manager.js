@@ -59,11 +59,10 @@ function DifficultyAverageTimeManager( baseData ) {
 		    else if( questionType == QuestionTypes.prototype.QT_SPELLBEE ) {
 		        return 30 ;
 		    }
-		    else {
-		        return 60 ;
+		    else if( questionType == QuestionTypes.prototype.QT_MULTI_CHOICE ) {
+		        return 30 ;
 		    }
-
-			return -1 ;
+	        return 60 ;
 		}
 		return getAverageTime( question.difficultyLevel, values ) ;
 	} ;
