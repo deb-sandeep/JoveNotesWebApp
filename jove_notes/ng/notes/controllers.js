@@ -147,11 +147,9 @@ function processServerData( data ) {
 	
  	$scope.chapterDetails = data.chapterDetails ;
  	$scope.notesElements  = data.notesElements ;
+	$scope.pageTitle      = jnUtil.constructPageTitle( data.chapterDetails ) ;
+	$scope.textFormatter  = new TextFormatter( data.chapterDetails, $sce ) ;
 
-	$scope.pageTitle = jnUtil.constructPageTitle( data.chapterDetails ) ;
-	log.debug( "Page title = " + $scope.pageTitle ) ;
-
-	$scope.textFormatter = new TextFormatter( data.chapterDetails, $sce ) ;
  	processNotesElements() ;
 }
 

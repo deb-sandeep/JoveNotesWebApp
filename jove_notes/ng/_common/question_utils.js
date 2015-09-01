@@ -58,6 +58,8 @@ function TextFormatter( chapterDetails, $sce ) {
 	var audioResourcePath = jnUtils.getAudioResourcePath( chapterDetails ) ;
 	var docResourcePath   = jnUtils.getDocResourcePath( chapterDetails ) ;
 
+	chapterDetails.scriptBody = atob( chapterDetails.scriptBody ) ;
+
 	this.stripHTMLTags = function( html ) {
 	   var tmp = document.createElement( "DIV" ) ;
 	   tmp.innerHTML = html ;

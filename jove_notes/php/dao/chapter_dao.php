@@ -26,6 +26,7 @@ select
 	chapter_num,
 	sub_chapter_num,
 	chapter_name,
+	script_body,
 	num_cards,
 	num_VE,
 	num_E,
@@ -40,8 +41,8 @@ where
 QUERY;
 
 		$colNames = [ "guard", "chapter_id", "syllabus_name", "subject_name", 
-	                  "chapter_num", "sub_chapter_num", "chapter_name", "num_cards",
-	                  "num_VE", "num_E", "num_M", "num_H", "num_VH" ] ;
+	                  "chapter_num", "sub_chapter_num", "chapter_name", "script_body",
+	                  "num_cards", "num_VE", "num_E", "num_M", "num_H", "num_VH" ] ;
 
 		return parent::getResultAsAssociativeArray( $query, $colNames ) ;
 	}
