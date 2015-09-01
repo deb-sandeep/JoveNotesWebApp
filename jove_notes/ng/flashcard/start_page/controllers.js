@@ -2,7 +2,7 @@ flashCardApp.controller( 'StartPageController', function( $scope, $http, $route,
 // -----------------------------------------------------------------------------
 
 // ---------------- Local variables --------------------------------------------
-var jnUtil    = new JoveNotesUtil() ;
+var jnUtil = new JoveNotesUtil() ;
 
 // ---------------- Controller variables ---------------------------------------
 
