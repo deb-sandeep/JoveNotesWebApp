@@ -2,16 +2,16 @@ remoteFlashCardApp.controller( 'RemoteFlashCardController', function( $scope, $h
 // ---------------- Constants and inner class definition -----------------------
 
 // ---------------- Local variables --------------------------------------------
-var jnUtil = new JoveNotesUtil() ;
-var lastMessageId = -1 ;
-var messages = [] ;
-var waitingForUserAcceptance = false ;
-var sessionStartTime = 0 ;
+var jnUtil                       = new JoveNotesUtil() ;
+var lastMessageId                = -1 ;
+var messages                     = [] ;
+var waitingForUserAcceptance     = false ;
+var sessionStartTime             = 0 ;
 var currentQuestionShowStartTime = 0 ;
-var durationTillNowInMillis = 0 ;
-var questionTriggerIndex = 0 ;
-var predictedTime = 0 ;
-var avgSelfTime = 0 ;
+var durationTillNowInMillis      = 0 ;
+var questionTriggerIndex         = 0 ;
+var predictedTime                = 0 ;
+var avgSelfTime                  = 0 ;
 
 var resumeModalShowTime    = 0 ;
 var totalSessionPauseTime  = 0 ;
@@ -23,8 +23,8 @@ $scope.SCREEN_SESSION_SETTINGS = "session_settings" ;
 $scope.SCREEN_PRACTICE         = "session_practice" ;
 $scope.SCREEN_SESSION_END      = "session_end" ;
 
-$scope.alerts   = [] ;
-$scope.userName = userName ;
+$scope.alerts    = [] ;
+$scope.userName  = userName ;
 $scope.pageTitle = null ;
 
 $scope.currentScreen = $scope.SCREEN_WAITING_TO_START ;
@@ -35,6 +35,7 @@ $scope.difficultyStats   = null ;
 $scope.progressSnapshot  = null ;
 $scope.learningCurveData = null ;
 $scope.studyCriteria     = null ;
+$scope.textFormatter     = null ;
 
 $scope.sessionStats = {
     numCards         : 0,
@@ -53,8 +54,8 @@ $scope.showQuestionTrigger = "" ;
 $scope.showAnswerTrigger   = "" ;
 
 $scope.pointsEarnedInThisSession = 0 ;
-$scope.pointsLostInThisSession = 0 ;
-$scope.messageForEndPage = "" ;
+$scope.pointsLostInThisSession   = 0 ;
+$scope.messageForEndPage         = "" ;
 
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing RemoteFlashCardController." ) ;
@@ -231,6 +232,7 @@ function processStartSessionMessage( message ) {
     $scope.progressSnapshot  = message.content.progressSnapshot ;
     $scope.learningCurveData = message.content.learningCurveData ;
     $scope.studyCriteria     = message.content.studyCriteria ;
+    $scope.textFormatter     = new TextFormatter( $scope.chapterDetails, null ) ;
 
     $scope.pointsEarnedInThisSession = 0 ;
     $scope.pointsLostInThisSession   = 0 ;
@@ -274,25 +276,32 @@ function processIncomingQuestion( message ) {
     var questionType = message.content.currentQuestion.questionType ;
     var handler = null ;
     if( questionType == QuestionTypes.prototype.QT_FIB ) {
-        handler = new FIBHandler( $scope.chapterDetails, $scope.currentQuestion ) ;
+        handler = new FIBHandler( $scope.chapterDetails, $scope.currentQuestion,
+                                  $scope.textFormatter ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_QA ) {
-        handler = new QAHandler( $scope.chapterDetails, $scope.currentQuestion ) ;
+        handler = new QAHandler( $scope.chapterDetails, $scope.currentQuestion,
+                                 $scope.textFormatter ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_TF ) {
-        handler = new TFHandler( $scope.chapterDetails, $scope.currentQuestion ) ;
+        handler = new TFHandler( $scope.chapterDetails, $scope.currentQuestion,
+                                 $scope.textFormatter ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_MATCHING ) {
-        handler = new MatchingHandler( $scope.chapterDetails, $scope.currentQuestion ) ;
+        handler = new MatchingHandler( $scope.chapterDetails, $scope.currentQuestion,
+                                       $scope.textFormatter ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_IMGLABEL ) {
-        handler = new ImageLabelHandler( $scope.chapterDetails, $scope.currentQuestion ) ;
+        handler = new ImageLabelHandler( $scope.chapterDetails, $scope.currentQuestion,
+                                         $scope.textFormatter ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_SPELLBEE ) {
-        handler = new SpellBeeHandler( $scope.chapterDetails, $scope.currentQuestion ) ;
+        handler = new SpellBeeHandler( $scope.chapterDetails, $scope.currentQuestion,
+                                       $scope.textFormatter ) ;
     }
     else if( questionType == QuestionTypes.prototype.MULTI_CHOICE ) {
-        handler = new MultiChoiceHandler( $scope.chapterDetails, $scope.currentQuestion ) ;
+        handler = new MultiChoiceHandler( $scope.chapterDetails, $scope.currentQuestion,
+                                          $scope.textFormatter ) ;
     }
     else {
         log.error( "Unrecognized question type = " + questionType ) ;

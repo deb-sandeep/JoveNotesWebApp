@@ -120,6 +120,8 @@ $scope.messageForEndPage = "Session Ended." ;
 
 $scope.assistedStudyCBDisabled = false ;
 
+$scope.textFormatter = null ;
+
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing FlashCardController." ) ;
 $scope.studyCriteria.deserialize() ;
@@ -170,8 +172,8 @@ $scope.processServerData = function( serverData ) {
     $scope.difficultyTimeAverages = serverData.deckDetails.difficultyTimeAverages ;
     $scope.learningCurveData      = serverData.deckDetails.learningCurveData ;
     $scope.questions              = serverData.questions ;
-
-    $scope.pageTitle = jnUtil.constructPageTitle( $scope.chapterDetails ) ;
+    $scope.pageTitle              = jnUtil.constructPageTitle( $scope.chapterDetails ) ;
+    $scope.textFormatter          = new TextFormatter( $scope.chapterDetails, null ) ;
 
     preProcessFlashCardQuestions( $scope.questions ) ;
 }
@@ -211,25 +213,32 @@ function associateHandler( question ) {
     var questionType = question.questionType ;
 
     if( questionType == QuestionTypes.prototype.QT_FIB ) {
-        question.handler = new FIBHandler( $scope.chapterDetails, question ) ;
+        question.handler = new FIBHandler( $scope.chapterDetails, question, 
+                                           $scope.textFormatter ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_QA ) {
-        question.handler = new QAHandler( $scope.chapterDetails, question ) ;
+        question.handler = new QAHandler( $scope.chapterDetails, question, 
+                                          $scope.textFormatter ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_TF ) {
-        question.handler = new TFHandler( $scope.chapterDetails, question ) ;
+        question.handler = new TFHandler( $scope.chapterDetails, question,
+                                          $scope.textFormatter ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_MATCHING ) {
-        question.handler = new MatchingHandler( $scope.chapterDetails, question ) ;
+        question.handler = new MatchingHandler( $scope.chapterDetails, question, 
+                                                $scope.textFormatter ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_IMGLABEL ) {
-        question.handler = new ImageLabelHandler( $scope.chapterDetails, question ) ;
+        question.handler = new ImageLabelHandler( $scope.chapterDetails, question, 
+                                                  $scope.textFormatter ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_SPELLBEE ) {
-        question.handler = new SpellBeeHandler( $scope.chapterDetails, question ) ;
+        question.handler = new SpellBeeHandler( $scope.chapterDetails, question, 
+                                                $scope.textFormatter ) ;
     }
     else if( questionType == QuestionTypes.prototype.MULTI_CHOICE ) {
-        question.handler = new MultiChoiceHandler( $scope.chapterDetails, question ) ;
+        question.handler = new MultiChoiceHandler( $scope.chapterDetails, question, 
+                                                   $scope.textFormatter ) ;
     }
     else {
         log.error( "Unrecognized question type = " + questionType ) ;

@@ -1,9 +1,7 @@
 // =============================================================================
 // Fill in the blanks formatter
 // =============================================================================
-function FIBHandler( chapterDetails, question ) {
-
-	var textFormatter = new TextFormatter( chapterDetails, null ) ;
+function FIBHandler( chapterDetails, question, textFormatter ) {
 
 	var answerLength = -1 ;
 	var formattedQuestion = null ;
@@ -36,9 +34,7 @@ function FIBHandler( chapterDetails, question ) {
 // =============================================================================
 // Word Meanings formatter
 // =============================================================================
-function QAHandler( chapterDetails, question ) {
-
-	var textFormatter = new TextFormatter( chapterDetails, null ) ;
+function QAHandler( chapterDetails, question, textFormatter ) {
 
 	var formattedQuestion = textFormatter.format( question.question ) ;
 	var formattedAnswer = textFormatter.format( question.answer ) ;
@@ -52,9 +48,8 @@ function QAHandler( chapterDetails, question ) {
 // =============================================================================
 // True False handler
 // =============================================================================
-function TFHandler( chapterDetails, questionObj ) {
+function TFHandler( chapterDetails, questionObj, textFormatter ) {
 
-	var textFormatter = new TextFormatter( chapterDetails, null ) ;
 	var jnUtils = new JoveNotesUtil() ;
 
 	var question = questionObj ;
@@ -145,9 +140,7 @@ function TFHandler( chapterDetails, questionObj ) {
 // =============================================================================
 // Matching handler
 // =============================================================================
-function MatchingHandler( chapterDetails, questionObj ) {
-
-	var textFormatter = new TextFormatter( chapterDetails, null ) ;
+function MatchingHandler( chapterDetails, questionObj, textFormatter ) {
 
 	var question = questionObj ;
 	var chapterDetails = chapterDetails ;
@@ -181,9 +174,7 @@ function MatchingHandler( chapterDetails, questionObj ) {
 // =============================================================================
 // Image Label handler
 // =============================================================================
-function ImageLabelHandler( chapterDetails, questionObj ) {
-
-	var textFormatter = new TextFormatter( chapterDetails, null ) ;
+function ImageLabelHandler( chapterDetails, questionObj, textFormatter ) {
 
 	var question = questionObj ;
 	var chapterDetails = chapterDetails ;
@@ -214,7 +205,7 @@ function ImageLabelHandler( chapterDetails, questionObj ) {
 // =============================================================================
 // Spell Bee Handler
 // =============================================================================
-function SpellBeeHandler( chapterDetails, questionObj ) {
+function SpellBeeHandler( chapterDetails, questionObj, textFormatter ) {
 
 	var manager = null ;
 
@@ -237,11 +228,10 @@ function SpellBeeHandler( chapterDetails, questionObj ) {
 // =============================================================================
 // Multi Choice Handler
 // =============================================================================
-function MultiChoiceHandler( chapterDetails, question ) {
+function MultiChoiceHandler( chapterDetails, question, textFormatter ) {
 
-	var manager       = null ;
-	var textFormatter = new TextFormatter( chapterDetails ) ;
-	var answerLength  = textFormatter.stripHTMLTags( question.explanation ).length ;
+	var manager      = null ;
+	var answerLength = textFormatter.stripHTMLTags( question.explanation ).length ;
 
 	this.getAnswerLength = function() { return answerLength ; } ;
 

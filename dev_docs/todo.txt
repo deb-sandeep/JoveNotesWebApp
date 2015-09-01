@@ -10,6 +10,10 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+9/1/15 --
+. Notes, Flash and remote flash now use one instance of text formatter. This 
+  sets the stage for context based scripting.
+
 8/31/15 --
 . Bug in time penalty fixed 
 . Practice print page functionality added
