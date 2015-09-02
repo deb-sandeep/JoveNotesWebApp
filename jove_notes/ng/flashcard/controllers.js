@@ -203,6 +203,8 @@ function preProcessFlashCardQuestions( questions ) {
                                                                  question.learningStats.numAttempts ) ;
         }
 
+        question.scriptBody = atob( question.scriptBody ) ;
+
         associateHandler( question ) ;
         processTestDataHints( question ) ;
     }

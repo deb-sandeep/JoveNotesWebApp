@@ -293,8 +293,8 @@ function showNextCard() {
 
         log.debug( "Showing next question." ) ;
         $scope.currentQuestion = $scope.questionsForSession[0] ;
+        $scope.currentQuestion.handler.initialize( $scope ) ;
 
-        var answerLength = $scope.currentQuestion.handler.getAnswerLength() ;
         currentQuestionAvPredictedTime = diffAvgTimeManager.getPredictedAverageTime( $scope.currentQuestion ) ;
         log.debug( "Predicted average time = " + currentQuestionAvPredictedTime + " sec." ) ;
 
@@ -309,9 +309,11 @@ function showNextCard() {
         }
         log.debug( "Self average time = " + currentQuestionAvSelfTime + " sec." ) ;
 
-        $scope.questionMode = true ;
+        var answerLength = $scope.currentQuestion.handler.getAnswerLength() ;
+        
+        $scope.questionMode        = true ;
         $scope.answerChangeTrigger = "" ;
-        $scope.answerAlign = answerLength < 100 ? "center" : "left" ;
+        $scope.answerAlign         = ( answerLength < 100 ) ? "center" : "left" ;
 
         computeRecommendPromoteFlag() ;
 

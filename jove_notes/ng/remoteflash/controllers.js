@@ -309,13 +309,16 @@ function processIncomingQuestion( message ) {
     }
 
     $scope.currentQuestion.handler = handler ;
+    $scope.currentQuestion.handler.initialize( $scope ) ;
 
     questionTriggerIndex++ ;
-    $scope.showQuestionTrigger = message.sessionId + ".Question-" 
-                                 + questionTriggerIndex ;
+
+    $scope.showQuestionTrigger = message.sessionId + ".Question-" + questionTriggerIndex ;
     $scope.showAnswerTrigger   = "" ;
+
     currentQuestionShowStartTime = new Date() ;
-    totalQuestionPauseTime = 0 ;
+    totalQuestionPauseTime       = 0 ;
+    
     renderTimeMarkersForCurrentQuestion() ;
 }
 

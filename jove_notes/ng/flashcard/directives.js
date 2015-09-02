@@ -45,9 +45,10 @@ flashCardApp.directive( 'renderFlashCardQuestion', function() {
 
 				if( $scope.currentQuestion != null ) {
 
-					var handler = new HandlerProxy( $scope.currentQuestion.handler ) ;
-					handler.initialize( $scope ) ;
-
+					// NOTE: The initialize of the handler has been called for
+					// this display in the flashcard showNextCard method. No need
+					// of calling it here.
+					var handler    = new HandlerProxy( $scope.currentQuestion.handler ) ;
 					var questionUI = handler.getQuestionUI() ;
 
 					element.empty() ;

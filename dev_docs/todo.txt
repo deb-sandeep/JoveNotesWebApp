@@ -10,6 +10,13 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+9/2/15 --
+. Design refactoring - question handlers are hardned from a design perspective
+  - initialize on the handlers is called in the controllers when the question 
+    is brought into service
+  - Constructor logic of the handlers is moved into initialize method so that
+    formatting recomputation takes place on every display of the card
+
 9/1/15 --
 . Notes, Flash and remote flash now use one instance of text formatter. This 
   sets the stage for context based scripting.
