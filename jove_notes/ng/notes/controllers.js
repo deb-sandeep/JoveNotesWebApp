@@ -181,8 +181,11 @@ function processNotesElements() {
 		var element = $scope.notesElements[ index ] ;
 		var type    = element.elementType ;
 
+		initializeScriptSupport( element ) ;
+
 		if( qualifiesFilter( element ) ) {
 
+			$scope.textFormatter.setCurrentObject( element ) ;
 			$scope.filteredNotesElements.push( element ) ;
 
 			if( type == NotesElementsTypes.prototype.WM ) {
@@ -238,6 +241,27 @@ function processNotesElements() {
 			//log.debug( "Note element " + element.noteElementId + 
 			//	       " did not meet filter criteria." ) ;
 		}
+	}
+}
+
+function initializeScriptSupport( element ) {
+
+	if( !element.hasOwnProperty( 'scriptInitialized' ) ) {
+
+		log.debug( "Initializing script support" ) ;
+
+		element.scriptObj      = null ;		
+		element.evalVarsValues = null ;
+
+		element.scriptObj = jnUtil.makeObjectInstanceFromString( element.scriptBody ) ;
+		if( element.scriptObj.hasOwnProperty( 'initialize' ) ) {
+			element.scriptObj.initialize() ;
+		}
+
+		$scope.textFormatter.setCurrentObject( element ) ;
+		$scope.textFormatter.evaluateScriptedVariables() ;
+
+		element.scriptInitialized = true ;
 	}
 }
 

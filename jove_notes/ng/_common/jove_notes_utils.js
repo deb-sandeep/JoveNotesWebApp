@@ -97,20 +97,13 @@ function RatingMatrix() {
         log.debug( "\tLevel ="   + level + " rating =" + rating ) ;
 
         var index  = getIndexIntoMatrix( rating ) ;
-        log.debug( "\tindex = " + index ) ;
-        
         var values = matrix[ level ] ;
-        log.debug( "\tvalues = " + values ) ;
-
         var value  = values[ index ] ;
-        log.debug( "\tvalue = " + value ) ;
 
         return value ;
     }
 
     this.getNextLevel = function( numAttempts, currentLevel, currentRating ) {
-        log.debug( "Getting next level" ) ;
-
         if( numAttempts > 1 ) {
             return currentLevel ;
         }
@@ -124,7 +117,6 @@ function RatingMatrix() {
     } ;
 
     this.getNextAction = function( currentLevel, currentRating ) {
-        log.debug( "Getting next action" ) ;
         if( currentRating == 'APM' || currentRating == 'APMNS' ) {
             return -1 ;
         }
@@ -140,6 +132,37 @@ function RatingMatrix() {
 
 function JoveNotesUtil() {
 // -----------------------------------------------------------------------------
+
+/**
+ * This function takes the code of the function body as a string and returns
+ * an instance of the function. This function returns null in case the 
+ * code could not be parsed. Approprirate error messages are logged to the 
+ * console.
+ */
+this.makeObjectInstanceFromString = function( b64EncodedBody ) {
+
+    var fn = null ;
+    var fnInstance = null ;
+
+    try {
+        var clsBodyAsString = atob( b64EncodedBody ) ;
+        // log.debug( "Creating function from code - \n" + clsBodyAsString ) ;
+
+        fn = new Function( clsBodyAsString ) ;
+        try {
+            fnInstance = new fn() ;
+        }
+        catch( e ) {
+            log.error( "Error creating Function instance. Error message = " + e + 
+                       ".\nClass body = " + clsBodyAsString ) ;
+        }
+    }
+    catch( e ) {
+        log.error( "Error creating Function. Error message = " + e + 
+                   ".\nClass body = " + clsBodyAsString ) ;
+    }
+    return fnInstance ;
+}
 
 this.constructPageTitle = function( chapterDetails ) {
 
@@ -355,7 +378,7 @@ this.playWordSound = function( word ) {
     this.playSoundClip( "/apps/jove_notes/workspace/_spellbee/" + word + ".mp3" ) ;
 }
 
-// -----------------------------------------------------------------------------
+// ----------------------- Private functions for JoveNoteUtils -----------------
 
 function isDebug() {
     if( typeof __debug__ != 'undefined' ) {
@@ -371,7 +394,7 @@ function clearCanvas( canvasId ) {
     context.clearRect( 0, 0, canvas.width, canvas.height ) ;
 }
 
-// -----------------------------------------------------------------------------
+// ------------------- JoveNotesUtil ends --------------------------------------
 }
 
 /**

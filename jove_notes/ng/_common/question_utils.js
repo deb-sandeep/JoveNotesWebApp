@@ -54,11 +54,23 @@ function TextFormatter( chapterDetails, $sce ) {
 
 	var jnUtils = new JoveNotesUtil() ;
 
+	var chapterScript = null ;
+	var currentObject = null ;
+
 	var imgResourcePath   = jnUtils.getImgResourcePath( chapterDetails ) ;
 	var audioResourcePath = jnUtils.getAudioResourcePath( chapterDetails ) ;
 	var docResourcePath   = jnUtils.getDocResourcePath( chapterDetails ) ;
 
-	chapterDetails.scriptBody = atob( chapterDetails.scriptBody ) ;
+	if( chapterDetails.scriptBody.length > 0 ) {
+		chapterScript = jnUtils.makeObjectInstanceFromString( chapterDetails.scriptBody ) ;
+		if( chapterScript.hasOwnProperty( 'initialize' ) ) {
+			chapterScript.initialize() ;
+		}
+	}
+
+	this.setCurrentObject = function( curObj ) {
+		currentObject = curObj ;
+	}
 
 	this.stripHTMLTags = function( html ) {
 	   var tmp = document.createElement( "DIV" ) ;
@@ -68,6 +80,51 @@ function TextFormatter( chapterDetails, $sce ) {
 
 	this.getAbsolutePathForImage = function( imgName ) {
 		return imgResourcePath + imgName ;
+	}
+
+	this.evaluateScriptedVariables = function() {
+
+		// Initialize the evalVarsValues attribute of the object, into which we
+		// are going to store the computed values of all the eval variables.
+		currentObject.evalVarsValues = {} ;
+
+		// Loop through all the eval vars, compute the value of the variables
+		// and store them in evalVarsValues
+		if( currentObject.evalVars != null ) {
+		    for( var evalVar in currentObject.evalVars ) {
+
+		    	log.debug( "Evaluating script variable '" + evalVar + "'" ) ;
+
+		    	var expression = atob( currentObject.evalVars[ evalVar ] ) ;
+		    	var exprValue  = computeExpressionValue( expression ) ;
+
+		    	currentObject.evalVarsValues[ evalVar ] = "" + exprValue ;
+		    }
+		}
+	}
+
+	var computeExpressionValue = function( expression ) {
+
+		var $c = chapterScript ;
+		var $q = currentObject.scriptObj ;
+		var exprValue = "" ;
+
+		try{
+			exprValue = eval( expression ) ;
+			if( exprValue === undefined ) {
+	            log.error( "Error evaluating expression." + 
+	            	       ".\nExpression = " + expression ) ;
+	            exprValue = "<b style='color:red;'>" + 
+	                        "[COMPUTATION ERROR - expression = '" + expression + "']" + 
+	                        "</b>" ;
+			}
+		}
+		catch( e ) {
+            log.error( "Error evaluating expression. Error message = " + e + 
+                       ".\nExpression = " + expression ) ;
+            exprValue = "**[[ ERROR IN COMPUTATION ]]**"
+		}
+		return exprValue ;
 	}
 
 	this.format = function( inputText ) {
@@ -108,18 +165,27 @@ function TextFormatter( chapterDetails, $sce ) {
 
 	function getReplacementContent( hint, parameters ) {
 
-		var fileName = parameters.join( ' ' ) ;
+		var hintValue = parameters.join( ' ' ) ;
 
 		var replacementContent = "[[ COULD NOT SUBSTITUTE " + hint + 
 		                         " - " + parameters + " ]]" ;
 		if( hint == "@img" ) {
-			replacementContent = "<img src='" + imgResourcePath + fileName + "'/>" ;
+			replacementContent = "<img src='" + imgResourcePath + hintValue + "'/>" ;
 		}
 		else if( hint == "@audio" ) {
-			replacementContent = getAudioPlayButton( audioResourcePath + fileName ) ;
+			replacementContent = getAudioPlayButton( audioResourcePath + hintValue ) ;
 		}
 		else if( hint == '@doc' ) {
-			replacementContent = getDocLink( fileName ) ;
+			replacementContent = getDocLink( hintValue ) ;
+		}
+		else if( hint == '@var' ) {
+			replacementContent = currentObject.evalVarsValues[ hintValue ] ;
+			if( replacementContent === undefined ) {
+				replacementContent = 
+					"<b style='color:red;'>" + 
+				    "[ UNCOMPUTABLE VARIABLE '" + hintValue + "' ]" + 
+				    "</b>" ;
+			}
 		}
 		return replacementContent ;
 	}

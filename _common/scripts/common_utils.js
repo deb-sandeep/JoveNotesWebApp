@@ -38,3 +38,4 @@ String.prototype.replaceAll = function( substringToBeReplaced, replacementString
 // -----------------------------------------------------------------------------
 // Utility functions
 // -----------------------------------------------------------------------------
+

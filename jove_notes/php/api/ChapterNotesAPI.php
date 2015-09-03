@@ -66,8 +66,9 @@ class ChapterNotesAPI extends AbstractJoveNotesAPI {
 
 	private function encodeEvalVars( $data ) {
 
-		$varsArray = array() ;
-		if( $data != null ) {
+		$varsArray = null ;
+		if( $data != null && strlen( $data ) > 0 && $data != "{}" ) {
+			$varsArray = array() ;
 			$varsMap = json_decode( $data ) ;
 			foreach( $varsMap as $key => $value ) {
 				$varsArray[ $key ] = base64_encode( $value ) ;
