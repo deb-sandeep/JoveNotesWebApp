@@ -293,6 +293,7 @@ function showNextCard() {
 
         log.debug( "Showing next question." ) ;
         $scope.currentQuestion = $scope.questionsForSession[0] ;
+
         $scope.currentQuestion.handler.initialize( $scope ) ;
 
         currentQuestionAvPredictedTime = diffAvgTimeManager.getPredictedAverageTime( $scope.currentQuestion ) ;

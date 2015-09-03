@@ -68,6 +68,10 @@ function TextFormatter( chapterDetails, $sce ) {
 		}
 	}
 
+	this.getChapterScript = function() {
+		return chapterScript ;
+	}
+
 	this.setCurrentObject = function( curObj ) {
 		currentObject = curObj ;
 	}
@@ -97,6 +101,9 @@ function TextFormatter( chapterDetails, $sce ) {
 
 		    	var expression = atob( currentObject.evalVars[ evalVar ] ) ;
 		    	var exprValue  = computeExpressionValue( expression ) ;
+
+		    	log.debug( "Computed expression = " + expression ) ;
+		    	log.debug( "Expression value    = " + exprValue ) ;
 
 		    	currentObject.evalVarsValues[ evalVar ] = "" + exprValue ;
 		    }

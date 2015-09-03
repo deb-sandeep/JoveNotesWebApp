@@ -14,6 +14,7 @@ Completed
 . Grammar changed to incorporate eval_vars and JNP, WebApp changed to incorporate
   the changes.
 . Parametrized values for notes working. Flash card parametrization broken.
+. Parametrization for flash card is also done. Thorough testing pending
 
 9/2/15 --
 . Design refactoring - question handlers are hardned from a design perspective

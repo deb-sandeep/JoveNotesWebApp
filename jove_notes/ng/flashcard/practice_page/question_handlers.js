@@ -1,3 +1,12 @@
+function initializeScriptSupport( question, textFormatter ) {
+
+    if( question.scriptObj.hasOwnProperty( 'initialize' ) ) {
+        question.scriptObj.initialize( textFormatter.getChapterScript() ) ;
+    }
+    textFormatter.setCurrentObject( question ) ;
+    textFormatter.evaluateScriptedVariables() ;
+}
+
 // =============================================================================
 // Fill in the blanks formatter
 // =============================================================================
@@ -8,6 +17,8 @@ function FIBHandler( chapterDetails, question, textFormatter ) {
 	var formattedAnswer   = null ;
 
 	this.initialize = function( $scope ) {
+
+		initializeScriptSupport( question, textFormatter ) ;
 
 		formattedQuestion = textFormatter.format( question.question ) ;
 		formattedAnswer   = "&ctdot;&nbsp;" + textFormatter.format( question.question ) ;
@@ -41,6 +52,9 @@ function QAHandler( chapterDetails, question, textFormatter ) {
 	var answerLength      = null ;
 
 	this.initialize = function( $scope ) {
+
+		initializeScriptSupport( question, textFormatter ) ;
+
 		formattedQuestion = textFormatter.format( question.question ) ;
 		formattedAnswer   = textFormatter.format( question.answer ) ;
 		answerLength      = textFormatter.stripHTMLTags( formattedAnswer ).length ;
@@ -68,6 +82,8 @@ function TFHandler( chapterDetails, questionObj, textFormatter ) {
 	var falseBtn          = BUTTON( { 'class' : 'btn btn-warning btn-sm' }, "False" ) ;
 
 	this.initialize = function( $scope ) {
+
+		initializeScriptSupport( question, textFormatter ) ;
 
 		scope = $scope ;
 
@@ -148,6 +164,9 @@ function MatchingHandler( chapterDetails, questionObj, textFormatter ) {
 	                           // that the answer is center justified
 
 	this.initialize = function( $scope ){ 
+		
+		initializeScriptSupport( question, textFormatter ) ;
+
 		manager = new MatchQuestionManager( questionObj, textFormatter, $scope ) ;
 		manager.initialize() ;
 	}
@@ -171,6 +190,9 @@ function ImageLabelHandler( chapterDetails, questionObj, textFormatter ) {
 	                           // that the answer is center justified
 
 	this.initialize = function( $scope ){ 
+		
+		initializeScriptSupport( question, textFormatter ) ;
+
 		manager = new ImageLabelManager( questionObj, textFormatter, $scope ) ;
 		manager.initialize() ;
 	}
@@ -188,6 +210,9 @@ function SpellBeeHandler( chapterDetails, questionObj, textFormatter ) {
 	var manager = null ;
 
 	this.initialize = function( $scope ){ 
+		
+		initializeScriptSupport( question, textFormatter ) ;
+
 		manager = new SpellBeeManager( questionObj, $scope ) ;
 		manager.initialize() ;
 	}
@@ -208,6 +233,9 @@ function MultiChoiceHandler( chapterDetails, question, textFormatter ) {
 	var answerLength = textFormatter.stripHTMLTags( question.explanation ).length ;
 
 	this.initialize = function( $scope ){ 
+		
+		initializeScriptSupport( question, textFormatter ) ;
+
 		manager = new MultiChoiceManager( question, textFormatter, $scope ) ;
 		manager.initialize() ;
 	}	

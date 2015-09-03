@@ -255,7 +255,7 @@ function initializeScriptSupport( element ) {
 
 		element.scriptObj = jnUtil.makeObjectInstanceFromString( element.scriptBody ) ;
 		if( element.scriptObj.hasOwnProperty( 'initialize' ) ) {
-			element.scriptObj.initialize() ;
+			element.scriptObj.initialize( $scope.textFormatter.getChapterScript() ) ;
 		}
 
 		$scope.textFormatter.setCurrentObject( element ) ;
