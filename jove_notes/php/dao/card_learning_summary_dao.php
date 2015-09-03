@@ -93,8 +93,8 @@ QUERY;
 
 $query = <<< QUERY
 select  
-    c.card_id, c.card_type, c.difficulty_level, c.content, ne.script_body,
-    cls.num_attempts, cls.learning_efficiency, cls.current_level, 
+    c.card_id, c.card_type, c.difficulty_level, c.content, ne.eval_vars, 
+    ne.script_body, cls.num_attempts, cls.learning_efficiency, cls.current_level,
     cls.temporal_ratings, cls.last_attempt_time, cls.total_time_spent  
 from  
     jove_notes.card c, 
@@ -108,9 +108,9 @@ where
 QUERY;
 
         $colNames = [ "card_id", "card_type", "difficulty_level", "content", 
-                      "script_body", "num_attempts", "learning_efficiency", 
-                      "current_level", "temporal_ratings", "last_attempt_time", 
-                      "total_time_spent" ] ;
+                      "eval_vars", "script_body", "num_attempts", 
+                      "learning_efficiency", "current_level", "temporal_ratings", 
+                      "last_attempt_time", "total_time_spent" ] ;
 
         return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
     }

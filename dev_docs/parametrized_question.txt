@@ -1,0 +1,50 @@
+@qa "A body is moving with velocity {{@eval V}}. Brakes are applied and the body comes
+to rest in {{@eval T}} seconds. Find the retardation of the body."
+"
+#### Given 
+1. Initial velocity \\(u = {{@eval V}} m/s\\)
+2. Time of motion \\(t = {{@eval T}} s\\)
+3. Final velocty \\(v = 0 m/s\\)
+
+#### To find
+1. Retardation \\(a\\)
+
+#### Modelling
+$$ v = u + at $$
+
+#### Solution steps
+$$ a = \\frac{( v - u )}{t} $$
+
+Substituting values:
+
+$$ a = \\frac{( 0 - {{@eval V}} )}{ {{@eval T}} } $$
+$$ a = - \\frac{( {{@eval V}} )}{ {{@eval T}} } $$
+$$ a = {{@eval A}} $$
+"
+script_expressions {
+
+	"V"	= "$c.initialVelocity",
+	"T" = "$c.time",
+	"A" = "$c.acceleration"
+}
+script {"
+
+	this.time            = 0 ;
+	this.initialVelocity = 0 ;
+	this.acceleration    = 0 ;
+	
+	this.initialize = function() {
+
+		this.acceleration    = pegAcceleration() ;
+		this.time            = pegTime() ;
+		this.initialVelocity = -1 * this.acceleration * this.time ;
+	}
+
+	var pegAcceleration = function() {
+		this.acceleration = $util.randomInt( 1, 100 )/2 ;
+	}
+
+	var pegTime = function() {
+		this.time = $util.randomInt( 1, 10 ) ;
+	}
+"}

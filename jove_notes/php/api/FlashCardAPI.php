@@ -163,6 +163,7 @@ class FlashCardAPI extends AbstractJoveNotesAPI {
 		$question[ "questionId"      ] = $card[ "card_id" ] ;
 		$question[ "questionType"    ] = $card[ "card_type" ] ;
 		$question[ "difficultyLevel" ] = $card[ "difficulty_level" ] ;
+		$question[ "evalVars"        ] = $this->encodeEvalVars( $card[ "eval_vars" ] ) ;
 		$question[ "scriptBody"      ] = base64_encode( $card[ "script_body" ] ) ;
 
 		$this->injectCardContent( $question, $card[ "content" ] ) ;
@@ -185,6 +186,18 @@ class FlashCardAPI extends AbstractJoveNotesAPI {
 		$question[ "learningStats" ] = $learningStats ;
 
 		return $question ;
+	}
+
+	private function encodeEvalVars( $data ) {
+
+		$varsArray = array() ;
+		if( $data != null ) {
+			$varsMap = json_decode( $data ) ;
+			foreach( $varsMap as $key => $value ) {
+				$varsArray[ $key ] = base64_encode( $value ) ;
+			}
+		}
+		return $varsArray ;
 	}
 
 	private function injectCardContent( &$element, $content ) {

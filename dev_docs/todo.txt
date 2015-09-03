@@ -10,6 +10,10 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+9/3/15 -- 
+. Grammar changed to incorporate eval_vars and JNP, WebApp changed to incorporate
+  the changes.
+
 9/2/15 --
 . Design refactoring - question handlers are hardned from a design perspective
   - initialize on the handlers is called in the controllers when the question 
