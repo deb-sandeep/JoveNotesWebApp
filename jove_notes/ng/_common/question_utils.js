@@ -94,7 +94,16 @@ function TextFormatter( chapterDetails, $sce ) {
 
 		// Loop through all the eval vars, compute the value of the variables
 		// and store them in evalVarsValues
-		if( currentObject.evalVars != null && currentObject.evalVars.length > 0 ) {
+		if( currentObject.evalVars != null ) {
+
+			// If we have an array, it implies that there are no variables 
+			// We double check if the length is zero, if so we don't compute
+			// and just return.
+			if( currentObject.evalVars.hasOwnProperty( 'length' ) && 
+				currentObject.evalVars.length == 0 ) {
+				return ;
+			}
+
 		    for( var evalVar in currentObject.evalVars ) {
 
 		    	log.debug( "Evaluating script variable '" + evalVar + "'" ) ;
