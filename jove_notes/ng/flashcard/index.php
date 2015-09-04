@@ -67,6 +67,7 @@ $score = $scoreDAO->getScore( ExecutionContext::getCurrentUserName() ) ;
     <script src="/lib-ext/rgraph/RGraph.line.js"></script>    
     <script src="/lib-ext/rgraph/RGraph.pie.js"></script>    
     <script src="/lib-ext/rgraph/RGraph.bar.js"></script>    
+    <script src="/lib-ext/math/math.min.js"></script>    
 
     <script src="/apps/jove_notes/ng/_common/jove_notes_utils.js"></script>    
     <script src="/apps/jove_notes/ng/_common/question_utils.js"></script>    

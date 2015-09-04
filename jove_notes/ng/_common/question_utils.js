@@ -94,7 +94,7 @@ function TextFormatter( chapterDetails, $sce ) {
 
 		// Loop through all the eval vars, compute the value of the variables
 		// and store them in evalVarsValues
-		if( currentObject.evalVars != null ) {
+		if( currentObject.evalVars != null && currentObject.evalVars.length > 0 ) {
 		    for( var evalVar in currentObject.evalVars ) {
 
 		    	log.debug( "Evaluating script variable '" + evalVar + "'" ) ;

@@ -11,6 +11,7 @@ Completed
 --------------------------------------------------------------------------------
 9/4/15 --
 . Parametrized questions implementation complete. 
+. BUG : script evaluation for empty eval vars was failing
 
 9/3/15 -- 
 . Grammar changed to incorporate eval_vars and JNP, WebApp changed to incorporate
