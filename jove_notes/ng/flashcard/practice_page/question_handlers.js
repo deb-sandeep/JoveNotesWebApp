@@ -1,7 +1,7 @@
 function initializeScriptSupport( question, textFormatter ) {
 
     if( question.scriptObj.hasOwnProperty( 'initialize' ) ) {
-        question.scriptObj.initialize( textFormatter.getChapterScript() ) ;
+        question.scriptObj.initialize( question.learningStats.efficiencyLabel ) ;
     }
     textFormatter.setCurrentObject( question ) ;
     textFormatter.evaluateScriptedVariables() ;

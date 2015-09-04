@@ -148,9 +148,15 @@ this.makeObjectInstanceFromString = function( b64EncodedBody ) {
         var clsBodyAsString = atob( b64EncodedBody ) ;
         // log.debug( "Creating function from code - \n" + clsBodyAsString ) ;
 
-        fn = new Function( clsBodyAsString ) ;
         try {
-            fnInstance = new fn() ;
+            if( arguments.length > 1 ) {
+                fn = new Function( '$util', '$c', clsBodyAsString ) ;
+                fnInstance = new fn( new ScriptUtilities(), arguments[1] ) ;
+            }
+            else {
+                fn = new Function( '$util', clsBodyAsString ) ;
+                fnInstance = new fn( new ScriptUtilities() ) ;
+            }
         }
         catch( e ) {
             log.error( "Error creating Function instance. Error message = " + e + 

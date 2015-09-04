@@ -203,7 +203,9 @@ function preProcessFlashCardQuestions( questions ) {
                                                                  question.learningStats.numAttempts ) ;
         }
 
-        question.scriptObj = jnUtil.makeObjectInstanceFromString( question.scriptBody ) ;
+        question.scriptObj = jnUtil.makeObjectInstanceFromString( 
+                                    question.scriptBody,
+                                    $scope.textFormatter.getChapterScript() ) ;
 
         associateHandler( question ) ;
         processTestDataHints( question ) ;

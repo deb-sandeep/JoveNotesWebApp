@@ -70,6 +70,7 @@ $score = $scoreDAO->getScore( ExecutionContext::getCurrentUserName() ) ;
 
     <script src="/apps/jove_notes/ng/_common/jove_notes_utils.js"></script>    
     <script src="/apps/jove_notes/ng/_common/question_utils.js"></script>    
+    <script src="/apps/jove_notes/ng/_common/script_utilities.js"></script>    
 
     <script src="/apps/jove_notes/ng/flashcard/practice_page/question_handlers.js"></script>    
     <script src="/apps/jove_notes/ng/flashcard/practice_page/dynq_matching.js"></script>    

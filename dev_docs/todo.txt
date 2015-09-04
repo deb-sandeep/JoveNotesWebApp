@@ -2,7 +2,6 @@ Pending dev cards
 --------------------------------------------------------------------------------
 . Think of better visualization using D3
 . Report of subjects studied per day and time spent and number of quesitons
-. Matching can have multiple keys and values of the same name
 
 . Report to see the subject that was studied in a range and the, chapters/time
   spent on them. angular-grid?
@@ -10,6 +9,9 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+9/4/15 --
+. Parametrized questions implementation complete. 
+
 9/3/15 -- 
 . Grammar changed to incorporate eval_vars and JNP, WebApp changed to incorporate
   the changes.

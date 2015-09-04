@@ -181,6 +181,7 @@ function processNotesElements() {
 		var element = $scope.notesElements[ index ] ;
 		var type    = element.elementType ;
 
+		preProcessElement( element ) ;
 		initializeScriptSupport( element ) ;
 
 		if( qualifiesFilter( element ) ) {
@@ -253,9 +254,11 @@ function initializeScriptSupport( element ) {
 		element.scriptObj      = null ;		
 		element.evalVarsValues = null ;
 
-		element.scriptObj = jnUtil.makeObjectInstanceFromString( element.scriptBody ) ;
+		element.scriptObj = jnUtil.makeObjectInstanceFromString( 
+									element.scriptBody, 
+									$scope.textFormatter.getChapterScript() ) ;
 		if( element.scriptObj.hasOwnProperty( 'initialize' ) ) {
-			element.scriptObj.initialize( $scope.textFormatter.getChapterScript() ) ;
+			element.scriptObj.initialize( element.learningStats.efficiencyLabel ) ;
 		}
 
 		$scope.textFormatter.setCurrentObject( element ) ;
@@ -265,7 +268,7 @@ function initializeScriptSupport( element ) {
 	}
 }
 
-function qualifiesFilter( element ) {
+function preProcessElement( element ) {
 
 	var jnUtil = new JoveNotesUtil() ;
 
@@ -277,6 +280,10 @@ function qualifiesFilter( element ) {
 
 	element.learningStats.absEfficiencyLabel =
 		jnUtil.getLearningEfficiencyLabel( element.learningStats.absLearningEfficiency ) ;
+
+}
+
+function qualifiesFilter( element ) {
 
 	var lrnEffLabelFilters = $scope.filterCriteria.learningEfficiencyFilters ;
 	var diffLabelFilters   = $scope.filterCriteria.difficultyFilters ;
