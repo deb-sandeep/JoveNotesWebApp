@@ -26,7 +26,11 @@ function RowData( rowType, name, rowId, parentRowId ) {
 	this.masteredCards      = 0 ;
 	this.numSSRMaturedCards = 0 ;
 
-	this.chapterId = 0 ;
+	this.chapterId  = 0 ;
+	this.chapter    = null ;
+	this.chapterId  = null ;
+	this.subjectRD  = null ;
+	this.syllabusRD = null ;
 
 	this.isChapterRow = function() {
 		return this.rowType == this.ROW_TYPE_CHAPTER ;
@@ -42,6 +46,30 @@ function RowData( rowType, name, rowId, parentRowId ) {
 		.error( function( data ){
 			$scope.addErrorAlert( "API call failed. " + data ) ;
 		});
+	    recomputeStatistics() ;
+	}
+
+	this.setChapterAndParentRows = function( chapter, subjectRD, syllabusRD ) {
+
+		this.chapter     = chapter ;
+		this.chapterId   = chapter.chapterId ;
+
+		this.subjectRD   = subjectRD ;
+		this.syllabusRD  = syllabusRD ;
+
+		this.totalCards          = chapter.totalCards ;
+		this.notStartedCards     = chapter.notStartedCards ;
+		this.l0Cards             = chapter.l0Cards ;
+		this.l1Cards             = chapter.l1Cards ;
+		this.l2Cards             = chapter.l2Cards ;
+		this.l3Cards             = chapter.l3Cards ;
+		this.masteredCards       = chapter.masteredCards ;
+		this.numSSRMaturedCards  = chapter.numSSRMaturedCards ;
+
+		this.isNotesAuthorized      = chapter.isNotesAuthorized ;
+		this.isFlashcardAuthorized  = chapter.isFlashcardAuthorized ;
+		this.isStatisticsAuthorized = chapter.isStatisticsAuthorized ;
+		this.isHidden               = chapter.isHidden ;
 	}
 }
 
@@ -54,10 +82,6 @@ refreshData() ;
 
 $scope.refreshData = function() {
 	refreshData() ;
-}
-
-$scope.doSSRStudy = function() {
-	alert( "Doing SSR study." ) ;
 }
 
 $scope.getTreeRowClass = function( rowData ) {
@@ -108,6 +132,7 @@ $scope.toggleHiddenChapters = function() {
 	.error( function( data ){
 		log.error( "Could not set hidden chapter preferences for user." ) ;
 	});  
+    recomputeStatistics() ;
 }
 
 $scope.$on( 'onRenderComplete', function( scope ){
@@ -116,18 +141,8 @@ $scope.$on( 'onRenderComplete', function( scope ){
       'saveState': true,
       'saveStateName' : "treeState-" + currentUserName 
     });	
-} ) ;
-
-$scope.$on( 'onRowRender', function( scope, rowId ){
-	var rowData = $scope.progressSnapshot[ rowId ] ;
-	drawProgressBar( "canvas-" + rowData.rowId, 
-	                 rowData.totalCards, 
-	                 rowData.notStartedCards,
-	                 rowData.l0Cards,
-	                 rowData.l1Cards,
-	                 rowData.l2Cards,
-	                 rowData.l3Cards,
-	                 rowData.masteredCards ) ;
+    recomputeStatistics() ;
+   	$scope.$digest() ;
 } ) ;
 
 function refreshData() {
@@ -139,30 +154,6 @@ function refreshData() {
          .error( function( data ){
          	$scope.addErrorAlert( "API call failed. " + data ) ;
          });
-}
-
-function drawProgressBar( canvasId, total, vN, v0, v1, v2, v3, v4 ) {
-
-    var c = document.getElementById( canvasId ) ;
-    var ctx = c.getContext( "2d" ) ;
-
-    var widths = [] ;
-
-    widths[0] = Math.round( ( vN/total )*c.width ) ;
-    widths[1] = Math.round( ( v0/total )*c.width ) ;
-    widths[2] = Math.round( ( v1/total )*c.width ) ;
-    widths[3] = Math.round( ( v2/total )*c.width ) ;
-    widths[4] = Math.round( ( v3/total )*c.width ) ;
-    widths[5] = Math.round( ( v4/total )*c.width ) ;
-
-    var colors = [ "#D0D0D0", "#FF0000", "#FF7F2A", "#FFFF7F", "#AAFFAA", "#00FF00" ] ;
-
-    var curX = 0 ;
-    for( var i=0; i<6; i++ )  {
-        ctx.fillStyle = colors[i] ;
-        ctx.fillRect( curX, 0, widths[i], c.height ) ;
-        curX += widths[i] ;
-    }
 }
 
 function digestPreferences( preferences ) {
@@ -212,16 +203,9 @@ function prepareDataForDisplay( rawData ) {
 					                         chapter.chapterId, 
 					                         subjectRD.rowId ) ;
 
-				chapterRD.isNotesAuthorized      = chapter.isNotesAuthorized ;
-				chapterRD.isFlashcardAuthorized  = chapter.isFlashcardAuthorized ;
-				chapterRD.isStatisticsAuthorized = chapter.isStatisticsAuthorized ;
-				chapterRD.isHidden               = chapter.isHidden ;
-
-				chapterRD.chapterId = chapter.chapterId ;
+				chapterRD.setChapterAndParentRows( chapter, subjectRD, syllabusRD ) ;
 
 				displayData.push( chapterRD ) ;
-
-				updateCardCounts( chapter, chapterRD, subjectRD, syllabusRD ) ;
 
 				if( chapterRD.isFlashcardAuthorized ) {
 					if( !atleastOneChapterIsFlashcardAuthorized ) {
@@ -257,39 +241,96 @@ function prepareDataForDisplay( rawData ) {
 	return displayData ;
 }
 
-function updateCardCounts( chapter, chapterRD, subjectRD, syllabusRD ) {
+function recomputeStatistics() {
 
-	chapterRD.totalCards       =  chapter.totalCards ;
+	for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+		var rowData = $scope.progressSnapshot[i] ;
+		if( rowData.rowType != RowData.prototype.ROW_TYPE_CHAPTER ) {
+			rowData.totalCards         = 0 ;
+			rowData.notStartedCards    = 0 ;
+			rowData.l0Cards            = 0 ;
+			rowData.l1Cards            = 0 ;
+			rowData.l2Cards            = 0 ;
+			rowData.l3Cards            = 0 ;
+			rowData.masteredCards      = 0 ;
+			rowData.numSSRMaturedCards = 0 ;
+		}
+	}
+
+	for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+		var rowData = $scope.progressSnapshot[i] ;
+		if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+			if( $scope.isTreeRowVisible( rowData ) ) {
+				updateCardCounts( rowData.chapter, rowData.subjectRD, rowData.syllabusRD ) ;
+			}
+		}
+	}
+
+	for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+		var rowData = $scope.progressSnapshot[i] ;
+		if( $scope.isTreeRowVisible( rowData ) ) {
+			drawProgressBar( "canvas-" + rowData.rowId, 
+							 rowData.totalCards,
+							 rowData.notStartedCards,
+							 rowData.l0Cards,
+							 rowData.l1Cards,
+							 rowData.l2Cards,
+							 rowData.l3Cards,
+							 rowData.masteredCards
+				            ) ;
+		}
+	}
+}
+
+function updateCardCounts( chapter, subjectRD, syllabusRD ) {
+
 	subjectRD.totalCards       += chapter.totalCards ;
 	syllabusRD.totalCards      += chapter.totalCards ;
 
-	chapterRD.notStartedCards  =  chapter.notStartedCards ;
 	subjectRD.notStartedCards  += chapter.notStartedCards ;
 	syllabusRD.notStartedCards += chapter.notStartedCards ;
 
-	chapterRD.l0Cards          =  chapter.l0Cards ;
 	subjectRD.l0Cards          += chapter.l0Cards ;
 	syllabusRD.l0Cards         += chapter.l0Cards ;
 
-	chapterRD.l1Cards          =  chapter.l1Cards ;
 	subjectRD.l1Cards          += chapter.l1Cards ;
 	syllabusRD.l1Cards         += chapter.l1Cards ;
 
-	chapterRD.l2Cards          =  chapter.l2Cards ;
 	subjectRD.l2Cards          += chapter.l2Cards ;
 	syllabusRD.l2Cards         += chapter.l2Cards ;
 
-	chapterRD.l3Cards          =  chapter.l3Cards ;
 	subjectRD.l3Cards          += chapter.l3Cards ;
 	syllabusRD.l3Cards         += chapter.l3Cards ;
 
-	chapterRD.masteredCards    =  chapter.masteredCards ;
 	subjectRD.masteredCards    += chapter.masteredCards ;
 	syllabusRD.masteredCards   += chapter.masteredCards ;
 
-	chapterRD.numSSRMaturedCards  = chapter.numSSRMaturedCards ;
 	subjectRD.numSSRMaturedCards += chapter.numSSRMaturedCards ;
 	syllabusRD.numSSRMaturedCards+= chapter.numSSRMaturedCards ;
+}
+
+function drawProgressBar( canvasId, total, vN, v0, v1, v2, v3, v4 ) {
+
+    var c = document.getElementById( canvasId ) ;
+    var ctx = c.getContext( "2d" ) ;
+
+    var widths = [] ;
+
+    widths[0] = Math.round( ( vN/total )*c.width ) ;
+    widths[1] = Math.round( ( v0/total )*c.width ) ;
+    widths[2] = Math.round( ( v1/total )*c.width ) ;
+    widths[3] = Math.round( ( v2/total )*c.width ) ;
+    widths[4] = Math.round( ( v3/total )*c.width ) ;
+    widths[5] = Math.round( ( v4/total )*c.width ) ;
+
+    var colors = [ "#D0D0D0", "#FF0000", "#FF7F2A", "#FFFF7F", "#AAFFAA", "#00FF00" ] ;
+
+    var curX = 0 ;
+    for( var i=0; i<6; i++ )  {
+        ctx.fillStyle = colors[i] ;
+        ctx.fillRect( curX, 0, widths[i], c.height ) ;
+        curX += widths[i] ;
+    }
 }
 
 // -----------------------------------------------------------------------------

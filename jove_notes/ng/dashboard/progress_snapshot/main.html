@@ -44,8 +44,7 @@
     		<tr ng-repeat="rowData in progressSnapshot" 
     		    ng-class="getTreeRowClass( rowData )"
                 ng-show="isTreeRowVisible( rowData )"
-                on-render-complete 
-                on-row-render>
+                on-render-complete> 
                 <td> 
                     <span ng-show="rowData.isNotesAuthorized">
                     <a href="/apps/jove_notes/ng/notes/index.php?chapterId={{rowData.chapterId}}">
@@ -72,8 +71,8 @@
                     <a type="button" class="btn btn-default btn-xs"
                        ng-show="rowData.rowType == 2"
                        ng-click="rowData.toggleVisibility()">
-                        <span class="glyphicon glyphicon-eye-close" ng-hide="rowData.isHidden"></span>
-                        <span class="glyphicon glyphicon-eye-open"  ng-show="rowData.isHidden"></span>
+                        <span class="glyphicon glyphicon-eye-close" style="color:red"   ng-hide="rowData.isHidden"></span>
+                        <span class="glyphicon glyphicon-eye-open"  style="color:green" ng-show="rowData.isHidden"></span>
                     </a>
                 </td>
                 <td>

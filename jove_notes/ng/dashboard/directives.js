@@ -1,13 +1,3 @@
-dashboardApp.directive( 'onRowRender', function() {
-    
-    return function( scope, element, attrs ) {
-    	setTimeout( function(){ 
-            scope.$emit( 'onRowRender', scope.$index ) ;
-        }, 1 ) ;
-    } ;
-
-} ) ;
-
 dashboardApp.directive( 'onRenderComplete', function() {
     
     return function( scope, element, attrs ) {
@@ -17,5 +7,5 @@ dashboardApp.directive( 'onRenderComplete', function() {
 	        }, 1 ) ;
     	}
     } ;
-
 } ) ;
+
