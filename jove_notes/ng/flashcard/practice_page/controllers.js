@@ -39,7 +39,7 @@ $scope.showL1Header     = true ;
 $scope.showL2Header     = true ;
 $scope.showFooterDropup = true ;
 
-$scope.bodyDivStyle = { top : 75, bottom : 60 } ;
+$scope.bodyDivStyle = { top : 80, bottom : 60 } ;
 
 $scope.questionsForSession = [] ;
 $scope.currentQuestion     = null ;
