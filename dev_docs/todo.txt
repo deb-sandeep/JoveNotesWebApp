@@ -9,6 +9,10 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+9/8/15 --
+. BUG: Re-enabling dashboard statistics to have aggregated flashcard drivers at 
+  subject and syllabus level.
+
 9/7/15 --
 . Dashboard now shows the statistics of chapters which are not hidden in the view.
   Hidden does not imply hidden by tweakie - but hard hidden.

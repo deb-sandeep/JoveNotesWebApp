@@ -26,7 +26,6 @@ function RowData( rowType, name, rowId, parentRowId ) {
 	this.masteredCards      = 0 ;
 	this.numSSRMaturedCards = 0 ;
 
-	this.chapterId  = 0 ;
 	this.chapter    = null ;
 	this.chapterId  = null ;
 	this.subjectRD  = null ;
@@ -175,9 +174,6 @@ function prepareDataForDisplay( rawData ) {
 
 		displayData.push( syllabusRD ) ;
 
-		var syllabusLevelSSRStudyChapters = [] ;
-		var atleastOneSubjectIsFlashcardAuthorized = false ;
-
 		for( subIndex=0; subIndex<syllabus.subjects.length; subIndex++ ) {
 
 			rowNum++ ;
@@ -188,9 +184,6 @@ function prepareDataForDisplay( rawData ) {
 				                         syllabusRD.rowId ) ;
 
 			displayData.push( subjectRD ) ;
-
-			var subjectLevelSSRStudyChapters = [] ;
-			var atleastOneChapterIsFlashcardAuthorized = false ;
 
 			for( chpIndex=0; chpIndex<subject.chapters.length; chpIndex++ ) {
 
@@ -206,36 +199,7 @@ function prepareDataForDisplay( rawData ) {
 				chapterRD.setChapterAndParentRows( chapter, subjectRD, syllabusRD ) ;
 
 				displayData.push( chapterRD ) ;
-
-				if( chapterRD.isFlashcardAuthorized ) {
-					if( !atleastOneChapterIsFlashcardAuthorized ) {
-						atleastOneChapterIsFlashcardAuthorized = true ;
-					}
-					if( chapterRD.numSSRMaturedCards > 0 ) {
-						subjectLevelSSRStudyChapters.push( chapterRD.chapterId ) ;
-					}
-				}
 			}
-
-			if( atleastOneChapterIsFlashcardAuthorized && subjectRD.numSSRMaturedCards > 0 ) {
-				subjectRD.isFlashcardAuthorized = true ;
-				subjectLevelSSRStudyChapters.shuffle() ;
-				subjectRD.chapterId = subjectLevelSSRStudyChapters.join() ;
-			}
-
-			if( !atleastOneSubjectIsFlashcardAuthorized ) {
-				atleastOneSubjectIsFlashcardAuthorized = true ;
-			}
-
-			if( subjectRD.numSSRMaturedCards > 0 ) {
-				syllabusLevelSSRStudyChapters = syllabusLevelSSRStudyChapters.concat( subjectLevelSSRStudyChapters ) ;
-			}
-		}
-
-		if( atleastOneSubjectIsFlashcardAuthorized && syllabusRD.numSSRMaturedCards > 0 ) {
-			syllabusRD.isFlashcardAuthorized = true ;
-			syllabusLevelSSRStudyChapters.shuffle() ;
-			syllabusRD.chapterId = syllabusLevelSSRStudyChapters.join() ;
 		}
 	}
 	return displayData ;
@@ -243,9 +207,17 @@ function prepareDataForDisplay( rawData ) {
 
 function recomputeStatistics() {
 
+	clearRowDataAttributes() ;
+	computeAggregateFlashCardChapterList() ;
+	refreshProgressBars() ;
+}
+
+function clearRowDataAttributes() {
+
 	for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
 		var rowData = $scope.progressSnapshot[i] ;
 		if( rowData.rowType != RowData.prototype.ROW_TYPE_CHAPTER ) {
+
 			rowData.totalCards         = 0 ;
 			rowData.notStartedCards    = 0 ;
 			rowData.l0Cards            = 0 ;
@@ -254,17 +226,75 @@ function recomputeStatistics() {
 			rowData.l3Cards            = 0 ;
 			rowData.masteredCards      = 0 ;
 			rowData.numSSRMaturedCards = 0 ;
+
+			rowData.chapterId              = null ;
+    		rowData.isFlashcardAuthorized  = false ;
 		}
 	}
+}
+
+function computeAggregateFlashCardChapterList() {
+
+	var curSyllabusRD = null ;
+	var curSubjectRD  = null ;
+
+	var chaptersForSyllabus = null ;
+	var chaptersForSubject  = null ;
 
 	for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
 		var rowData = $scope.progressSnapshot[i] ;
-		if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+
+		if( rowData.rowType == RowData.prototype.ROW_TYPE_SYLLABUS ) {
+			if( curSyllabusRD != null ) {
+				if( chaptersForSyllabus.length > 0 ) {
+					chaptersForSyllabus.shuffle() ;
+					curSyllabusRD.chapterId = chaptersForSyllabus.join() ;
+					curSyllabusRD.isFlashcardAuthorized = true ;
+				}
+			}
+			curSyllabusRD = rowData ;
+			chaptersForSyllabus = [] ;
+		}
+		else if( rowData.rowType == RowData.prototype.ROW_TYPE_SUBJECT ) {
+			if( curSubjectRD != null ) {
+				if( chaptersForSubject.length > 0 ) {
+					chaptersForSubject.shuffle() ;
+					curSubjectRD.chapterId = chaptersForSubject.join() ;
+					curSubjectRD.isFlashcardAuthorized = true ;
+				}
+			}
+			curSubjectRD = rowData ;
+			chaptersForSubject = [] ;
+		}
+		else if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
 			if( $scope.isTreeRowVisible( rowData ) ) {
-				updateCardCounts( rowData.chapter, rowData.subjectRD, rowData.syllabusRD ) ;
+
+				var chapter = rowData.chapter ;
+
+				updateCardCounts( chapter, rowData.subjectRD, rowData.syllabusRD ) ;
+
+				if( chapter.isFlashcardAuthorized && chapter.numSSRMaturedCards > 0 ) {
+					chaptersForSubject.push( chapter.chapterId ) ;
+					chaptersForSyllabus.push( chapter.chapterId ) ;
+				}
 			}
 		}
 	}
+
+	if( chaptersForSyllabus.length > 0 ) {
+		chaptersForSyllabus.shuffle() ;
+		curSyllabusRD.chapterId = chaptersForSyllabus.join() ;
+		curSyllabusRD.isFlashcardAuthorized = true ;
+	}
+
+	if( chaptersForSubject.length > 0 ) {
+		chaptersForSubject.shuffle() ;
+		curSubjectRD.chapterId = chaptersForSubject.join() ;
+		curSubjectRD.isFlashcardAuthorized = true ;
+	}
+}
+
+function refreshProgressBars() {
 
 	for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
 		var rowData = $scope.progressSnapshot[i] ;
@@ -284,29 +314,23 @@ function recomputeStatistics() {
 
 function updateCardCounts( chapter, subjectRD, syllabusRD ) {
 
-	subjectRD.totalCards       += chapter.totalCards ;
-	syllabusRD.totalCards      += chapter.totalCards ;
-
-	subjectRD.notStartedCards  += chapter.notStartedCards ;
-	syllabusRD.notStartedCards += chapter.notStartedCards ;
-
-	subjectRD.l0Cards          += chapter.l0Cards ;
-	syllabusRD.l0Cards         += chapter.l0Cards ;
-
-	subjectRD.l1Cards          += chapter.l1Cards ;
-	syllabusRD.l1Cards         += chapter.l1Cards ;
-
-	subjectRD.l2Cards          += chapter.l2Cards ;
-	syllabusRD.l2Cards         += chapter.l2Cards ;
-
-	subjectRD.l3Cards          += chapter.l3Cards ;
-	syllabusRD.l3Cards         += chapter.l3Cards ;
-
-	subjectRD.masteredCards    += chapter.masteredCards ;
-	syllabusRD.masteredCards   += chapter.masteredCards ;
-
-	subjectRD.numSSRMaturedCards += chapter.numSSRMaturedCards ;
-	syllabusRD.numSSRMaturedCards+= chapter.numSSRMaturedCards ;
+	subjectRD.totalCards          += chapter.totalCards ;
+	subjectRD.notStartedCards     += chapter.notStartedCards ;
+	subjectRD.l0Cards             += chapter.l0Cards ;
+	subjectRD.l1Cards             += chapter.l1Cards ;
+	subjectRD.l2Cards             += chapter.l2Cards ;
+	subjectRD.l3Cards             += chapter.l3Cards ;
+	subjectRD.masteredCards       += chapter.masteredCards ;
+	subjectRD.numSSRMaturedCards  += chapter.numSSRMaturedCards ;
+	
+	syllabusRD.totalCards         += chapter.totalCards ;
+	syllabusRD.notStartedCards    += chapter.notStartedCards ;
+	syllabusRD.l0Cards            += chapter.l0Cards ;
+	syllabusRD.l1Cards            += chapter.l1Cards ;
+	syllabusRD.l2Cards            += chapter.l2Cards ;
+	syllabusRD.l3Cards            += chapter.l3Cards ;
+	syllabusRD.masteredCards      += chapter.masteredCards ;
+	syllabusRD.numSSRMaturedCards += chapter.numSSRMaturedCards ;
 }
 
 function drawProgressBar( canvasId, total, vN, v0, v1, v2, v3, v4 ) {
@@ -323,7 +347,8 @@ function drawProgressBar( canvasId, total, vN, v0, v1, v2, v3, v4 ) {
     widths[4] = Math.round( ( v3/total )*c.width ) ;
     widths[5] = Math.round( ( v4/total )*c.width ) ;
 
-    var colors = [ "#D0D0D0", "#FF0000", "#FF7F2A", "#FFFF7F", "#AAFFAA", "#00FF00" ] ;
+    var colors = [ "#D0D0D0", "#FF0000", "#FF7F2A", 
+                   "#FFFF7F", "#AAFFAA", "#00FF00" ] ;
 
     var curX = 0 ;
     for( var i=0; i<6; i++ )  {
