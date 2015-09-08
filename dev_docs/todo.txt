@@ -12,6 +12,7 @@ Completed
 9/8/15 --
 . BUG: Re-enabling dashboard statistics to have aggregated flashcard drivers at 
   subject and syllabus level.
+. Matching questions are now shown as proper randomized pairs in practice worksheet
 
 9/7/15 --
 . Dashboard now shows the statistics of chapters which are not hidden in the view.

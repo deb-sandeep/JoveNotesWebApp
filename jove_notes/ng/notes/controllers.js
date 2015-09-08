@@ -249,8 +249,6 @@ function initializeScriptSupport( element ) {
 
 	if( !element.hasOwnProperty( 'scriptInitialized' ) ) {
 
-		log.debug( "Initializing script support" ) ;
-
 		element.scriptObj      = null ;		
 		element.evalVarsValues = null ;
 
@@ -383,11 +381,30 @@ function formatTeacherNote( tnElement ) {
 }
 
 function formatMatching( matchElement ) {
+
+	var keys=[], values=[], practiceData=[] ;
+
 	for( var i=0; i<matchElement.matchData.length; i++ ) {
 		var pair = matchElement.matchData[i] ;
 		pair[0] = $scope.textFormatter.format( pair[0] ) ;
 		pair[1] = $scope.textFormatter.format( pair[1] ) ;
+
+		keys.push( pair[0] ) ;
+		values.push( pair[1] ) ;
 	}
+
+	keys.shuffle() ;
+	values.shuffle() ;
+
+	for( var i=0; i<keys.length; i++ ) {
+		var pair=[] ;
+		pair.push( keys[i] ) ;
+		pair.push( values[i] ) ;
+		practiceData.push( pair ) ;
+	}
+
+	matchElement.practiceData = practiceData ;
+
 	return matchElement ;
 }
 
