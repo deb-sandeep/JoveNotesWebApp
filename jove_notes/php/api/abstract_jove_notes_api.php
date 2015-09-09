@@ -26,6 +26,10 @@ class AbstractJoveNotesAPI extends API {
 		return $this->isUserEntitled( $chapterId, "NOTES" ) ;
 	}
 
+	protected function isUserEntitledForDelete( $chapterId ) {
+		return $this->isUserEntitled( $chapterId, "DELETE_CHAPTER" ) ;
+	}
+
 	protected function isUserEntitledForFlashCards( $chapterId ) {
 		return $this->isUserEntitled( $chapterId, "FLASH_CARD" ) ;
 	}

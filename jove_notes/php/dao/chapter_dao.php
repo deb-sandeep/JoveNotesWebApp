@@ -103,6 +103,19 @@ QUERY;
 
 		return parent::selectSingleValue( $query ) ;
 	}
+
+	function deleteChapter( $chapterId ) {
+
+$query = <<< QUERY
+delete
+from 
+	jove_notes.chapter 
+where 
+	chapter_id = $chapterId 
+QUERY;
+
+		parent::executeDelete( $query ) ;
+	}
 }
 
 ?>

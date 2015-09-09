@@ -16,6 +16,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
     this.isNotesAuthorized      = false ;
     this.isFlashcardAuthorized  = false ;
     this.isStatisticsAuthorized = false ;
+    this.isDeleteAuthorized     = false ;
 
 	this.totalCards         = 0 ;
 	this.notStartedCards    = 0 ;
@@ -68,6 +69,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
 		this.isNotesAuthorized      = chapter.isNotesAuthorized ;
 		this.isFlashcardAuthorized  = chapter.isFlashcardAuthorized ;
 		this.isStatisticsAuthorized = chapter.isStatisticsAuthorized ;
+		this.isDeleteAuthorized     = chapter.isDeleteAuthorized ;
 		this.isHidden               = chapter.isHidden ;
 	}
 }
@@ -134,6 +136,29 @@ $scope.toggleHiddenChapters = function() {
     recomputeStatistics() ;
 }
 
+$scope.deleteChapter = function( chapterId ) {
+
+	bootbox.confirm( "<h3>Are you sure you want to delete this chapter?</h3>" + 
+		             "All notes, cards and student histories will be deleted.<br>" + 
+		             "Please confirm.", 
+		function( okSelected ) {
+			if( okSelected ) {
+				$http.delete( "/jove_notes/api/Chapter/" + chapterId )
+			         .success( function( data ){
+			         	if( data != null && data.trim() == "Success" ) {
+			         		removeChapter( chapterId ) ;
+			         	}
+			         	else {
+			         		$scope.addErrorAlert( "API call failed. '" + data + "'." ) ;
+			         	}
+			         })
+			         .error( function( data ){
+			         	$scope.addErrorAlert( "API call failed. " + data ) ;
+			         });
+			}
+		}) ;
+}
+
 $scope.$on( 'onRenderComplete', function( scope ){
     $('.tree').treegrid({
       'initialState': 'collapsed',
@@ -143,6 +168,25 @@ $scope.$on( 'onRenderComplete', function( scope ){
     recomputeStatistics() ;
    	$scope.$digest() ;
 } ) ;
+
+function removeChapter( chapterId ) {
+
+	var chapterRowIndex = -1 ;
+	for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+		var rowData = $scope.progressSnapshot[i] ;
+		if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER &&
+			rowData.chapterId == chapterId ) {
+
+			chapterRowIndex = i ;
+			break ;
+		}
+	}
+
+	if( chapterRowIndex != -1 ) {
+		$scope.progressSnapshot.splice( chapterRowIndex, 1 ) ;
+		recomputeStatistics() ;
+	}
+}
 
 function refreshData() {
 	$http.get( "/jove_notes/api/ProgressSnapshot" )

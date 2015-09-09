@@ -20,6 +20,7 @@ class ChapterProgressSnapshot {
 	public $isNotesAuthorized ;
 	public $isFlashcardAuthorized ;
 	public $isStatisticsAuthorized ;
+	public $isDeleteAuthorized ;
 	
 	public $notStartedCards ;
 	public $l0Cards ;
@@ -44,6 +45,7 @@ class ChapterProgressSnapshot {
 		$this->isNotesAuthorized      = Authorizer::hasAccess( $this->guard, "NOTES" ) ;
 		$this->isFlashcardAuthorized  = Authorizer::hasAccess( $this->guard, "FLASH_CARD" ) ;
 		$this->isStatisticsAuthorized = Authorizer::hasAccess( $this->guard, "CHAPTER_STATS" ) ;
+		$this->isDeleteAuthorized     = Authorizer::hasAccess( $this->guard, "DELETE_CHAPTER" ) ;
 
 		$this->notStartedCards    = 0 ;
 		$this->l0Cards            = 0 ;
@@ -58,7 +60,8 @@ class ChapterProgressSnapshot {
 	public function isUserEntitled() {
 		return $this->isNotesAuthorized || 
 		       $this->isFlashcardAuthorized ||
-		       $this->isStatisticsAuthorized ;
+		       $this->isStatisticsAuthorized || 
+		       $this->isDeleteAuthorized ;
 	}
 }
 
@@ -268,6 +271,7 @@ class ProgressSnapshotAPI extends API {
 		$responseObj[ "isNotesAuthorized"      ] = $chapter->isNotesAuthorized ;
 		$responseObj[ "isFlashcardAuthorized"  ] = $chapter->isFlashcardAuthorized ;
 		$responseObj[ "isStatisticsAuthorized" ] = $chapter->isStatisticsAuthorized ;
+		$responseObj[ "isDeleteAuthorized"     ] = $chapter->isDeleteAuthorized ;
 		$responseObj[ "totalCards"             ] = $chapter->numCards ;
 		$responseObj[ "notStartedCards"        ] = $chapter->notStartedCards ;
 		$responseObj[ "l0Cards"                ] = $chapter->l0Cards ;

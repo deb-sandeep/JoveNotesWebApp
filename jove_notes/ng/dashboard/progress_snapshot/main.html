@@ -38,6 +38,7 @@
                         </tr>
                     </table>
                 </th>
+                <th></th>
     		</tr>	
     	</thead>	
     	<tbody>
@@ -87,6 +88,13 @@
                             <td class="text-right MAS">{{rowData.masteredCards   }}</td>
                             </tr>
                     </table>
+                </td>
+                <td>
+                    <a type="button" class="btn btn-default btn-xs"
+                       ng-show="rowData.isDeleteAuthorized"
+                       ng-click="deleteChapter( rowData.chapterId )">
+                        <span class="glyphicon glyphicon-remove" style="color:red"></span>
+                    </a>
                 </td>
     		</tr>	
     	</tbody>
