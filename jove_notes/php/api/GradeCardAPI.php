@@ -131,13 +131,21 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 				$rating = "E" ;
 			}
 
+			$timeSpent = $this->requestObj->timeTaken ;
+			if( $timeSpent < 0 ) {
+				$this->logger->warn( "Got a negative time spent. " . 
+					                 "Setting it to 30 seconds. Card ID = " . 
+					                 $this->requestObj->cardId ) ;
+				$timeSpent = 30 ;
+			}
+
 			$this->cardRatingDAO->insertRating( 
 										$this->requestObj->cardId, 
 										ExecutionContext::getCurrentUserName(), 
 										$this->requestObj->sessionId,
 										$rating,
 										$this->score,
-										$this->requestObj->timeTaken ) ;
+										$timeSpent ) ;
 		}
 	}
 

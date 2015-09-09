@@ -12,6 +12,7 @@ Completed
 9/9/15 --
 . Deleting chapters now supported based on entitlement.
 . Page breaks in notes and worksheets
+. BUG - Time spent calculation had a bug when card was paused.
 
 9/8/15 --
 . BUG: Re-enabling dashboard statistics to have aggregated flashcard drivers at 

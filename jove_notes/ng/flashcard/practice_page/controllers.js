@@ -109,7 +109,7 @@ $scope.pauseSession = function() {
 
     $( '#modalResume' ).modal( 'show' ) ;
     callRFMApiToPauseResumeSession( 'pause_session', 0, function(){
-        resumeModalShowTime = new Date() ;
+        resumeModalShowTime = new Date().getTime() ;
     } ) ;
 }
 
@@ -126,7 +126,7 @@ $scope.$on( 'resumeSession.button.click', function( event, args ){
     $( '#modalResume' ).modal( 'hide' ) ;
 
     callRFMApiToPauseResumeSession( 'resume_session', 0, function(){
-        var pauseTime = new Date() - resumeModalShowTime ;
+        var pauseTime = new Date().getTime() - resumeModalShowTime ;
         totalSessionPauseTime  += pauseTime ;
         totalQuestionPauseTime += pauseTime ;
 
@@ -319,12 +319,12 @@ function showNextCard() {
         computeRecommendPromoteFlag() ;
 
         currentQuestionShowStartTime = new Date().getTime() ;
+        totalQuestionPauseTime = 0 ;
 
         questionChangeTriggerIndex++ ;
         $scope.questionChangeTrigger = "Question-" + questionChangeTriggerIndex ;
 
         renderTimeMarkersForCurrentQuestion() ;
-        totalQuestionPauseTime = 0 ;
 
         if( $scope.$parent.studyCriteria.push ) {
             log.debug( "Session is configured for remote push. " + 
