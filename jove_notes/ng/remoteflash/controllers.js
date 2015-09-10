@@ -166,7 +166,7 @@ function runMessageProcessPump() {
 
 function pauseSession() {
     $( '#modalResume' ).modal( 'show' ) ;
-    resumeModalShowTime = new Date() ;
+    resumeModalShowTime = new Date().getTime() ;
 }
 
 function resumeSession() {
@@ -174,7 +174,7 @@ function resumeSession() {
     $( 'body' ).removeClass('modal-open') ;
     $( '.modal-backdrop' ).remove() ;
 
-    var pauseTime = new Date() - resumeModalShowTime ;
+    var pauseTime = new Date().getTime() - resumeModalShowTime ;
     totalSessionPauseTime  += pauseTime ;
     totalQuestionPauseTime += pauseTime ;
 
@@ -316,7 +316,7 @@ function processIncomingQuestion( message ) {
     $scope.showQuestionTrigger = message.sessionId + ".Question-" + questionTriggerIndex ;
     $scope.showAnswerTrigger   = "" ;
 
-    currentQuestionShowStartTime = new Date() ;
+    currentQuestionShowStartTime = new Date().getTime() ;
     totalQuestionPauseTime       = 0 ;
     
     renderTimeMarkersForCurrentQuestion() ;
