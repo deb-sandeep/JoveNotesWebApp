@@ -9,6 +9,11 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+9/11/15 --
+. Tipped the score heavily on the negative scoring in an attempt to motivate
+  self preparation before practice.
+. Added some page breaks in print worksheets
+
 9/9/15 --
 . Deleting chapters now supported based on entitlement.
 . Page breaks in notes and worksheets
