@@ -9,6 +9,9 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+9/12/15 --
+. Added a down quick nav link on notes page
+
 9/11/15 --
 . Tipped the score heavily on the negative scoring in an attempt to motivate
   self preparation before practice.

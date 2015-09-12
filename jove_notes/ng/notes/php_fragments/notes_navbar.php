@@ -49,6 +49,10 @@
     <a href="/apps/jove_notes/ng/dashboard/index.php">
         <span class="glyphicon glyphicon-eye-open gi-2x"></span>
     </a>
+    <p>
+    <a ng-click="scrollTo('bottom')">
+        <span class="glyphicon glyphicon-arrow-down gi-2x"></span>
+    </a>
 </div>
 
 

@@ -155,6 +155,8 @@ define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
     <div ng-if="chemEquations.length">
         <div ng-include="'<?php echo CHEM_EQ_FRAGMENT_PATH ?>'"></div>
     </div>
+
+    <a name="bottom"></a>
 </body>
 
 </html>
