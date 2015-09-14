@@ -9,6 +9,9 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+9/14/15 --
+. Unintended refresh during an ongoing flashcard session seeks user confirmation
+
 9/12/15 --
 . Added a down quick nav link on notes page
 

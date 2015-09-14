@@ -124,6 +124,7 @@ $scope.textFormatter = null ;
 
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing FlashCardController." ) ;
+
 $scope.studyCriteria.deserialize() ;
 
 // -------------Scope watch functions ------------------------------------------

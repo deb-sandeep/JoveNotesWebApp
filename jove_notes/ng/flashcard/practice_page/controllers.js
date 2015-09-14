@@ -100,6 +100,16 @@ $scope.gradingButtonPlacement = "right" ;
 
         onWindowResize() ;
         window.addEventListener( "resize", onWindowResize ) ;
+
+        window.addEventListener( "beforeunload", function ( event ) {
+            if( sessionActive ) {
+                event.returnValue = 
+                    "A session is in progress. \nIf you leave this page " + 
+                    $scope.$parent.sessionStats.numCardsLeft + 
+                    " cards will remains unattempted" ;
+            }
+        });
+
         showNextCard() ;
     }) ;
 }
