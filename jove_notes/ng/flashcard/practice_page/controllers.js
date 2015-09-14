@@ -688,11 +688,11 @@ function renderTimeMarkersForCurrentQuestion() {
     }
 
     fill1Pct = mark1 - 1 ;
-    fill2Pct = mark2 - mark1 -1 ;
+    fill2Pct = mark2 - mark1 - 1 ;
 
     // Why setTimeout - because for the first question, since Angular is 
-    // executing, the div id is not yet accessible and hence the we are sequencing
-    // it after Angular digest runs.
+    // executing, the div id is not yet accessible and hence the we are 
+    // sequencing it after Angular digest runs.
     setTimeout( function(){
         $( "#pb_av_fill1" ).css( "width", fill1Pct + "%" ) ;
         $( "#pb_av_fill2" ).css( "width", fill2Pct + "%" ) ;
@@ -712,12 +712,17 @@ function refreshCardTimeProgressBars() {
     var delta = Math.ceil(( new Date().getTime() - currentQuestionShowStartTime - totalQuestionPauseTime )/1000) ;
 
     if( delta > 0 ) {
+        
         var percent = (5/9)*delta ;
         if( percent <= 105 ) {
             $( "#curr_pb" ).css( "width", percent + "%" ) ;
         }
 
-        if( delta > currentQuestionAvSelfTime && 
+        if( delta <= currentQuestionAvSelfTime ) {
+            $( "#curr_pb" ).removeClass() ;
+            $( "#curr_pb" ).addClass( "progress-bar progress-bar-success" ) ;
+        }
+        else if( delta > currentQuestionAvSelfTime && 
             delta < (1.5 * currentQuestionAvSelfTime) ) {
             $( "#curr_pb" ).removeClass( "progress-bar-success" ) ;
             $( "#curr_pb" ).addClass( "progress-bar-warning" ) ;
