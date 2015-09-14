@@ -11,6 +11,10 @@ var MAX_GRADE_CARD_API_CALL_RETRIES    = 3 ;
 var MAX_PUSH_ANS_API_CALL_RETRIES      = 3 ;
 var MAX_PUSH_QUESTION_API_CALL_RETRIES = 3 ;
 
+var PROGRESS_STAGE_GREEN = 0 ;
+var PROGRESS_STAGE_AMBER = 1 ;
+var PROGRESS_STAGE_RED   = 2 ;
+
 // ---------------- Local variables --------------------------------------------
 var ratingMatrix = new RatingMatrix() ;
 
@@ -32,6 +36,8 @@ var diffAvgTimeManager = null ;
 var resumeModalShowTime    = 0 ;
 var totalSessionPauseTime  = 0 ;
 var totalQuestionPauseTime = 0 ;
+
+var currentTimerStage = PROGRESS_STAGE_GREEN ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.showL0Header     = true ;
@@ -718,18 +724,22 @@ function refreshCardTimeProgressBars() {
             $( "#curr_pb" ).css( "width", percent + "%" ) ;
         }
 
-        if( delta <= currentQuestionAvSelfTime ) {
-            $( "#curr_pb" ).removeClass() ;
-            $( "#curr_pb" ).addClass( "progress-bar progress-bar-success" ) ;
-        }
-        else if( delta > currentQuestionAvSelfTime && 
+        if( delta > currentQuestionAvSelfTime && 
             delta < (1.5 * currentQuestionAvSelfTime) ) {
-            $( "#curr_pb" ).removeClass( "progress-bar-success" ) ;
-            $( "#curr_pb" ).addClass( "progress-bar-warning" ) ;
+
+            if( currentTimerStage != PROGRESS_STAGE_AMBER ) {
+                currentTimerStage = PROGRESS_STAGE_AMBER ;
+                $( "#curr_pb" ).removeClass( "progress-bar-success" ) ;
+                $( "#curr_pb" ).addClass( "progress-bar-warning" ) ;
+            }
         }
         else if( delta > (1.5*currentQuestionAvSelfTime) ) {
-            $( "#curr_pb" ).removeClass( "progress-bar-warning" ) ;
-            $( "#curr_pb" ).addClass( "progress-bar-danger" ) ;
+
+            if( currentTimerStage != PROGRESS_STAGE_RED ) {
+                currentTimerStage = PROGRESS_STAGE_RED ;
+                $( "#curr_pb" ).removeClass( "progress-bar-warning" ) ;
+                $( "#curr_pb" ).addClass( "progress-bar-danger" ) ;
+            }
         }
     }
 }

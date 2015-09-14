@@ -12,6 +12,7 @@ Completed
 9/14/15 --
 . Unintended refresh during an ongoing flashcard session seeks user confirmation
 . Random progress bar turns red at start
+. Cheap thrill optimizations on the timer progress bar
 
 9/12/15 --
 . Added a down quick nav link on notes page
