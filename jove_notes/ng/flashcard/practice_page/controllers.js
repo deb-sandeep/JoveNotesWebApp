@@ -336,6 +336,7 @@ function showNextCard() {
 
         currentQuestionShowStartTime = new Date().getTime() ;
         totalQuestionPauseTime = 0 ;
+        currentTimerStage = PROGRESS_STAGE_GREEN ;
 
         questionChangeTriggerIndex++ ;
         $scope.questionChangeTrigger = "Question-" + questionChangeTriggerIndex ;
@@ -710,7 +711,7 @@ function renderTimeMarkersForCurrentQuestion() {
 
         $( "#curr_pb" ).removeClass() ;
         $( "#curr_pb" ).addClass( "progress-bar progress-bar-success" ) ;
-    }, 50 ) ;
+    }, 20 ) ;
 }
 
 function refreshCardTimeProgressBars() {

@@ -82,7 +82,7 @@ QUERY;
 	                  "chapter_num", "sub_chapter_num", "chapter_name", "num_cards",
 	                  "num_VE", "num_E", "num_M", "num_H", "num_VH" ] ;
 
-		return parent::getResultAsAssociativeArray( $query, $colNames ) ;
+		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
 	}
 
 	function getChapterGuard( $chapterId ) {

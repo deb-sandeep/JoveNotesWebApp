@@ -9,6 +9,11 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+9/15/15 --
+. Hardening of runtime average calculation of time taken per question
+. Hardening of logic if there is just one chapter
+. Random attempt to zero down on the timer marker turning red :(
+
 9/14/15 --
 . Unintended refresh during an ongoing flashcard session seeks user confirmation
 . Random progress bar turns red at start

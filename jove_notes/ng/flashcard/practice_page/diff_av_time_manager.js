@@ -36,35 +36,10 @@ function DifficultyAverageTimeManager( baseData ) {
 
 	this.getPredictedAverageTime = function( question ) {
 
+		// NOTE: values will never be null. This is ensured by the getValuesArray
+		// which returns an empty array in case the question type is not found
 		var values = getValuesArray( question.questionType ) ;
-		if( values == null ) {
-			// This implies that this question type has not been attempted before
-			// Return some static values based on the question type
-		    var questionType = question.questionType ;
-		    if( questionType == QuestionTypes.prototype.QT_FIB ) {
-		        return 15 ;
-		    }
-		    else if( questionType == QuestionTypes.prototype.QT_QA ) {
-		        return 45 ;
-		    }
-		    else if( questionType == QuestionTypes.prototype.QT_TF ) {
-		        return 20 ;
-		    }
-		    else if( questionType == QuestionTypes.prototype.QT_MATCHING ) {
-		        return 30 ;
-		    }
-		    else if( questionType == QuestionTypes.prototype.QT_IMGLABEL ) {
-		        return 30 ;
-		    }
-		    else if( questionType == QuestionTypes.prototype.QT_SPELLBEE ) {
-		        return 30 ;
-		    }
-		    else if( questionType == QuestionTypes.prototype.QT_MULTI_CHOICE ) {
-		        return 30 ;
-		    }
-	        return 60 ;
-		}
-		return getAverageTime( question.difficultyLevel, values ) ;
+		return getAverageTime( question, values ) ;
 	} ;
 
 	this.updateStatistics = function( question, rating, timeTaken ) {
@@ -77,7 +52,11 @@ function DifficultyAverageTimeManager( baseData ) {
 		}
 
 		var values = getValuesArray( question.questionType ) ;
-		if( values != null ) {
+
+		if( values.length == 0 ) {
+			values.push( [ question.difficultyLevel, 1, timeTaken ] ) ;
+		}
+		else {
 			for( var i=0; i<values.length; i++ ) {
 
 				var currentDiffLevel = values[i][0] ;
@@ -96,19 +75,24 @@ function DifficultyAverageTimeManager( baseData ) {
 
 	function getValuesArray( questionType ) {
 
-		if( baseData.hasOwnProperty( questionType ) ) {
-			return baseData[ questionType ] ;
+		if( !baseData.hasOwnProperty( questionType ) ) {
+			baseData[ questionType ] = [] ;
 		}
-		return null ;
+		return baseData[ questionType ] ;
 	} ;
 
-	function getAverageTime( difficultyLevel, values ) {
+	function getAverageTime( question, values ) {
 
+		var difficultyLevel     = question.difficultyLevel ;
 		var prevToLastDiffLevel = 0 ;
 		var prevToLastAvgTime   = 0 ;
 		var lastDiffLevel       = 0 ;
 		var lastAvgTime         = 0 ;
 		var avgTime             = -1 ;
+
+		if( values.length == 0 ) {
+			return getStatisticalAverageTime( question ) ;
+		}
 
 		for( var i=0; i<values.length; i++ ) {
 
@@ -147,6 +131,33 @@ function DifficultyAverageTimeManager( baseData ) {
 		}
 
 		return Math.ceil( avgTime ) ;
+	}
+
+	function getStatisticalAverageTime( question ) {
+
+	    var questionType = question.questionType ;
+	    if( questionType == QuestionTypes.prototype.QT_FIB ) {
+	        return 15 ;
+	    }
+	    else if( questionType == QuestionTypes.prototype.QT_QA ) {
+	        return 30 ;
+	    }
+	    else if( questionType == QuestionTypes.prototype.QT_TF ) {
+	        return 20 ;
+	    }
+	    else if( questionType == QuestionTypes.prototype.QT_MATCHING ) {
+	        return 15 ;
+	    }
+	    else if( questionType == QuestionTypes.prototype.QT_IMGLABEL ) {
+	        return 15 ;
+	    }
+	    else if( questionType == QuestionTypes.prototype.QT_SPELLBEE ) {
+	        return 15 ;
+	    }
+	    else if( questionType == QuestionTypes.prototype.QT_MULTI_CHOICE ) {
+	        return 15 ;
+	    }
+        return 30 ;
 	}
 }
 
