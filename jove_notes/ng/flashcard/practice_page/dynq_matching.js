@@ -54,7 +54,7 @@ function MatchQuestionManager( questionObj, textFormatter, $scope ) {
 
 	this.initializeTableDOMWithoutData = function() {
 		
-		tableDOM = TABLE( CAPTION( this.caption ), TBODY( 
+		tableDOM = TABLE( CAPTION( { "innerHTML" : this.caption } ), TBODY( 
 						TR.map( this.matchData, function( rowData ){
 						  return [ 
 						  	TD( DIV() ), 
