@@ -7,16 +7,16 @@
   <div class="panel-body">
     <div class="table-responsive">
       <table class="mcq_option_table">
-          <tr ng-repeat="pair in element.practiceData">
-              <td class="unselected"><span ng-bind-html="pair[0]"></span></td>
-              <td style="vertical-align:middle;width:50px"></td>
-              <td class="unselected"><span ng-bind-html="pair[1]"></span></td>
-              <td>
-                <div class="pull-right" 
-                     ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
-                </div>
-              </td>
-          </tr>
+        <tr ng-repeat="pair in element.practiceData">
+            <td class="unselected"><span ng-bind-html="pair[0]"></span></td>
+            <td style="vertical-align:middle;width:50px"></td>
+            <td class="unselected"><span ng-bind-html="pair[1]"></span></td>
+            <td>
+              <div class="pull-right" 
+                   ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
+              </div>
+            </td>
+        </tr>
       </table>
     </div>
   </div>

@@ -6,9 +6,9 @@
   </div>
   <div class="panel-body">
     <div class="table-responsive">
-      <table class="table table-condensed table-striped table-hover">
+      <table class="table table-condensed table-striped table-hover" style="width:initial">
         <tr ng-repeat="pair in element.matchData">
-            <td class="text-primary"><span ng-bind-html="pair[0]"></span></td>
+            <td style="vertical-align:middle"><span class="text-primary" ng-bind-html="pair[0]"></span></td>
             <td style="vertical-align:middle">=</td>
             <td style="vertical-align:middle"><span ng-bind-html="pair[1]"></span></td>
             <td>
