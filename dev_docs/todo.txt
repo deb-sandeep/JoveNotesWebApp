@@ -12,6 +12,7 @@ Completed
 9/16/15 --
 . Captions of matching questions are now shown on notes and practice page
 . Matching questions are now segregated per notes element and not clubbed together
+. BUG - SpellBee was breaking - untested modifications :(
 
 9/15/15 --
 . Hardening of runtime average calculation of time taken per question

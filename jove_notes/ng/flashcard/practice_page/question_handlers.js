@@ -207,11 +207,11 @@ function ImageLabelHandler( chapterDetails, questionObj, textFormatter ) {
 // =============================================================================
 function SpellBeeHandler( chapterDetails, questionObj, textFormatter ) {
 
-	var manager = null ;
+	var manager        = null ;
 
 	this.initialize = function( $scope ){ 
 		
-		initializeScriptSupport( question, textFormatter ) ;
+		initializeScriptSupport( questionObj, textFormatter ) ;
 
 		manager = new SpellBeeManager( questionObj, $scope ) ;
 		manager.initialize() ;
