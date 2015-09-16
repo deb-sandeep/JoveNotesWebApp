@@ -8,10 +8,15 @@ $requestedPage = HTTPUtils::getValueFromSession(
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Bootstrap Example</title>
+    <title>JoveNotes login</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/lib-ext/bootstrap-3.3.4/css/bootstrap.css">
+
+    <head profile="http://www.w3.org/2005/10/profile">
+    <link rel="icon" type="image/ico"
+          href="/apps/_common/media/images/favicon.ico">
+
     <script src="/lib-ext/jquery/jquery-2.1.1.min.js"></script>
     <script src="/lib-ext/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script src="/lib-ext/bootbox/bootbox.min.js"></script>

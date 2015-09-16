@@ -403,6 +403,7 @@ function formatMatching( matchElement ) {
 		practiceData.push( pair ) ;
 	}
 
+	matchElement.caption = $scope.textFormatter.format( matchElement.caption ) ;
 	matchElement.practiceData = practiceData ;
 
 	return matchElement ;
