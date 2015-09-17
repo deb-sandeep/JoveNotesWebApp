@@ -210,7 +210,7 @@ $scope.rateCard = function( rating ) {
     $scope.questionsForSession.shift() ;
 
     processNextAction( nextAction ) ;
-    updateLearningStatsForCurrentQuestion( rating, nextLevel ) ;
+    updateLearningStatsForCurrentQuestion( rating, nextLevel, timeSpent ) ;
     updateLearningStatsForChapter( curLevel, nextLevel ) ;
     updateSessionStats() ;
 
@@ -271,11 +271,12 @@ function loadLocalState() {
     } ;
 }
 
-function updateLearningStatsForCurrentQuestion( rating, nextLevel ) {
+function updateLearningStatsForCurrentQuestion( rating, nextLevel, timeSpent ) {
 
     var delta = ( new Date().getTime() - currentQuestionShowStartTime - totalQuestionPauseTime )/1000 ;
 
     $scope.currentQuestion.learningStats.numAttempts++ ;
+    $scope.currentQuestion.learningStats.totalTimeSpent += timeSpent ;
     $scope.currentQuestion.learningStats.numAttemptsInSession++ ;
     $scope.currentQuestion.learningStats.currentLevel = nextLevel ;
     $scope.currentQuestion.learningStats.temporalScores.push( rating ) ;
