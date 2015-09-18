@@ -17,13 +17,17 @@ class ChapterNotesAPI extends AbstractJoveNotesAPI {
 
 		if( $this->isUserEntitledForNotes( $request->requestPathComponents[0] ) ) {
 
-			$respBody = array() ;
-			$respBody[ "chapterDetails" ] = $this->chapterDetail ;
-			$respBody[ "notesElements"  ] = $this->constructNotesElements() ;
+			// $respBody = array() ;
+			// $respBody[ "chapterDetails" ] = $this->chapterDetail ;
+			// $respBody[ "notesElements"  ] = $this->constructNotesElements() ;
 
+			// $response->responseCode = APIResponse::SC_OK ;
+			// $response->responseBody = $respBody ;
+
+			// Comment the following two lines and uncomment the above lines
+			// to revert to production mode.
 			$response->responseCode = APIResponse::SC_OK ;
-			$response->responseBody = $respBody ;
-			// $response->responseBody = $this->getReferenceOutput() ;
+			$response->responseBody = $this->getReferenceOutput() ;
 		}
 		else {
 			$response->responseCode = APIResponse::SC_ERR_UNAUTHORIZED ;
@@ -90,7 +94,7 @@ class ChapterNotesAPI extends AbstractJoveNotesAPI {
 	// back a prefabricated reference JSON.
 	private function getReferenceOutput() {
 		return file_get_contents( DOCUMENT_ROOT . 
-			       "/apps/jove_notes/api_test_data/notes/chapter_notes.json" ) ;
+			       "/apps/jove_notes/api_test_data/notes/notes_rtc_ne_sample.json" ) ;
 	}
 
 }
