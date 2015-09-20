@@ -9,6 +9,9 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+9/19/15 --
+. Created a formal download page for eclipse plugins.
+
 9/16/15 --
 . Captions of matching questions are now shown on notes and practice page
 . Matching questions are now segregated per notes element and not clubbed together
