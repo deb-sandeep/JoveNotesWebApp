@@ -22,16 +22,15 @@
 			},
 
 			"context": "RTC context text",
-			"questions": [{
-				"answer": "RTC Q1 Answer",
-				"question": "RTC Question 1"
-			}, {
-				"answer": "RTC Q2 Answer",
-				"question": "RTC Question 2"
-			}, {
-				"answer": "RTC Q3 Answer",
-				"question": "RTC Question 3"
-			}]
+			"notesElements": [{
+				"elementType": "question_answer",
+				"question": "QuestionAnswer - Question A",
+				"answer": "QuestionAnswer - Answer A"
+		    },{
+				"elementType": "question_answer",
+				"question": "QuestionAnswer - Question B",
+				"answer": "QuestionAnswer - Answer B"
+		    }]
 		}
 	]
 }

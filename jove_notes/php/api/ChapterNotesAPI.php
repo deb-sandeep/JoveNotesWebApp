@@ -17,17 +17,17 @@ class ChapterNotesAPI extends AbstractJoveNotesAPI {
 
 		if( $this->isUserEntitledForNotes( $request->requestPathComponents[0] ) ) {
 
-			// $respBody = array() ;
-			// $respBody[ "chapterDetails" ] = $this->chapterDetail ;
-			// $respBody[ "notesElements"  ] = $this->constructNotesElements() ;
+			$respBody = array() ;
+			$respBody[ "chapterDetails" ] = $this->chapterDetail ;
+			$respBody[ "notesElements"  ] = $this->constructNotesElements() ;
 
-			// $response->responseCode = APIResponse::SC_OK ;
-			// $response->responseBody = $respBody ;
+			$response->responseCode = APIResponse::SC_OK ;
+			$response->responseBody = $respBody ;
 
 			// Comment the following two lines and uncomment the above lines
 			// to revert to production mode.
-			$response->responseCode = APIResponse::SC_OK ;
-			$response->responseBody = $this->getReferenceOutput() ;
+			// $response->responseCode = APIResponse::SC_OK ;
+			// $response->responseBody = $this->getReferenceOutput() ;
 		}
 		else {
 			$response->responseCode = APIResponse::SC_ERR_UNAUTHORIZED ;

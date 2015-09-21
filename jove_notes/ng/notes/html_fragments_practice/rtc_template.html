@@ -10,10 +10,10 @@
   <div class="panel-body">
     <blockquote ng-bind-html="element.context"></blockquote>
     <table class="table table-condensed table-hover">
-      <tr ng-repeat="question in element.questions">
-          <td>
-            <p ng-bind-html="question.question" class="text-primary"></p>
-            <p ng-bind-html="question.ansRuler" style="padding-left:10px"></p>
+      <tr ng-repeat="ne in element.notesElements">
+          <td ng-if="ne.elementType == 'question_answer'">
+            <p ng-bind-html="ne.question" class="text-primary"></p>
+            <p ng-bind-html="ne.ansRuler" style="padding-left:10px"></p>
           </td>
       </tr>
     </table>

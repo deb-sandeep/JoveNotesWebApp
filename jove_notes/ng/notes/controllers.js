@@ -469,11 +469,56 @@ function formatEquation( eqElement ) {
 function formatRTC( rtcElement ) {
 
 	rtcElement.context = $scope.textFormatter.format( rtcElement.context ) ;
-	for( var i=0; i<rtcElement.questions.length; i++ ) {
-		var qa = rtcElement.questions[i] ;
-		qa.question = $scope.textFormatter.format( qa.question ) ;
-		qa.answer   = $scope.textFormatter.format( qa.answer ) ;
-		qa.ansRuler = getPrintRulers( qa.answer ) ;
+	for( var i=0; i<rtcElement.notesElements.length; i++ ) {
+
+		var ne = rtcElement.notesElements[i] ;
+		var type = ne.elementType ;
+
+		if( type == NotesElementsTypes.prototype.WM ) {
+			formatWM( ne ) ;
+		}
+		else if( type == NotesElementsTypes.prototype.QA ) {
+			formatQA( ne ) ;
+		}
+		else if( type == NotesElementsTypes.prototype.FIB ) {
+			formatFIB( ne ) ;
+		}
+		else if( type == NotesElementsTypes.prototype.DEFINITION ) {
+			formatDefinition( ne ) ;
+		}
+		else if( type == NotesElementsTypes.prototype.CHARACTER ) {
+			formatCharacter( ne ) ;
+		}
+		else if( type == NotesElementsTypes.prototype.TEACHER_NOTE ) {
+			formatTeacherNote( ne ) ;
+		}
+		else if( type == NotesElementsTypes.prototype.MATCHING ) {
+			formatMatching( ne ) ;
+		}
+		else if( type == NotesElementsTypes.prototype.EVENT ) {
+			formatEvent( ne ) ;
+		}
+		else if( type == NotesElementsTypes.prototype.TRUE_FALSE ) {
+			formatTrueFalse( ne ) ;
+		}
+		else if( type == NotesElementsTypes.prototype.CHEM_EQUATION ) {
+			formatChemEquation( ne ) ;
+		}
+		else if( type == NotesElementsTypes.prototype.CHEM_COMPOUND ) {
+			formatChemCompound( ne ) ;
+		}
+		else if( type == NotesElementsTypes.prototype.SPELLBEE ) {
+			formatSpellbeeWord( ne ) ;
+		}
+		else if( type == NotesElementsTypes.prototype.IMAGE_LABEL ) {
+			formatImageLabel( ne ) ;
+		}
+		else if( type == NotesElementsTypes.prototype.EQUATION ) {
+			formatEquation( ne ) ;
+		}
+		else if( type == NotesElementsTypes.prototype.MULTI_CHOICE ) {
+			formatMultiChoiceQuestion( ne ) ;
+		}
 	}
 	return rtcElement ;
 }
