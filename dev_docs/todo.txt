@@ -9,6 +9,9 @@ Pending dev cards
 ================================================================================
 Completed
 --------------------------------------------------------------------------------
+9/22/15 -- 
+. Implementation of nested RTC questions
+
 9/19/15 --
 . Created a formal download page for eclipse plugins.
 

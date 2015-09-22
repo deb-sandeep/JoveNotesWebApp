@@ -4,7 +4,18 @@ notesApp.directive( 'renderImageLabel', function( $sce ) {
 		restrict : 'E',
 		link : function( $scope, element, attributes ) {
 
-			var handler = new ImageLabelManager( $scope.element, $scope.textFormatter, $scope )
+			var questionObj = null ;
+			if( $scope.hasOwnProperty( 'element' ) ) {
+				questionObj = $scope.element ;
+			}
+			else if( $scope.$parent.hasOwnProperty( 'ne' ) ) {
+				questionObj = $scope.$parent.ne ;
+			}
+			else {
+				throw "Question Object for image label not found." ;
+			}
+
+			var handler = new ImageLabelManager( questionObj, $scope.textFormatter, $scope )
 
 			handler.initialize() ;
 			var answerUI = handler.getAnswerUI() ;
@@ -21,7 +32,18 @@ notesApp.directive( 'renderPracticeImageLabel', function( $sce ) {
 		restrict : 'E',
 		link : function( $scope, element, attributes ) {
 
-			var handler = new ImageLabelManager( $scope.element, $scope.textFormatter, $scope )
+			var questionObj = null ;
+			if( $scope.hasOwnProperty( 'element' ) ) {
+				questionObj = $scope.element ;
+			}
+			else if( $scope.$parent.hasOwnProperty( 'ne' ) ) {
+				questionObj = $scope.$parent.ne ;
+			}
+			else {
+				throw "Question Object for image label not found." ;
+			}
+
+			var handler = new ImageLabelManager( questionObj, $scope.textFormatter, $scope )
 
 			handler.initialize() ;
 			var questionUI = handler.getQuestionUI() ;

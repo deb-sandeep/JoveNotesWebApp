@@ -96,24 +96,36 @@
             <span class="text-primary" ng-bind-html="ne.symbol"></span>
           </p>
           <p style="padding-left:10px">
-            <span ng-bind-html="ne.chemicalName"></span>
-            <span ng-bind-html="ne.commonName"></span>
+            <span ng-if="ne.chemicalName != ''" class="text-muted">Chemical name - 
+              <span ng-bind-html="ne.chemicalName" class="text-success"></span><br>
+            </span>
+            <span ng-if="ne.commonName != null" class="text-muted">Common name - 
+              <span ng-bind-html="ne.commonName" class="text-success"></span>
+            </span>
           </p>
         </td>
-        <!--
-        <td ng-if="ne.elementType == 'spellbee'">
-              <p class="text-primary">) <span ng-bind-html="ne."></span></p>
-              <p ng-bind-html="ne." style="padding-left:10px"></p>
-        </td>
         <td ng-if="ne.elementType == 'image_label'">
-              <p class="text-primary">) <span ng-bind-html="ne."></span></p>
-              <p ng-bind-html="ne." style="padding-left:10px"></p>
+          <p>
+            <span class="label label-default" style="background:#C4C4C4;">Image label</span> 
+            <span class="text-primary" ng-bind-html="ne.caption"></span>
+          </p>
+          <div>
+            <render-image-label></render-image-label>
+          </div>
         </td>
         <td ng-if="ne.elementType == 'equation'">
-              <p class="text-primary">) <span ng-bind-html="ne."></span></p>
-              <p ng-bind-html="ne." style="padding-left:10px"></p>
+          <p>
+            <span class="label label-default" style="background:#C4C4C4;">Equation</span> 
+            <span class="text-primary" ng-bind-html="ne.equation"></span>
+          </p>
+          <p class="text-muted" ng-bind-html="ne.description"></p>
+          <table class="table table-condensed">
+              <tr ng-repeat="symbol in ne.symbols">
+              <td><span ng-bind-html="symbol[0]"></span></td>
+              <td><span ng-bind-html="symbol[1]"></span></td>
+          </tr>
+          </table>
         </td>
-        -->
         <td ng-if="ne.elementType == 'multi_choice'">
           <p>
             <span class="label label-default" style="background:#C4C4C4;">Q</span> 

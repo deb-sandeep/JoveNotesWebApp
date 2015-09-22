@@ -109,8 +109,9 @@ function TFHandler( chapterDetails, questionObj, textFormatter ) {
 
 	this.getQuestionUI = function() {
 
+		var fmtStatement = textFormatter.format( question.statement ) ;
 		return DIV( P( { 'class' : 'text-primary' }, 
-			           STRONG( P( { innerHTML : question.statement } ) ),
+			           STRONG( P( { innerHTML : fmtStatement } ) ),
 		               P(), 
 		               trueBtn, SPAN( " " ), falseBtn 
 		             ) 

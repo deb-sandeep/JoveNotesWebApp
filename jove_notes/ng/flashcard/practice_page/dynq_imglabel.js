@@ -84,7 +84,7 @@ function ImageLabelManager( questionObj, textFormatter, $scope ) {
 
 	this.initialize = function() {
 
-		this.caption     = this.questionObj.caption ;
+		this.caption     = textFormatter.format( this.questionObj.caption ) ;
 		this.imgPath     = textFormatter.getAbsolutePathForImage( this.questionObj.imageName ) ;
 		this.numHotSpots = this.questionObj.hotSpots.length ;
 		this.numHotSpotsLeftToMatch = this.numHotSpots ;
