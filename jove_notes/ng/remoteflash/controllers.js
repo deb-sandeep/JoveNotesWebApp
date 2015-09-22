@@ -48,7 +48,7 @@ $scope.timePerQuestion = 0 ;
 $scope.userScore       = 0 ;
 $scope.currentQuestion = null ;
 $scope.answerAlign     = "center" ;
-$scope.bodyDivStyle    = { top : 75 } ;
+$scope.bodyDivStyle    = { top : 90 } ;
 
 $scope.showQuestionTrigger = "" ;
 $scope.showAnswerTrigger   = "" ;
