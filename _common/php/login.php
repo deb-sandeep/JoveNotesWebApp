@@ -76,6 +76,8 @@ $requestedPage = HTTPUtils::getValueFromSession(
               class="form-control"
               placeholder="Enter password">
             </div>
+            <input type="hidden" name="default_app" value="jove_notes">
+            <!--
             <div class="form-group">
               <label for="default_app_element">Default application:</label>
               <select id="default_app_element"
@@ -84,6 +86,7 @@ $requestedPage = HTTPUtils::getValueFromSession(
                 <option value="jove_notes" selected>Jove Notes</option>
               </select>
             </div>
+            -->
             <div class="checkbox">
               <label><input type="checkbox" name="remember_me"> Remember me</label>
             </div>
