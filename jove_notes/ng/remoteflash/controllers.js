@@ -99,6 +99,7 @@ function runMesssageFetchPump() {
     $http.get( "/jove_notes/api/RemoteFlashMessage?lastMessageId=" + lastMessageId )
     .success( function( data ){
         if( Array.isArray( data ) ) {
+
             for( var i=0; i<data.length; i++ ) {
 
                 // If we recieve a start_session message, we purge out everything
@@ -109,8 +110,8 @@ function runMesssageFetchPump() {
                 } 
 
                 messages.push( data[i] ) ;
-                if( i == data.length -1 ) {
-                    lastMessageId = data[ i ].id ;
+                if( i === ( data.length - 1 ) ) {
+                    lastMessageId = data[i].id ;
                 }
             }
         }
@@ -174,9 +175,11 @@ function resumeSession() {
     $( 'body' ).removeClass('modal-open') ;
     $( '.modal-backdrop' ).remove() ;
 
-    var pauseTime = new Date().getTime() - resumeModalShowTime ;
-    totalSessionPauseTime  += pauseTime ;
-    totalQuestionPauseTime += pauseTime ;
+    if( resumeModalShowTime != 0 ) {
+        var pauseTime = new Date().getTime() - resumeModalShowTime ;
+        totalSessionPauseTime  += pauseTime ;
+        totalQuestionPauseTime += pauseTime ;
+    }
 
     resumeModalShowTime = 0 ;
 }
