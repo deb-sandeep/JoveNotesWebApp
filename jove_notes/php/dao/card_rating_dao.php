@@ -51,7 +51,7 @@ where
   cr.student_name = '$userName' and 
   cr.timestamp between '$startDate' and '$endDate' 
 group by 
-  date, subject_name 
+  date, subject_name, chapter_name 
 order by 
   cr.timestamp desc 
 QUERY;
@@ -76,7 +76,7 @@ where
   cr.student_name = '$userName' and 
   cr.timestamp between '$startDate' and '$endDate' 
 group by 
-  date, subject_name 
+  date, subject_name, chapter_name 
 order 
   by cr.timestamp desc 
 QUERY;
