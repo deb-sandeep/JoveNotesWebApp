@@ -13,6 +13,10 @@ dashboardApp.config(['$routeProvider',
             templateUrl: '/apps/jove_notes/ng/dashboard/reports/main.html',
             controller: 'ReportsController'
         })
+        .when('/Pivots', {
+            templateUrl: '/apps/jove_notes/ng/dashboard/pivots/main.html',
+            controller: 'PivotsController'
+        })
         .when('/ChapterProgressSnapshot/:chapterId', {
             templateUrl: '/apps/jove_notes/ng/dashboard/chapter_progress_snapshot/main.html',
             controller: 'ChapterProgressSnapshotController'

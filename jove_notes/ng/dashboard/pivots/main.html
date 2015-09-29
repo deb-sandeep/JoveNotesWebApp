@@ -1,0 +1,19 @@
+<div style="padding-left:0px;padding-right:0px">
+    <div style="height:10px"></div>
+	<div class="row">
+	    <div class="col-sm-4">
+	        <div id="reportrange"
+	             style="cursor: pointer; padding: 5px 5px; border: 1px solid #ccc;float:left">
+	            <span></span> <b class="caret"></b>
+	        </div>
+	    </div>
+	    <div class="col-sm-8">
+            <input id="timeSpentRB" type="radio" ng-model="preferences.entityType" value="Time" > 
+            <label for="timeSpentRB"> Time spent </label> |
+
+            <input id="numQRB" type="radio" ng-model="preferences.entityType" value="NumQuestions">
+            <label for="numQRB"> Num questions </label>
+	    </div>
+	</div>
+</div>
+<div id="pivot_table_div" align="center"></div>
