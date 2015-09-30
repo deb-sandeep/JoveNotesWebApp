@@ -34,8 +34,6 @@ class StudentScoreDAO extends AbstractDAO {
 
     function updateScore( $chapterId, $userName, $incrementValue ) {
 
-        if( $incrementValue == 0 ) return ;
-
         parent::executeInsert(
                 "insert into jove_notes.student_score " .
                 "( student_name, score_type, score, subject_name, chapter_id, last_update ) " .
@@ -50,15 +48,17 @@ class StudentScoreDAO extends AbstractDAO {
                 ")"
             ) ;
 
-        parent::executeUpdate( 
-                "update jove_notes.student_score " .
-                "set " .
-                " score = score + $incrementValue, " .
-                " last_update = CURRENT_TIMESTAMP " .
-                "where " .
-                " student_name = '$userName' and " .
-                " score_type = 'TOT'"
-            ) ;
+        if( $incrementValue != 0 ) {
+            parent::executeUpdate( 
+                    "update jove_notes.student_score " .
+                    "set " .
+                    " score = score + $incrementValue, " .
+                    " last_update = CURRENT_TIMESTAMP " .
+                    "where " .
+                    " student_name = '$userName' and " .
+                    " score_type = 'TOT'"
+                ) ;
+        }
     }
 
     function addPoints( $userName, $subject, $points, $notes ) {

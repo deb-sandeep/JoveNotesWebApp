@@ -29,6 +29,9 @@ $scope.$watch( 'preferences', function( oldValue, newValue ){
 }, true ) ;
 
 // ---------------- Controller methods -----------------------------------------
+$scope.refresh = function() {
+    callPivotAPI() ;
+}
 
 // ---------------- Private functions ------------------------------------------
 function initializeDateRange() {
@@ -130,6 +133,7 @@ function refreshTable( data ) {
 
     pivotTable.initializePivotTable( [ "Date", "Subject", "Chapter" ], "Subject", "Value" ) ;
     pivotTable.renderPivotTable( "pivot_table_div", pivotTitle, renderHelperCallback ) ;
+    pivotTable.expandFirstRow() ;
 }
 
 function renderHelperCallback( rowIndex, colIndex, cellData ) {
