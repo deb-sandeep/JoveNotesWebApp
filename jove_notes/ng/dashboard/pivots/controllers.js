@@ -14,7 +14,7 @@ $scope.preferences = {
 
 	entityType : 'Time',
 	dateRange : {
-		startDate : moment().subtract( 15, 'days').startOf('day').toDate(),
+		startDate : moment().subtract( 6, 'days').startOf('day').toDate(),
 		endDate : moment().endOf('day').toDate()
 	},
 } ;
