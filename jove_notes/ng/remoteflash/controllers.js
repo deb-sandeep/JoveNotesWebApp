@@ -264,6 +264,9 @@ function processStartSessionMessage( message ) {
                                       $scope.learningCurveData ) ;
 
     $scope.currentScreen = $scope.SCREEN_SESSION_SETTINGS ;
+
+    totalSessionPauseTime  = 0 ;
+    totalQuestionPauseTime = 0 ;
     waitingForUserAcceptance = true ;
 }
 
