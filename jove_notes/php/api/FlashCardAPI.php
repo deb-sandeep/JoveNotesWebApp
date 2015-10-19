@@ -165,6 +165,7 @@ class FlashCardAPI extends AbstractJoveNotesAPI {
 		$question[ "difficultyLevel" ] = $card[ "difficulty_level" ] ;
 		$question[ "evalVars"        ] = $this->encodeEvalVars( $card[ "eval_vars" ] ) ;
 		$question[ "scriptBody"      ] = base64_encode( $card[ "script_body" ] ) ;
+		$question[ "markedForReview" ] = $card[ "marked_for_review" ] ;
 
 		$this->injectCardContent( $question, $card[ "content" ] ) ;
 

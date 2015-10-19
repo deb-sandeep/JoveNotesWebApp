@@ -46,6 +46,18 @@ QUERY;
 		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
 	}
 
+	function markForReview( $userName, $cardId ) {
+
+$query = <<< QUERY
+update jove_notes.notes_element 
+set marked_for_review = 1 
+where notes_element_id = ( 
+	select notes_element_id 
+	from jove_notes.card 
+	where card_id = $cardId 
+) 
+QUERY;
+		parent::executeUpdate( $query ) ;
+	}
 }
 ?>
-

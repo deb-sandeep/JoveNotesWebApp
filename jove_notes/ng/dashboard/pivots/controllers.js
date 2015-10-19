@@ -175,9 +175,6 @@ function renderHelperCallback( rowIndex, colIndex, cellData ) {
 
 
 // ---------------- Server calls -----------------------------------------------
-// TODO: 2. Save the data somewhere
-// TODO: 3. Implement refreshTable
-// TODO: 4. Revisit stylesheet for the table
 function callPivotAPI() {
 
 	var startMoment = moment( $scope.preferences.dateRange.startDate ) ;

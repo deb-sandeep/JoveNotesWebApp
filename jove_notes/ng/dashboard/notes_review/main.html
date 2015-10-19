@@ -1,0 +1,11 @@
+<p>
+<div style="padding-left:10px">
+    <uib-accordion close-others="true">
+        <uib-accordion-group ng-repeat="group in groups" panel-class="panel-info">
+            <uib-accordion-heading>
+                <span ng-click="accordionTabClicked( group, $index )">{{group.title}}</span>
+            </uib-accordion-heading>        
+            {{group.content}}
+        </uib-accordion-group>
+    </uib-accordion>
+</div>

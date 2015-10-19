@@ -30,6 +30,20 @@ QUERY;
 		return parent::getResultAsAssociativeArray( $query, $colNames ) ;
 	}
 
+	function getPeerCardIds( $cardId ) {
+
+$query = <<< QUERY
+select card_id 
+from jove_notes.card 
+where notes_element_id = (
+		select notes_element_id 
+		from jove_notes.card 
+		where card_id = $cardId 
+	)
+QUERY;
+
+		return parent::getResultAsArray( $query ) ;
+	}
 }
 ?>
 

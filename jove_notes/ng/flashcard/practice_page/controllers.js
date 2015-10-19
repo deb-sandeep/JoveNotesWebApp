@@ -259,6 +259,27 @@ $scope.pushQuestion = function() {
     callRFMApiToPushQuestion( 0 ) ;
 }
 
+$scope.markForReview = function() {
+    callMarkForReviewAPI( $scope.currentQuestion.questionId, function( cardIds ){
+        for( var i=0; i<cardIds.length; i++ ) {
+
+            var markedCardId = cardIds[i] ;
+
+            if( $scope.currentQuestion.questionId == markedCardId ) {
+                $scope.currentQuestion.markedForReview = true ;
+            }
+            else {
+                for( var j=0; j<$scope.questionsForSession.length; j++ ) {
+                    var question = $scope.questionsForSession[j] ;
+                    if( question.questionId = markedCardId ) {
+                        question.questionId.markedForReview = true ;
+                    }
+                }
+            }
+        }
+    } ) ;
+}
+
 // ---------------- Private functions ------------------------------------------
 function loadLocalState() {
 
@@ -803,6 +824,30 @@ function updateScore() {
 }
 
 // ---------------- Server calls -----------------------------------------------
+function callMarkForReviewAPI( cardId, successCallback ) {
+
+    log.debug( "Calling mark for review API for card " + cardId ) ;
+
+    $http.post( '/jove_notes/api/NEReview', { 
+        cardId : cardId
+    })
+    .success( function( data ){
+        if( typeof data === 'string' ) {
+            $scope.addErrorAlert( "Mark for Review API call failed. " + 
+                                  "Server says - " + data ) ;
+        }
+        else {
+            successCallback( data ) ;
+        }
+    })
+    .error( function( data ){
+        var message = "Could not mark card for review." ;
+        log.error( message ) ;
+        log.error( "Server says - " + data ) ;
+        $scope.addErrorAlert( message ) ;
+    }) ;
+}
+
 /**
  * This function calls on the GradeCardAPI, submitting the details of the 
  * card that was rated and expecting back the score earned from the server.

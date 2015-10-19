@@ -26,12 +26,12 @@
     	<span class="badge L3">{{$parent.progressSnapshot.numL3}}</span>
     	<span class="badge MAS">{{$parent.progressSnapshot.numMAS}}</span>
     </div>
-    <div class="col-sm-3 small" style="text-align:right;">
+    <div class="col-sm-4 small" style="text-align:center;">
         <span class="badge L1">{{pointsLostInThisSession}}</span>
         <span class="badge NS">{{userScore}}</span>
         <span class="badge L3">{{pointsEarnedInThisSession}}</span>
     </div>
-    <div class="col-sm-6 small" style="text-align:right;">
+    <div class="col-sm-5 small" style="text-align:right;">
     	NC - <span class="badge muted">{{$parent.sessionStats.numCards}}</span>&nbsp;.&nbsp;
     	NL - <span class="badge muted">{{$parent.sessionStats.numCardsLeft}}</span>&nbsp;.&nbsp;
     	NA - <span class="badge muted">{{$parent.sessionStats.numCardsAnswered}}</span>&nbsp;.&nbsp;
@@ -86,11 +86,8 @@
             <span class="badge {{currentQuestion.learningStats.efficiencyLabel}}">{{currentQuestion.learningStats.efficiencyLabel}}</span>
             <span class="badge muted">{{currentQuestion.learningStats.numAttempts}}</span>
             <span class="badge muted">{{currentQuestion.learningStats.lastAttemptTime | elapsedDuration}}</span>
+            <span class="badge C1" ng-show="currentQuestion.markedForReview">Review</span>
             {{currentQuestion.learningStats.absoluteLearningEfficiency}} 
-            <span style="color:white">
-                Avg Time: {{currentQuestion.learningStats.averageTimeSpent}} | 
-                ID : {{currentQuestion.questionId}}
-            </span>
             <table class="temporal">
                 <tr>
                     <td ng-repeat="score in currentQuestion.learningStats.temporalScores track by $index"
