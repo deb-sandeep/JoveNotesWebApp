@@ -1,11 +1,16 @@
 <p>
 <div style="padding-left:10px">
     <uib-accordion close-others="true">
-        <uib-accordion-group ng-repeat="group in groups" panel-class="panel-info">
+        <uib-accordion-group ng-repeat="chapter in chapters" panel-class="panel-info">
             <uib-accordion-heading>
-                <span ng-click="accordionTabClicked( group, $index )">{{group.title}}</span>
+                <span ng-click="accordionTabClicked( chapter )">
+					{{chapter.syllabusName}} : {{chapter.subjectName}} 
+					- {{chapter.chapterNum}}.{{chapter.subChapterNum}} 
+					{{chapter.chapterName}} 
+					<b>({{chapter.numReviewItems}})</b>
+                </span>
             </uib-accordion-heading>        
-            {{group.content}}
+            Content goes here
         </uib-accordion-group>
     </uib-accordion>
 </div>
