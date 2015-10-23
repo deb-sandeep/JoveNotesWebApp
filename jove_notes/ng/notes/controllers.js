@@ -114,8 +114,6 @@ $scope.playWordSound = function( word ) {
 }
 
 $scope.playSoundClip = function( clipName ) {
-
-	alert( clipName ) ;
 	
 	var audioFolder = jnUtil.getAudioResourcePath( $scope.chapterDetails ) ;
 	var clipPath = audioFolder + clipName ;
@@ -181,7 +179,7 @@ function processNotesElements() {
 
 	for( index=0; index<$scope.notesElements.length; index++ ) {
 
-		var element = $scope.notesElements[ index ] ;
+		var element = jQuery.extend( true, {}, $scope.notesElements[ index ] ) ;
 		var type    = element.elementType ;
 
 		neFormatter.preProcessElement( element ) ;
@@ -189,7 +187,6 @@ function processNotesElements() {
 
 		if( qualifiesFilter( element ) ) {
 
-			$scope.textFormatter.setCurrentObject( element ) ;
 			$scope.filteredNotesElements.push( element ) ;
 
 			if( type == NotesElementsTypes.prototype.WM ) {
@@ -246,6 +243,10 @@ function processNotesElements() {
 			//	       " did not meet filter criteria." ) ;
 		}
 	}
+
+ 	setTimeout( function(){
+ 		MathJax.Hub.Queue( [ "Typeset", MathJax.Hub ] ) 
+ 	}, 100 ) ;
 }
 
 function qualifiesFilter( element ) {

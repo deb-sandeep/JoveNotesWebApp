@@ -45,7 +45,20 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
     <script src="/lib-ext/daterangepicker/daterangepicker.js"></script> 
     <link rel="stylesheet" href="/lib-ext/daterangepicker/daterangepicker-bs3.css">
 
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ 
+            TeX: { extensions: ["mhchem.js"] },
+            displayAlign: "left"
+        });
+    </script>
+    <script src="/lib-ext/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="/lib-ext/math/math.min.js"></script>    
+
     <script src="/lib-app/js/simple_pivot/simple_pivot.js"></script> 
+    <script src="/apps/jove_notes/ng/_common/jove_notes_utils.js"></script>    
+    <script src="/apps/jove_notes/ng/_common/question_utils.js"></script>    
+    <script src="/apps/jove_notes/ng/_common/script_utilities.js"></script>    
+    <script src="/apps/jove_notes/ng/notes/ne_formatter.js"></script>    
 
     <script src="/apps/jove_notes/ng/dashboard/routes.js"></script>    
     <script src="/apps/jove_notes/ng/dashboard/controllers.js"></script>    

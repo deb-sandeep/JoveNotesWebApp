@@ -38,6 +38,7 @@ function NotesElementFormatter( chapterDetails, $sce ) {
 	}
 
 	this.formatWM = function( wmElement ){
+		
 		return wmElement ;
 	}
 
@@ -67,6 +68,7 @@ function NotesElementFormatter( chapterDetails, $sce ) {
 	}
 
 	this.formatQA = function( qaElement ){
+
 		qaElement.question = textFormatter.format( qaElement.question ) ;
 		qaElement.answer   = textFormatter.format( qaElement.answer ) ;
 		qaElement.ansRuler = getPrintRulers( qaElement.answer ) ;
@@ -75,6 +77,7 @@ function NotesElementFormatter( chapterDetails, $sce ) {
 	}
 
 	this.formatDefinition = function( defElement ) {
+
 		defElement.term       = textFormatter.format( defElement.term ) ;
 		defElement.definition = textFormatter.format( defElement.definition ) ;
 		defElement.ansRuler   = getPrintRulers( defElement.definition ) ;
@@ -83,6 +86,7 @@ function NotesElementFormatter( chapterDetails, $sce ) {
 	}
 
 	this.formatCharacter = function( charElement ) {
+
 		charElement.character = textFormatter.format( charElement.character ) ;
 		charElement.estimate  = textFormatter.format( charElement.estimate ) ;
 		charElement.ansRuler  = getPrintRulers( charElement.estimate ) ;
@@ -91,6 +95,7 @@ function NotesElementFormatter( chapterDetails, $sce ) {
 	}
 
 	this.formatTeacherNote = function( tnElement ) {
+
 		tnElement.note = textFormatter.format( tnElement.note ) ;
 
 		// Backward compatibility for all those teacher notes elements which 
@@ -135,6 +140,7 @@ function NotesElementFormatter( chapterDetails, $sce ) {
 	}
 
 	this.formatEvent = function( eventElement ) {
+
 		eventElement.time = textFormatter.format( eventElement.time ) ;
 		eventElement.event = textFormatter.format( eventElement.event ) ;
 
@@ -142,6 +148,7 @@ function NotesElementFormatter( chapterDetails, $sce ) {
 	}
 
 	this.formatTrueFalse = function( tfElement ) {
+
 		tfElement.statement = textFormatter.format( tfElement.statement ) ;
 		tfElement.justification = textFormatter.format( tfElement.justification ) ;
 
@@ -149,6 +156,7 @@ function NotesElementFormatter( chapterDetails, $sce ) {
 	}
 
 	this.formatChemEquation = function( chemEqElement ) {
+
 		chemEqElement.description = textFormatter.format( chemEqElement.description ) ;
 		chemEqElement.notes = textFormatter.format( chemEqElement.notes ) ;
 
@@ -192,7 +200,6 @@ function NotesElementFormatter( chapterDetails, $sce ) {
 	}
 
 	this.formatRTC = function( rtcElement ) {
-
 		rtcElement.context = textFormatter.format( rtcElement.context ) ;
 		for( var i=0; i<rtcElement.notesElements.length; i++ ) {
 
@@ -249,7 +256,6 @@ function NotesElementFormatter( chapterDetails, $sce ) {
 	}
 
 	this.formatMultiChoiceQuestion = function( mcElement ) {
-
 		mcElement.question = textFormatter.format( mcElement.question ) ;
 		mcElement.answer = textFormatter.format( mcElement.answer ) ;
 
