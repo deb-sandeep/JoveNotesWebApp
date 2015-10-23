@@ -12,6 +12,8 @@ $scope.reportTitle           = 'Notes Review' ;
 
 $scope.chapters = [];
 
+$scope.notesElements = [] ;
+
 $scope.wordMeanings          = [] ;
 $scope.questionAnswers       = [] ;
 $scope.fibs                  = [] ;
@@ -41,7 +43,6 @@ $scope.accordionTabClicked = function( chapter ) {
     if( chapter != currentOpenedChapter ) {
         if( currentOpenedChapter != null ) {
             currentOpenedChapter.open = false ;
-            currentOpenedChapter.notesElements.length = 0 ;
         }
         currentOpenedChapter = chapter ;
     }
@@ -49,9 +50,17 @@ $scope.accordionTabClicked = function( chapter ) {
     if( chapter.open ) {
         callChapterNotesAPI( chapter.chapterId ) ;
     }
-    else {
-        chapter.notesElements.length = 0 ;
-    }
+}
+
+$scope.markReviewed = function( element ) {
+    callNEReviewAPItoMarkReviewed( element.noteElementId, function(){
+        var index = $scope.notesElements.indexOf( element ) ;
+        if( index > -1 ) {
+            $scope.notesElements.splice( index, 1 ) ;
+            currentOpenedChapter.numReviewItems-- ;
+            processNotesElements() ;
+        }
+    } ) ;
 }
 
 // ---------------- Private functions ------------------------------------------
@@ -61,8 +70,6 @@ function processChapterList( chapterList ) {
 
         var chapter = chapterList[index] ;
         chapter.open = false ;
-        chapter.notesElements = [] ;
-
         $scope.chapters.push( chapter ) ;
     }
 }
@@ -76,11 +83,13 @@ function processServerData( data ) {
     }
     
     neFormatter = new NotesElementFormatter( data.chapterDetails, $sce ) ;
-    processNotesElements( data.notesElements ) ;
-    setTimeout( hljs.initHighlighting, 1000 ) ;
+    $scope.notesElements = data.notesElements ;
+    processNotesElements() ;
 }
 
-function processNotesElements( notesElements ) {
+function processNotesElements() {
+
+    currentOpenedChapter.numReviewItems = $scope.notesElements.length ;
 
     // Reset all the arrrays before we fill them with filtered contents
     $scope.wordMeanings.length          = 0 ;
@@ -100,11 +109,12 @@ function processNotesElements( notesElements ) {
     $scope.referenceToContexts.length   = 0 ;
     $scope.multiChoiceQuestions.length  = 0 ;
 
-    for( index=0; index<notesElements.length; index++ ) {
+    for( index=0; index<$scope.notesElements.length; index++ ) {
 
-        var element = notesElements[ index ] ;
+        var element = $scope.notesElements[ index ] ;
         var type    = element.elementType ;
 
+        element.inReview = true ;
         neFormatter.preProcessElement( element ) ;
         neFormatter.initializeScriptSupport( element ) ;
 
@@ -160,7 +170,8 @@ function processNotesElements( notesElements ) {
 
     setTimeout( function(){
         MathJax.Hub.Queue( [ "Typeset", MathJax.Hub ] ) 
-    }, 100 ) ;    
+    }, 100 ) ;  
+    setTimeout( hljs.initHighlighting, 100 ) ;
 }
 
 // ---------------- Server calls -----------------------------------------------
@@ -173,6 +184,24 @@ function callNEReviewAPIForChapterList() {
     .error( function( data ){
         log.error( "API error " + data ) ;
         $scope.addErrorAlert( "API error " + data ) ;
+    }) ;
+}
+
+function callNEReviewAPItoMarkReviewed( notesElementId, callback ) {
+
+    $http.post( '/jove_notes/api/NEReview', { 
+        opType : 'mark_reviewed',
+        noteElementId : notesElementId
+    })
+    .success( function( data ){
+        log.debug( data ) ;
+        callback() ;
+    })
+    .error( function( data ){
+        var message = "Could not mark notes element " + notesElementId + " as reviewed." ;
+        log.error( message ) ;
+        log.error( "Server says - " + data ) ;
+        $scope.addErrorAlert( message ) ;
     }) ;
 }
 

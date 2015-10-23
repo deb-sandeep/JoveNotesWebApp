@@ -829,6 +829,7 @@ function callMarkForReviewAPI( cardId, successCallback ) {
     log.debug( "Calling mark for review API for card " + cardId ) ;
 
     $http.post( '/jove_notes/api/NEReview', { 
+        opType : 'mark_for_review',
         cardId : cardId
     })
     .success( function( data ){

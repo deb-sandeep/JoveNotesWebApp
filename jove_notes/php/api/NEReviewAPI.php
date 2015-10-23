@@ -17,14 +17,27 @@ class NEReviewAPI extends AbstractJoveNotesAPI {
 	public function doPost( $request, &$response ) {
 
 		$this->logger->debug( "Executing doPost in NEReviewAPI" ) ;
-		$cardId = $request->requestBody->cardId ;
+		$operationType = $request->requestBody->opType ;
 
-		$this->logger->debug( "Marking $cardId and its peers for review" ) ;
-		$this->neDAO->markForReview( ExecutionContext::getCurrentUserName(),
-			                         $cardId ) ;
+		if( $operationType == 'mark_for_review' ) {
 
-		$response->responseCode = APIResponse::SC_OK ;
-		$response->responseBody = $this->cardDAO->getPeerCardIds( $cardId ) ;
+			$cardId = $request->requestBody->cardId ;
+			$this->markForReview( $cardId ) ;
+
+			$response->responseBody = $this->cardDAO->getPeerCardIds( $cardId ) ;
+			$response->responseCode = APIResponse::SC_OK ;
+		}
+		else if( $operationType == 'mark_reviewed' ) {
+			$this->markReviewed( $request->requestBody->noteElementId ) ;
+			$response->responseCode = APIResponse::SC_OK ;
+			$response->responseBody = "NE " . $request->requestBody->noteElementId . 
+			                          " marked as reviewed." ;
+		}
+		else {
+			$response->responseCode = APIResponse::SC_ERR_BAD_REQUEST ;
+			$response->responseBody = "NE " . $request->requestBody->noteElementId . 
+			                          " marked for review." ;
+		}
 	}
 
 	public function doGet( $request, &$response ) {
@@ -81,6 +94,21 @@ class NEReviewAPI extends AbstractJoveNotesAPI {
 		}
 
 		return $chapterList ;
+	}
+
+	private function markForReview( $cardId ) {
+
+		$this->logger->debug( "Marking $cardId and its peers for review" ) ;
+		$this->neDAO->markForReview( ExecutionContext::getCurrentUserName(),
+			                         $cardId ) ;
+
+	}
+
+	private function markReviewed( $noteElementId ) {
+
+		$this->logger->debug( "Marking $noteElementId as reviewed." ) ;
+		$this->neDAO->markReviewed( ExecutionContext::getCurrentUserName(),
+			                        $noteElementId ) ;
 	}
 }
 ?>

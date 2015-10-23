@@ -66,6 +66,16 @@ QUERY;
 		parent::executeUpdate( $query ) ;
 	}
 
+	function markReviewed( $userName, $noteElementId ) {
+
+$query = <<< QUERY
+update jove_notes.notes_element 
+set marked_for_review = 0 
+where notes_element_id = $noteElementId 
+QUERY;
+		parent::executeUpdate( $query ) ;
+	}
+
 	function getChapterListOfNoteElementsMarkedForReview() {
 
 $query = <<< QUERY
