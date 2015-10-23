@@ -54,6 +54,15 @@
         <div class="pull-right">
 
             <button type="button" 
+                    class="btn btn-info btn-lg"
+                    ng-click="purgeCard()"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Purge Card"
+                    ng-show="currentQuestion.markedForReview">
+                <span class="glyphicon glyphicon-export"></span>
+            </button>
+
+            <button type="button" 
                     class="btn btn-warning btn-lg"
                     ng-click="pauseSession()"
                     data-toggle="tooltip" data-placement="top" 
@@ -232,6 +241,15 @@
                     data-toggle="tooltip" data-placement="top" 
                     title="Pause Session">
                 <span class="glyphicon glyphicon-pause"></span>
+            </button>
+
+            <button type="button" 
+                    class="btn btn-info btn-lg"
+                    ng-click="purgeCard()"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Purge Card"
+                    ng-show="currentQuestion.markedForReview">
+                <span class="glyphicon glyphicon-export"></span>
             </button>
         </div>
 
