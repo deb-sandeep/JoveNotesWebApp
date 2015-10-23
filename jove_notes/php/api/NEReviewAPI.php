@@ -60,19 +60,24 @@ class NEReviewAPI extends AbstractJoveNotesAPI {
 		$chapterList = array() ;
 
 		$chaptersMap = $this->neDAO->getChapterListOfNoteElementsMarkedForReview() ;
+
 		foreach( $chaptersMap as $chapter ) {
 
-			$element = array() ;
+			$chapterGuard = $chapter[ "guard" ] ; 
+			if( Authorizer::hasAccess( $chapterGuard, "NOTES" ) ) {
+				
+				$element = array() ;
 
-			$element[ "chapterId"       ] = $chapter[ "chapter_id"       ] ;
-			$element[ "syllabusName"    ] = $chapter[ "syllabus_name"    ] ;
-			$element[ "subjectName"     ] = $chapter[ "subject_name"     ] ;
-			$element[ "chapterNum"      ] = $chapter[ "chapter_num"      ] ;
-			$element[ "subChapterNum"   ] = $chapter[ "sub_chapter_num"  ] ;
-			$element[ "chapterName"     ] = $chapter[ "chapter_name"     ] ;
-			$element[ "numReviewItems"  ] = $chapter[ "num_review_items" ] ;
+				$element[ "chapterId"       ] = $chapter[ "chapter_id"       ]  ;
+				$element[ "syllabusName"    ] = $chapter[ "syllabus_name"    ] ;
+				$element[ "subjectName"     ] = $chapter[ "subject_name"     ] ;
+				$element[ "chapterNum"      ] = $chapter[ "chapter_num"      ] ;
+				$element[ "subChapterNum"   ] = $chapter[ "sub_chapter_num"  ] ;
+				$element[ "chapterName"     ] = $chapter[ "chapter_name"     ] ;
+				$element[ "numReviewItems"  ] = $chapter[ "num_review_items" ] ;
 
-			array_push( $chapterList, $element ) ;
+				array_push( $chapterList, $element ) ;
+			}
 		}
 
 		return $chapterList ;

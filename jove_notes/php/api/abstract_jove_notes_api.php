@@ -38,8 +38,6 @@ class AbstractJoveNotesAPI extends API {
 
 		$this->constructChapterDetails( $chapterId ) ;
 		if( !Authorizer::hasAccess( $this->chapterGuard, $op ) ) {
-			$response->responseCode = APIResponse::SC_ERR_UNAUTHORIZED ;
-			$response->responseBody = "Unauthorized access." ;
 			return false ;
 		}
 		return true ;

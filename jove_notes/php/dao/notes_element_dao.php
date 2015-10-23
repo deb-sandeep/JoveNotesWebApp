@@ -65,7 +65,13 @@ QUERY;
 $query = <<< QUERY
 select c.chapter_id, c.syllabus_name, c.subject_name, c.chapter_num, 
        c.sub_chapter_num, c.chapter_name, 
-       count( ne.notes_element_id ) as num_review_items 
+       count( ne.notes_element_id ) as num_review_items, 
+       concat( "chapter:", 
+       	       c.syllabus_name, "/", 
+       	       c.subject_name, "/", 
+       	       c.chapter_num, "/", 
+       	       c.sub_chapter_num, "/", 
+       	       c.chapter_name ) as guard
 from 
 	jove_notes.chapter c, 
 	jove_notes.notes_element ne 
@@ -81,7 +87,7 @@ QUERY;
 
 		$colNames = [ "chapter_id", "syllabus_name", "subject_name", 
 		              "chapter_num", "sub_chapter_num", "chapter_name", 
-		              "num_review_items" ] ;
+		              "num_review_items", "guard" ] ;
 
 		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
 	}
