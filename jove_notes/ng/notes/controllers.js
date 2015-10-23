@@ -30,7 +30,8 @@ function FilterCriteria() {
 }
 
 // ---------------- Local variables --------------------------------------------
-var jnUtil = new JoveNotesUtil() ;
+var jnUtil      = new JoveNotesUtil() ;
+var neFormatter = null ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.textFormatter = null ;
@@ -125,7 +126,7 @@ $scope.playSoundClip = function( clipName ) {
 function refreshData() {
 
 	log.debug( "Requesting notes data from server." ) ;
-	$http.get( "/jove_notes/api/ChapterNotes/" + chapterId )
+	$http.get( "/jove_notes/api/ChapterNotes/" + chapterId + "?elementType=all" )
          .success( function( data ){
          	log.debug( "Data received from server." ) ;
          	processServerData( data ) ;
@@ -149,6 +150,8 @@ function processServerData( data ) {
  	$scope.notesElements  = data.notesElements ;
 	$scope.pageTitle      = jnUtil.constructPageTitle( data.chapterDetails ) ;
 	$scope.textFormatter  = new TextFormatter( data.chapterDetails, $sce ) ;
+
+	neFormatter = new NotesElementFormatter( $scope.chapterDetails, $sce ) ;
 
  	processNotesElements() ;
 }
@@ -181,8 +184,8 @@ function processNotesElements() {
 		var element = $scope.notesElements[ index ] ;
 		var type    = element.elementType ;
 
-		preProcessElement( element ) ;
-		initializeScriptSupport( element ) ;
+		neFormatter.preProcessElement( element ) ;
+		neFormatter.initializeScriptSupport( element ) ;
 
 		if( qualifiesFilter( element ) ) {
 
@@ -190,52 +193,52 @@ function processNotesElements() {
 			$scope.filteredNotesElements.push( element ) ;
 
 			if( type == NotesElementsTypes.prototype.WM ) {
-				$scope.wordMeanings.push( formatWM( element ) ) ;
+				$scope.wordMeanings.push( neFormatter.formatWM( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.QA ) {
-				$scope.questionAnswers.push( formatQA( element ) ) ;
+				$scope.questionAnswers.push( neFormatter.formatQA( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.FIB ) {
-				$scope.fibs.push( formatFIB( element ) ) ;
+				$scope.fibs.push( neFormatter.formatFIB( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.DEFINITION ) {
-				$scope.definitions.push( formatDefinition( element ) ) ;
+				$scope.definitions.push( neFormatter.formatDefinition( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.CHARACTER ) {
-				$scope.characters.push( formatCharacter( element ) ) ;
+				$scope.characters.push( neFormatter.formatCharacter( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.TEACHER_NOTE ) {
-				$scope.teacherNotes.push( formatTeacherNote( element ) ) ;
+				$scope.teacherNotes.push( neFormatter.formatTeacherNote( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.MATCHING ) {
-				$scope.matchings.push( formatMatching( element ) ) ;
+				$scope.matchings.push( neFormatter.formatMatching( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.EVENT ) {
-				$scope.events.push( formatEvent( element ) ) ;
+				$scope.events.push( neFormatter.formatEvent( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.TRUE_FALSE ) {
-				$scope.trueFalseStatements.push( formatTrueFalse( element ) ) ;
+				$scope.trueFalseStatements.push( neFormatter.formatTrueFalse( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.CHEM_EQUATION ) {
-				$scope.chemEquations.push( formatChemEquation( element ) ) ;
+				$scope.chemEquations.push( neFormatter.formatChemEquation( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.CHEM_COMPOUND ) {
-				$scope.chemCompounds.push( formatChemCompound( element ) ) ;
+				$scope.chemCompounds.push( neFormatter.formatChemCompound( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.SPELLBEE ) {
-				$scope.spellbeeWords.push( formatSpellbeeWord( element ) ) ;
+				$scope.spellbeeWords.push( neFormatter.formatSpellbeeWord( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.IMAGE_LABEL ) {
-				$scope.imageLabels.push( formatImageLabel( element ) ) ;
+				$scope.imageLabels.push( neFormatter.formatImageLabel( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.EQUATION ) {
-				$scope.equations.push( formatEquation( element ) ) ;
+				$scope.equations.push( neFormatter.formatEquation( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.REF_TO_CONTEXT ) {
-				$scope.referenceToContexts.push( formatRTC( element ) ) ;
+				$scope.referenceToContexts.push( neFormatter.formatRTC( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.MULTI_CHOICE ) {
-				$scope.multiChoiceQuestions.push( formatMultiChoiceQuestion( element ) ) ;
+				$scope.multiChoiceQuestions.push( neFormatter.formatMultiChoiceQuestion( element ) ) ;
 			}
 		}
 		else {
@@ -243,42 +246,6 @@ function processNotesElements() {
 			//	       " did not meet filter criteria." ) ;
 		}
 	}
-}
-
-function initializeScriptSupport( element ) {
-
-	if( !element.hasOwnProperty( 'scriptInitialized' ) ) {
-
-		element.scriptObj      = null ;		
-		element.evalVarsValues = null ;
-
-		element.scriptObj = jnUtil.makeObjectInstanceFromString( 
-									element.scriptBody, 
-									$scope.textFormatter.getChapterScript() ) ;
-		if( element.scriptObj.hasOwnProperty( 'initialize' ) ) {
-			element.scriptObj.initialize( element.learningStats.efficiencyLabel ) ;
-		}
-
-		$scope.textFormatter.setCurrentObject( element ) ;
-		$scope.textFormatter.evaluateScriptedVariables() ;
-
-		element.scriptInitialized = true ;
-	}
-}
-
-function preProcessElement( element ) {
-
-	var jnUtil = new JoveNotesUtil() ;
-
-	element.difficultyLabel = 
-		jnUtil.getDifficultyLevelLabel( element.difficultyLevel ) ;
-
-	element.learningStats.efficiencyLabel = 
-		jnUtil.getLearningEfficiencyLabel( element.learningStats.learningEfficiency ) ;
-
-	element.learningStats.absEfficiencyLabel =
-		jnUtil.getLearningEfficiencyLabel( element.learningStats.absLearningEfficiency ) ;
-
 }
 
 function qualifiesFilter( element ) {
@@ -297,238 +264,6 @@ function qualifiesFilter( element ) {
 		}
 	}
 	return false ;
-}
-
-function getPrintRulers( formattedText ) {
-
-	var ansLength = $scope.textFormatter.stripHTMLTags( formattedText ).length ;
-	var numLines  = Math.round( ansLength / 35 ) ;
-	var ansRuler  = "" ;
-
-	if( numLines == 0 ) numLines = 1 ;
-	for( var i=0; i<numLines; i++ ) {
-		ansRuler += "<hr class='print_rule'>" ;
-	}
-	return ansRuler ;
-}
-
-function formatWM( wmElement ){
-	return wmElement ;
-}
-
-function formatFIB( fibElement ){
-	
-	var formattedAnswer         = "&ctdot;&nbsp;" + fibElement.question ;
-	var formattedPracticeAnswer = "&ctdot;&nbsp;" + fibElement.question ;
-	var numBlanks               = fibElement.answers.length ;
-
-	for( var i=0; i<numBlanks; i++ ) {
-		var strToReplace = "{" + i + "}" ;
-		var replacedText = "<span class='fib_answer'>" + fibElement.answers[i] + "</span>" ;
-
-		formattedAnswer = formattedAnswer.replace( strToReplace, replacedText ) ;
-
-		var ansLength = $scope.textFormatter.stripHTMLTags( replacedText ).length ;
-		var blank = "" ;
-		for( var j=0; j<ansLength; j++ ) {
-			blank += "__" ;
-		}
-		formattedPracticeAnswer = formattedPracticeAnswer.replace( strToReplace, blank ) ; 
-	}
-	fibElement.question = formattedAnswer ;
-	fibElement.practiceQuestion = formattedPracticeAnswer ;
-
-	return fibElement ;
-}
-
-function formatQA( qaElement ){
-	qaElement.question = $scope.textFormatter.format( qaElement.question ) ;
-	qaElement.answer   = $scope.textFormatter.format( qaElement.answer ) ;
-	qaElement.ansRuler = getPrintRulers( qaElement.answer ) ;
-
-	return qaElement ;
-}
-
-function formatDefinition( defElement ) {
-	defElement.term       = $scope.textFormatter.format( defElement.term ) ;
-	defElement.definition = $scope.textFormatter.format( defElement.definition ) ;
-	defElement.ansRuler   = getPrintRulers( defElement.definition ) ;
-
-	return defElement ;
-}
-
-function formatCharacter( charElement ) {
-	charElement.character = $scope.textFormatter.format( charElement.character ) ;
-	charElement.estimate  = $scope.textFormatter.format( charElement.estimate ) ;
-	charElement.ansRuler  = getPrintRulers( charElement.estimate ) ;
-
-	return charElement ;
-}
-
-function formatTeacherNote( tnElement ) {
-	tnElement.note = $scope.textFormatter.format( tnElement.note ) ;
-
-	// Backward compatibility for all those teacher notes elements which 
-	// did not get processed with caption
-	if( tnElement.hasOwnProperty( 'caption' ) ){
-		tnElement.caption = $scope.textFormatter.format( tnElement.caption ) ;
-	}	
-	else {
-		tnElement.caption = "Teacher Note" ;
-	}
-
-	return tnElement ;
-}
-
-function formatMatching( matchElement ) {
-
-	var keys=[], values=[], practiceData=[] ;
-
-	for( var i=0; i<matchElement.matchData.length; i++ ) {
-		var pair = matchElement.matchData[i] ;
-		pair[0] = $scope.textFormatter.format( pair[0] ) ;
-		pair[1] = $scope.textFormatter.format( pair[1] ) ;
-
-		keys.push( pair[0] ) ;
-		values.push( pair[1] ) ;
-	}
-
-	keys.shuffle() ;
-	values.shuffle() ;
-
-	for( var i=0; i<keys.length; i++ ) {
-		var pair=[] ;
-		pair.push( keys[i] ) ;
-		pair.push( values[i] ) ;
-		practiceData.push( pair ) ;
-	}
-
-	matchElement.caption = $scope.textFormatter.format( matchElement.caption ) ;
-	matchElement.practiceData = practiceData ;
-
-	return matchElement ;
-}
-
-function formatEvent( eventElement ) {
-	eventElement.time = $scope.textFormatter.format( eventElement.time ) ;
-	eventElement.event = $scope.textFormatter.format( eventElement.event ) ;
-
-	return eventElement ;
-}
-
-function formatTrueFalse( tfElement ) {
-	tfElement.statement = $scope.textFormatter.format( tfElement.statement ) ;
-	tfElement.justification = $scope.textFormatter.format( tfElement.justification ) ;
-
-	return tfElement ;
-}
-
-function formatChemEquation( chemEqElement ) {
-	chemEqElement.description = $scope.textFormatter.format( chemEqElement.description ) ;
-	chemEqElement.notes = $scope.textFormatter.format( chemEqElement.notes ) ;
-
-	return chemEqElement ;
-}
-
-function formatChemCompound( chemCompoundElement ) {
-
-	if( chemCompoundElement.chemicalName == null ) {
-		chemCompoundElement.chemicalNamePrompt = "" ;
-	}
-	else {
-		chemCompoundElement.chemicalNamePrompt = "___________________" ;
-	}
-
-	if( chemCompoundElement.commonName == null ) {
-		chemCompoundElement.commonNamePrompt = "" ;
-	}
-	else {
-		chemCompoundElement.commonNamePrompt = "___________________" ;
-	}
-
-	return chemCompoundElement ;
-}
-
-function formatSpellbeeWord( spellbeeWord ) {
-	return spellbeeWord ;
-}
-
-function formatImageLabel( imageLabelElement ) {
-	return imageLabelElement ;
-}
-
-function formatEquation( eqElement ) {
-	eqElement.description = $scope.textFormatter.format( eqElement.description ) ;
-	for( var i=0; i<eqElement.symbols.length; i++ ) {
-		var symbol = eqElement.symbols[i] ;
-		symbol[1] = $scope.textFormatter.format( symbol[1] ) ;
-	}
-	return eqElement ;
-}
-
-function formatRTC( rtcElement ) {
-
-	rtcElement.context = $scope.textFormatter.format( rtcElement.context ) ;
-	for( var i=0; i<rtcElement.notesElements.length; i++ ) {
-
-		var ne = rtcElement.notesElements[i] ;
-		var type = ne.elementType ;
-
-		if( type == NotesElementsTypes.prototype.WM ) {
-			formatWM( ne ) ;
-		}
-		else if( type == NotesElementsTypes.prototype.QA ) {
-			formatQA( ne ) ;
-		}
-		else if( type == NotesElementsTypes.prototype.FIB ) {
-			formatFIB( ne ) ;
-		}
-		else if( type == NotesElementsTypes.prototype.DEFINITION ) {
-			formatDefinition( ne ) ;
-		}
-		else if( type == NotesElementsTypes.prototype.CHARACTER ) {
-			formatCharacter( ne ) ;
-		}
-		else if( type == NotesElementsTypes.prototype.TEACHER_NOTE ) {
-			formatTeacherNote( ne ) ;
-		}
-		else if( type == NotesElementsTypes.prototype.MATCHING ) {
-			formatMatching( ne ) ;
-		}
-		else if( type == NotesElementsTypes.prototype.EVENT ) {
-			formatEvent( ne ) ;
-		}
-		else if( type == NotesElementsTypes.prototype.TRUE_FALSE ) {
-			formatTrueFalse( ne ) ;
-		}
-		else if( type == NotesElementsTypes.prototype.CHEM_EQUATION ) {
-			formatChemEquation( ne ) ;
-		}
-		else if( type == NotesElementsTypes.prototype.CHEM_COMPOUND ) {
-			formatChemCompound( ne ) ;
-		}
-		else if( type == NotesElementsTypes.prototype.SPELLBEE ) {
-			formatSpellbeeWord( ne ) ;
-		}
-		else if( type == NotesElementsTypes.prototype.IMAGE_LABEL ) {
-			formatImageLabel( ne ) ;
-		}
-		else if( type == NotesElementsTypes.prototype.EQUATION ) {
-			formatEquation( ne ) ;
-		}
-		else if( type == NotesElementsTypes.prototype.MULTI_CHOICE ) {
-			formatMultiChoiceQuestion( ne ) ;
-		}
-	}
-	return rtcElement ;
-}
-
-function formatMultiChoiceQuestion( mcElement ) {
-
-	mcElement.question = $scope.textFormatter.format( mcElement.question ) ;
-	mcElement.answer = $scope.textFormatter.format( mcElement.answer ) ;
-
-	return mcElement ;
 }
 
 // ---------------- End of controller ------------------------------------------

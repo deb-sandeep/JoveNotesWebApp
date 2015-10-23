@@ -30,7 +30,7 @@ $scope.accordionTabClicked = function( chapter ) {
     }
 
     if( chapter.open ) {
-        // Refresh notes elements for this chapter.
+        callChapterNotesAPI( chapter.chapterId ) ;
     }
     else {
         chapter.notesElements.length = 0 ;
@@ -66,6 +66,19 @@ function callNEReviewAPIForChapterList() {
         log.error( "API error " + data ) ;
         $scope.addErrorAlert( "API error " + data ) ;
     }) ;
+}
+
+function callChapterNotesAPI( chapterId ) {
+
+    log.debug( "Requesting notes review data for chapter " + chapterId + "." ) ;
+    $http.get( "/jove_notes/api/ChapterNotes/" + chapterId + "?elementType=marked_for_review" )
+         .success( function( data ){
+            log.debug( "Data received from server." + data ) ;
+         })
+         .error( function( data ){
+            log.error( "Server returned error. " + data ) ;
+            $scope.addErrorAlert( "API call failed. " + data ) ;
+         });
 }
 
 // ---------------- End of controller ------------------------------------------

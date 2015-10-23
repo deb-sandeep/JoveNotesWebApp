@@ -17,9 +17,11 @@ class ChapterNotesAPI extends AbstractJoveNotesAPI {
 
 		if( $this->isUserEntitledForNotes( $request->requestPathComponents[0] ) ) {
 
+			$elementType = $request->parametersMap[ "elementType" ] ;
+
 			$respBody = array() ;
 			$respBody[ "chapterDetails" ] = $this->chapterDetail ;
-			$respBody[ "notesElements"  ] = $this->constructNotesElements() ;
+			$respBody[ "notesElements"  ] = $this->constructNotesElements( $elementType ) ;
 
 			$response->responseCode = APIResponse::SC_OK ;
 			$response->responseBody = $respBody ;
@@ -37,12 +39,12 @@ class ChapterNotesAPI extends AbstractJoveNotesAPI {
 		}
 	}
 
-	private function constructNotesElements() {
+	private function constructNotesElements( $elementType ) {
 
 		$notesElements = array() ;
 
 		$neDataArray = $this->neDAO->getNoteElements( ExecutionContext::getCurrentUserName(),
-			                                          $this->chapterId ) ;
+			                                          $this->chapterId, $elementType ) ;
 		foreach( $neDataArray as $neData ) {
 			array_push( $notesElements, $this->constructNotesElement( $neData ) ) ;
 		}

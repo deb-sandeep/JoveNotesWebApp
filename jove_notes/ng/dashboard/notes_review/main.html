@@ -1,5 +1,8 @@
 <p>
-<div style="padding-left:10px">
+<h3 ng-if="chapters.length == 0" style="text-align: center;">
+Nothing marked for review
+</h3>
+<div style="padding-left:10px" ng-if="chapters.length > 0">
     <uib-accordion close-others="true">
         <uib-accordion-group ng-repeat="chapter in chapters" panel-class="panel-info">
             <uib-accordion-heading>

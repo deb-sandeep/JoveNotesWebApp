@@ -73,6 +73,8 @@ define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
 
     <script src="/apps/jove_notes/ng/flashcard/practice_page/dynq_imglabel.js"></script>    
 
+    <script src="/apps/jove_notes/ng/notes/ne_formatter.js"></script>    
+
     <script src="/apps/jove_notes/ng/notes/routes.js"></script>    
     <script src="/apps/jove_notes/ng/notes/directives.js"></script>    
     <script src="/apps/jove_notes/ng/notes/controllers.js"></script>    
