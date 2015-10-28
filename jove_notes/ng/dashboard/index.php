@@ -69,6 +69,7 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
     <script src="/apps/jove_notes/ng/dashboard/pivots/controllers.js"></script>    
     <script src="/apps/jove_notes/ng/dashboard/chapter_progress_snapshot/controllers.js"></script>    
     <script src="/apps/jove_notes/ng/dashboard/notes_review/controllers.js"></script>    
+    <script src="/apps/jove_notes/ng/dashboard/test_papers/controllers.js"></script>    
 
     <script>
       var currentUserName = "<?php echo ExecutionContext::getCurrentUserName(); ?>" ;
@@ -104,6 +105,13 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
        ng-class="getBtnActiveClass( 'Review' )"
        ng-click="setActiveReport( 'Review' )">
     Notes Review
+    </a>
+
+    <a type="button" class="btn btn-default btn-md" 
+       href="#TestPapers" 
+       ng-class="getBtnActiveClass( 'TestPapers' )"
+       ng-click="setActiveReport( 'TestPapers' )">
+    Test Papers
     </a>
 
     <a type="button" class="btn btn-info btn-md" 
