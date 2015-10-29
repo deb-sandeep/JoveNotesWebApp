@@ -1,5 +1,5 @@
 <?php
-require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/api_bootstrap.php" ) ;
+require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/abstract_jove_notes_api.php" ) ;
 require_once( APP_ROOT      . "/php/dao/chapter_dao.php" ) ;
 require_once( APP_ROOT      . "/php/dao/card_learning_summary_dao.php" ) ;
 require_once( APP_ROOT      . "/php/dao/user_chapter_preferences_dao.php" ) ;

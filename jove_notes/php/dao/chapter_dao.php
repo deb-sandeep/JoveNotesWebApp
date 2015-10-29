@@ -36,7 +36,6 @@ select
 from 
 	jove_notes.chapter 
 where 
-	is_test_paper = 0 and 
 	chapter_id = $chapterId 
 QUERY;
 
@@ -85,6 +84,38 @@ QUERY;
 		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
 	}
 
+	function getTestChaptersMetaData() {
+
+$query = <<< QUERY
+select 
+	concat( "chapter:", syllabus_name, "/", 
+		                subject_name, "/", 
+		                chapter_num, "/", 
+		                sub_chapter_num, "/", 
+		                chapter_name ) as guard, 
+	chapter_id,
+	syllabus_name,
+	subject_name,
+	chapter_num,
+	sub_chapter_num,
+	chapter_name,
+	num_cards
+from 
+	jove_notes.chapter 
+where 
+	is_test_paper = 1 
+order by 
+	syllabus_name asc,
+	chapter_num asc,
+	sub_chapter_num asc
+QUERY;
+
+		$colNames = [ "guard", "chapter_id", "syllabus_name", "subject_name", 
+	                  "chapter_num", "sub_chapter_num", "chapter_name", "num_cards" ] ;
+
+		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
+	}
+
 	function getChapterGuard( $chapterId ) {
 
 $query = <<< QUERY
@@ -97,7 +128,6 @@ select
 from 
 	jove_notes.chapter 
 where 
-	is_test_paper = 0 and 
 	chapter_id = $chapterId 
 QUERY;
 

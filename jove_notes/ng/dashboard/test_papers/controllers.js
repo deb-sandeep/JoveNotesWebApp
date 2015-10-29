@@ -64,7 +64,7 @@ $scope.showHiddenTestPapers  = false ;
 $scope.displayRows           = null ;
 
 // ---------------- Main logic for the controller ------------------------------
-// refreshData() ;
+refreshData() ;
 
 // ---------------- Controller methods -----------------------------------------
 $scope.refreshData = function() {
@@ -268,7 +268,7 @@ function updateQuestionCounts( chapter, subjectRD, syllabusRD ) {
 
 // ---------------- Server calls -----------------------------------------------
 function refreshData() {
-	$http.get( "/jove_notes/api/TestPapers" )
+	$http.get( "/jove_notes/api/TestPapers/Snapshot" )
          .success( function( data ){
          	digestPreferences( data.preferences ) ;
          	$scope.displayRows = prepareDataForDisplay( data.dashboardContent ) ;

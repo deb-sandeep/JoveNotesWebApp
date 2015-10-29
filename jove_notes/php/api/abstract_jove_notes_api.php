@@ -2,6 +2,17 @@
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/api_bootstrap.php" ) ;
 require_once( APP_ROOT      . "/php/dao/chapter_dao.php" ) ;
 
+abstract class APIAction {
+
+	protected $logger ;
+
+	function __construct() {
+		$this->logger = Logger::getLogger( __CLASS__ ) ;
+	}
+
+	abstract protected function execute( $request, &$response ) ;
+}
+
 class AbstractJoveNotesAPI extends API {
 
 	protected $chapterDAO = null ;
