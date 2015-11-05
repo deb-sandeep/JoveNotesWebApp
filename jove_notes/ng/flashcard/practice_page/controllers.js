@@ -262,18 +262,11 @@ $scope.pushQuestion = function() {
 $scope.markForReview = function() {
     callMarkForReviewAPI( $scope.currentQuestion.questionId, function( cardIds ){
         for( var i=0; i<cardIds.length; i++ ) {
-
             var markedCardId = cardIds[i] ;
-
-            if( $scope.currentQuestion.questionId == markedCardId ) {
-                $scope.currentQuestion.markedForReview = true ;
-            }
-            else {
-                for( var j=0; j<$scope.questionsForSession.length; j++ ) {
-                    var question = $scope.questionsForSession[j] ;
-                    if( question.questionId = markedCardId ) {
-                        question.questionId.markedForReview = true ;
-                    }
+            for( var j=0; j<$scope.questionsForSession.length; j++ ) {
+                var question = $scope.questionsForSession[j] ;
+                if( question.questionId == markedCardId ) {
+                    question.markedForReview = true ;
                 }
             }
         }
