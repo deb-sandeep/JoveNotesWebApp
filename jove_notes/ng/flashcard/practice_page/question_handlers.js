@@ -61,8 +61,8 @@ function QAHandler( chapterDetails, question, textFormatter ) {
 	}
 
 	this.getAnswerLength = function() { return answerLength ;      } ;
-	this.getQuestionUI   = function() { return formattedQuestion ; } ;
-	this.getAnswerUI     = function() { return formattedAnswer ;   } ;
+	this.getQuestionUI   = function() { return P( { innerHTML : formattedQuestion } ) ; } ;
+	this.getAnswerUI     = function() { return P( { innerHTML : formattedAnswer   } ) ; } ;
 }
 
 // =============================================================================
