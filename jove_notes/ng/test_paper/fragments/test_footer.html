@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-sm-10"></div>
+  <div class="col-sm-2">
+    <div class="pull-right">
+      <button type="button" class="btn btn-info btn-lg"
+              data-toggle="tooltip" data-placement="top" 
+              ng-click="endTest()"
+              title="Test Completed"
+              ng-show="sessionState == STATE_STARTED">
+          End Test
+      </button>
+
+      <a type="button" class="btn btn-info btn-lg"
+         href="/apps/jove_notes/ng/dashboard/index.php#/TestPapers"
+         ng-show="sessionState == STATE_COMPLETED">
+         Dashboard
+      </a>
+    </div>
+  </div>
+</div>
