@@ -1,11 +1,12 @@
 <div ng-include="'/apps/jove_notes/ng/test_paper/fragments/test_hdr.html'"></div>
 
-<div class="panel panel-default" 
+<div ng-class="getQuestionPanelStyleClass()"
      style="margin-left:10px;margin-top:30px;margin-right:10px;"
      ng-repeat="currentQuestion in questions"
      ng-controller="TestQuestionController"
-     ng-show="currentQuestion.state.currentState != STATE_Q_DORMANT" >
+     ng-show="currentQuestion.state.currentState != STATE_Q_DORMANT">
 
+  <a name="question-{{currentQuestion.questionId}}"></a>
   <div class="panel-heading">
     <span class="glyphicon glyphicon-question-sign"></span>&nbsp;&nbsp;
     Question - {{$index + 1}} ) &nbsp;&nbsp;

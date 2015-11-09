@@ -62,6 +62,7 @@ $pageConfig = array(
     <script src="/apps/jove_notes/ng/flashcard/practice_page/diff_av_time_manager.js"></script>    
 
     <script src="/apps/jove_notes/ng/test_paper/routes.js"></script>    
+    <script src="/apps/jove_notes/ng/test_paper/filters.js"></script>    
     <script src="/apps/jove_notes/ng/test_paper/directives.js"></script>    
     <script src="/apps/jove_notes/ng/test_paper/controllers.js"></script>    
 
@@ -93,5 +94,20 @@ $pageConfig = array(
          ng-hide="sessionState == STATE_YET_TO_START" 
          ng-include="'/apps/jove_notes/ng/test_paper/fragments/test_footer.html'">
     </div>
+
+    <div id="modalResume" class="modal fade" data-backdrop="static">
+      <div class="modal-dialog" style="width:100px;height:100px;top:200px;">
+        <div class="modal-content">
+          <div class="modal-body" style="padding:0px">
+            <button type="button" class="btn btn-info btn-lg" 
+                    style="width:100px;height:100px;padding:3px" 
+                    ng-click="resumeSession()">
+              <span class="glyphicon glyphicon-play-circle" style="font-size: 5em" ></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
 </body>
 </html>

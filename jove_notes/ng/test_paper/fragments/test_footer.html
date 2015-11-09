@@ -1,5 +1,39 @@
 <div class="row">
-  <div class="col-sm-10"></div>
+  <div class="col-sm-10">
+    <button type="button" 
+            class="btn btn-warning btn-lg"
+            ng-click="pauseSession()"
+            ng-show="sessionState != STATE_COMPLETED">
+        <span class="glyphicon glyphicon-pause"></span>
+    </button>
+    <span class="footer_display_block">
+        {{sessionDuration | duration}}
+    </span>
+    <span class="footer_display_block" style="background-color:#E3F7FE;"
+          ng-show="sessionState != STATE_COMPLETED">
+        T - {{sessionStats.numCards}}
+    </span>
+    <span class="footer_display_block" style="background-color:#FFD291;"
+          ng-show="sessionState != STATE_COMPLETED">
+        NL - {{sessionStats.numCardsLeft}}
+    </span>
+    <span class="footer_display_block" style="background-color:#FFA2B4;"
+          ng-show="sessionState != STATE_COMPLETED">
+        PR - {{sessionStats.numCardsNotReviewed}}
+    </span>
+    <span class="footer_display_block" style="background-color:#FF4545;"
+          ng-show="sessionState == STATE_COMPLETED">
+        #W - {{sessionStats.numWrong}}
+    </span>
+    <span class="footer_display_block" style="background-color:#FFA100;"
+          ng-show="sessionState == STATE_COMPLETED">
+        #P - {{sessionStats.numPartiallyCorrect}}
+    </span>
+    <span class="footer_display_block" style="background-color:#00FF00;"
+          ng-show="sessionState == STATE_COMPLETED">
+        #C - {{sessionStats.numCorrect}}
+    </span>
+  </div>
   <div class="col-sm-2">
     <div class="pull-right">
       <button type="button" class="btn btn-info btn-lg"
