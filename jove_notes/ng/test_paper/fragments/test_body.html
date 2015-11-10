@@ -9,7 +9,7 @@
   <a name="question-{{currentQuestion.questionId}}"></a>
   <div class="panel-heading">
     <span class="glyphicon glyphicon-question-sign"></span>&nbsp;&nbsp;
-    Question - {{$index + 1}} ) &nbsp;&nbsp;
+    <span style="color:#BFBFBF">Question - {{$index + 1}} ) &nbsp;&nbsp;</span>
 
     <a type="button" ng-class="getStateChangeActionBtnClass()" 
        ng-click="attemptQuestion( currentQuestion, getStateChangeActionCaption() )"
@@ -24,11 +24,11 @@
     </span>
   </div>
 
-  <div ng-class="getQuestionPanelBodyClass()" style="font-size:18px">
+  <div ng-class="getQuestionPanelBodyClass()" style="font-size:16px">
     <render-test-question></render-test-question>
   </div>
 
-  <div class="panel-footer" ng-show="sessionState == STATE_COMPLETED">
+  <div class="panel-footer" ng-show="sessionState == STATE_COMPLETED" style="font-size:16px">
       <render-answer></render-answer>
   </div>
 
