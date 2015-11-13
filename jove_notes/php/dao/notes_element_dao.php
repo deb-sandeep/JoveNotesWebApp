@@ -21,6 +21,9 @@ class NotesElementDAO extends AbstractDAO {
 		if( $elementType == 'marked_for_review' ) {
 			$additionalFilter = " and ne.marked_for_review=1 " ;
 		}
+		else {
+			$additionalFilter = " and ne.hidden_from_view=0 " ;
+		}
 
 $query = <<< QUERY
 select 
@@ -36,7 +39,6 @@ on
 where
 	ne.chapter_id = $chapterId and
 	ne.ready = 1 and 
-	ne.hidden_from_view = 0 and 
 	( cls.student_name = '$userName' or cls.student_name is null ) 
 	$additionalFilter
 group by
