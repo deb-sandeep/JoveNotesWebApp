@@ -252,6 +252,10 @@ $scope.pushAnswer = function() {
     callRFMApiToPushAnswer( 0 ) ;
 }
 
+$scope.alertStudent = function() {
+    callRFMApiToAlertStudent() ;
+}
+
 $scope.pushQuestion = function() {
 
     $scope.pushQuestionSuccess = false ;
@@ -1001,6 +1005,16 @@ function callRFMApiToPublisStartSession( callback ) {
     else {
         callback() ;
     }
+}
+
+function callRFMApiToAlertStudent() {
+
+    $http.post( '/jove_notes/api/RemoteFlashMessage', { 
+        sessionId   : $scope.$parent.sessionId,
+        chapterId   : chapterId,
+        msgType     : 'alert',
+        msgContent  : null
+    })
 }
 
 function callRFMApiToPushAnswer( previousCallAttemptNumber ) {

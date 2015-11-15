@@ -70,6 +70,16 @@
                 <span class="glyphicon glyphicon-pause"></span>
             </button>
 
+            <!-- Alert student button, only visible during remote study -->
+            <button type="button" 
+                    class="btn btn-success btn-lg"
+                    ng-click="alertStudent()"
+                    ng-show="studyCriteria.push"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Alert student">
+                <span class="glyphicon glyphicon-fire"></span>
+            </button>
+
             <!-- The Push Question button button. This is shown only if we are  -->
             <!-- conducting a remote session                                    -->
             <button type="button" 
@@ -235,6 +245,16 @@
                 <span class="glyphicon glyphicon-send"></span>
             </button>
             
+            <!-- Alert student button, only visible during remote study -->
+            <button type="button" 
+                    class="btn btn-success btn-lg"
+                    ng-click="alertStudent()"
+                    ng-show="studyCriteria.push"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Alert student">
+                <span class="glyphicon glyphicon-fire"></span>
+            </button>
+
             <button type="button" 
                     class="btn btn-warning btn-lg"
                     ng-click="pauseSession()"

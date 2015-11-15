@@ -154,6 +154,9 @@ function runMessageProcessPump() {
             else if( message.msgType == "resume_session" ) {
                 resumeSession() ;
             }
+            else if( message.msgType == "alert" ) {
+                processAlertMessage() ;
+            }
             else {
                 throw "Unknown message type " + message.msgType ;
             }
@@ -326,6 +329,10 @@ function processIncomingQuestion( message ) {
     totalQuestionPauseTime       = 0 ;
     
     renderTimeMarkersForCurrentQuestion() ;
+}
+
+function processAlertMessage() {
+    jnUtil.playSoundClip( "/lib-app/media/audio/dog_bark.mp3" ) ;
 }
 
 function handleTimerEvent() {
