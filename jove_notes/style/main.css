@@ -255,3 +255,38 @@ table.pure-table ol {
 	color: #2C37FF;
 }
 
+.carousel-caption {
+	color:#232323 !important;
+	text-shadow:none;
+	text-align: left;
+	padding-bottom: 0;
+	padding-top:0;
+	padding-left: 5px;
+	padding-right: 5px;
+	margin-left:100px;
+	margin-right:100px;
+	margin-bottom: 50px;
+	position: initial;
+	background-color: #FAFDFF;
+}
+
+.carousel-control.left, .carousel-control.right {
+    background-image: none;
+    color:blue;
+}
+
+.carousel-indicators {
+	position: initial;
+	width:100%;
+	margin-left: 0;
+}
+
+.carousel-indicators .active {
+	background-color: #4E95FF;
+}
+
+.carousel-indicators  li {
+	border: 1px solid #4E95FF;
+}
+
+
