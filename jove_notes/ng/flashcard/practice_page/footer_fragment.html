@@ -34,7 +34,16 @@
                 </a>
             </li>
             <li role="presentation">
-                <a role="menuitem" tabindex="-1" ng-click="toggleFooterDirection()">Toggle Footer Direction</a>
+                <a role="menuitem" tabindex="-1" ng-click="alertStudent()">
+                    <span class="glyphicon glyphicon-fire"></span>
+                    Alert student
+                </a>
+            </li>
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="toggleFooterDirection()">
+                    <span class="glyphicon glyphicon-transfer"></span>
+                    Toggle Footer Direction
+                </a>
             </li>
             <li role="presentation">
                 <a role="menuitem" tabindex="-1" ng-click="randomizeCards()">
@@ -68,16 +77,6 @@
                     data-toggle="tooltip" data-placement="top" 
                     title="Pause Session">
                 <span class="glyphicon glyphicon-pause"></span>
-            </button>
-
-            <!-- Alert student button, only visible during remote study -->
-            <button type="button" 
-                    class="btn btn-success btn-lg"
-                    ng-click="alertStudent()"
-                    ng-show="studyCriteria.push"
-                    data-toggle="tooltip" data-placement="top" 
-                    title="Alert student">
-                <span class="glyphicon glyphicon-fire"></span>
             </button>
 
             <!-- The Push Question button button. This is shown only if we are  -->
@@ -245,16 +244,6 @@
                 <span class="glyphicon glyphicon-send"></span>
             </button>
             
-            <!-- Alert student button, only visible during remote study -->
-            <button type="button" 
-                    class="btn btn-success btn-lg"
-                    ng-click="alertStudent()"
-                    ng-show="studyCriteria.push"
-                    data-toggle="tooltip" data-placement="top" 
-                    title="Alert student">
-                <span class="glyphicon glyphicon-fire"></span>
-            </button>
-
             <button type="button" 
                     class="btn btn-warning btn-lg"
                     ng-click="pauseSession()"
@@ -304,7 +293,16 @@
                 </a>
             </li>
             <li role="presentation">
-                <a role="menuitem" tabindex="-1" ng-click="toggleFooterDirection()">Toggle Footer Direction</a>
+                <a role="menuitem" tabindex="-1" ng-click="alertStudent()">
+                    <span class="glyphicon glyphicon-fire"></span>
+                    Alert student
+                </a>
+            </li>
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="toggleFooterDirection()">
+                    <span class="glyphicon glyphicon-transfer"></span>
+                    Toggle Footer Direction
+                </a>
             </li>
             <li role="presentation">
                 <a role="menuitem" tabindex="-1" ng-click="randomizeCards()">
