@@ -175,8 +175,6 @@ $scope.processServerData = function( serverData ) {
         return ;
     }
 
-    log.debug( "Session id = " + $scope.sessionId ) ;
-    
     $scope.chapterDetails         = serverData.chapterDetails ;
     $scope.numCardsInDeck         = serverData.deckDetails.numCards ;
     $scope.difficultyStats        = serverData.deckDetails.difficultyStats ;
@@ -266,16 +264,16 @@ function associateHandler( question ) {
 
 function collateQuestionTypeHistogram( question ) {
 
-    var elementType = question.elementType ;
+    if( question.learningStats.currentLevel != "MAS" ) {
+        var elementType = question.elementType ;
 
-    if( $scope.cardTypeHistogram.hasOwnProperty( elementType ) ) {
-        $scope.cardTypeHistogram[ elementType ]++ ;
+        if( $scope.cardTypeHistogram.hasOwnProperty( elementType ) ) {
+            $scope.cardTypeHistogram[ elementType ]++ ;
+        }
+        else {
+            $scope.cardTypeHistogram[ elementType ] = 1 ;
+        }
     }
-    else {
-        $scope.cardTypeHistogram[ elementType ] = 1 ;
-    }
-
-    log.debug( elementType + " = " + $scope.cardTypeHistogram[ elementType ] ) ;
 }
 
 function processTestDataHints( question ) {
