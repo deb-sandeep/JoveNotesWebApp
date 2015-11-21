@@ -56,6 +56,8 @@ function CardsFilterOptions() {
         { id : "H",  name : "Hard" },
         { id : "VH", name : "Very hard" }
     ] ;
+
+    this.cardTypeOptions = [] ;
 }
 
 // =============================================================================

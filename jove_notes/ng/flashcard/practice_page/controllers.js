@@ -625,16 +625,21 @@ function addNSCards() {
                $scope.$parent.studyCriteria.maxNewCards ) ;
 
     var nsQuestionsAdded = 0 ;
+    var cardTypeFilters = $scope.$parent.studyCriteria.cardTypeFilters ;
+
     if( $scope.$parent.studyCriteria.maxNewCards > 0 ) {
         for( var i=0 ; i < $scope.$parent.questions.length ; i++ ) {
 
             var question = $scope.$parent.questions[ i ] ;
             if( question.learningStats.currentLevel == CardLevels.prototype.NS ) {
 
-                $scope.questionsForSession.splice( nsQuestionsAdded, 0, question ) ;
-                nsQuestionsAdded++ ;
-                if( nsQuestionsAdded >= $scope.$parent.studyCriteria.maxNewCards ) {
-                    break ;
+                if( cardTypeFilters.indexOf( question.elementType ) != -1 ){
+                    
+                    $scope.questionsForSession.splice( nsQuestionsAdded, 0, question ) ;
+                    nsQuestionsAdded++ ;
+                    if( nsQuestionsAdded >= $scope.$parent.studyCriteria.maxNewCards ) {
+                        break ;
+                    }
                 }
             }
         }

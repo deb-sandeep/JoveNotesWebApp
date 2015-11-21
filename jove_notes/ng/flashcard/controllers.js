@@ -9,6 +9,7 @@ function StudyCriteria() {
     this.currentLevelFilters       = [ "L0", "L1", "L2", "L3"                  ] ;
     this.learningEfficiencyFilters = [ "A1", "A2", "B1", "B2", "C1", "C2", "D" ] ;
     this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH"            ] ;
+    this.cardTypeFilters           = [] ;
 
     this.strategy      = "SSR" ;
     this.push          = false ;
@@ -48,29 +49,37 @@ function StudyCriteria() {
         var currentLevel = question.learningStats.currentLevel ;
         var lrnEffLabel  = question.learningStats.efficiencyLabel ;
         var diffLabel    = question.difficultyLabel ;
+        var elementType  = question.elementType ;
 
         var currentLevelFilters = this.currentLevelFilters ;
         var lrnEffLabelFilters  = this.learningEfficiencyFilters ;
         var diffLabelFilters    = this.difficultyFilters ;
+        var cardTypeFilters     = this.cardTypeFilters ;
 
-        if( currentLevelFilters.indexOf( currentLevel ) != -1 ) {
-            if( lrnEffLabelFilters.indexOf( lrnEffLabel ) != -1 ) {
-                if( diffLabelFilters.indexOf( diffLabel ) != -1 ) {
-                    return true ;
+        if( cardTypeFilters.indexOf( elementType ) != -1 ) {
+            if( currentLevelFilters.indexOf( currentLevel ) != -1 ) {
+                if( lrnEffLabelFilters.indexOf( lrnEffLabel ) != -1 ) {
+                    if( diffLabelFilters.indexOf( diffLabel ) != -1 ) {
+                        return true ;
+                    }
+                    else {
+                        log.debug( "\t\tRejecting Q" + question.questionId + 
+                                   " : Difficulty level filter mismatch. " + diffLabel ) ;
+                    }
                 }
                 else {
                     log.debug( "\t\tRejecting Q" + question.questionId + 
-                               " : Difficulty level filter mismatch. " + diffLabel ) ;
+                               " : Learning efficiency filter mismatch. " + lrnEffLabel ) ;
                 }
             }
             else {
                 log.debug( "\t\tRejecting Q" + question.questionId + 
-                           " : Learning efficiency filter mismatch. " + lrnEffLabel ) ;
+                           " : Current level filter mismatch. " + currentLevel ) ;
             }
         }
         else {
             log.debug( "\t\tRejecting Q" + question.questionId + 
-                       " : Current level filter mismatch. " + currentLevel ) ;
+                       " : Card type filter mismatch. " + elementType ) ;
         }
         return false ;
     }
@@ -121,6 +130,8 @@ $scope.messageForEndPage = "Session Ended." ;
 $scope.assistedStudyCBDisabled = false ;
 
 $scope.textFormatter = null ;
+
+$scope.cardTypeHistogram = [] ;
 
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing FlashCardController." ) ;
@@ -177,6 +188,7 @@ $scope.processServerData = function( serverData ) {
     $scope.textFormatter          = new TextFormatter( $scope.chapterDetails, null ) ;
 
     preProcessFlashCardQuestions( $scope.questions ) ;
+    prepareCardTypeOptions() ;
 }
 // ---------------- Private functions ------------------------------------------
 
@@ -210,6 +222,7 @@ function preProcessFlashCardQuestions( questions ) {
 
         associateHandler( question ) ;
         processTestDataHints( question ) ;
+        collateQuestionTypeHistogram( question ) ;
     }
 }
 
@@ -251,12 +264,101 @@ function associateHandler( question ) {
     }
 }
 
+function collateQuestionTypeHistogram( question ) {
+
+    var elementType = question.elementType ;
+
+    if( $scope.cardTypeHistogram.hasOwnProperty( elementType ) ) {
+        $scope.cardTypeHistogram[ elementType ]++ ;
+    }
+    else {
+        $scope.cardTypeHistogram[ elementType ] = 1 ;
+    }
+
+    log.debug( elementType + " = " + $scope.cardTypeHistogram[ elementType ] ) ;
+}
+
 function processTestDataHints( question ) {
 
     if( question.learningStats.hasOwnProperty( '_testLATLag' ) ) {
         var numMillisLag = question.learningStats._testLATLag * 24 * 60 * 60 * 1000 ;
         question.learningStats.lastAttemptTime = new Date().getTime() + numMillisLag ;
     }
+}
+
+function prepareCardTypeOptions() {
+
+    for( var elementType in $scope.cardTypeHistogram ) {
+        if( $scope.cardTypeHistogram.hasOwnProperty( elementType ) ) {
+            var count = $scope.cardTypeHistogram[ elementType ] ;
+            if( count > 0 ) {
+
+                var name = 'Unknown Element' ;
+                if( elementType == "word_meaning" ) {    
+                    name = "Word Meaning" ;
+                }
+                else if( elementType == "question_answer" ) { 
+                    name = "Question Answer" ;
+                }
+                else if( elementType == "fib" ) {             
+                    name = "Fill in the blanks" ;
+                }
+                else if( elementType == "definition" ) {      
+                    name = "Definition" ;
+                }
+                else if( elementType == "character" ) {       
+                    name = "Character" ;
+                }
+                else if( elementType == "matching" ) {        
+                    name = "Matching" ;
+                }
+                else if( elementType == "event" ) {           
+                    name = "Event" ;
+                }
+                else if( elementType == "true_false" ) {      
+                    name = "True False" ;
+                }
+                else if( elementType == "chem_equation" ) {   
+                    name = "Chemical Equation" ;
+                }
+                else if( elementType == "chem_compound" ) {   
+                    name = "Chemical Compound" ;
+                }
+                else if( elementType == "spellbee" ) {        
+                    name = "Spellbee" ;
+                }
+                else if( elementType == "image_label" ) {     
+                    name = "Image label" ;
+                }
+                else if( elementType == "equation" ) {        
+                    name = "Equation" ;
+                }
+                else if( elementType == "rtc" ) {             
+                    name = "Reference to context" ;
+                }
+                else if( elementType == "multi_choice" ) {    
+                    name = "Multiple choice" ;
+                }
+
+                var optionString = "" + count ;
+                var pad = "000" ;
+                optionString = pad.substring( 0, pad.length - optionString.length ) + optionString ;
+                optionString = optionString + " - " + name ;
+
+                $scope.filterOptions.cardTypeOptions.push( {
+                    id : elementType,
+                    name : optionString,
+                    count : count
+                }) ;
+
+                $scope.studyCriteria.cardTypeFilters.push( elementType ) ;
+            }
+        }
+    }
+
+    $scope.filterOptions.cardTypeOptions.sort( function( a, b ){ 
+        return b.count - a.count ; 
+    } ) ;
 }
 
 // ---------------- End of controller ------------------------------------------
