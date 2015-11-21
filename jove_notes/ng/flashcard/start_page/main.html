@@ -68,7 +68,12 @@
     </div>
     <div class="col-sm-6 pad-5px">
         <div class="panel panel-info">
-          <div class="panel-heading"><b>Filter Criteria</b></div>
+          <div class="panel-heading">
+            <b>Filter Criteria</b>&nbsp;&nbsp;
+            <div style="display:inline-block;" 
+                 ng-include="'/apps/jove_notes/ng/flashcard/start_page/action_on_filtered_cards.html'">
+            </div>
+          </div>
           <div class="panel-body pad-5px">
             <div align="center" 
                  ng-include="'/apps/jove_notes/ng/flashcard/start_page/filter_criteria_fragment.html'">
