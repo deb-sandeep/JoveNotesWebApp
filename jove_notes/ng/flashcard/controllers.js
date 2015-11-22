@@ -28,10 +28,6 @@ function StudyCriteria() {
             this.maxTime     = crit.maxTime ;
             this.maxNewCards = crit.maxNewCards ;
 
-            this.currentLevelFilters       = crit.currentLevelFilters ;
-            this.learningEfficiencyFilters = crit.learningEfficiencyFilters ;
-            this.difficultyFilters         = crit.difficultyFilters ;
-
             this.strategy      = crit.strategy ;
             this.push          = crit.push ;
             this.assistedStudy = crit.assistedStudy ;
