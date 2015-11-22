@@ -286,66 +286,44 @@ function processTestDataHints( question ) {
 
 function prepareCardTypeOptions() {
 
+    var optionText = [] ;
+
+    optionText[ "word_meaning"    ] = "Word Meaning" ;
+    optionText[ "question_answer" ] = "Question Answer" ;
+    optionText[ "fib"             ] = "Fill in the blanks" ;
+    optionText[ "definition"      ] = "Definition" ;
+    optionText[ "character"       ] = "Character" ;
+    optionText[ "matching"        ] = "Matching" ;
+    optionText[ "event"           ] = "Event" ;
+    optionText[ "true_false"      ] = "True False" ;
+    optionText[ "chem_equation"   ] = "Chemical Equation" ;
+    optionText[ "chem_compound"   ] = "Chemical Compound" ;
+    optionText[ "spellbee"        ] = "Spellbee" ;
+    optionText[ "image_label"     ] = "Image label" ;
+    optionText[ "equation"        ] = "Equation" ;
+    optionText[ "rtc"             ] = "Reference to context" ;
+    optionText[ "multi_choice"    ] = "Multiple choice" ;    
+
     for( var elementType in $scope.cardTypeHistogram ) {
+
         if( $scope.cardTypeHistogram.hasOwnProperty( elementType ) ) {
+
             var count = $scope.cardTypeHistogram[ elementType ] ;
             if( count > 0 ) {
 
                 var name = 'Unknown Element' ;
-                if( elementType == "word_meaning" ) {    
-                    name = "Word Meaning" ;
-                }
-                else if( elementType == "question_answer" ) { 
-                    name = "Question Answer" ;
-                }
-                else if( elementType == "fib" ) {             
-                    name = "Fill in the blanks" ;
-                }
-                else if( elementType == "definition" ) {      
-                    name = "Definition" ;
-                }
-                else if( elementType == "character" ) {       
-                    name = "Character" ;
-                }
-                else if( elementType == "matching" ) {        
-                    name = "Matching" ;
-                }
-                else if( elementType == "event" ) {           
-                    name = "Event" ;
-                }
-                else if( elementType == "true_false" ) {      
-                    name = "True False" ;
-                }
-                else if( elementType == "chem_equation" ) {   
-                    name = "Chemical Equation" ;
-                }
-                else if( elementType == "chem_compound" ) {   
-                    name = "Chemical Compound" ;
-                }
-                else if( elementType == "spellbee" ) {        
-                    name = "Spellbee" ;
-                }
-                else if( elementType == "image_label" ) {     
-                    name = "Image label" ;
-                }
-                else if( elementType == "equation" ) {        
-                    name = "Equation" ;
-                }
-                else if( elementType == "rtc" ) {             
-                    name = "Reference to context" ;
-                }
-                else if( elementType == "multi_choice" ) {    
-                    name = "Multiple choice" ;
+                if( optionText.hasOwnProperty( elementType ) ) {
+                    name = optionText[ elementType ] ;
                 }
 
-                var optionString = "" + count ;
+                var str = "" + count ;
                 var pad = "000" ;
-                optionString = pad.substring( 0, pad.length - optionString.length ) + optionString ;
-                optionString = optionString + " - " + name ;
+                str = pad.substring( 0, pad.length - str.length ) + str ;
+                str = str + " - " + name ;
 
                 $scope.filterOptions.cardTypeOptions.push( {
                     id : elementType,
-                    name : optionString,
+                    name : str,
                     count : count
                 }) ;
 
