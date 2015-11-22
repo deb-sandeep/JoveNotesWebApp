@@ -6,20 +6,14 @@ function StudyCriteria() {
     this.maxTime     = -1 ;
     this.maxNewCards = 10000 ;
 
-    this.currentLevelFilters       = [ "L0", "L1", "L2", "L3"                  ] ;
-    this.learningEfficiencyFilters = [ "A1", "A2", "B1", "B2", "C1", "C2", "D" ] ;
-    this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH"            ] ;
+    this.currentLevelFilters       = [] ;
+    this.learningEfficiencyFilters = [] ;
+    this.difficultyFilters         = [] ;
     this.cardTypeFilters           = [] ;
 
     this.strategy      = "SSR" ;
     this.push          = false ;
     this.assistedStudy = false ;
-
-    this.setDefaultCriteria = function() {
-        this.currentLevelFilters       = [ "L0", "L1", "L2", "L3"                  ] ;
-        this.learningEfficiencyFilters = [ "A1", "A2", "B1", "B2", "C1", "C2", "D" ] ;
-        this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH"            ] ;
-    }
 
     this.serialize = function() {
         $.cookie.json = true ;
@@ -102,7 +96,12 @@ if( chapterIdsForNextSessions != null ) {
 $scope.pageTitle = '' ;
 
 $scope.studyCriteria = new StudyCriteria() ;
-$scope.filterOptions = new CardsFilterOptions() ;
+$scope.filterOptions = {
+    currentLevelOptions       : [], 
+    learningEfficiencyOptions : [],
+    difficultyOptions         : [],
+    cardTypeOptions           : []
+} ;
 
 $scope.sessionId              = sessionId ;
 $scope.chapterDetails         = null ;
@@ -131,7 +130,10 @@ $scope.assistedStudyCBDisabled = false ;
 
 $scope.textFormatter = null ;
 
-$scope.cardTypeHistogram = [] ;
+$scope.cardTypeHistogram       = [] ;
+$scope.cardLevelHistorgram     = [] ;
+$scope.cardDifficultyHistogram = [] ;
+$scope.cardEfficiencyHistogram = [] ;
 
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing FlashCardController." ) ;
@@ -186,7 +188,7 @@ $scope.processServerData = function( serverData ) {
     $scope.textFormatter          = new TextFormatter( $scope.chapterDetails, null ) ;
 
     preProcessFlashCardQuestions( $scope.questions ) ;
-    prepareCardTypeOptions() ;
+    prepareCardFilterOptions() ;
 }
 // ---------------- Private functions ------------------------------------------
 
@@ -220,7 +222,7 @@ function preProcessFlashCardQuestions( questions ) {
 
         associateHandler( question ) ;
         processTestDataHints( question ) ;
-        collateQuestionTypeHistogram( question ) ;
+        collateHistogramCount( question ) ;
     }
 }
 
@@ -262,17 +264,41 @@ function associateHandler( question ) {
     }
 }
 
-function collateQuestionTypeHistogram( question ) {
+function collateHistogramCount( question ) {
 
-    if( question.learningStats.currentLevel != "MAS" ) {
-        var elementType = question.elementType ;
+    var cardParentType  = question.elementType ;
+    var difficultyLabel = question.difficultyLabel ;
+    var currentLevel    = question.learningStats.currentLevel ;
+    var efficiencyLabel = question.learningStats.efficiencyLabel ;
 
-        if( $scope.cardTypeHistogram.hasOwnProperty( elementType ) ) {
-            $scope.cardTypeHistogram[ elementType ]++ ;
-        }
-        else {
-            $scope.cardTypeHistogram[ elementType ] = 1 ;
-        }
+    if( currentLevel == "MAS" ) return ;
+
+    if( $scope.cardTypeHistogram.hasOwnProperty( cardParentType ) ) {
+        $scope.cardTypeHistogram[ cardParentType ]++ ;
+    }
+    else {
+        $scope.cardTypeHistogram[ cardParentType ] = 1 ;
+    }
+
+    if( $scope.cardLevelHistorgram.hasOwnProperty( currentLevel ) ) {
+        $scope.cardLevelHistorgram[ currentLevel ]++ ;
+    }
+    else {
+        $scope.cardLevelHistorgram[ currentLevel ] = 1 ;
+    }
+
+    if( $scope.cardDifficultyHistogram.hasOwnProperty( difficultyLabel ) ) {
+        $scope.cardDifficultyHistogram[ difficultyLabel ]++ ;
+    }
+    else {
+        $scope.cardDifficultyHistogram[ difficultyLabel ] = 1 ;
+    }
+
+    if( $scope.cardEfficiencyHistogram.hasOwnProperty( efficiencyLabel ) ) {
+        $scope.cardEfficiencyHistogram[ efficiencyLabel ]++ ;
+    }
+    else {
+        $scope.cardEfficiencyHistogram[ efficiencyLabel ] = 1 ;
     }
 }
 
@@ -284,7 +310,14 @@ function processTestDataHints( question ) {
     }
 }
 
-function prepareCardTypeOptions() {
+function prepareCardFilterOptions() {
+    prepareCardTypeFilterOptions() ;
+    prepareCardLevelOptions() ;
+    prepareCardDifficultyOptions() ;
+    prepareCardEfficiencyOptions() ;
+}
+
+function prepareCardTypeFilterOptions() {
 
     var optionText = [] ;
 
@@ -302,18 +335,73 @@ function prepareCardTypeOptions() {
     optionText[ "image_label"     ] = "Image label" ;
     optionText[ "equation"        ] = "Equation" ;
     optionText[ "rtc"             ] = "Reference to context" ;
-    optionText[ "multi_choice"    ] = "Multiple choice" ;    
+    optionText[ "multi_choice"    ] = "Multiple choice" ;  
 
-    for( var elementType in $scope.cardTypeHistogram ) {
+    populateFilterOptions( $scope.cardTypeHistogram, optionText, 
+                           $scope.filterOptions.cardTypeOptions,
+                           $scope.studyCriteria.cardTypeFilters ) ;
+}
 
-        if( $scope.cardTypeHistogram.hasOwnProperty( elementType ) ) {
+function prepareCardLevelOptions() {
 
-            var count = $scope.cardTypeHistogram[ elementType ] ;
+    var optionText = [] ;
+
+    optionText[ "NS" ] = "Not Started" ;
+    optionText[ "L0" ] = "Level 0" ;
+    optionText[ "L1" ] = "Level 1" ;
+    optionText[ "L2" ] = "Level 2" ;
+    optionText[ "L3" ] = "Level 3" ;
+
+    populateFilterOptions( $scope.cardLevelHistorgram, optionText,
+                           $scope.filterOptions.currentLevelOptions,
+                           $scope.studyCriteria.currentLevelFilters ) ;
+}
+
+function prepareCardDifficultyOptions() {
+
+    var optionText = [] ;
+
+    optionText[ "VE" ] = "Very easy" ;
+    optionText[ "E"  ] = "Easy" ;
+    optionText[ "M"  ] = "Moderate" ;
+    optionText[ "H"  ] = "Hard" ;
+    optionText[ "VH" ] = "Very hard" ;
+
+    populateFilterOptions( $scope.cardDifficultyHistogram, optionText,
+                           $scope.filterOptions.difficultyOptions,
+                           $scope.studyCriteria.difficultyFilters ) ;
+}
+
+function prepareCardEfficiencyOptions() {
+
+    var optionText = [] ;
+
+    optionText[ "A1" ] = "A1" ;
+    optionText[ "A2" ] = "A2" ;
+    optionText[ "B1" ] = "B1" ;
+    optionText[ "B2" ] = "B2" ;
+    optionText[ "C1" ] = "C1" ;
+    optionText[ "C2" ] = "C2" ;
+    optionText[ "D"  ] = "D" ;
+
+    populateFilterOptions( $scope.cardEfficiencyHistogram, optionText,
+                           $scope.filterOptions.learningEfficiencyOptions,
+                           $scope.studyCriteria.learningEfficiencyFilters ) ;
+}
+
+function populateFilterOptions( histogram, keyNameMapping, filterOptions, 
+                                filterCriteria ) {
+
+    for( var key in histogram ) {
+
+        if( histogram.hasOwnProperty( key ) ) {
+
+            var count = histogram[ key ] ;
             if( count > 0 ) {
 
                 var name = 'Unknown Element' ;
-                if( optionText.hasOwnProperty( elementType ) ) {
-                    name = optionText[ elementType ] ;
+                if( keyNameMapping.hasOwnProperty( key ) ) {
+                    name = keyNameMapping[ key ] ;
                 }
 
                 var str = "" + count ;
@@ -321,18 +409,18 @@ function prepareCardTypeOptions() {
                 str = pad.substring( 0, pad.length - str.length ) + str ;
                 str = str + " - " + name ;
 
-                $scope.filterOptions.cardTypeOptions.push( {
-                    id : elementType,
+                filterOptions.push( {
+                    id : key,
                     name : str,
                     count : count
                 }) ;
 
-                $scope.studyCriteria.cardTypeFilters.push( elementType ) ;
+                filterCriteria.push( key ) ;
             }
         }
     }
 
-    $scope.filterOptions.cardTypeOptions.sort( function( a, b ){ 
+    filterOptions.sort( function( a, b ){ 
         return b.count - a.count ; 
     } ) ;
 }
