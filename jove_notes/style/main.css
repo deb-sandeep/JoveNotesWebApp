@@ -19,11 +19,6 @@ p {
 	padding-top: 8px;
 }
 
-.row{
-    margin-left: 0;
-    margin-right: 0;
-}
-
 .floating_notes_menu {
   position: fixed;
   right: 0;
