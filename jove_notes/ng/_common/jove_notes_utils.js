@@ -101,6 +101,11 @@ function RatingMatrix() {
 function JoveNotesUtil() {
 // -----------------------------------------------------------------------------
 
+var SSR_DELTA_L0 = 24*60*60*1000 ;
+var SSR_DELTA_L1 = SSR_DELTA_L0 * 2 ;
+var SSR_DELTA_L2 = SSR_DELTA_L0 * 3 ;
+var SSR_DELTA_L3 = SSR_DELTA_L0 * 4  ;
+
 /**
  * This function takes the code of the function body as a string and returns
  * an instance of the function. This function returns null in case the 
@@ -350,6 +355,28 @@ this.playKeyPressClip = function() {
 
 this.playWordSound = function( word ) {
     this.playSoundClip( "/apps/jove_notes/workspace/_spellbee/" + word + ".mp3" ) ;
+}
+
+this.getSSRThresholdDelta = function( question ) {
+
+    var currentLevel = question.learningStats.currentLevel ;
+    var timeSinceLastAttempt = new Date().getTime() - 
+                               question.learningStats.lastAttemptTime ;
+    var delta = -1 ;
+
+    if( CardLevels.prototype.L0 == currentLevel ) {
+        delta = timeSinceLastAttempt - SSR_DELTA_L0 ;
+    }
+    else if( CardLevels.prototype.L1 == currentLevel ) {
+        delta = timeSinceLastAttempt - SSR_DELTA_L1 ;
+    }
+    else if( CardLevels.prototype.L2 == currentLevel ) {
+        delta = timeSinceLastAttempt - SSR_DELTA_L2 ;
+    }
+    else if( CardLevels.prototype.L3 == currentLevel ) {
+        delta = timeSinceLastAttempt - SSR_DELTA_L3 ;
+    }
+    return delta ;
 }
 
 // ----------------------- Private functions for JoveNoteUtils -----------------

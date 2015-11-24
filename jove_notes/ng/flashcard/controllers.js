@@ -15,6 +15,8 @@ function StudyCriteria() {
     this.push          = false ;
     this.assistedStudy = false ;
 
+    this.showSSRCountsInFilter = true ;
+
     this.serialize = function() {
         $.cookie.json = true ;
         $.cookie( 'studyCriteria', this, { expires: 30 } ) ;
@@ -126,10 +128,24 @@ $scope.assistedStudyCBDisabled = false ;
 
 $scope.textFormatter = null ;
 
-$scope.cardTypeHistogram       = [] ;
-$scope.cardLevelHistorgram     = [] ;
-$scope.cardDifficultyHistogram = [] ;
-$scope.cardEfficiencyHistogram = [] ;
+$scope.histogram = {
+    all : {
+        typeHistogram       : [],
+        levelHistogram      : [],
+        difficultyHistogram : [],
+        efficiencyHistogram : []
+    },
+    ssr : {
+        typeHistogram       : [],
+        levelHistogram      : [],
+        difficultyHistogram : [],
+        efficiencyHistogram : []
+    }
+}
+
+$scope.currentHistogram = $scope.histogram.all ;
+$scope.numSSRCards = 0 ;
+$scope.numNonMasteredCards = 0 ;
 
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing FlashCardController." ) ;
@@ -147,6 +163,19 @@ $scope.$watch( 'studyCriteria.push', function( newValue, oldValue ){
         $scope.assistedStudyCBDisabled = ( newValue == true ) ;
     }
 }) ;
+
+$scope.$watch( 'studyCriteria.showSSRCountsInFilter', function( newVal, oldVal ){
+
+    log.debug( "changed, value = " + $scope.studyCriteria.showSSRCountsInFilter ) ;
+
+    if( $scope.studyCriteria.showSSRCountsInFilter ) {
+        $scope.currentHistogram = $scope.histogram.ssr ;
+    }
+    else {
+        $scope.currentHistogram = $scope.histogram.all ;
+    }
+    refreshCardFilterOptions() ;
+} ) ;
 
 // ---------------- Controller methods -----------------------------------------
 $scope.resumeSession = function() {
@@ -184,8 +213,9 @@ $scope.processServerData = function( serverData ) {
     $scope.textFormatter          = new TextFormatter( $scope.chapterDetails, null ) ;
 
     preProcessFlashCardQuestions( $scope.questions ) ;
-    prepareCardFilterOptions() ;
+    refreshCardFilterOptions() ;
 }
+
 // ---------------- Private functions ------------------------------------------
 
 function preProcessFlashCardQuestions( questions ) {
@@ -218,7 +248,8 @@ function preProcessFlashCardQuestions( questions ) {
 
         associateHandler( question ) ;
         processTestDataHints( question ) ;
-        collateHistogramCount( question ) ;
+        collateNonMasteredCardHistogramCount( question ) ;
+        collateSSRCardHistogramCount( question ) ;
     }
 }
 
@@ -260,41 +291,56 @@ function associateHandler( question ) {
     }
 }
 
-function collateHistogramCount( question ) {
+function collateNonMasteredCardHistogramCount( question ) {
+
+    if( question.learningStats.currentLevel == "MAS" ) return ;
+
+    $scope.numNonMasteredCards++ ;
+    collateHistogramCount( question, $scope.histogram.all ) ;
+}
+
+function collateSSRCardHistogramCount( question ) {
+
+    var thresholdDelta = jnUtil.getSSRThresholdDelta( question ) ;
+    if( thresholdDelta < 0 && question.learningStats.currentLevel != 'NS' ) return ;
+
+    $scope.numSSRCards++ ;
+    collateHistogramCount( question, $scope.histogram.ssr ) ;
+}
+
+function collateHistogramCount( question, histCluster ) {
 
     var cardParentType  = question.elementType ;
     var difficultyLabel = question.difficultyLabel ;
     var currentLevel    = question.learningStats.currentLevel ;
     var efficiencyLabel = question.learningStats.efficiencyLabel ;
 
-    if( currentLevel == "MAS" ) return ;
-
-    if( $scope.cardTypeHistogram.hasOwnProperty( cardParentType ) ) {
-        $scope.cardTypeHistogram[ cardParentType ]++ ;
+    if( histCluster.typeHistogram.hasOwnProperty( cardParentType ) ) {
+        histCluster.typeHistogram[ cardParentType ]++ ;
     }
     else {
-        $scope.cardTypeHistogram[ cardParentType ] = 1 ;
+        histCluster.typeHistogram[ cardParentType ] = 1 ;
     }
 
-    if( $scope.cardLevelHistorgram.hasOwnProperty( currentLevel ) ) {
-        $scope.cardLevelHistorgram[ currentLevel ]++ ;
+    if( histCluster.levelHistogram.hasOwnProperty( currentLevel ) ) {
+        histCluster.levelHistogram[ currentLevel ]++ ;
     }
     else {
-        $scope.cardLevelHistorgram[ currentLevel ] = 1 ;
+        histCluster.levelHistogram[ currentLevel ] = 1 ;
     }
 
-    if( $scope.cardDifficultyHistogram.hasOwnProperty( difficultyLabel ) ) {
-        $scope.cardDifficultyHistogram[ difficultyLabel ]++ ;
+    if( histCluster.difficultyHistogram.hasOwnProperty( difficultyLabel ) ) {
+        histCluster.difficultyHistogram[ difficultyLabel ]++ ;
     }
     else {
-        $scope.cardDifficultyHistogram[ difficultyLabel ] = 1 ;
+        histCluster.difficultyHistogram[ difficultyLabel ] = 1 ;
     }
 
-    if( $scope.cardEfficiencyHistogram.hasOwnProperty( efficiencyLabel ) ) {
-        $scope.cardEfficiencyHistogram[ efficiencyLabel ]++ ;
+    if( histCluster.efficiencyHistogram.hasOwnProperty( efficiencyLabel ) ) {
+        histCluster.efficiencyHistogram[ efficiencyLabel ]++ ;
     }
     else {
-        $scope.cardEfficiencyHistogram[ efficiencyLabel ] = 1 ;
+        histCluster.efficiencyHistogram[ efficiencyLabel ] = 1 ;
     }
 }
 
@@ -306,7 +352,8 @@ function processTestDataHints( question ) {
     }
 }
 
-function prepareCardFilterOptions() {
+function refreshCardFilterOptions() {
+
     prepareCardTypeFilterOptions() ;
     prepareCardLevelOptions() ;
     prepareCardDifficultyOptions() ;
@@ -333,7 +380,7 @@ function prepareCardTypeFilterOptions() {
     optionText[ "rtc"             ] = "Reference to context" ;
     optionText[ "multi_choice"    ] = "Multiple choice" ;  
 
-    populateFilterOptions( $scope.cardTypeHistogram, optionText, 
+    populateFilterOptions( $scope.currentHistogram.typeHistogram, optionText, 
                            $scope.filterOptions.cardTypeOptions,
                            $scope.studyCriteria.cardTypeFilters ) ;
 }
@@ -348,7 +395,7 @@ function prepareCardLevelOptions() {
     optionText[ "L2" ] = "Level 2" ;
     optionText[ "L3" ] = "Level 3" ;
 
-    populateFilterOptions( $scope.cardLevelHistorgram, optionText,
+    populateFilterOptions( $scope.currentHistogram.levelHistogram, optionText,
                            $scope.filterOptions.currentLevelOptions,
                            $scope.studyCriteria.currentLevelFilters ) ;
 }
@@ -363,7 +410,7 @@ function prepareCardDifficultyOptions() {
     optionText[ "H"  ] = "Hard" ;
     optionText[ "VH" ] = "Very hard" ;
 
-    populateFilterOptions( $scope.cardDifficultyHistogram, optionText,
+    populateFilterOptions( $scope.currentHistogram.difficultyHistogram, optionText,
                            $scope.filterOptions.difficultyOptions,
                            $scope.studyCriteria.difficultyFilters ) ;
 }
@@ -380,13 +427,16 @@ function prepareCardEfficiencyOptions() {
     optionText[ "C2" ] = "C2" ;
     optionText[ "D"  ] = "D" ;
 
-    populateFilterOptions( $scope.cardEfficiencyHistogram, optionText,
+    populateFilterOptions( $scope.currentHistogram.efficiencyHistogram, optionText,
                            $scope.filterOptions.learningEfficiencyOptions,
                            $scope.studyCriteria.learningEfficiencyFilters ) ;
 }
 
 function populateFilterOptions( histogram, keyNameMapping, filterOptions, 
                                 filterCriteria ) {
+
+    filterOptions.length = 0 ;
+    filterCriteria.length = 0 ;
 
     for( var key in histogram ) {
 

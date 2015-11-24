@@ -2,11 +2,6 @@ flashCardApp.controller( 'PracticePageController', function( $scope, $http, $rou
 // -----------------------------------------------------------------------------
 
 // ---------------- Constants and inner class definition -----------------------
-var SSR_DELTA_L0 = 24*60*60*1000 ;
-var SSR_DELTA_L1 = SSR_DELTA_L0 * 2 ;
-var SSR_DELTA_L2 = SSR_DELTA_L0 * 3 ;
-var SSR_DELTA_L3 = SSR_DELTA_L0 * 4  ;
-
 var MAX_GRADE_CARD_API_CALL_RETRIES    = 3 ;
 var MAX_PUSH_ANS_API_CALL_RETRIES      = 3 ;
 var MAX_PUSH_QUESTION_API_CALL_RETRIES = 3 ;
@@ -17,6 +12,7 @@ var PROGRESS_STAGE_RED   = 2 ;
 
 // ---------------- Local variables --------------------------------------------
 var ratingMatrix = new RatingMatrix() ;
+var jnUtils      = new JoveNotesUtil() ;
 
 var currentQuestionShowStartTime   = 0 ;
 var currentQuestionAvPredictedTime = 0 ;
@@ -542,8 +538,8 @@ function sortCardsAsPerStudyStrategy() {
         if( $scope.questionsForSession.length > 0 ) {
             $scope.questionsForSession.sort( function( q1, q2 ){
 
-                var tlaCard1 = getSSRThresholdDelta( q1 ) ;
-                var tlaCard2 = getSSRThresholdDelta( q2 ) ;
+                var tlaCard1 = jnUtils.getSSRThresholdDelta( q1 ) ;
+                var tlaCard2 = jnUtils.getSSRThresholdDelta( q2 ) ;
 
                 return tlaCard2 - tlaCard1 ;
             }) ;
@@ -587,7 +583,7 @@ function filterCardsForSSRStrategy() {
 
     for( index=0; index<$scope.questionsForSession.length; index++ ) {
         var question = $scope.questionsForSession[index] ;
-        var thresholdDelta = getSSRThresholdDelta( question ) ;
+        var thresholdDelta = jnUtils.getSSRThresholdDelta( question ) ;
 
         if( thresholdDelta >= 0 ) {
             ssrFilteredQuestions.push( question ) ;
@@ -595,28 +591,6 @@ function filterCardsForSSRStrategy() {
     }
 
     $scope.questionsForSession = ssrFilteredQuestions ;
-}
-
-function getSSRThresholdDelta( question ) {
-
-    var currentLevel = question.learningStats.currentLevel ;
-    var timeSinceLastAttempt = new Date().getTime() - 
-                               question.learningStats.lastAttemptTime ;
-    var delta = -1 ;
-
-    if( CardLevels.prototype.L0 == currentLevel ) {
-        delta = timeSinceLastAttempt - SSR_DELTA_L0 ;
-    }
-    else if( CardLevels.prototype.L1 == currentLevel ) {
-        delta = timeSinceLastAttempt - SSR_DELTA_L1 ;
-    }
-    else if( CardLevels.prototype.L2 == currentLevel ) {
-        delta = timeSinceLastAttempt - SSR_DELTA_L2 ;
-    }
-    else if( CardLevels.prototype.L3 == currentLevel ) {
-        delta = timeSinceLastAttempt - SSR_DELTA_L3 ;
-    }
-    return delta ;
 }
 
 function addNSCards() {

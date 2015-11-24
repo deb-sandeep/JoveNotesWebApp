@@ -19,6 +19,11 @@ p {
 	padding-top: 8px;
 }
 
+.row{
+    margin-left: 0;
+    margin-right: 0;
+}
+
 .floating_notes_menu {
   position: fixed;
   right: 0;
@@ -49,6 +54,16 @@ p {
 	line-height: 40px;
 	background-color: #4B4B4B;
 	color: #E6E6E6;
+}
+
+.pad-1px {
+	padding-left: 1px;
+	padding-right: 1px;
+}
+
+.pad-2px {
+	padding-left: 2px;
+	padding-right: 2px;
 }
 
 .pad-5px {
