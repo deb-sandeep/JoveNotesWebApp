@@ -24,6 +24,9 @@
 <!-- The "Start Session" button which spans the entire width                 -->
 <!-- ======================================================================= -->
 <div style="height:10px"></div>
+
+<div class="container" style="width:100%">
+
 <div class="row">
     <div class="col-sm-12" style="height:70px;">
         <p>
@@ -96,27 +99,37 @@
           <div class="panel-body pad-5px">
             <div align="left">
                 <div class="row">
-                <div class="col-sm-4">
-                    <label>Level : </label>
-                    <ul>
-                        <li ng-repeat="item in studyCriteria.currentLevelFilters">{{item}}</li>
-                    </ul>
+                    <div class="col-sm-6">
+                        <label>Level : </label>
+                        <ul>
+                            <li ng-repeat="item in studyCriteria.currentLevelFilters">{{item}}</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Efficiency : </label>
+                        <ul>
+                            <li ng-repeat="item in studyCriteria.learningEfficiencyFilters">{{item}}</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="col-sm-4">
-                    <label>Efficiency : </label>
-                    <ul>
-                        <li ng-repeat="item in studyCriteria.learningEfficiencyFilters">{{item}}</li>
-                    </ul>
-                </div>
-                <div class="col-sm-4">
-                    <label>Difficulty : </label>
-                    <ul>
-                        <li ng-repeat="item in studyCriteria.difficultyFilters">{{item}}</li>
-                    </ul>
-                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>Difficulty : </label>
+                        <ul>
+                            <li ng-repeat="item in studyCriteria.difficultyFilters">{{item}}</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Card Types : </label>
+                        <ul>
+                            <li ng-repeat="item in studyCriteria.cardTypeFilters">{{item}}</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
           </div>
         </div>
     </div>
+</div>
+
 </div>
