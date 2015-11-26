@@ -212,6 +212,19 @@ $scope.processServerData = function( serverData ) {
     $scope.pageTitle              = jnUtil.constructPageTitle( $scope.chapterDetails ) ;
     $scope.textFormatter          = new TextFormatter( $scope.chapterDetails, null ) ;
 
+    $scope.histogram.all.typeHistogram       = [] ;
+    $scope.histogram.all.levelHistogram      = [] ;
+    $scope.histogram.all.difficultyHistogram = [] ;
+    $scope.histogram.all.efficiencyHistogram = [] ;
+
+    $scope.histogram.ssr.typeHistogram       = [] ;
+    $scope.histogram.ssr.levelHistogram      = [] ;
+    $scope.histogram.ssr.difficultyHistogram = [] ;
+    $scope.histogram.ssr.efficiencyHistogram = [] ;
+
+    $scope.numSSRCards = 0 ;
+    $scope.numNonMasteredCards = 0 ;
+
     preProcessFlashCardQuestions( $scope.questions ) ;
     refreshCardFilterOptions() ;
 }
