@@ -149,7 +149,7 @@ $scope.$on( 'onRenderComplete', function( scope ){
     $('.tree').treegrid({
       'initialState': 'collapsed',
       'saveState': true,
-      'saveStateName' : "treeState-" + currentUserName 
+      'saveStateName' : "treeState-tp-" + currentUserName 
     });	
     recomputeStatistics() ;
    	$scope.$digest() ;
