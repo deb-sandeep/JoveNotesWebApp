@@ -26,13 +26,13 @@ function StudyCriteria() {
         $.cookie.json = true ;
         var crit = $.cookie( 'studyCriteria' ) ;
         if( typeof crit != 'undefined' ) {
-            this.maxCards    = crit.maxCards ;
-            this.maxTime     = crit.maxTime ;
-            this.maxNewCards = crit.maxNewCards ;
-
-            this.strategy      = crit.strategy ;
-            this.push          = crit.push ;
-            this.assistedStudy = crit.assistedStudy ;
+            this.maxCards              = crit.maxCards ;
+            this.maxTime               = crit.maxTime ;
+            this.maxNewCards           = crit.maxNewCards ;
+            this.strategy              = crit.strategy ;
+            this.push                  = crit.push ;
+            this.assistedStudy         = crit.assistedStudy ;
+            this.showSSRCountsInFilter = crit.showSSRCountsInFilter ;
         } ;
     }
 
