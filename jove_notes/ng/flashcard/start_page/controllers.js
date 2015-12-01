@@ -36,6 +36,17 @@ $scope.applyLevel = function( level ) {
     }) ;
 }
 
+$scope.skipChapter = function() {
+
+    if( $scope.$parent.chapterIdsForNextSessions != null ) {
+        window.location.href = "/apps/jove_notes/ng/flashcard/index.php?chapterId=" + 
+                               $scope.$parent.chapterIdsForNextSessions ;
+    }
+    else {
+        window.location.href = "/apps/jove_notes/ng/dashboard/index.php" ;
+    }
+}
+
 // ---------------- Private functions ------------------------------------------
 function fetchAndProcessDataFromServer() {
 

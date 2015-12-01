@@ -3,10 +3,10 @@
 
 <!-- The "Start Session" button which spans the entire width                 -->
 <!-- ======================================================================= -->
-<div class="container">
+<div class="container" style="width:95%">
   <div class="row">
-      <div class="col-sm-2" style="height:70px;padding-right:0px">
-          <p style="padding-left:10px;">
+      <div class="col-sm-2" style="height:70px;padding:2px">
+          <p style="padding-left:2px;">
           <a type="button" class="btn btn-default btn-block gi-2x"
              href="/apps/jove_notes/ng/dashboard/index.php"
              style="height:50px;">
@@ -14,8 +14,17 @@
           </a>
           </p>
       </div>
-      <div class="col-sm-10" style="height:70px;">
-          <p style="padding-right:10px;">
+      <div class="col-sm-2" style="height:70px;padding:2px">
+          <p style="padding-left:2px;">
+          <a type="button" class="btn btn-default btn-block gi-2x"
+             ng-click="skipChapter()"
+             style="height:50px;">
+              <span class="glyphicon glyphicon-step-forward"></span>
+          </a>
+          </p>
+      </div>
+      <div class="col-sm-8" style="height:70px;padding:2px">
+          <p style="padding-right:2px;">
           <a type="button" class="btn btn-success btn-block gi-2x"
              href="#PracticePage"
              style="height:50px;">
