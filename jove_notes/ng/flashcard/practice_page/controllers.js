@@ -498,12 +498,10 @@ function computeSessionCards() {
 
     applyStudyCriteriaFilter() ;
     sortCardsAsPerStudyStrategy() ;
-    addNSCards() ;
 
     var strategy = $scope.studyCriteria.strategy ;
     if( ( strategy == StudyStrategyTypes.prototype.OBJECTIVE ) ||
         ( strategy == StudyStrategyTypes.prototype.SUBJECTIVE ) ) {
-        log.debug( "\tSorting cards as per OBJECTIVE study strategy." ) ;
     
         sortCardsAsPerStudyStrategy() ;
     }
@@ -517,10 +515,24 @@ function computeSessionCards() {
 function applyStudyCriteriaFilter() {
 
     log.debug( "\tApplying study criteria filter." ) ;
+
+    var nsQuestionsAdded = 0 ;
+    var maxNewCards      = $scope.$parent.studyCriteria.maxNewCards ;
+
     for( var i=0; i < $scope.$parent.questions.length ; i++ ) {
         var question = $scope.$parent.questions[ i ] ;
+        var curLevel = question.learningStats.currentLevel ;
+
         if( $scope.$parent.studyCriteria.matchesFilter( question ) ) {
-            $scope.questionsForSession.push( question ) ;
+            if( curLevel != CardLevels.prototype.NS ) {
+                $scope.questionsForSession.push( question ) ;
+            }
+            else {
+                if( nsQuestionsAdded < maxNewCards ) {
+                    $scope.questionsForSession.splice( nsQuestionsAdded, 0, question ) ;
+                    nsQuestionsAdded++ ;
+                }
+            }
         }
     }
     log.debug( "\t\t#Q after filtering = " + $scope.questionsForSession.length ) ;
@@ -583,42 +595,20 @@ function filterCardsForSSRStrategy() {
 
     for( index=0; index<$scope.questionsForSession.length; index++ ) {
         var question = $scope.questionsForSession[index] ;
-        var thresholdDelta = jnUtils.getSSRThresholdDelta( question ) ;
+        var curLevel = question.learningStats.currentLevel ;
 
-        if( thresholdDelta >= 0 ) {
+        if( curLevel == CardLevels.prototype.NS ) {
             ssrFilteredQuestions.push( question ) ;
+        }
+        else {
+            var thresholdDelta = jnUtils.getSSRThresholdDelta( question ) ;
+            if( thresholdDelta >= 0 ) {
+                ssrFilteredQuestions.push( question ) ;
+            }
         }
     }
 
     $scope.questionsForSession = ssrFilteredQuestions ;
-}
-
-function addNSCards() {
-
-    log.debug( "\tAdding NS cards. Max new cards = " + 
-               $scope.$parent.studyCriteria.maxNewCards ) ;
-
-    var nsQuestionsAdded = 0 ;
-    var cardTypeFilters = $scope.$parent.studyCriteria.cardTypeFilters ;
-
-    if( $scope.$parent.studyCriteria.maxNewCards > 0 ) {
-        for( var i=0 ; i < $scope.$parent.questions.length ; i++ ) {
-
-            var question = $scope.$parent.questions[ i ] ;
-            if( question.learningStats.currentLevel == CardLevels.prototype.NS ) {
-
-                if( cardTypeFilters.indexOf( question.elementType ) != -1 ){
-                    
-                    $scope.questionsForSession.splice( nsQuestionsAdded, 0, question ) ;
-                    nsQuestionsAdded++ ;
-                    if( nsQuestionsAdded >= $scope.$parent.studyCriteria.maxNewCards ) {
-                        break ;
-                    }
-                }
-            }
-        }
-    }
-    log.debug( "\t\tAdded " + nsQuestionsAdded + " NS questions." ) ;
 }
 
 function trimCardsAsPerBounds() {

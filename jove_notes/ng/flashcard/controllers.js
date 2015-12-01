@@ -2,9 +2,10 @@ flashCardApp.controller( 'FlashCardController', function( $scope, $http, $locati
 // ---------------- Constants and inner class definition -----------------------
 function StudyCriteria() {
     
-    this.maxCards    = 10000 ;
-    this.maxTime     = -1 ;
-    this.maxNewCards = 10000 ;
+    this.maxCards       = 10000 ;
+    this.maxTime        = -1 ;
+    this.maxNewCards    = 10000 ;
+    this.oldMaxNewCards = 10000 ;
 
     this.currentLevelFilters       = [] ;
     this.learningEfficiencyFilters = [] ;
@@ -15,9 +16,9 @@ function StudyCriteria() {
     this.push          = false ;
     this.assistedStudy = false ;
 
-    this.showSSRCountsInFilter = true ;
-
     this.serialize = function() {
+        this.oldMaxNewCards = this.maxNewCards ;
+
         $.cookie.json = true ;
         $.cookie( 'studyCriteria', this, { expires: 30 } ) ;
     }
@@ -26,13 +27,13 @@ function StudyCriteria() {
         $.cookie.json = true ;
         var crit = $.cookie( 'studyCriteria' ) ;
         if( typeof crit != 'undefined' ) {
-            this.maxCards              = crit.maxCards ;
-            this.maxTime               = crit.maxTime ;
-            this.maxNewCards           = crit.maxNewCards ;
-            this.strategy              = crit.strategy ;
-            this.push                  = crit.push ;
-            this.assistedStudy         = crit.assistedStudy ;
-            this.showSSRCountsInFilter = crit.showSSRCountsInFilter ;
+            this.maxCards       = crit.maxCards ;
+            this.maxTime        = crit.maxTime ;
+            this.maxNewCards    = crit.maxNewCards ;
+            this.oldMaxNewCards = crit.oldMaxNewCards ;
+            this.strategy       = crit.strategy ;
+            this.push           = crit.push ;
+            this.assistedStudy  = crit.assistedStudy ;
         } ;
     }
 
@@ -54,24 +55,8 @@ function StudyCriteria() {
                     if( diffLabelFilters.indexOf( diffLabel ) != -1 ) {
                         return true ;
                     }
-                    else {
-                        log.debug( "\t\tRejecting Q" + question.questionId + 
-                                   " : Difficulty level filter mismatch. " + diffLabel ) ;
-                    }
-                }
-                else {
-                    log.debug( "\t\tRejecting Q" + question.questionId + 
-                               " : Learning efficiency filter mismatch. " + lrnEffLabel ) ;
                 }
             }
-            else {
-                log.debug( "\t\tRejecting Q" + question.questionId + 
-                           " : Current level filter mismatch. " + currentLevel ) ;
-            }
-        }
-        else {
-            log.debug( "\t\tRejecting Q" + question.questionId + 
-                       " : Card type filter mismatch. " + elementType ) ;
         }
         return false ;
     }
@@ -143,9 +128,13 @@ $scope.histogram = {
     }
 }
 
-$scope.currentHistogram = $scope.histogram.all ;
-$scope.numSSRCards = 0 ;
+$scope.currentHistogram    = $scope.histogram.all ;
+$scope.numSSRCards         = 0 ;
 $scope.numNonMasteredCards = 0 ;
+$scope.numNSCards          = 0 ;
+$scope.totalCards          = 0 ;
+
+$scope.disableMaxNSCardChoice = false ;
 
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing FlashCardController." ) ;
@@ -164,17 +153,21 @@ $scope.$watch( 'studyCriteria.push', function( newValue, oldValue ){
     }
 }) ;
 
-$scope.$watch( 'studyCriteria.showSSRCountsInFilter', function( newVal, oldVal ){
-
-    log.debug( "changed, value = " + $scope.studyCriteria.showSSRCountsInFilter ) ;
-
-    if( $scope.studyCriteria.showSSRCountsInFilter ) {
-        $scope.currentHistogram = $scope.histogram.ssr ;
-    }
-    else {
-        $scope.currentHistogram = $scope.histogram.all ;
-    }
+$scope.$watch( 'studyCriteria.strategy', function( newVal, oldVal ){
     refreshCardFilterOptions() ;
+} ) ;
+
+$scope.$watch( 'studyCriteria.currentLevelFilters', function( newVal, oldVal ){
+    if( newVal != "" ) {
+        if( newVal.indexOf( "NS" ) == -1 ) {
+            $scope.studyCriteria.maxNewCards = -1 ;
+            $scope.disableMaxNSCardChoice = true ;
+        }
+        else {
+            $scope.disableMaxNSCardChoice = false ;
+            $scope.studyCriteria.maxNewCards = $scope.studyCriteria.oldMaxNewCards ;
+        }
+    }
 } ) ;
 
 // ---------------- Controller methods -----------------------------------------
@@ -222,8 +215,10 @@ $scope.processServerData = function( serverData ) {
     $scope.histogram.ssr.difficultyHistogram = [] ;
     $scope.histogram.ssr.efficiencyHistogram = [] ;
 
-    $scope.numSSRCards = 0 ;
+    $scope.numSSRCards         = 0 ;
     $scope.numNonMasteredCards = 0 ;
+    $scope.numNSCards          = 0 ;
+    $scope.numCards            = 0 ;
 
     preProcessFlashCardQuestions( $scope.questions ) ;
     refreshCardFilterOptions() ;
@@ -261,8 +256,19 @@ function preProcessFlashCardQuestions( questions ) {
 
         associateHandler( question ) ;
         processTestDataHints( question ) ;
+
+        collateNSCardCount( question ) ;
         collateNonMasteredCardHistogramCount( question ) ;
         collateSSRCardHistogramCount( question ) ;
+    }
+
+    if( $scope.numNSCards == 0 ) {
+        $scope.disableMaxNSCardChoice = true ;
+        $scope.studyCriteria.maxNewCards = -1 ;
+    }
+    else {
+        $scope.disableMaxNSCardChoice = false ;
+        $scope.studyCriteria.maxNewCards = $scope.studyCriteria.oldMaxNewCards ;
     }
 }
 
@@ -301,6 +307,13 @@ function associateHandler( question ) {
     else {
         log.error( "Unrecognized question type = " + questionType ) ;
         throw "Unrecognized question type. Can't associate formatter." ;
+    }
+}
+
+function collateNSCardCount( question ) {
+
+    if( question.learningStats.currentLevel == "NS" ) {
+        $scope.numNSCards++ ;
     }
 }
 
@@ -367,10 +380,23 @@ function processTestDataHints( question ) {
 
 function refreshCardFilterOptions() {
 
+    pointToCorrectSet() ;
+
     prepareCardTypeFilterOptions() ;
     prepareCardLevelOptions() ;
     prepareCardDifficultyOptions() ;
     prepareCardEfficiencyOptions() ;
+}
+
+function pointToCorrectSet() {
+    if( $scope.studyCriteria.strategy == StudyStrategyTypes.prototype.SSR ) {
+        $scope.currentHistogram = $scope.histogram.ssr ;
+        $scope.totalCards = $scope.numSSRCards ;
+    }
+    else {
+        $scope.currentHistogram = $scope.histogram.all ;
+        $scope.totalCards = $scope.numNonMasteredCards ;
+    }
 }
 
 function prepareCardTypeFilterOptions() {

@@ -75,15 +75,10 @@
     <td class="pad-5px" valign="top">
         <div class="panel panel-info">
           <div class="panel-heading">
-            <b>Filter Criteria</b>
-            <div style="display:inline-block;" 
+            <b>Filter Criteria ({{totalCards}})</b>&nbsp;&nbsp;
+            <div style="display:inline-block;"
                  ng-include="'/apps/jove_notes/ng/flashcard/start_page/action_on_filtered_cards.html'">
             </div>
-            <div class="form-group" style="display:inline-block;margin:0px;padding:0px;">
-                <input id="countType" type="checkbox" ng-model="studyCriteria.showSSRCountsInFilter"/>
-                <label for="countType"># SSR</label>
-            </div>&nbsp;&nbsp;
-            ({{numSSRCards}} | {{numNonMasteredCards}})
           </div>
           <div class="panel-body">
             <div align="center" 
