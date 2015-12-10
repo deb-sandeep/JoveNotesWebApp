@@ -1,4 +1,4 @@
-flashCardApp.controller( 'EndPageController', function( $scope, $http, $routeParams, $location ) {
+flashCardApp.controller( 'EndPageController', function( $scope, $http, $routeParams, $location, $window ) {
 // ---------------- Constants and inner class definition -----------------------
 
 // ---------------- Local variables --------------------------------------------
@@ -24,6 +24,9 @@ $scope.learningEfficiency = "" ;
 }
 
 // ---------------- Controller methods -----------------------------------------
+$scope.refreshPage = function() {
+	$window.location.reload() ;
+}
 
 // ---------------- Private functions ------------------------------------------
 function pushSessionEndMessage() {

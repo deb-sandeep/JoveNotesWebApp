@@ -1,8 +1,14 @@
 <div ng-include="'/apps/jove_notes/ng/flashcard/end_page/header_fragment.html'">
 </div>
 
-<div class="row">
-    <div class="col-sm-12" style="height:70px;">
+<div class="container" style="width:90%">
+    <div class="col-sm-2" style="height:70px;padding-left:2px">
+      <a type="button" class="btn btn-default btn-block gi-2x"
+         ng-click="refreshPage()" style="margin:0px;padding:4px">
+          <span class="glyphicon glyphicon-refresh"></span>
+      </a>
+    </div>
+    <div class="col-sm-10" style="height:70px;padding-left:2px">
         <div class="well well-sm" align="center">
             <span class="text-primary gi-1-5x">{{messageForEndPage}}</span>
         </div>
