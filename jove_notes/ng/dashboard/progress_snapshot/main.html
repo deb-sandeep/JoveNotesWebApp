@@ -20,7 +20,13 @@
                         <span class="glyphicon glyphicon-eye-open"  ng-hide="showHiddenChapters"></span>
                         <span class="glyphicon glyphicon-eye-close" ng-show="showHiddenChapters"></span>
                     </button>
+                    <button type="button" class="btn btn-default btn-xs"
+                            ng-click="toggleShowSelectedRows()">
+                        <span class="glyphicon glyphicon-ok-sign"   ng-hide="showOnlySelectedRows"></span>
+                        <span class="glyphicon glyphicon-ok-circle" ng-show="showOnlySelectedRows"></span>
+                    </button>
     			</th>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th class="text-center">Meter</th>
@@ -63,6 +69,10 @@
                        ng-show="rowData.isFlashcardAuthorized">
                         <span class="glyphicon glyphicon-th"></span>
                     </a>
+                </td>
+                <td>
+                    <input id="push" type="checkbox" ng-change="rowData.selectionChanged()" 
+                           ng-model="rowData.isRowSelected"/>
                 </td>
                 <td class="text-center">
                     <canvas width='200' height='20' id='canvas-{{rowData.rowId}}'>

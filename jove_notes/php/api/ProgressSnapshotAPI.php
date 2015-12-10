@@ -55,6 +55,7 @@ class ChapterProgressSnapshot {
 		$this->masteredCards      = 0 ;
 		$this->numSSRMaturedCards = 0 ;
 		$this->isHidden           = false ;
+		$this->isDeselected       = false ;
 	}
 
 	public function isUserEntitled() {
@@ -88,15 +89,29 @@ class ProgressSnapshotAPI extends API {
 
 	public function doPost( $request, &$response ) {
 
+		$action = $request->requestBody->action ;
+
 		$this->logger->debug( "Executing doPost in ProgressSnapshotAPI" ) ;
-		$this->logger->debug( "action = " . $request->requestBody->action ) ;
+		$this->logger->debug( "action = $action" ) ;
 
-		$this->ucpDAO->updateHiddenPreference( ExecutionContext::getCurrentUserName(),
-											   $request->requestBody->chapterId,
-			                                   $request->requestBody->isHidden ) ;
-
-		$response->responseCode = APIResponse::SC_OK ;
-		$response->responseBody = "Success" ;
+		if( $action == "update_visibility" ) {
+			$this->ucpDAO->updateHiddenPreference( ExecutionContext::getCurrentUserName(),
+												   $request->requestBody->chapterId,
+				                                   $request->requestBody->isHidden ) ;
+			$response->responseCode = APIResponse::SC_OK ;
+			$response->responseBody = "Success" ;
+		}
+		else if( $action == "update_selection" ) {
+			$this->ucpDAO->updateDeselectPreference( ExecutionContext::getCurrentUserName(),
+												   $request->requestBody->chapterIds,
+				                                   $request->requestBody->selectionState ) ;
+			$response->responseCode = APIResponse::SC_OK ;
+			$response->responseBody = "Success" ;
+		}
+		else {
+			$response->responseCode = APIResponse::SC_ERR_BAD_REQUEST ;
+			$response->responseBody = "Unknown action $action" ;
+		}
 	}
 
 	public function doGet( $request, &$response ) {
@@ -174,7 +189,8 @@ class ProgressSnapshotAPI extends API {
 
 	private function &constructPreferenceResponseObj() {
 
-		$preferenceKeys = [ "jove_notes.showHiddenChapters" ] ;
+		$preferenceKeys = [ "jove_notes.showHiddenChapters", 
+		                    "jove_notes.showOnlySelectedRows" ] ;
 
 		$preferences = array() ;
 		foreach( $preferenceKeys as $key ) {
@@ -246,15 +262,22 @@ class ProgressSnapshotAPI extends API {
 
 	private function associateUserChapterPreferences() {
 
-		$hiddenChapterPrefs = $this->ucpDAO->getHiddenPreferencesForUser( 
+		$preferences = $this->ucpDAO->getChapterPreferencesForUser( 
 									  ExecutionContext::getCurrentUserName() ) ;
 
-		foreach( $hiddenChapterPrefs as $chapterId => $isHidden ) {
+		foreach( $preferences as $pref ) {
+
+			$chapterId    = $pref[ "chapter_id"    ] ;
+			$isHidden     = $pref[ "is_hidden"     ] ;
+			$isDeselected = $pref[ "is_deselected" ] ;
 
 			if( array_key_exists( $chapterId, $this->chapters ) ) {
+				$chapter = &$this->chapters[ $chapterId ] ;
 				if( $isHidden == 1 ) {
-					$chapter = &$this->chapters[ $chapterId ] ;
 					$chapter->isHidden = true ;
+				}
+				if( $isDeselected == 1 ) {
+					$chapter->isDeselected = true ;
 				}
 			}
 		}
@@ -281,6 +304,7 @@ class ProgressSnapshotAPI extends API {
 		$responseObj[ "masteredCards"          ] = $chapter->masteredCards ;
 		$responseObj[ "numSSRMaturedCards"     ] = $chapter->numSSRMaturedCards ;
 		$responseObj[ "isHidden"               ] = $chapter->isHidden ;
+		$responseObj[ "isDeselected"           ] = $chapter->isDeselected ;
 
 		return $responseObj ;
 	}

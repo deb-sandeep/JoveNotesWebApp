@@ -12,6 +12,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
 	this.rowId       = String( rowId ).replace( / +/g, "-" ) ;
 	this.parentRowId = parentRowId ;
 	this.isHidden    = true ;
+	this.children    = [] ;
 
     this.isNotesAuthorized      = false ;
     this.isFlashcardAuthorized  = false ;
@@ -32,8 +33,61 @@ function RowData( rowType, name, rowId, parentRowId ) {
 	this.subjectRD  = null ;
 	this.syllabusRD = null ;
 
+	this.isRowSelected = true ;
+
 	this.isChapterRow = function() {
 		return this.rowType == this.ROW_TYPE_CHAPTER ;
+	}
+
+	this.addChild = function( childRow ) {
+		this.children.push( childRow ) ;
+	}
+
+	this.selectionChanged = function() {
+		var affectedChapterIds = [] ;
+
+		if( !this.isChapterRow() ) {
+			for( var i=0; i<this.children.length; i++ ) {
+				this.children[i].isRowSelected = this.isRowSelected ;
+				var affectedIds = this.children[i].handleSelectionChangeCascade() ;
+
+				affectedChapterIds = affectedChapterIds.concat( affectedIds ) ;
+			}
+		}
+		else {
+			affectedChapterIds.push( this.chapterId ) ;
+		}
+
+		$http.post( "/jove_notes/api/ProgressSnapshot", {
+			'action'         : 'update_selection',
+			'chapterIds'     : affectedChapterIds.join(),
+			'selectionState' : this.isRowSelected
+		} )
+		.error( function( data ){
+			$scope.addErrorAlert( "API call failed. " + data ) ;
+		});
+		recomputeStatistics() ;
+	}
+
+	this.handleSelectionChangeCascade = function() {
+
+		var affectedChapterIds = [] ;
+
+		if( !this.isChapterRow() ) {
+			for( var i=0; i<this.children.length; i++ ) {
+				var child = this.children[i] ;
+				child.isRowSelected = this.isRowSelected ;
+				var affectedIds = child.handleSelectionChangeCascade() ;
+
+				affectedChapterIds = affectedChapterIds.concat( affectedIds ) ;
+			}
+		}
+		else {
+			if( !this.isHidden ) {
+				affectedChapterIds.push( this.chapterId ) ;
+			}
+		}
+		return affectedChapterIds ;
 	}
 
 	this.toggleVisibility = function() {
@@ -71,12 +125,14 @@ function RowData( rowType, name, rowId, parentRowId ) {
 		this.isStatisticsAuthorized = chapter.isStatisticsAuthorized ;
 		this.isDeleteAuthorized     = chapter.isDeleteAuthorized ;
 		this.isHidden               = chapter.isHidden ;
+		this.isRowSelected          = !chapter.isDeselected ;
 	}
 }
 
 $scope.$parent.pageTitle     = "Progress Dashboard" ;
 $scope.$parent.currentReport = 'ProgressSnapshot' ;
 $scope.showHiddenChapters    = false ;
+$scope.showOnlySelectedRows  = false ;
 $scope.progressSnapshot      = null ;
 
 refreshData() ;
@@ -111,6 +167,12 @@ $scope.isTreeRowVisible = function( rowData ) {
 			}
 		}
 	}
+
+	if( $scope.showOnlySelectedRows ) {
+		if( !rowData.isRowSelected ) {
+			return false ;
+		}
+	}
 	return true ;
 }
 
@@ -128,12 +190,26 @@ $scope.toggleHiddenChapters = function() {
 		'jove_notes.showHiddenChapters' : $scope.showHiddenChapters ? 'true' : 'false'
 	} )
 	.success( function( data ){
-		log.debug( "Updated user preference." ) ;
+		log.debug( "Updated user preference for showHiddenChapters." ) ;
 	} )
 	.error( function( data ){
 		log.error( "Could not set hidden chapter preferences for user." ) ;
 	});  
     recomputeStatistics() ;
+}
+
+$scope.toggleShowSelectedRows = function() {
+	$scope.showOnlySelectedRows = !$scope.showOnlySelectedRows ;
+	$http.put( "/__fw__/api/UserPreference", {
+		'jove_notes.showOnlySelectedRows' : $scope.showOnlySelectedRows ? 'true' : 'false'
+	} )
+	.success( function( data ){
+		log.debug( "Updated user preference for showOnlySelectedRows" ) ;
+	} )
+	.error( function( data ){
+		log.error( "Could not set hidden chapter preferences for user." ) ;
+	});  
+	recomputeStatistics() ;
 }
 
 $scope.deleteChapter = function( chapterId ) {
@@ -200,7 +276,8 @@ function refreshData() {
 }
 
 function digestPreferences( preferences ) {
-	$scope.showHiddenChapters = preferences[ "jove_notes.showHiddenChapters" ] ;
+	$scope.showHiddenChapters   = preferences[ "jove_notes.showHiddenChapters" ] ;
+	$scope.showOnlySelectedRows = preferences[ "jove_notes.showOnlySelectedRows" ] ;
 }
 
 function prepareDataForDisplay( rawData ) {
@@ -218,6 +295,8 @@ function prepareDataForDisplay( rawData ) {
 
 		displayData.push( syllabusRD ) ;
 
+		var numSubjectsSelected = 0 ;
+
 		for( subIndex=0; subIndex<syllabus.subjects.length; subIndex++ ) {
 
 			rowNum++ ;
@@ -227,8 +306,10 @@ function prepareDataForDisplay( rawData ) {
 				                         syllabus.syllabusName + "-" + subject.subjectName, 
 				                         syllabusRD.rowId ) ;
 
+			syllabusRD.addChild( subjectRD ) ;
 			displayData.push( subjectRD ) ;
 
+			var numChaptersSelected = 0 ;
 			for( chpIndex=0; chpIndex<subject.chapters.length; chpIndex++ ) {
 
 				rowNum++ ;
@@ -242,9 +323,19 @@ function prepareDataForDisplay( rawData ) {
 
 				chapterRD.setChapterAndParentRows( chapter, subjectRD, syllabusRD ) ;
 
+				subjectRD.addChild( chapterRD ) ;
 				displayData.push( chapterRD ) ;
+
+				if( !chapterRD.isHidden && chapterRD.isRowSelected ) {
+					numChaptersSelected++ ;
+				}
 			}
+
+			subjectRD.isRowSelected = ( numChaptersSelected > 0 ) ;
+			if( subjectRD.isRowSelected ) numSubjectsSelected++ ;
 		}
+
+		syllabusRD.isRowSelected = ( numSubjectsSelected > 0 ) ;
 	}
 	return displayData ;
 }
@@ -295,6 +386,16 @@ function computeAggregateFlashCardChapterList() {
 					curSyllabusRD.chapterId = chaptersForSyllabus.join() ;
 					curSyllabusRD.isFlashcardAuthorized = true ;
 				}
+
+				var selected = false ;
+				for( var j=0; j<curSyllabusRD.children.length; j++ ) {
+					var child = curSyllabusRD.children[j] ;
+					if( !child.isHidden && child.isRowSelected ) {
+						selected = true ;
+						break ;
+					}
+				}
+				curSyllabusRD.isRowSelected = selected ;
 			}
 			curSyllabusRD = rowData ;
 			chaptersForSyllabus = [] ;
@@ -306,6 +407,16 @@ function computeAggregateFlashCardChapterList() {
 					curSubjectRD.chapterId = chaptersForSubject.join() ;
 					curSubjectRD.isFlashcardAuthorized = true ;
 				}
+
+				var selected = false ;
+				for( var j=0; j<curSubjectRD.children.length; j++ ) {
+					var child = curSubjectRD.children[j] ;
+					if( !child.isHidden && child.isRowSelected ) {
+						selected = true ;
+						break ;
+					}
+				}
+				curSubjectRD.isRowSelected = selected ;
 			}
 			curSubjectRD = rowData ;
 			chaptersForSubject = [] ;

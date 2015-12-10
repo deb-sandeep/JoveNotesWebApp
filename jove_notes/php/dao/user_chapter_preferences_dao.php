@@ -26,21 +26,45 @@ QUERY;
 		parent::executeUpdate( $query, 0 ) ;
 	}
 
+	function updateDeselectPreference( $userName, $chapterIds, $selectionState ) {
+
+		$deselectBool = $selectionState ? 0 : 1 ;
+
+		$valuesStr = "" ;
+		$chapterIdArray = explode( ",", $chapterIds ) ;
+
+		foreach( $chapterIdArray as $id ) {
+			$valuesStr = $valuesStr . "( '$userName', $id, $deselectBool )," ;
+		}
+		$valuesStr = substr( $valuesStr, 0, strlen( $valuesStr ) - 1 ) ;
+
+$query = <<< QUERY
+insert into 
+	jove_notes.user_chapter_preferences( student_name, chapter_id, is_deselected ) 
+values $valuesStr 
+on duplicate key update    
+	is_deselected = values( is_deselected )
+QUERY;
+
+		parent::executeUpdate( $query, 0 ) ;
+	}
+
 	/**
 	 * This function returns an associative array with key as the chapter ID and
 	 * value as either 0 or 1.. implying whether the chapter is visible or
 	 * hidden respectively.
 	 */
-	function getHiddenPreferencesForUser( $userName ) {
+	function getChapterPreferencesForUser( $userName ) {
 
 $query = <<< QUERY
-select chapter_id, is_hidden
+select chapter_id, is_hidden, is_deselected
 from jove_notes.user_chapter_preferences
 where
 	student_name = '$userName'
 QUERY;
 
-		return parent::getResultAsMap( $query ) ;
+		$colNames = [ "chapter_id", "is_hidden", "is_deselected" ] ;
+		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
 	}
 }
 ?>
