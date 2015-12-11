@@ -26,9 +26,10 @@
                         <span class="glyphicon glyphicon-ok-circle" ng-show="showOnlySelectedRows"></span>
                     </button>
     			</th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th style="width:50px;text-align:center;">
+                   <span class="glyphicon glyphicon-th"></span>
+                </th>
+                <th style="width:50px"></th>
                 <th class="text-center">Meter</th>
     			<th></th>
                 <th>
@@ -60,17 +61,15 @@
                     </span>
                     <span ng-show="!rowData.isNotesAuthorized">{{rowData.name}}</span>
                 </td>
-                <td class="text-right">
-                    <span class="badge NS">{{rowData.numSSRMaturedCards}}</span>
-                </td>
                 <td>
                     <a type="button" class="btn btn-default btn-xs" 
                        href="/apps/jove_notes/ng/flashcard/index.php?chapterId={{rowData.chapterId}}"
-                       ng-show="rowData.isFlashcardAuthorized">
-                        <span class="glyphicon glyphicon-th"></span>
+                       ng-show="rowData.isFlashcardAuthorized"
+                       style="width:50px;text-align:right;">
+                       <span class="badge L3">{{rowData.numSSRMaturedCards}}</span>
                     </a>
                 </td>
-                <td>
+                <td style="width:50px">
                     <input id="push" type="checkbox" ng-change="rowData.selectionChanged()" 
                            ng-model="rowData.isRowSelected"/>
                 </td>
