@@ -120,7 +120,10 @@ class ProgressSnapshotAPI extends API {
 
 		$this->clsDAO->refresh( ExecutionContext::getCurrentUserName() ) ;
 
-		$this->loadAndClassifyRelevantChapters() ;
+		$chapterType = $request->getParameter( "chapterType" ) ;
+		$this->logger->debug( "Getting dashboard for type - $chapterType" ) ;
+
+		$this->loadAndClassifyRelevantChapters( $chapterType ) ;
 
 		if( !empty( $this->chapters ) ) {
 			$this->associateProgressSnapshotWithChapters() ;
@@ -142,9 +145,20 @@ class ProgressSnapshotAPI extends API {
 			         "/apps/jove_notes/api_test_data/progress_snapshot.json" ) ;
 	}
 
-	private function loadAndClassifyRelevantChapters() {
+	private function loadAndClassifyRelevantChapters( $chapterType ) {
 
-		$chapterMeta = $this->chapterDAO->getChaptersMetaData() ;
+		$chapterMeta = null ;
+
+		if( $chapterType == "all" ) {
+			$chapterMeta = $this->chapterDAO->getAllChaptersMetaData() ;
+		}
+		else if( $chapterType == "non_hidden" ){
+			$chapterMeta = $this->chapterDAO->getNonHiddenChaptersMetaData( 
+				                      ExecutionContext::getCurrentUserName() ) ;
+		}
+		else {
+			throw new Exception( "Unknown chapterType $chapterType." ) ;
+		}
 
 		foreach( $chapterMeta as $meta ) {
 

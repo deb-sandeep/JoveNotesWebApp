@@ -129,11 +129,12 @@ function RowData( rowType, name, rowId, parentRowId ) {
 	}
 }
 
-$scope.$parent.pageTitle     = "Progress Dashboard" ;
-$scope.$parent.currentReport = 'ProgressSnapshot' ;
-$scope.showHiddenChapters    = false ;
-$scope.showOnlySelectedRows  = false ;
-$scope.progressSnapshot      = null ;
+$scope.$parent.pageTitle         = "Progress Dashboard" ;
+$scope.$parent.currentReport     = 'ProgressSnapshot' ;
+$scope.showHiddenChapters        = false ;
+$scope.showOnlySelectedRows      = false ;
+$scope.progressSnapshot          = null ;
+$scope.alreadyFetchedAllChapters = false ;
 
 refreshData() ;
 
@@ -195,7 +196,13 @@ $scope.toggleHiddenChapters = function() {
 	.error( function( data ){
 		log.error( "Could not set hidden chapter preferences for user." ) ;
 	});  
-    recomputeStatistics() ;
+
+	if( !$scope.alreadyFetchedAllChapters ) {
+		refreshData() ;
+	}
+	else {
+	    recomputeStatistics() ;
+	}
 }
 
 $scope.toggleShowSelectedRows = function() {
@@ -265,10 +272,19 @@ function removeChapter( chapterId ) {
 }
 
 function refreshData() {
-	$http.get( "/jove_notes/api/ProgressSnapshot" )
+
+	var chapterType = "non_hidden" ;
+	if( $scope.showHiddenChapters ) {
+		chapterType = "all" ;
+	}
+
+	$http.get( "/jove_notes/api/ProgressSnapshot?chapterType=" + chapterType )
          .success( function( data ){
          	digestPreferences( data.preferences ) ;
          	$scope.progressSnapshot = prepareDataForDisplay( data.dashboardContent ) ;
+         	if( chapterType == "all" ) {
+         		$scope.alreadyFetchedAllChapters = true ;
+         	}
          })
          .error( function( data ){
          	$scope.addErrorAlert( "API call failed. " + data ) ;
