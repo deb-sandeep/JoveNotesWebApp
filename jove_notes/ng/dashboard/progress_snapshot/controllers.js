@@ -272,16 +272,11 @@ function removeChapter( chapterId ) {
 
 function refreshData() {
 
-	var chapterType = "non_hidden" ;
-	if( $scope.showHiddenChapters ) {
-		chapterType = "all" ;
-	}
-
-	$http.get( "/jove_notes/api/ProgressSnapshot?chapterType=" + chapterType )
+	$http.get( "/jove_notes/api/ProgressSnapshot" )
          .success( function( data ){
          	digestPreferences( data.preferences ) ;
          	$scope.progressSnapshot = prepareDataForDisplay( data.dashboardContent ) ;
-         	if( chapterType == "all" ) {
+         	if( $scope.showHiddenChapters ) {
          		$scope.alreadyFetchedAllChapters = true ;
          	}
          })
