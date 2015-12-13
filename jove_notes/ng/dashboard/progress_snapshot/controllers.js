@@ -178,11 +178,15 @@ $scope.isTreeRowVisible = function( rowData ) {
 }
 
 $scope.expandAll = function() {
-	$('.tree').treegrid('expandAll') ;
+	if( $scope.progressSnapshot.length > 0 ) {
+		$('.tree').treegrid('expandAll') ;
+	}
 }
 
 $scope.collapseAll = function() {
-	$('.tree').treegrid('collapseAll') ;
+	if( $scope.progressSnapshot.length > 0 ) {
+		$('.tree').treegrid('collapseAll') ;
+	}
 }
 
 $scope.toggleHiddenChapters = function() {
