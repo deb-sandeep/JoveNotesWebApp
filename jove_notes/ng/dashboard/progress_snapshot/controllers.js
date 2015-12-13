@@ -192,17 +192,16 @@ $scope.toggleHiddenChapters = function() {
 	} )
 	.success( function( data ){
 		log.debug( "Updated user preference for showHiddenChapters." ) ;
+		if( !$scope.alreadyFetchedAllChapters ) {
+			refreshData() ;
+		}
+		else {
+		    recomputeStatistics() ;
+		}
 	} )
 	.error( function( data ){
 		log.error( "Could not set hidden chapter preferences for user." ) ;
 	});  
-
-	if( !$scope.alreadyFetchedAllChapters ) {
-		refreshData() ;
-	}
-	else {
-	    recomputeStatistics() ;
-	}
 }
 
 $scope.toggleShowSelectedRows = function() {
