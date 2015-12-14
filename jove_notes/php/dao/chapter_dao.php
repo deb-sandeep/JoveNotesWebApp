@@ -113,8 +113,7 @@ on
 	c.chapter_id = ucp.chapter_id
 where 
 	c.is_test_paper = 0 and 
-	ucp.student_name = '$userName' and
-	ucp.is_hidden = 0
+	( ucp.is_hidden = 0 or ucp.is_hidden is null )
 order by 
 	c.syllabus_name asc,
 	c.subject_name asc,
