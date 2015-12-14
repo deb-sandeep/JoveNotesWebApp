@@ -20,11 +20,6 @@
                         <span class="glyphicon glyphicon-eye-open"  ng-hide="showHiddenChapters"></span>
                         <span class="glyphicon glyphicon-eye-close" ng-show="showHiddenChapters"></span>
                     </button>
-                    <button type="button" class="btn btn-default btn-xs"
-                            ng-click="toggleShowSelectedRows()">
-                        <span class="glyphicon glyphicon-ok-sign"   ng-hide="showOnlySelectedRows"></span>
-                        <span class="glyphicon glyphicon-ok-circle" ng-show="showOnlySelectedRows"></span>
-                    </button>
     			</th>
                 <th style="width:50px;text-align:center;">
                    <span class="glyphicon glyphicon-th"></span>
@@ -50,8 +45,8 @@
     	</thead>	
     	<tbody>
     		<tr ng-repeat="rowData in progressSnapshot" 
-    		    ng-class="getTreeRowClass( rowData )"
-                ng-show="isTreeRowVisible( rowData )"
+    		    ng-class="rowData.getTreeRowClass()"
+                ng-show="rowData.isTreeRowVisible()"
                 on-render-complete> 
                 <td> 
                     <span ng-show="rowData.isNotesAuthorized">

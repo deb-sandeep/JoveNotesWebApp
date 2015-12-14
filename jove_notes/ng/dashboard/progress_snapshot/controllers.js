@@ -58,15 +58,17 @@ function RowData( rowType, name, rowId, parentRowId ) {
 			affectedChapterIds.push( this.chapterId ) ;
 		}
 
-		$http.post( "/jove_notes/api/ProgressSnapshot", {
-			'action'         : 'update_selection',
-			'chapterIds'     : affectedChapterIds.join(),
-			'selectionState' : this.isRowSelected
-		} )
-		.error( function( data ){
-			$scope.addErrorAlert( "API call failed. " + data ) ;
-		});
-		recomputeStatistics() ;
+		if( affectedChapterIds.length > 0 ) {
+			$http.post( "/jove_notes/api/ProgressSnapshot", {
+				'action'         : 'update_selection',
+				'chapterIds'     : affectedChapterIds.join(),
+				'selectionState' : this.isRowSelected
+			} )
+			.error( function( data ){
+				$scope.addErrorAlert( "API call failed. " + data ) ;
+			});
+			recomputeStatistics() ;
+		}
 	}
 
 	this.handleSelectionChangeCascade = function() {
@@ -83,7 +85,8 @@ function RowData( rowType, name, rowId, parentRowId ) {
 			}
 		}
 		else {
-			if( !this.isHidden ) {
+			if( ( this.isHidden && $scope.showHiddenChapters ) ||
+			    ( !this.isHidden ) ) {
 				affectedChapterIds.push( this.chapterId ) ;
 			}
 		}
@@ -127,12 +130,66 @@ function RowData( rowType, name, rowId, parentRowId ) {
 		this.isHidden               = chapter.isHidden ;
 		this.isRowSelected          = !chapter.isDeselected ;
 	}
+
+	this.getTreeRowClass = function() {
+
+		var classStr = "treegrid-" + this.rowId ;
+		if( this.parentRowId != -1 ) {
+			classStr += " treegrid-parent-" + this.parentRowId ;
+		}
+
+		switch( this.rowType ) {
+			case RowData.prototype.ROW_TYPE_SYLLABUS:
+				classStr += " info" ;
+				break ;
+			case RowData.prototype.ROW_TYPE_SUBJECT:
+				classStr += " active" ;
+				break ;
+		}
+		return classStr ;
+	}
+
+	this.isTreeRowVisible = function() {
+
+		if( this.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+			if( this.isHidden ) {
+				if( !$scope.showHiddenChapters ) {
+					return false ;
+				}
+			}
+			return true ;
+		}
+		else if( ( this.rowType == RowData.prototype.ROW_TYPE_SUBJECT ) ||
+		         ( this.rowType == RowData.prototype.ROW_TYPE_SYLLABUS ) ) {
+
+			for( var i=0; i < this.children.length; i++ ) {
+				if( this.children[i].isTreeRowVisible() ) {
+					return true ;
+				}
+			}
+			return false ;
+		}
+	}
+
+	this.computeSelectionState = function() {
+		if( ( this.rowType == RowData.prototype.ROW_TYPE_SUBJECT ) ||
+		    ( this.rowType == RowData.prototype.ROW_TYPE_SYLLABUS ) ) {
+
+			this.isRowSelected = false ;
+			for( var i=0; i < this.children.length; i++ ) {
+				var child = this.children[i] ;
+				if( child.isTreeRowVisible() && child.isRowSelected ) {
+					this.isRowSelected = true ;
+					break ;
+				}
+			}
+		}
+	}
 }
 
 $scope.$parent.pageTitle         = "Progress Dashboard" ;
 $scope.$parent.currentReport     = 'ProgressSnapshot' ;
 $scope.showHiddenChapters        = false ;
-$scope.showOnlySelectedRows      = false ;
 $scope.progressSnapshot          = null ;
 $scope.alreadyFetchedAllChapters = false ;
 
@@ -140,41 +197,6 @@ refreshData() ;
 
 $scope.refreshData = function() {
 	refreshData() ;
-}
-
-$scope.getTreeRowClass = function( rowData ) {
-	var classStr = "treegrid-" + rowData.rowId ;
-	if( rowData.parentRowId != -1 ) {
-		classStr += " treegrid-parent-" + rowData.parentRowId ;
-	}
-
-	switch( rowData.rowType ) {
-		case RowData.prototype.ROW_TYPE_SYLLABUS:
-			classStr += " info" ;
-			break ;
-		case RowData.prototype.ROW_TYPE_SUBJECT:
-			classStr += " active" ;
-			break ;
-	}
-	return classStr ;
-}
-
-$scope.isTreeRowVisible = function( rowData ) {
-
-	if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
-		if( rowData.isHidden ) {
-			if( !$scope.showHiddenChapters ) {
-				return false ;
-			}
-		}
-	}
-
-	if( $scope.showOnlySelectedRows ) {
-		if( !rowData.isRowSelected ) {
-			return false ;
-		}
-	}
-	return true ;
 }
 
 $scope.expandAll = function() {
@@ -195,7 +217,6 @@ $scope.toggleHiddenChapters = function() {
 		'jove_notes.showHiddenChapters' : $scope.showHiddenChapters ? 'true' : 'false'
 	} )
 	.success( function( data ){
-		log.debug( "Updated user preference for showHiddenChapters." ) ;
 		if( !$scope.alreadyFetchedAllChapters ) {
 			refreshData() ;
 		}
@@ -206,20 +227,6 @@ $scope.toggleHiddenChapters = function() {
 	.error( function( data ){
 		log.error( "Could not set hidden chapter preferences for user." ) ;
 	});  
-}
-
-$scope.toggleShowSelectedRows = function() {
-	$scope.showOnlySelectedRows = !$scope.showOnlySelectedRows ;
-	$http.put( "/__fw__/api/UserPreference", {
-		'jove_notes.showOnlySelectedRows' : $scope.showOnlySelectedRows ? 'true' : 'false'
-	} )
-	.success( function( data ){
-		log.debug( "Updated user preference for showOnlySelectedRows" ) ;
-	} )
-	.error( function( data ){
-		log.error( "Could not set hidden chapter preferences for user." ) ;
-	});  
-	recomputeStatistics() ;
 }
 
 $scope.deleteChapter = function( chapterId ) {
@@ -291,7 +298,6 @@ function refreshData() {
 
 function digestPreferences( preferences ) {
 	$scope.showHiddenChapters   = preferences[ "jove_notes.showHiddenChapters" ] ;
-	$scope.showOnlySelectedRows = preferences[ "jove_notes.showOnlySelectedRows" ] ;
 }
 
 function prepareDataForDisplay( rawData ) {
@@ -394,6 +400,10 @@ function computeAggregateFlashCardChapterList() {
 		var rowData = $scope.progressSnapshot[i] ;
 
 		if( rowData.rowType == RowData.prototype.ROW_TYPE_SYLLABUS ) {
+			if( curSubjectRD != null ) {
+				curSubjectRD.computeSelectionState() ;
+			}
+
 			if( curSyllabusRD != null ) {
 				if( chaptersForSyllabus.length > 0 ) {
 					chaptersForSyllabus.shuffle() ;
@@ -401,15 +411,7 @@ function computeAggregateFlashCardChapterList() {
 					curSyllabusRD.isFlashcardAuthorized = true ;
 				}
 
-				var selected = false ;
-				for( var j=0; j<curSyllabusRD.children.length; j++ ) {
-					var child = curSyllabusRD.children[j] ;
-					if( !child.isHidden && child.isRowSelected ) {
-						selected = true ;
-						break ;
-					}
-				}
-				curSyllabusRD.isRowSelected = selected ;
+				curSyllabusRD.computeSelectionState() ;
 			}
 			curSyllabusRD = rowData ;
 			chaptersForSyllabus = [] ;
@@ -422,21 +424,13 @@ function computeAggregateFlashCardChapterList() {
 					curSubjectRD.isFlashcardAuthorized = true ;
 				}
 
-				var selected = false ;
-				for( var j=0; j<curSubjectRD.children.length; j++ ) {
-					var child = curSubjectRD.children[j] ;
-					if( !child.isHidden && child.isRowSelected ) {
-						selected = true ;
-						break ;
-					}
-				}
-				curSubjectRD.isRowSelected = selected ;
+				curSubjectRD.computeSelectionState() ;
 			}
 			curSubjectRD = rowData ;
 			chaptersForSubject = [] ;
 		}
 		else if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
-			if( $scope.isTreeRowVisible( rowData ) ) {
+			if( rowData.isTreeRowVisible() ) {
 
 				var chapter = rowData.chapter ;
 
@@ -449,6 +443,9 @@ function computeAggregateFlashCardChapterList() {
 			}
 		}
 	}
+
+	curSubjectRD.computeSelectionState() ;
+	curSyllabusRD.computeSelectionState() ;
 
 	if( chaptersForSyllabus.length > 0 ) {
 		chaptersForSyllabus.shuffle() ;
@@ -467,7 +464,7 @@ function refreshProgressBars() {
 
 	for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
 		var rowData = $scope.progressSnapshot[i] ;
-		if( $scope.isTreeRowVisible( rowData ) ) {
+		if( rowData.isTreeRowVisible() ) {
 			drawProgressBar( "canvas-" + rowData.rowId, 
 							 rowData.totalCards,
 							 rowData.notStartedCards,

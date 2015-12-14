@@ -33,6 +33,10 @@ QUERY;
 		$valuesStr = "" ;
 		$chapterIdArray = explode( ",", $chapterIds ) ;
 
+		if( count( $chapterIdArray ) == 1 && $chapterIdArray[0] == "" ) {
+			return ;
+		}		
+
 		foreach( $chapterIdArray as $id ) {
 			$valuesStr = $valuesStr . "( '$userName', $id, $deselectBool )," ;
 		}
