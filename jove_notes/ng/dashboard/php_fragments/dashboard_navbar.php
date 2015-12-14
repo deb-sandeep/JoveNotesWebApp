@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" style="margin-right:0px;">
   <div class="col-sm-12 nav_element">
       <img src="<?php echo APP_LOGO_PATH ?>" 
            style="height: 30px"/>
