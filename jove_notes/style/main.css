@@ -299,4 +299,6 @@ table.pure-table ol {
 	border: 1px solid #4E95FF;
 }
 
-
+.selected-dashboard-row {
+	background-color: #DBF9D7;
+}

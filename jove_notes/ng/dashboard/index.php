@@ -26,6 +26,8 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
     <link rel="stylesheet" type="text/css" href="/lib-ext/treetable/jquery.treetable.css">
     <link rel="stylesheet" type="text/css" href="/lib-ext/treetable/jquery.treetable.theme.css">
 
+    <script src="/lib-ext/angular/angular-ui-indeterminate.min.js"></script>
+
     <script src="/lib-ext/jquery/jquery.treegrid.js"></script>
     <script src="/lib-ext/jquery/jquery.treegrid.bootstrap3.js"></script>
     <script src="/lib-ext/treetable/jquery.treetable.js"></script>

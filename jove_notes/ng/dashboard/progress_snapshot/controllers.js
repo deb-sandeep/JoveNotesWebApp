@@ -33,7 +33,8 @@ function RowData( rowType, name, rowId, parentRowId ) {
 	this.subjectRD  = null ;
 	this.syllabusRD = null ;
 
-	this.isRowSelected = true ;
+	this.isRowSelected       = true ;
+	this.isPartiallySelected = false ;
 
 	this.isChapterRow = function() {
 		return this.rowType == this.ROW_TYPE_CHAPTER ;
@@ -146,6 +147,11 @@ function RowData( rowType, name, rowId, parentRowId ) {
 				classStr += " active" ;
 				break ;
 		}
+
+		if( this.isRowSelected ) {
+			classStr += " selected-dashboard-row" ;
+		}
+
 		return classStr ;
 	}
 
@@ -175,12 +181,30 @@ function RowData( rowType, name, rowId, parentRowId ) {
 		if( ( this.rowType == RowData.prototype.ROW_TYPE_SUBJECT ) ||
 		    ( this.rowType == RowData.prototype.ROW_TYPE_SYLLABUS ) ) {
 
-			this.isRowSelected = false ;
+			this.isRowSelected       = false ;
+			this.isPartiallySelected = false ;
+
+			var numChildrenSelected          = 0 ;
+			var numChildrenPartiallySelected = 0 ;
+
 			for( var i=0; i < this.children.length; i++ ) {
 				var child = this.children[i] ;
-				if( child.isTreeRowVisible() && child.isRowSelected ) {
-					this.isRowSelected = true ;
-					break ;
+				if( child.isTreeRowVisible() ) {
+					if( child.isPartiallySelected ) {
+						numChildrenPartiallySelected++ ;
+					}
+					else if( child.isRowSelected ) {
+						numChildrenSelected++ ;
+					}
+				}
+			}
+
+			if( numChildrenSelected > 0 || numChildrenPartiallySelected > 0 ) {
+				this.isRowSelected = true ;
+
+				if( ( numChildrenSelected < this.children.length ) || 
+					( numChildrenPartiallySelected > 0 ) ) {
+					this.isPartiallySelected = true ;
 				}
 			}
 		}

@@ -66,7 +66,8 @@
                 </td>
                 <td style="width:50px">
                     <input id="push" type="checkbox" ng-change="rowData.selectionChanged()" 
-                           ng-model="rowData.isRowSelected"/>
+                           ng-model="rowData.isRowSelected"
+                           ui-indeterminate="rowData.isPartiallySelected" />
                 </td>
                 <td class="text-center">
                     <canvas width='200' height='20' id='canvas-{{rowData.rowId}}'>
