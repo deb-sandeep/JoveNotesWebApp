@@ -276,6 +276,30 @@ $scope.deleteChapter = function( chapterId ) {
 		}) ;
 }
 
+$scope.resetLevelOfAllCards = function( level ) {
+
+	var selectedChapters = getSelectedChapterIds() ;
+	if( selectedChapters.length == 0 ) {
+		$scope.$parent.addErrorAlert( "No chapters selected." ) ;
+	}
+	else {
+	    log.debug( "Applying level " + level + " to all cards for " +
+	    	       "chapters " + selectedChapters.join() ) ;
+
+	    $http.post( '/jove_notes/api/ResetLevel', { 
+	        chapterIds : selectedChapters,
+	        level      : level
+	    })
+	    .success( function( data ){
+            log.debug( "Level successfully applied to all cards" ) ;
+            refreshData() ;
+	    })
+	    .error( function( data ){
+	        $scope.addErrorAlert( "API call failed. " + data ) ;
+	    }) ;
+	}
+}
+
 $scope.$on( 'onRenderComplete', function( scope ){
     $('.tree').treegrid({
       'initialState': 'collapsed',
@@ -546,6 +570,24 @@ function drawProgressBar( canvasId, total, vN, v0, v1, v2, v3, v4 ) {
         ctx.fillRect( curX, 0, widths[i], c.height ) ;
         curX += widths[i] ;
     }
+}
+
+function getSelectedChapterIds() {
+
+	var chapterIds = [] ;
+
+	for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+
+		var rowData = $scope.progressSnapshot[i] ;
+		if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+
+			if( rowData.isTreeRowVisible() && rowData.isRowSelected ) {
+				chapterIds.push( rowData.chapterId ) ;
+			}
+		}
+	}
+
+	return chapterIds ;
 }
 
 // -----------------------------------------------------------------------------

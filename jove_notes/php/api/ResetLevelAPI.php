@@ -8,12 +8,10 @@ class ResetLevelAPI extends AbstractJoveNotesAPI {
 	private $requestObj = null ;
 
 	private $clsDAO = null ;
-	private $lsDAO  = null ;
 
 	function __construct() {
 		parent::__construct() ;
 		$this->clsDAO = new CardLearningSummaryDAO() ;
-		$this->lsDAO = new LearningSessionDAO() ;
 	}
 
 	public function doPost( $request, &$response ) {
@@ -21,30 +19,19 @@ class ResetLevelAPI extends AbstractJoveNotesAPI {
 		$this->logger->debug( "Executing doPost in ResetLevelAPI" ) ;
 
 		$this->requestObj = $request->requestBody ;
-		$this->logger->debug( "Request parameters " . json_encode( $this->requestObj ) ) ;
 
-		if( $this->isUserEntitledForFlashCards( $this->requestObj->chapterId ) ) {
+		foreach( $this->requestObj->chapterIds as $chapterId ) {
+			if( $this->isUserEntitledForFlashCards( $chapterId ) ) {
 
-			$this->clsDAO->resetLevelOfAllCards(
+				$this->clsDAO->resetLevelOfAllCards(
 										ExecutionContext::getCurrentUserName(), 
-										$this->requestObj->chapterId,
+										$chapterId,
 										$this->requestObj->level ) ;
-
-			$sessionId = $this->lsDAO->createNewSession( 
-										ExecutionContext::getCurrentUserName(), 
-										$this->requestObj->chapterId ) ;
-
-			$response->responseCode = APIResponse::SC_OK ;
-			$response->responseBody = array( 
-				"sessionId" => $sessionId
-			) ;
-		}
-		else {
-			$response->responseCode = APIResponse::SC_ERR_UNAUTHORIZED ;
-			$response->responseBody = "User is not authorized to invoke " .
-			                          "ResetLevel API" ;
+			}
 		}
 
+		$response->responseCode = APIResponse::SC_OK ;
+		$response->responseBody = "Success" ;
 	}
 }
 

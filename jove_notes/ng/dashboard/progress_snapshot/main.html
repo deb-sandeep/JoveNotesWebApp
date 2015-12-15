@@ -24,7 +24,10 @@
                 <th style="width:50px;text-align:center;">
                    <span class="glyphicon glyphicon-th"></span>
                 </th>
-                <th style="width:50px"></th>
+                <th style="width:50px">
+                    <div ng-include="'/apps/jove_notes/ng/dashboard/progress_snapshot/bulk_action_menu.html'">
+                    </div>
+                </th>
                 <th class="text-center">Meter</th>
     			<th></th>
                 <th>
@@ -64,7 +67,7 @@
                        <span class="badge L3">{{rowData.numSSRMaturedCards}}</span>
                     </a>
                 </td>
-                <td style="width:50px">
+                <td style="width:50px" align="center">
                     <input id="push" type="checkbox" ng-change="rowData.selectionChanged()" 
                            ng-model="rowData.isRowSelected"
                            ui-indeterminate="rowData.isPartiallySelected" />

@@ -11,31 +11,6 @@ log.debug( "Executing StartPageController." ) ;
 fetchAndProcessDataFromServer() ;
 
 // ---------------- Controller methods -----------------------------------------
-$scope.applyLevel = function( level ) {
-
-    log.debug( "Applying level " + level + " to all cards." ) ;
-
-    $http.post( '/jove_notes/api/ResetLevel', { 
-        chapterId : chapterId,
-        level     : level
-    })
-    .success( function( data ){
-        if( typeof data === 'string' ) {
-            $scope.addErrorAlert( "API call failed. " + data ) ;
-        }
-        else {
-            log.debug( "Level successfully applied to all cards" ) ;
-            log.debug( "New session created = " + data.sessionId ) ;
-            $scope.$parent.sessionId = data.sessionId ;
-            log.debug( "Reloading flash card data." ) ;
-            $route.reload() ;
-        }
-    })
-    .error( function( data ){
-        $scope.addErrorAlert( "API call failed. " + data ) ;
-    }) ;
-}
-
 $scope.skipChapter = function() {
 
     if( $scope.$parent.chapterIdsForNextSessions != null ) {
