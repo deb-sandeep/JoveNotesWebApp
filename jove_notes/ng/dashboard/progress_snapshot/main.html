@@ -1,26 +1,26 @@
 <div class="table-responsive">
     <table class="table tree table-hover table-condensed">
-    	<thead>
-    		<tr>
-    			<th>Chapter
-        			<button type="button" class="btn btn-default btn-xs"
+        <thead>
+            <tr>
+                <th>Chapter
+                    <button type="button" class="btn btn-default btn-xs"
                             ng-click="expandAll()">
-      					<span class="glyphicon glyphicon-resize-full"></span>
-    				</button>
+                        <span class="glyphicon glyphicon-resize-full"></span>
+                    </button>
                     <button type="button" class="btn btn-default btn-xs"
                             ng-click="collapseAll()">
                         <span class="glyphicon glyphicon-resize-small"></span>
                     </button>
-        			<button type="button" class="btn btn-default btn-xs"
+                    <button type="button" class="btn btn-default btn-xs"
                             ng-click="refreshData()">
-      					<span class="glyphicon glyphicon-refresh"></span>
-    				</button>
+                        <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
                     <button type="button" class="btn btn-default btn-xs"
                             ng-click="toggleHiddenChapters()">
                         <span class="glyphicon glyphicon-eye-open"  ng-hide="showHiddenChapters"></span>
                         <span class="glyphicon glyphicon-eye-close" ng-show="showHiddenChapters"></span>
                     </button>
-    			</th>
+                </th>
                 <th style="width:50px;text-align:center;">
                    <span class="glyphicon glyphicon-th"></span>
                 </th>
@@ -29,7 +29,7 @@
                     </div>
                 </th>
                 <th class="text-center">Meter</th>
-    			<th></th>
+                <th></th>
                 <th>
                     <table class="dashboard-stats">
                         <tr>
@@ -44,11 +44,11 @@
                     </table>
                 </th>
                 <th></th>
-    		</tr>	
-    	</thead>	
-    	<tbody>
-    		<tr ng-repeat="rowData in progressSnapshot" 
-    		    ng-class="rowData.getTreeRowClass()"
+            </tr>   
+        </thead>    
+        <tbody>
+            <tr ng-repeat="rowData in progressSnapshot" 
+                ng-class="rowData.getTreeRowClass()"
                 ng-show="rowData.isTreeRowVisible()"
                 on-render-complete> 
                 <td> 
@@ -104,7 +104,7 @@
                         <span class="glyphicon glyphicon-remove" style="color:red"></span>
                     </a>
                 </td>
-    		</tr>	
-    	</tbody>
+            </tr>   
+        </tbody>
     </table>
 </div>
