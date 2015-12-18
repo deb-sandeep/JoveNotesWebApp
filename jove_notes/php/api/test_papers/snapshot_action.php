@@ -117,11 +117,13 @@ class SnapshotAction extends APIAction {
 
 	private function associateUserChapterPreferences() {
 
-		$hiddenChapterPrefs = $this->ucpDAO->getHiddenPreferencesForUser( 
+		$chapterPrefs = $this->ucpDAO->getChapterPreferencesForUser( 
 									  ExecutionContext::getCurrentUserName() ) ;
 
-		foreach( $hiddenChapterPrefs as $chapterId => $isHidden ) {
+		foreach( $chapterPrefs as $pref ) {
 
+			$chapterId = $pref[ "chapter_id" ] ;
+			$isHidden  = $pref[ "is_hidden" ] ;
 			if( array_key_exists( $chapterId, $this->chapters ) ) {
 				if( $isHidden == 1 ) {
 					$chapter = &$this->chapters[ $chapterId ] ;
