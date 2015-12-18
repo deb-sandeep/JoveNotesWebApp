@@ -101,6 +101,12 @@ class ProgressSnapshotAPI extends API {
 			$response->responseCode = APIResponse::SC_OK ;
 			$response->responseBody = "Success" ;
 		}
+		else if( $action == "update_visibility_batch" ) {
+			$this->ucpDAO->updateVisibilityInBatch( ExecutionContext::getCurrentUserName(),
+				                                   $request->requestBody->visibilityData ) ;
+			$response->responseCode = APIResponse::SC_OK ;
+			$response->responseBody = "Success" ;
+		}
 		else if( $action == "update_selection" ) {
 			$this->ucpDAO->updateDeselectPreference( ExecutionContext::getCurrentUserName(),
 												   $request->requestBody->chapterIds,

@@ -5,7 +5,7 @@
 </a>
 <ul class="dropdown-menu multi-level" role="menu">
   <li class="dropdown-submenu">
-    <a tabindex="-1" href="#">Change level of cards to - </a>
+    <a tabindex="-1" href="#">Change level of cards </a>
     <ul class="dropdown-menu">
         <li>
             <a tabindex="-1" ng-click="resetLevelOfAllCards('NS')">
@@ -40,5 +40,28 @@
     </ul>
   </li>
   <li class="divider"></li>
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="#">Launch chained flashcards </a>
+    <ul class="dropdown-menu">
+        <li>
+            <a tabindex="-1" ng-click="launchChainedFlashcards('randomize')">
+            <span class="glyphicon glyphicon-random"></span> &nbsp; Randomized
+            </a>
+        </li>
+        <li>
+            <a  ng-click="launchChainedFlashcards('ordered')">
+            <span class="glyphicon glyphicon-sort-by-attributes"></span> &nbsp; Ordered
+            </a>
+        </li>
+    </ul>
+  </li>
+  <li class="divider"></li>
+  <li>
+    <a tabindex="-1" ng-click="toggleVisibilityInBulk()">
+    <span class="glyphicon glyphicon-eye-close"></span>
+    <span class="glyphicon glyphicon-eye-open"></span>
+    &nbsp; Toggle visibility
+    </a>
+  </li>
 </ul>
 </div>                    

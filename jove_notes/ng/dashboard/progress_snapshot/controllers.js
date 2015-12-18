@@ -300,6 +300,49 @@ $scope.resetLevelOfAllCards = function( level ) {
     }
 }
 
+$scope.launchChainedFlashcards = function( type ) {
+
+    var selectedChapters = getSelectedChapterIds() ;
+    if( selectedChapters.length == 0 ) {
+        $scope.$parent.addErrorAlert( "No chapters selected." ) ;
+    }
+    else {
+        if( type == 'randomize' ) {
+            selectedChapters.shuffle() ;
+        }
+        var url = "/apps/jove_notes/ng/flashcard/index.php" ;
+        url += "?chapterId=" + selectedChapters.join() ;
+
+        window.location.href = url ;
+    }
+}
+
+$scope.toggleVisibilityInBulk = function() {
+
+    var selectedChapterRows = getSelectedChapterRows() ;
+    var visibilityData = [] ;
+
+    if( selectedChapterRows.length == 0 ) {
+        $scope.$parent.addErrorAlert( "No chapters selected." ) ;
+    }
+    else {
+        for( var i=0; i<selectedChapterRows.length; i++ ) {
+            var row = selectedChapterRows[i] ;
+            row.isHidden = !row.isHidden ;
+            visibilityData.push( row.chapterId ) ;
+            visibilityData.push( row.isHidden ? 1 : 0 ) ;
+        }
+        $http.post( "/jove_notes/api/ProgressSnapshot", {
+            'action'         : 'update_visibility_batch',
+            'visibilityData' : visibilityData
+        } )
+        .error( function( data ){
+            $scope.addErrorAlert( "API call failed. " + data ) ;
+        });
+        recomputeStatistics() ;
+    }
+}
+
 $scope.$on( 'onRenderComplete', function( scope ){
     $('.tree').treegrid({
       'initialState': 'collapsed',
@@ -575,7 +618,6 @@ function drawProgressBar( canvasId, total, vN, v0, v1, v2, v3, v4 ) {
 function getSelectedChapterIds() {
 
     var chapterIds = [] ;
-
     for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
 
         var rowData = $scope.progressSnapshot[i] ;
@@ -586,8 +628,22 @@ function getSelectedChapterIds() {
             }
         }
     }
-
     return chapterIds ;
+}
+
+function getSelectedChapterRows() {
+
+    var selectedRows = [] ;
+    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+
+        var rowData = $scope.progressSnapshot[i] ;
+        if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+            if( rowData.isTreeRowVisible() && rowData.isRowSelected ) {
+                selectedRows.push( rowData ) ;
+            }
+        }
+    }
+    return selectedRows ;
 }
 
 // -----------------------------------------------------------------------------

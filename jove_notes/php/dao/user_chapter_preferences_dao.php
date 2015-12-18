@@ -70,6 +70,26 @@ QUERY;
 		$colNames = [ "chapter_id", "is_hidden", "is_deselected" ] ;
 		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
 	}
+
+	function updateVisibilityInBatch( $userName, $visibilityData ) {
+		
+		$valuesStr = "( '$userName', $visibilityData[0], $visibilityData[1] )" ;
+		for( $i=2; $i<count( $visibilityData ); $i+=2 ) {
+			$valuesStr = $valuesStr . ",( '$userName', " 
+				                    . $visibilityData[$i] . ", " 
+				                    . $visibilityData[$i+1] . " )" ;
+		}
+
+$query = <<< QUERY
+insert into 
+	jove_notes.user_chapter_preferences( student_name, chapter_id, is_hidden ) 
+values $valuesStr 
+on duplicate key update    
+	is_hidden = values( is_hidden )
+QUERY;
+
+		parent::executeUpdate( $query, 0 ) ;
+	}
 }
 ?>
 
