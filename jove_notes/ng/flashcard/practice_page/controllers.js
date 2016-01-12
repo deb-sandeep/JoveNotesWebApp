@@ -550,9 +550,16 @@ function sortCardsAsPerStudyStrategy() {
         if( $scope.questionsForSession.length > 0 ) {
             $scope.questionsForSession.sort( function( q1, q2 ){
 
+                // tla => Time since Last Attempt
                 var tlaCard1 = jnUtils.getSSRThresholdDelta( q1 ) ;
                 var tlaCard2 = jnUtils.getSSRThresholdDelta( q2 ) ;
 
+                if( tlaCard1 == -1 && tlaCard2 > -1 ) {
+                    return -1 ;
+                }
+                else if( tlaCard2 == -1 && tlaCard1 > -1 ) {
+                    return 1 ;
+                }
                 return tlaCard2 - tlaCard1 ;
             }) ;
         }
