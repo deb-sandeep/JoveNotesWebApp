@@ -46,36 +46,38 @@ QUERY;
 		return parent::getResultAsAssociativeArray( $query, $colNames ) ;
 	}
 
-	function getAllChaptersMetaData() {
+	function getAllChaptersMetaData( $chapterType ) {
+
+		$chapterTypeSQLFilter = $this->getChapterTypeSQLFilter( $chapterType ) ;
 
 $query = <<< QUERY
 select 
-	concat( "chapter:", syllabus_name, "/", 
-		                subject_name, "/", 
-		                chapter_num, "/", 
-		                sub_chapter_num, "/", 
-		                chapter_name ) as guard, 
-	chapter_id,
-	syllabus_name,
-	subject_name,
-	chapter_num,
-	sub_chapter_num,
-	chapter_name,
-	num_cards,
-	num_VE,
-	num_E,
-	num_M,
-	num_H,
-	num_VH
+	concat( "chapter:", c.syllabus_name, "/", 
+		                c.subject_name, "/", 
+		                c.chapter_num, "/", 
+		                c.sub_chapter_num, "/", 
+		                c.chapter_name ) as guard, 
+	c.chapter_id,
+	c.syllabus_name,
+	c.subject_name,
+	c.chapter_num,
+	c.sub_chapter_num,
+	c.chapter_name,
+	c.num_cards,
+	c.num_VE,
+	c.num_E,
+	c.num_M,
+	c.num_H,
+	c.num_VH
 from 
-	jove_notes.chapter 
+	jove_notes.chapter c
 where 
-	is_test_paper = 0 
+	$chapterTypeSQLFilter
 order by 
-	syllabus_name asc,
-	subject_name asc,
-	chapter_num asc,
-	sub_chapter_num asc
+	c.syllabus_name asc,
+	c.subject_name asc,
+	c.chapter_num asc,
+	c.sub_chapter_num asc
 QUERY;
 
 		$colNames = [ "guard", "chapter_id", "syllabus_name", "subject_name", 
@@ -85,7 +87,9 @@ QUERY;
 		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
 	}
 
-	function getNonHiddenChaptersMetaData( $userName ) {
+	function getNonHiddenChaptersMetaData( $chapterType, $userName ) {
+
+		$chapterTypeSQLFilter = $this->getChapterTypeSQLFilter( $chapterType ) ;
 
 $query = <<< QUERY
 select 
@@ -112,7 +116,7 @@ from
 on
 	c.chapter_id = ucp.chapter_id
 where 
-	c.is_test_paper = 0 and 
+	$chapterTypeSQLFilter and 
 	( ucp.is_hidden = 0 or ucp.is_hidden is null )
 order by 
 	c.syllabus_name asc,
@@ -128,36 +132,12 @@ QUERY;
 		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
 	}
 
-	function getTestChaptersMetaData() {
+	private function getChapterTypeSQLFilter( $chapterType ) {
 
-$query = <<< QUERY
-select 
-	concat( "chapter:", syllabus_name, "/", 
-		                subject_name, "/", 
-		                chapter_num, "/", 
-		                sub_chapter_num, "/", 
-		                chapter_name ) as guard, 
-	chapter_id,
-	syllabus_name,
-	subject_name,
-	chapter_num,
-	sub_chapter_num,
-	chapter_name,
-	num_cards
-from 
-	jove_notes.chapter 
-where 
-	is_test_paper = 1 
-order by 
-	syllabus_name asc,
-	chapter_num asc,
-	sub_chapter_num asc
-QUERY;
-
-		$colNames = [ "guard", "chapter_id", "syllabus_name", "subject_name", 
-	                  "chapter_num", "sub_chapter_num", "chapter_name", "num_cards" ] ;
-
-		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
+		if( $chapterType == "exercises" ) {
+			return " c.is_exercise_bank = 1 " ;
+		}
+		return " c.is_exercise_bank = 0 " ;
 	}
 
 	function getChapterGuard( $chapterId ) {

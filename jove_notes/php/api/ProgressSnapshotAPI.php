@@ -126,7 +126,9 @@ class ProgressSnapshotAPI extends API {
 
 		$this->clsDAO->refresh( ExecutionContext::getCurrentUserName() ) ;
 
-		$this->loadAndClassifyRelevantChapters() ;
+		$chapterType = $request->getParameter( "chapterType", "cards" ) ;
+
+		$this->loadAndClassifyRelevantChapters( $chapterType ) ;
 
 		if( !empty( $this->chapters ) ) {
 			$this->associateProgressSnapshotWithChapters() ;
@@ -148,16 +150,16 @@ class ProgressSnapshotAPI extends API {
 			         "/apps/jove_notes/api_test_data/progress_snapshot.json" ) ;
 	}
 
-	private function loadAndClassifyRelevantChapters() {
+	private function loadAndClassifyRelevantChapters( $chapterType ) {
 
-		$showHiddenChPref = $this->upSvc->getUserPreference( 
-			                                 "jove_notes.showHiddenChapters" ) ;
+		$showHiddenChPref = $this->getShowHiddenChapterPref( $chapterType ) ;
 
 		if( $showHiddenChPref == "true" ) {
-			$chapterMeta = $this->chapterDAO->getAllChaptersMetaData() ;
+			$chapterMeta = $this->chapterDAO->getAllChaptersMetaData( $chapterType ) ;
 		}
 		else {
 			$chapterMeta = $this->chapterDAO->getNonHiddenChaptersMetaData( 
+									  $chapterType,
 				                      ExecutionContext::getCurrentUserName() ) ;
 		}
 
@@ -185,6 +187,15 @@ class ProgressSnapshotAPI extends API {
 		}
 	}
 
+	private function getShowHiddenChapterPref( $chapterType ) {
+
+		$prefKey = ( $chapterType == "cards" ) ? 
+		           "jove_notes.showHiddenChapters" :
+		           "jove_notes.showHiddenExercises" ;
+
+		return $this->upSvc->getUserPreference( $prefKey ) ;
+	}
+
 	private function &constructResponseObj() {
 
 		$responseObj = array() ;
@@ -205,7 +216,8 @@ class ProgressSnapshotAPI extends API {
 	private function &constructPreferenceResponseObj() {
 
 		$preferenceKeys = [ "jove_notes.showHiddenChapters", 
-		                    "jove_notes.showOnlySelectedRows" ] ;
+		                    "jove_notes.showOnlySelectedRows",
+		                    "jove_notes.showHiddenExercises" ] ;
 
 		$preferences = array() ;
 		foreach( $preferenceKeys as $key ) {

@@ -1,6 +1,5 @@
 dashboardApp.controller( 'ExercisesDashboardController', function( $scope, $http ) {
-
-// ---------------- Constants and inner class definition -----------------------
+// -----------------------------------------------------------------------------
 
 RowData.prototype.ROW_TYPE_SYLLABUS = 0 ;
 RowData.prototype.ROW_TYPE_SUBJECT  = 1 ;
@@ -8,275 +7,627 @@ RowData.prototype.ROW_TYPE_CHAPTER  = 2 ;
 
 function RowData( rowType, name, rowId, parentRowId ) {
 
-	this.rowType     = rowType ;
-	this.name        = name ;
-	this.rowId       = String( rowId ).replace( / +/g, "-" ) ;
-	this.parentRowId = parentRowId ;
-	this.isHidden    = true ;
+    this.rowType     = rowType ;
+    this.name        = name ;
+    this.rowId       = String( rowId ).replace( / +/g, "-" ) ;
+    this.parentRowId = parentRowId ;
+    this.isHidden    = true ;
+    this.children    = [] ;
 
-    this.isDeleteAuthorized = false ;
+    this.isNotesAuthorized      = false ;
+    this.isFlashcardAuthorized  = false ;
+    this.isStatisticsAuthorized = false ;
+    this.isDeleteAuthorized     = false ;
 
-	this.totalCards  = 0 ;
+    this.totalCards         = 0 ;
+    this.notStartedCards    = 0 ;
+    this.l0Cards            = 0 ;
+    this.l1Cards            = 0 ;
+    this.l2Cards            = 0 ;
+    this.l3Cards            = 0 ;
+    this.masteredCards      = 0 ;
+    this.numSSRMaturedCards = 0 ;
 
-	this.chapter    = null ;
-	this.chapterId  = null ;
-	this.subjectRD  = null ;
-	this.syllabusRD = null ;
+    this.chapter    = null ;
+    this.chapterId  = null ;
+    this.subjectRD  = null ;
+    this.syllabusRD = null ;
 
-	this.isChapterRow = function() {
-		return this.rowType == this.ROW_TYPE_CHAPTER ;
-	}
+    this.isRowSelected       = true ;
+    this.isPartiallySelected = false ;
 
-	this.toggleVisibility = function() {
-		this.isHidden = !this.isHidden ;
-		$http.post( "/jove_notes/api/ProgressSnapshot", {
-			'action'    : 'update_visibility',
-			'chapterId' : this.chapterId,
-			'isHidden'  : this.isHidden
-		} )
-		.error( function( data ){
-			$scope.addErrorAlert( "API call failed. " + data ) ;
-		});
-	    recomputeStatistics() ;
-	}
+    this.isChapterRow = function() {
+        return this.rowType == this.ROW_TYPE_CHAPTER ;
+    }
 
-	this.setChapterAndParentRows = function( chapter, subjectRD, syllabusRD ) {
+    this.addChild = function( childRow ) {
+        this.children.push( childRow ) ;
+    }
 
-		this.chapter    = chapter ;
-		this.chapterId  = chapter.chapterId ;
+    this.selectionChanged = function() {
+        var affectedChapterIds = [] ;
 
-		this.subjectRD  = subjectRD ;
-		this.syllabusRD = syllabusRD ;
+        if( !this.isChapterRow() ) {
+            for( var i=0; i<this.children.length; i++ ) {
+                this.children[i].isRowSelected = this.isRowSelected ;
+                var affectedIds = this.children[i].handleSelectionChangeCascade() ;
 
-		this.totalCards = chapter.totalCards ;
-		this.isHidden   = chapter.isHidden ;
+                affectedChapterIds = affectedChapterIds.concat( affectedIds ) ;
+            }
+        }
+        else {
+            affectedChapterIds.push( this.chapterId ) ;
+        }
 
-		this.isDeleteAuthorized = chapter.isDeleteAuthorized ;
-	}
+        if( affectedChapterIds.length > 0 ) {
+            $http.post( "/jove_notes/api/ProgressSnapshot", {
+                'action'         : 'update_selection',
+                'chapterIds'     : affectedChapterIds.join(),
+                'selectionState' : this.isRowSelected
+            } )
+            .error( function( data ){
+                $scope.addErrorAlert( "API call failed. " + data ) ;
+            });
+            recomputeStatistics() ;
+        }
+    }
+
+    this.handleSelectionChangeCascade = function() {
+
+        var affectedChapterIds = [] ;
+
+        if( !this.isChapterRow() ) {
+            for( var i=0; i<this.children.length; i++ ) {
+                var child = this.children[i] ;
+                child.isRowSelected = this.isRowSelected ;
+                var affectedIds = child.handleSelectionChangeCascade() ;
+
+                affectedChapterIds = affectedChapterIds.concat( affectedIds ) ;
+            }
+        }
+        else {
+            if( ( this.isHidden && $scope.showHiddenExercises ) ||
+                ( !this.isHidden ) ) {
+                affectedChapterIds.push( this.chapterId ) ;
+            }
+        }
+        return affectedChapterIds ;
+    }
+
+    this.toggleVisibility = function() {
+        this.isHidden = !this.isHidden ;
+        $http.post( "/jove_notes/api/ProgressSnapshot", {
+            'action'    : 'update_visibility',
+            'chapterId' : this.chapterId,
+            'isHidden'  : this.isHidden
+        } )
+        .error( function( data ){
+            $scope.addErrorAlert( "API call failed. " + data ) ;
+        });
+        recomputeStatistics() ;
+    }
+
+    this.setChapterAndParentRows = function( chapter, subjectRD, syllabusRD ) {
+
+        this.chapter     = chapter ;
+        this.chapterId   = chapter.chapterId ;
+
+        this.subjectRD   = subjectRD ;
+        this.syllabusRD  = syllabusRD ;
+
+        this.totalCards          = chapter.totalCards ;
+        this.notStartedCards     = chapter.notStartedCards ;
+        this.l0Cards             = chapter.l0Cards ;
+        this.l1Cards             = chapter.l1Cards ;
+        this.l2Cards             = chapter.l2Cards ;
+        this.l3Cards             = chapter.l3Cards ;
+        this.masteredCards       = chapter.masteredCards ;
+        this.numSSRMaturedCards  = chapter.numSSRMaturedCards ;
+
+        this.isNotesAuthorized      = chapter.isNotesAuthorized ;
+        this.isFlashcardAuthorized  = chapter.isFlashcardAuthorized ;
+        this.isStatisticsAuthorized = chapter.isStatisticsAuthorized ;
+        this.isDeleteAuthorized     = chapter.isDeleteAuthorized ;
+        this.isHidden               = chapter.isHidden ;
+        this.isRowSelected          = !chapter.isDeselected ;
+    }
+
+    this.getTreeRowClass = function() {
+
+        var classStr = "treegrid-" + this.rowId ;
+        if( this.parentRowId != -1 ) {
+            classStr += " treegrid-parent-" + this.parentRowId ;
+        }
+
+        switch( this.rowType ) {
+            case RowData.prototype.ROW_TYPE_SYLLABUS:
+                classStr += " info" ;
+                break ;
+            case RowData.prototype.ROW_TYPE_SUBJECT:
+                classStr += " active" ;
+                break ;
+        }
+
+        if( this.isRowSelected ) {
+            classStr += " selected-dashboard-row" ;
+        }
+
+        return classStr ;
+    }
+
+    this.isTreeRowVisible = function() {
+
+        if( this.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+            if( this.isHidden ) {
+                if( !$scope.showHiddenExercises ) {
+                    return false ;
+                }
+            }
+            return true ;
+        }
+        else if( ( this.rowType == RowData.prototype.ROW_TYPE_SUBJECT ) ||
+                 ( this.rowType == RowData.prototype.ROW_TYPE_SYLLABUS ) ) {
+
+            for( var i=0; i < this.children.length; i++ ) {
+                if( this.children[i].isTreeRowVisible() ) {
+                    return true ;
+                }
+            }
+            return false ;
+        }
+    }
+
+    this.computeSelectionState = function() {
+        if( ( this.rowType == RowData.prototype.ROW_TYPE_SUBJECT ) ||
+            ( this.rowType == RowData.prototype.ROW_TYPE_SYLLABUS ) ) {
+
+            this.isRowSelected       = false ;
+            this.isPartiallySelected = false ;
+
+            var numChildrenSelected          = 0 ;
+            var numChildrenPartiallySelected = 0 ;
+
+            for( var i=0; i < this.children.length; i++ ) {
+                var child = this.children[i] ;
+                if( child.isTreeRowVisible() ) {
+                    if( child.isPartiallySelected ) {
+                        numChildrenPartiallySelected++ ;
+                    }
+                    else if( child.isRowSelected ) {
+                        numChildrenSelected++ ;
+                    }
+                }
+            }
+
+            if( numChildrenSelected > 0 || numChildrenPartiallySelected > 0 ) {
+                this.isRowSelected = true ;
+
+                if( ( numChildrenSelected < this.children.length ) || 
+                    ( numChildrenPartiallySelected > 0 ) ) {
+                    this.isPartiallySelected = true ;
+                }
+            }
+        }
+    }
 }
 
-// ---------------- Local variables --------------------------------------------
+$scope.$parent.pageTitle         = "Practice Exercises" ;
+$scope.$parent.currentReport     = 'Exercises' ;
+$scope.showHiddenExercises       = false ;
+$scope.progressSnapshot          = null ;
+$scope.alreadyFetchedAllChapters = false ;
 
-// ---------------- Controller variables ---------------------------------------
-$scope.$parent.pageTitle     = "Exercises" ;
-$scope.$parent.currentReport = 'Exercises' ;
-$scope.showHiddenExercises   = false ;
-$scope.displayRows           = null ;
-
-// ---------------- Main logic for the controller ------------------------------
 refreshData() ;
 
-// ---------------- Controller methods -----------------------------------------
 $scope.refreshData = function() {
-	refreshData() ;
-}
-
-$scope.getTreeRowClass = function( rowData ) {
-	var classStr = "treegrid-" + rowData.rowId ;
-	if( rowData.parentRowId != -1 ) {
-		classStr += " treegrid-parent-" + rowData.parentRowId ;
-	}
-
-	switch( rowData.rowType ) {
-		case RowData.prototype.ROW_TYPE_SYLLABUS:
-			classStr += " info" ;
-			break ;
-		case RowData.prototype.ROW_TYPE_SUBJECT:
-			classStr += " active" ;
-			break ;
-	}
-	return classStr ;
-}
-
-$scope.isTreeRowVisible = function( rowData ) {
-
-	if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
-		if( rowData.isHidden ) {
-			if( !$scope.showHiddenExercises ) {
-				return false ;
-			}
-		}
-	}
-	return true ;
+    refreshData() ;
 }
 
 $scope.expandAll = function() {
-	$('.tree').treegrid('expandAll') ;
+    if( $scope.progressSnapshot.length > 0 ) {
+        $('.tree').treegrid('expandAll') ;
+    }
 }
 
 $scope.collapseAll = function() {
-	$('.tree').treegrid('collapseAll') ;
+    if( $scope.progressSnapshot.length > 0 ) {
+        $('.tree').treegrid('collapseAll') ;
+    }
 }
 
-$scope.toggleHiddenExercises = function() {
-	$scope.showHiddenExercises = !$scope.showHiddenExercises ;
-	$http.put( "/__fw__/api/UserPreference", {
-		'jove_notes.showHiddenExercises' : $scope.showHiddenExercises ? 'true' : 'false'
-	} )
-	.success( function( data ){
-		log.debug( "Updated user preference." ) ;
-	} )
-	.error( function( data ){
-		log.error( "Could not set hidden chapter preferences for user." ) ;
-	});  
-    recomputeStatistics() ;
+$scope.toggleHiddenChapters = function() {
+    $scope.showHiddenExercises = !$scope.showHiddenExercises ;
+    $http.put( "/__fw__/api/UserPreference", {
+        'jove_notes.showHiddenExercises' : $scope.showHiddenExercises ? 'true' : 'false'
+    } )
+    .success( function( data ){
+        if( !$scope.alreadyFetchedAllChapters ) {
+            refreshData() ;
+        }
+        else {
+            recomputeStatistics() ;
+        }
+    } )
+    .error( function( data ){
+        log.error( "Could not set hidden chapter preferences for user." ) ;
+    });  
 }
 
 $scope.deleteChapter = function( chapterId ) {
 
-	bootbox.confirm( "<h3>Are you sure you want to delete this test paper?</h3>" + 
-		             "All related questions and student histories will be deleted.<br>" + 
-		             "Please confirm.", 
-		function( okSelected ) {
-			if( okSelected ) {
-				$http.delete( "/jove_notes/api/Chapter/" + chapterId )
-			         .success( function( data ){
-			         	if( data != null && data.trim() == "Success" ) {
-			         		removeChapter( chapterId ) ;
-			         	}
-			         	else {
-			         		$scope.addErrorAlert( "API call failed. '" + data + "'." ) ;
-			         	}
-			         })
-			         .error( function( data ){
-			         	$scope.addErrorAlert( "API call failed. " + data ) ;
-			         });
-			}
-		}) ;
+    bootbox.confirm( "<h3>Are you sure you want to delete this chapter?</h3>" + 
+                     "All notes, cards and student histories will be deleted.<br>" + 
+                     "Please confirm.", 
+        function( okSelected ) {
+            if( okSelected ) {
+                $http.delete( "/jove_notes/api/Chapter/" + chapterId )
+                     .success( function( data ){
+                        if( data != null && data.trim() == "Success" ) {
+                            removeChapter( chapterId ) ;
+                        }
+                        else {
+                            $scope.addErrorAlert( "API call failed. '" + data + "'." ) ;
+                        }
+                     })
+                     .error( function( data ){
+                        $scope.addErrorAlert( "API call failed. " + data ) ;
+                     });
+            }
+        }) ;
+}
+
+$scope.resetLevelOfAllCards = function( level ) {
+
+    var selectedChapters = getSelectedChapterIds() ;
+    if( selectedChapters.length == 0 ) {
+        $scope.$parent.addErrorAlert( "No chapters selected." ) ;
+    }
+    else {
+        log.debug( "Applying level " + level + " to all cards for " +
+                   "chapters " + selectedChapters.join() ) ;
+
+        $http.post( '/jove_notes/api/ResetLevel', { 
+            chapterIds : selectedChapters,
+            level      : level
+        })
+        .success( function( data ){
+            log.debug( "Level successfully applied to all cards" ) ;
+            refreshData() ;
+        })
+        .error( function( data ){
+            $scope.addErrorAlert( "API call failed. " + data ) ;
+        }) ;
+    }
+}
+
+$scope.toggleVisibilityInBulk = function() {
+
+    var selectedChapterRows = getSelectedChapterRows() ;
+    var visibilityData = [] ;
+
+    if( selectedChapterRows.length == 0 ) {
+        $scope.$parent.addErrorAlert( "No chapters selected." ) ;
+    }
+    else {
+        for( var i=0; i<selectedChapterRows.length; i++ ) {
+            var row = selectedChapterRows[i] ;
+            row.isHidden = !row.isHidden ;
+            visibilityData.push( row.chapterId ) ;
+            visibilityData.push( row.isHidden ? 1 : 0 ) ;
+        }
+        $http.post( "/jove_notes/api/ProgressSnapshot", {
+            'action'         : 'update_visibility_batch',
+            'visibilityData' : visibilityData
+        } )
+        .error( function( data ){
+            $scope.addErrorAlert( "API call failed. " + data ) ;
+        });
+        recomputeStatistics() ;
+    }
 }
 
 $scope.$on( 'onRenderComplete', function( scope ){
     $('.tree').treegrid({
       'initialState': 'collapsed',
       'saveState': true,
-      'saveStateName' : "treeState-tp-" + currentUserName 
-    });	
+      'saveStateName' : "treeState-ex-" + currentUserName 
+    }); 
     recomputeStatistics() ;
-   	$scope.$digest() ;
+    $scope.$digest() ;
 } ) ;
 
-
-// ---------------- Private functions ------------------------------------------
 function removeChapter( chapterId ) {
 
-	var chapterRowIndex = -1 ;
-	for( var i=0; i<$scope.displayRows.length; i++ ) {
-		var rowData = $scope.displayRows[i] ;
-		if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER &&
-			rowData.chapterId == chapterId ) {
+    var chapterRowIndex = -1 ;
+    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+        var rowData = $scope.progressSnapshot[i] ;
+        if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER &&
+            rowData.chapterId == chapterId ) {
 
-			chapterRowIndex = i ;
-			break ;
-		}
-	}
+            chapterRowIndex = i ;
+            break ;
+        }
+    }
 
-	if( chapterRowIndex != -1 ) {
-		$scope.displayRows.splice( chapterRowIndex, 1 ) ;
-		recomputeStatistics() ;
-	}
+    if( chapterRowIndex != -1 ) {
+        $scope.progressSnapshot.splice( chapterRowIndex, 1 ) ;
+        recomputeStatistics() ;
+    }
 }
 
+function refreshData() {
+
+    $http.get( "/jove_notes/api/ProgressSnapshot?chapterType=exercises" )
+         .success( function( data ){
+            digestPreferences( data.preferences ) ;
+            $scope.progressSnapshot = prepareDataForDisplay( data.dashboardContent ) ;
+            if( $scope.showHiddenExercises ) {
+                $scope.alreadyFetchedAllChapters = true ;
+            }
+         })
+         .error( function( data ){
+            $scope.addErrorAlert( "API call failed. " + data ) ;
+         });
+}
 
 function digestPreferences( preferences ) {
-	$scope.showHiddenExercises = preferences[ "jove_notes.showHiddenExercises" ] ;
+    $scope.showHiddenExercises = preferences[ "jove_notes.showHiddenExercises" ] ;
 }
 
 function prepareDataForDisplay( rawData ) {
 
-	var displayData = [] ;
-	var rowNum = 0 ;
+    var displayData = [] ;
+    var rowNum = 0 ;
 
-	for( sylIndex=0; sylIndex<rawData.length; sylIndex++ ) {
+    for( sylIndex=0; sylIndex<rawData.length; sylIndex++ ) {
 
-		rowNum++ ;
-		var syllabus = rawData[ sylIndex ] ;
-		var syllabusRD = new RowData( RowData.prototype.ROW_TYPE_SYLLABUS, 
-			                          syllabus.syllabusName, 
-			                          syllabus.syllabusName, -1 ) ;
+        rowNum++ ;
+        var syllabus = rawData[ sylIndex ] ;
+        var syllabusRD = new RowData( RowData.prototype.ROW_TYPE_SYLLABUS, 
+                                      syllabus.syllabusName, 
+                                      syllabus.syllabusName, -1 ) ;
 
-		displayData.push( syllabusRD ) ;
+        displayData.push( syllabusRD ) ;
 
-		for( subIndex=0; subIndex<syllabus.subjects.length; subIndex++ ) {
+        var numSubjectsSelected = 0 ;
 
-			rowNum++ ;
-			var subject = syllabus.subjects[ subIndex ] ;
-			var subjectRD = new RowData( RowData.prototype.ROW_TYPE_SUBJECT, 
-				                         subject.subjectName, 
-				                         syllabus.syllabusName + "-" + subject.subjectName, 
-				                         syllabusRD.rowId ) ;
+        for( subIndex=0; subIndex<syllabus.subjects.length; subIndex++ ) {
 
-			displayData.push( subjectRD ) ;
+            rowNum++ ;
+            var subject = syllabus.subjects[ subIndex ] ;
+            var subjectRD = new RowData( RowData.prototype.ROW_TYPE_SUBJECT, 
+                                         subject.subjectName, 
+                                         syllabus.syllabusName + "-" + subject.subjectName, 
+                                         syllabusRD.rowId ) ;
 
-			for( chpIndex=0; chpIndex<subject.chapters.length; chpIndex++ ) {
+            syllabusRD.addChild( subjectRD ) ;
+            displayData.push( subjectRD ) ;
 
-				rowNum++ ;
-				var chapter = subject.chapters[ chpIndex  ] ;
-				var displayName = chapter.chapterNum + "." + chapter.subChapterNum + 
-				                  " - " + chapter.chapterName ;
-				var chapterRD = new RowData( RowData.prototype.ROW_TYPE_CHAPTER, 
-					                         displayName, 
-					                         chapter.chapterId, 
-					                         subjectRD.rowId ) ;
+            var numChaptersSelected = 0 ;
+            for( chpIndex=0; chpIndex<subject.chapters.length; chpIndex++ ) {
 
-				chapterRD.setChapterAndParentRows( chapter, subjectRD, syllabusRD ) ;
+                rowNum++ ;
+                var chapter = subject.chapters[ chpIndex  ] ;
+                var displayName = chapter.chapterNum + "." + chapter.subChapterNum + 
+                                  " - " + chapter.chapterName ;
+                var chapterRD = new RowData( RowData.prototype.ROW_TYPE_CHAPTER, 
+                                             displayName, 
+                                             chapter.chapterId, 
+                                             subjectRD.rowId ) ;
 
-				displayData.push( chapterRD ) ;
-			}
-		}
-	}
-	return displayData ;
+                chapterRD.setChapterAndParentRows( chapter, subjectRD, syllabusRD ) ;
+
+                subjectRD.addChild( chapterRD ) ;
+                displayData.push( chapterRD ) ;
+
+                if( !chapterRD.isHidden && chapterRD.isRowSelected ) {
+                    numChaptersSelected++ ;
+                }
+            }
+
+            subjectRD.isRowSelected = ( numChaptersSelected > 0 ) ;
+            if( subjectRD.isRowSelected ) numSubjectsSelected++ ;
+        }
+
+        syllabusRD.isRowSelected = ( numSubjectsSelected > 0 ) ;
+    }
+    return displayData ;
 }
 
 function recomputeStatistics() {
 
-	clearRowDataAttributes() ;
-	computeAggregateTestPapersList() ;
+    clearRowDataAttributes() ;
+    computeAggregateFlashCardChapterList() ;
+    refreshProgressBars() ;
 }
 
 function clearRowDataAttributes() {
 
-	for( var i=0; i<$scope.displayRows.length; i++ ) {
-		var rowData = $scope.displayRows[i] ;
-		if( rowData.rowType != RowData.prototype.ROW_TYPE_CHAPTER ) {
+    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+        var rowData = $scope.progressSnapshot[i] ;
+        if( rowData.rowType != RowData.prototype.ROW_TYPE_CHAPTER ) {
 
-			rowData.totalCards = 0 ;
-			rowData.chapterId  = null ;
-		}
-	}
+            rowData.totalCards         = 0 ;
+            rowData.notStartedCards    = 0 ;
+            rowData.l0Cards            = 0 ;
+            rowData.l1Cards            = 0 ;
+            rowData.l2Cards            = 0 ;
+            rowData.l3Cards            = 0 ;
+            rowData.masteredCards      = 0 ;
+            rowData.numSSRMaturedCards = 0 ;
+
+            rowData.chapterId              = null ;
+            rowData.isFlashcardAuthorized  = false ;
+        }
+    }
 }
 
-function computeAggregateTestPapersList() {
+function computeAggregateFlashCardChapterList() {
 
-	var curSyllabusRD = null ;
-	var curSubjectRD  = null ;
+    var curSyllabusRD = null ;
+    var curSubjectRD  = null ;
 
-	for( var i=0; i<$scope.displayRows.length; i++ ) {
-		var rowData = $scope.displayRows[i] ;
-		if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
-			if( $scope.isTreeRowVisible( rowData ) ) {
-				var chapter = rowData.chapter ;
-				updateQuestionCounts( chapter, rowData.subjectRD, rowData.syllabusRD ) ;
-			}
-		}
-	}
+    var chaptersForSyllabus = null ;
+    var chaptersForSubject  = null ;
+
+    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+        var rowData = $scope.progressSnapshot[i] ;
+
+        if( rowData.rowType == RowData.prototype.ROW_TYPE_SYLLABUS ) {
+            if( curSubjectRD != null ) {
+                curSubjectRD.computeSelectionState() ;
+            }
+
+            if( curSyllabusRD != null ) {
+                if( chaptersForSyllabus.length > 0 ) {
+                    chaptersForSyllabus.shuffle() ;
+                    curSyllabusRD.chapterId = chaptersForSyllabus.join() ;
+                    curSyllabusRD.isFlashcardAuthorized = true ;
+                }
+
+                curSyllabusRD.computeSelectionState() ;
+            }
+            curSyllabusRD = rowData ;
+            chaptersForSyllabus = [] ;
+        }
+        else if( rowData.rowType == RowData.prototype.ROW_TYPE_SUBJECT ) {
+            if( curSubjectRD != null ) {
+                if( chaptersForSubject.length > 0 ) {
+                    chaptersForSubject.shuffle() ;
+                    curSubjectRD.chapterId = chaptersForSubject.join() ;
+                    curSubjectRD.isFlashcardAuthorized = true ;
+                }
+
+                curSubjectRD.computeSelectionState() ;
+            }
+            curSubjectRD = rowData ;
+            chaptersForSubject = [] ;
+        }
+        else if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+            if( rowData.isTreeRowVisible() ) {
+
+                var chapter = rowData.chapter ;
+
+                updateCardCounts( chapter, rowData.subjectRD, rowData.syllabusRD ) ;
+
+                if( chapter.isFlashcardAuthorized && chapter.numSSRMaturedCards > 0 ) {
+                    chaptersForSubject.push( chapter.chapterId ) ;
+                    chaptersForSyllabus.push( chapter.chapterId ) ;
+                }
+            }
+        }
+    }
+
+    curSubjectRD.computeSelectionState() ;
+    curSyllabusRD.computeSelectionState() ;
+
+    if( chaptersForSyllabus.length > 0 ) {
+        chaptersForSyllabus.shuffle() ;
+        curSyllabusRD.chapterId = chaptersForSyllabus.join() ;
+        curSyllabusRD.isFlashcardAuthorized = true ;
+    }
+
+    if( chaptersForSubject.length > 0 ) {
+        chaptersForSubject.shuffle() ;
+        curSubjectRD.chapterId = chaptersForSubject.join() ;
+        curSubjectRD.isFlashcardAuthorized = true ;
+    }
 }
 
-function updateQuestionCounts( chapter, subjectRD, syllabusRD ) {
-	subjectRD.totalCards  += chapter.totalCards ;
-	syllabusRD.totalCards += chapter.totalCards ;
+function refreshProgressBars() {
+
+    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+        var rowData = $scope.progressSnapshot[i] ;
+        if( rowData.isTreeRowVisible() ) {
+            drawProgressBar( "canvas-" + rowData.rowId, 
+                             rowData.totalCards,
+                             rowData.notStartedCards,
+                             rowData.l0Cards,
+                             rowData.l1Cards,
+                             rowData.l2Cards,
+                             rowData.l3Cards,
+                             rowData.masteredCards
+                            ) ;
+        }
+    }
 }
 
-// ---------------- Server calls -----------------------------------------------
-function refreshData() {
-	$http.get( "/jove_notes/api/TestPapers/Snapshot" )
-         .success( function( data ){
-         	digestPreferences( data.preferences ) ;
-         	$scope.displayRows = prepareDataForDisplay( data.dashboardContent ) ;
-         })
-         .error( function( data ){
-         	$scope.addErrorAlert( "API call failed. " + data ) ;
-         });
+function updateCardCounts( chapter, subjectRD, syllabusRD ) {
+
+    subjectRD.totalCards          += chapter.totalCards ;
+    subjectRD.notStartedCards     += chapter.notStartedCards ;
+    subjectRD.l0Cards             += chapter.l0Cards ;
+    subjectRD.l1Cards             += chapter.l1Cards ;
+    subjectRD.l2Cards             += chapter.l2Cards ;
+    subjectRD.l3Cards             += chapter.l3Cards ;
+    subjectRD.masteredCards       += chapter.masteredCards ;
+    subjectRD.numSSRMaturedCards  += chapter.numSSRMaturedCards ;
+    
+    syllabusRD.totalCards         += chapter.totalCards ;
+    syllabusRD.notStartedCards    += chapter.notStartedCards ;
+    syllabusRD.l0Cards            += chapter.l0Cards ;
+    syllabusRD.l1Cards            += chapter.l1Cards ;
+    syllabusRD.l2Cards            += chapter.l2Cards ;
+    syllabusRD.l3Cards            += chapter.l3Cards ;
+    syllabusRD.masteredCards      += chapter.masteredCards ;
+    syllabusRD.numSSRMaturedCards += chapter.numSSRMaturedCards ;
 }
 
-// ---------------- End of controller ------------------------------------------
+function drawProgressBar( canvasId, total, vN, v0, v1, v2, v3, v4 ) {
+
+    var c = document.getElementById( canvasId ) ;
+    var ctx = c.getContext( "2d" ) ;
+
+    var widths = [] ;
+
+    widths[0] = Math.round( ( vN/total )*c.width ) ;
+    widths[1] = Math.round( ( v0/total )*c.width ) ;
+    widths[2] = Math.round( ( v1/total )*c.width ) ;
+    widths[3] = Math.round( ( v2/total )*c.width ) ;
+    widths[4] = Math.round( ( v3/total )*c.width ) ;
+    widths[5] = Math.round( ( v4/total )*c.width ) ;
+
+    var colors = [ "#D0D0D0", "#FF0000", "#FF7F2A", 
+                   "#FFFF7F", "#AAFFAA", "#00FF00" ] ;
+
+    var curX = 0 ;
+    for( var i=0; i<6; i++ )  {
+        ctx.fillStyle = colors[i] ;
+        ctx.fillRect( curX, 0, widths[i], c.height ) ;
+        curX += widths[i] ;
+    }
+}
+
+function getSelectedChapterIds() {
+
+    var chapterIds = [] ;
+    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+
+        var rowData = $scope.progressSnapshot[i] ;
+        if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+
+            if( rowData.isTreeRowVisible() && rowData.isRowSelected ) {
+                chapterIds.push( rowData.chapterId ) ;
+            }
+        }
+    }
+    return chapterIds ;
+}
+
+function getSelectedChapterRows() {
+
+    var selectedRows = [] ;
+    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+
+        var rowData = $scope.progressSnapshot[i] ;
+        if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+            if( rowData.isTreeRowVisible() && rowData.isRowSelected ) {
+                selectedRows.push( rowData ) ;
+            }
+        }
+    }
+    return selectedRows ;
+}
+
+// -----------------------------------------------------------------------------
 } ) ;
