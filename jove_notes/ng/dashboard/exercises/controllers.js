@@ -1,4 +1,4 @@
-dashboardApp.controller( 'TestPapersController', function( $scope, $http ) {
+dashboardApp.controller( 'ExercisesDashboardController', function( $scope, $http ) {
 
 // ---------------- Constants and inner class definition -----------------------
 
@@ -58,9 +58,9 @@ function RowData( rowType, name, rowId, parentRowId ) {
 // ---------------- Local variables --------------------------------------------
 
 // ---------------- Controller variables ---------------------------------------
-$scope.$parent.pageTitle     = "Test Papers" ;
-$scope.$parent.currentReport = 'TestPapers' ;
-$scope.showHiddenTestPapers  = false ;
+$scope.$parent.pageTitle     = "Exercises" ;
+$scope.$parent.currentReport = 'Exercises' ;
+$scope.showHiddenExercises   = false ;
 $scope.displayRows           = null ;
 
 // ---------------- Main logic for the controller ------------------------------
@@ -92,7 +92,7 @@ $scope.isTreeRowVisible = function( rowData ) {
 
 	if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
 		if( rowData.isHidden ) {
-			if( !$scope.showHiddenTestPapers ) {
+			if( !$scope.showHiddenExercises ) {
 				return false ;
 			}
 		}
@@ -108,10 +108,10 @@ $scope.collapseAll = function() {
 	$('.tree').treegrid('collapseAll') ;
 }
 
-$scope.toggleHiddenTestPapers = function() {
-	$scope.showHiddenTestPapers = !$scope.showHiddenTestPapers ;
+$scope.toggleHiddenExercises = function() {
+	$scope.showHiddenExercises = !$scope.showHiddenExercises ;
 	$http.put( "/__fw__/api/UserPreference", {
-		'jove_notes.showHiddenTestPapers' : $scope.showHiddenTestPapers ? 'true' : 'false'
+		'jove_notes.showHiddenExercises' : $scope.showHiddenExercises ? 'true' : 'false'
 	} )
 	.success( function( data ){
 		log.debug( "Updated user preference." ) ;
@@ -178,7 +178,7 @@ function removeChapter( chapterId ) {
 
 
 function digestPreferences( preferences ) {
-	$scope.showHiddenTestPapers = preferences[ "jove_notes.showHiddenTestPapers" ] ;
+	$scope.showHiddenExercises = preferences[ "jove_notes.showHiddenExercises" ] ;
 }
 
 function prepareDataForDisplay( rawData ) {

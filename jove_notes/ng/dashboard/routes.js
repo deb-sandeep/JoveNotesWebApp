@@ -21,9 +21,9 @@ dashboardApp.config(['$routeProvider',
             templateUrl: '/apps/jove_notes/ng/dashboard/notes_review/main.html',
             controller: 'NotesReviewController'
         })
-        .when('/TestPapers', {
-            templateUrl: '/apps/jove_notes/ng/dashboard/test_papers/main.html',
-            controller: 'TestPapersController'
+        .when('/Exercises', {
+            templateUrl: '/apps/jove_notes/ng/dashboard/exercises/main.html',
+            controller: 'ExercisesDashboardController'
         })
         .when('/ChapterProgressSnapshot/:chapterId', {
             templateUrl: '/apps/jove_notes/ng/dashboard/chapter_progress_snapshot/main.html',
