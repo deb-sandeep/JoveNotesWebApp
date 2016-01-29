@@ -10,9 +10,9 @@
     <link rel="icon" type="image/ico"
           href="/apps/_common/media/images/favicon.ico">
 
-    <link rel="stylesheet" href="/lib-app/style/app_fw_main.css"></style>
-    <link rel="stylesheet" href="/apps/_common/style/main.css"></style>
-    <link rel="stylesheet" href="<?php echo APP_MAIN_CSS_PATH ?>"></style>
+    <link rel="stylesheet" href="/lib-app/style/app_fw_main.css">
+    <link rel="stylesheet" href="/apps/_common/style/main.css">
+    <link rel="stylesheet" href="<?php echo APP_MAIN_CSS_PATH ?>">
 
     <script src="/lib-ext/log4javascript/log4javascript.js"></script>
 
