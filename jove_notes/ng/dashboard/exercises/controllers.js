@@ -40,6 +40,14 @@ function RowData( rowType, name, rowId, parentRowId ) {
         return this.rowType == this.ROW_TYPE_CHAPTER ;
     }
 
+    this.isSubjectRow = function() {
+        return this.rowType == this.ROW_TYPE_SUBJECT ;
+    }
+
+    this.isSyllabusRow = function() {
+        return this.rowType == this.ROW_TYPE_SYLLABUS ;
+    }
+
     this.addChild = function( childRow ) {
         this.children.push( childRow ) ;
     }
