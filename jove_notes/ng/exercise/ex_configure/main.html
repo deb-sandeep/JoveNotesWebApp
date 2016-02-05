@@ -1,2 +1,78 @@
 <div ng-include="'/apps/jove_notes/ng/exercise/_fragments/exercise_header.html'">
 </div>
+
+<div class="table-responsive">
+    <table class="table tree table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>Exercises</th>
+                <th style="width:50px;text-align:center;">
+                   <span class="glyphicon glyphicon-th"></span>
+                </th>
+                <th class="text-center">Meter</th>
+                <th>
+                    <table class="dashboard-stats">
+                        <tr>
+                            <td class="text-right TOT">T  </td>
+                            <td class="text-right NS" >NS </td>
+                            <td class="text-right L0" >L0 </td>
+                            <td class="text-right L1" >L1 </td>
+                            <td class="text-right MAS">MAS</td>
+                        </tr>
+                    </table>
+                </th>
+                <th></th>
+            </tr>   
+        </thead>    
+        <tbody>
+            <tr ng-repeat="rowData in exerciseBanks"> 
+                <td> 
+                    <span ng-show="!rowData.isSyllabusRow()">
+                        <a href="/apps/jove_notes/ng/exercise/index.php?chapterId={{rowData.chapterId}}">
+                        {{rowData.name}}
+                        </a>
+                    </span>
+                    <span ng-show="rowData.isSyllabusRow()">{{rowData.name}}</span>
+                </td>
+                <td>
+                   <span class="badge L3">{{rowData.numSSRMaturedCards}}</span>
+                </td>
+                <td style="width:50px" align="center">
+                    <input id="push" type="checkbox" ng-change="rowData.selectionChanged()" 
+                           ng-model="rowData.isRowSelected"
+                           ui-indeterminate="rowData.isPartiallySelected" />
+                </td>
+                <td class="text-center">
+                    <canvas width='200' height='20' id='canvas-{{rowData.rowId}}'>
+                    </canvas>
+                </td>
+                <td>
+                    <a type="button" class="btn btn-default btn-xs"
+                       ng-show="rowData.rowType == 2"
+                       ng-click="rowData.toggleVisibility()">
+                        <span class="glyphicon glyphicon-eye-close" style="color:red"   ng-hide="rowData.isHidden"></span>
+                        <span class="glyphicon glyphicon-eye-open"  style="color:green" ng-show="rowData.isHidden"></span>
+                    </a>
+                </td>
+                <td>
+                    <table class="dashboard-stats">
+                        <tr>
+                            <td class="text-right TOT">{{rowData.totalCards      }}</td>
+                            <td class="text-right NS" >{{rowData.notStartedCards }}</td>
+                            <td class="text-right L0" >{{rowData.l0Cards         }}</td>
+                            <td class="text-right L1" >{{rowData.l1Cards         }}</td>
+                            <td class="text-right MAS">{{rowData.masteredCards   }}</td>
+                            </tr>
+                    </table>
+                </td>
+                <td>
+                    <a type="button" class="btn btn-default btn-xs"
+                       ng-show="rowData.isDeleteAuthorized"
+                       ng-click="deleteChapter( rowData.chapterId )">
+                        <span class="glyphicon glyphicon-remove" style="color:red"></span>
+                    </a>
+                </td>
+            </tr>   
+        </tbody>
+    </table>
+</div>

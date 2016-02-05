@@ -82,9 +82,8 @@ function processServerData( serverData ) {
     else {
         for( var i = 0; i < serverData.length; i++ ) {
             var chapterData = serverData[i] ;
-            var chapterId   = chapterData.chapterDetails.chapterId ;
-            $scope.exerciseBanks[ chapterId ] = chapterData ;
             preProcessChapterData( chapterData ) ;
+            $scope.exerciseBanks.push( chapterData ) ;
         } ;
     }
 }
