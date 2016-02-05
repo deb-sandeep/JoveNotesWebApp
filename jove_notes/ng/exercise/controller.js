@@ -71,16 +71,14 @@ function fetchAndProcessDataFromServer() {
 
     log.debug( "Fetching flash card data from server. Chapter ids = " + $scope.chapterIds ) ;
 
-    /*
-    $http.get( "/jove_notes/api/FlashCard/" + $scope.chapterId )
+    $http.get( "/jove_notes/api/Exercise/ExerciseBanks/" + $scope.chapterIds )
          .success( function( data ){
-            log.debug( "Received response from server." ) ;
-            processServerData( data ) ;
+            log.debug( "Received response from server." + data ) ;
+            // processServerData( data ) ;
          })
          .error( function( data ){
             $scope.addErrorAlert( "API call failed. " + data ) ;
          });
-    */
 }
 
 function processServerData( serverData ) {
