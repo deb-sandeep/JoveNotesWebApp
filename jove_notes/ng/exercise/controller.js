@@ -12,16 +12,17 @@ var totalPauseTime           = 0 ;
 // ---------------- Controller variables ---------------------------------------
 $scope.alerts = [] ;
 
+$scope.pageTitle  = '' ;
 $scope.userName   = userName ;
 $scope.chapterIds = chapterIds ;
 
-$scope.pageTitle       = '' ;
 $scope.textFormatter   = null ;
 $scope.sessionDuration = 0 ;
 
+$scope.exerciseBanks = [] ;
+
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing ExerciseController." ) ;
-fetchAndProcessDataFromServer() ;
 
 // -------------Scope watch functions ------------------------------------------
 
@@ -41,15 +42,6 @@ $scope.purgeAllAlerts = function() {
 
 $scope.startExercise = function() {
     sessionStartTime = new Date().getTime() ;
-
-    $scope.sessionStats.numCards            = $scope.numCardsInDeck ;
-    $scope.sessionStats.numCardsLeft        = $scope.numCardsInDeck ;
-    $scope.sessionStats.numCardsAnswered    = 0 ;
-    $scope.sessionStats.numCardsNotReviewed = $scope.numCardsInDeck ;
-    $scope.sessionStats.numWrong            = $scope.numCardsInDeck ;
-    $scope.sessionStats.numPartiallyCorrect = 0 ;
-    $scope.sessionStats.numCorrect          = 0 ;
-
     setTimeout( handleTimerEvent, 100 ) ;
 }
 
@@ -65,21 +57,21 @@ $scope.resumeSession = function() {
     $( '#modalResume' ).modal( 'hide' ) ;
 }
 
-// ---------------- Private functions ------------------------------------------
-
-function fetchAndProcessDataFromServer() {
+$scope.fetchAndProcessDataFromServer = function() {
 
     log.debug( "Fetching flash card data from server. Chapter ids = " + $scope.chapterIds ) ;
 
     $http.get( "/jove_notes/api/Exercise/ExerciseBanks/" + $scope.chapterIds )
          .success( function( data ){
             log.debug( "Received response from server." + data ) ;
-            // processServerData( data ) ;
+            processServerData( data ) ;
          })
          .error( function( data ){
             $scope.addErrorAlert( "API call failed. " + data ) ;
          });
 }
+
+// ---------------- Private functions ------------------------------------------
 
 function processServerData( serverData ) {
 
@@ -87,9 +79,24 @@ function processServerData( serverData ) {
         $scope.addErrorAlert( "Server returned invalid data. " + serverData ) ;
         return ;
     }
+    else {
+        for( var i = 0; i < serverData.length; i++ ) {
+            var chapterData = serverData[i] ;
+            var chapterId   = chapterData.chapterDetails.chapterId ;
+            $scope.exerciseBanks[ chapterId ] = chapterData ;
+            preProcessChapterData( chapterData ) ;
+        } ;
+    }
 }
 
-function preProcessFlashCardQuestions( questions ) {
+function preProcessChapterData( chapterData ) {
+
+    chapterData.textFormatter = new TextFormatter( chapterData.chapterDetails, 
+                                                   null ) ;
+
+    var chapterDetails = chapterData.chapterDetails ;
+    var textFormatter  = chapterData.textFormatter ;
+    var questions      = chapterData.questions ;
 
     for( i=0; i<questions.length; i++ ) {
 
@@ -115,44 +122,47 @@ function preProcessFlashCardQuestions( questions ) {
 
         question.scriptObj = jnUtil.makeObjectInstanceFromString( 
                                     question.scriptBody,
-                                    $scope.textFormatter.getChapterScript() ) ;
+                                    textFormatter.getChapterScript() ) ;
 
-        associateHandler( question ) ;
-        question.state = new InteractionState( question ) ;
+        associateHandler( chapterDetails, textFormatter, question ) ;
     }
 }
 
-function associateHandler( question ) {
+function associateHandler( chapterDetails, textFormatter, question ) {
 
     var questionType = question.questionType ;
 
     if( questionType == QuestionTypes.prototype.QT_FIB ) {
-        question.handler = new FIBHandler( $scope.chapterDetails, question, 
-                                           $scope.textFormatter ) ;
+        question.handler = new FIBHandler( chapterDetails, question, 
+                                           textFormatter ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_QA ) {
-        question.handler = new QAHandler( $scope.chapterDetails, question, 
-                                          $scope.textFormatter ) ;
+        question.handler = new QAHandler( chapterDetails, question, 
+                                          textFormatter ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_TF ) {
-        question.handler = new TFHandler( $scope.chapterDetails, question,
-                                          $scope.textFormatter ) ;
+        question.handler = new TFHandler( chapterDetails, question,
+                                          textFormatter ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_MATCHING ) {
-        question.handler = new MatchingHandler( $scope.chapterDetails, question, 
-                                                $scope.textFormatter ) ;
+        question.handler = new MatchingHandler( chapterDetails, question, 
+                                                textFormatter ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_IMGLABEL ) {
-        question.handler = new ImageLabelHandler( $scope.chapterDetails, question, 
-                                                  $scope.textFormatter ) ;
+        question.handler = new ImageLabelHandler( chapterDetails, question, 
+                                                  textFormatter ) ;
     }
     else if( questionType == QuestionTypes.prototype.QT_SPELLBEE ) {
-        question.handler = new SpellBeeHandler( $scope.chapterDetails, question, 
-                                                $scope.textFormatter ) ;
+        question.handler = new SpellBeeHandler( chapterDetails, question, 
+                                                textFormatter ) ;
     }
     else if( questionType == QuestionTypes.prototype.MULTI_CHOICE ) {
-        question.handler = new MultiChoiceHandler( $scope.chapterDetails, question, 
-                                                   $scope.textFormatter ) ;
+        question.handler = new MultiChoiceHandler( chapterDetails, question, 
+                                                   textFormatter ) ;
+    }
+    else if( questionType == QuestionTypes.prototype.EXERCISE ) {
+        question.handler = new ExerciseHandler( chapterDetails, question, 
+                                                textFormatter ) ;
     }
     else {
         log.error( "Unrecognized question type = " + questionType ) ;

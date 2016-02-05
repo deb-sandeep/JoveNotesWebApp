@@ -52,6 +52,7 @@ $pageConfig = array(
     <script src="/apps/jove_notes/ng/flashcard/practice_page/dynq_imglabel.js"></script>    
     <script src="/apps/jove_notes/ng/flashcard/practice_page/dynq_spellbee.js"></script>    
     <script src="/apps/jove_notes/ng/flashcard/practice_page/dynq_multichoice.js"></script>    
+    <script src="/apps/jove_notes/ng/flashcard/practice_page/dynq_exercise.js"></script>    
     <script src="/apps/jove_notes/ng/flashcard/practice_page/diff_av_time_manager.js"></script>    
 
     <script src="/apps/jove_notes/ng/exercise/routes.js"></script>    

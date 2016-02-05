@@ -8,6 +8,8 @@ testPaperApp.controller( 'ExerciseConfigController', function( $scope, $http, $r
 // ---------------- Main logic for the controller ------------------------------
 {
     log.debug( "Executing ExerciseConfigController." ) ;
+    $scope.$parent.pageTitle = "Configure Exercise" ;
+    $scope.$parent.fetchAndProcessDataFromServer() ;
 }
 
 // ---------------- Controller methods -----------------------------------------
