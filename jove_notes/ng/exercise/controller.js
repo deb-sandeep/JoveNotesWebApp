@@ -20,11 +20,10 @@ $scope.textFormatter   = null ;
 $scope.sessionDuration = 0 ;
 
 $scope.exerciseBanks = [] ;
+$scope.exerciseBanksMap = [] ;
 
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing ExerciseController." ) ;
-
-// -------------Scope watch functions ------------------------------------------
 
 // ---------------- Controller methods -----------------------------------------
 $scope.addErrorAlert = function( msgString ) {
@@ -72,7 +71,6 @@ $scope.fetchAndProcessDataFromServer = function() {
 }
 
 // ---------------- Private functions ------------------------------------------
-
 function processServerData( serverData ) {
 
     if( typeof serverData === "string" ) {
@@ -83,7 +81,9 @@ function processServerData( serverData ) {
         for( var i = 0; i < serverData.length; i++ ) {
             var chapterData = serverData[i] ;
             preProcessChapterData( chapterData ) ;
+            
             $scope.exerciseBanks.push( chapterData ) ;
+            $scope.exerciseBanksMap[ chapterData.chapterDetails.chapterId ] = chapterData ;
         } ;
     }
 }
@@ -97,9 +97,19 @@ function preProcessChapterData( chapterData ) {
     var textFormatter  = chapterData.textFormatter ;
     var questions      = chapterData.questions ;
 
+    chapterData.deckDetails.notStartedCards    = 0 ;
+    chapterData.deckDetails.l0Cards            = 0 ;
+    chapterData.deckDetails.l1Cards            = 0 ;
+    chapterData.deckDetails.l2Cards            = 0 ;
+    chapterData.deckDetails.l3Cards            = 0 ;
+    chapterData.deckDetails.masteredCards      = 0 ;
+    chapterData.deckDetails.numSSRMaturedCards = 0 ;
+
     for( i=0; i<questions.length; i++ ) {
 
         var question = questions[i] ;
+
+        updateCardLevelCount( chapterData.deckDetails, question ) ;
 
         question.learningStats.numAttemptsInSession = 0 ;
         question.learningStats.numSecondsInSession  = 0 ;
@@ -124,6 +134,34 @@ function preProcessChapterData( chapterData ) {
                                     textFormatter.getChapterScript() ) ;
 
         associateHandler( chapterDetails, textFormatter, question ) ;
+    }
+}
+
+function updateCardLevelCount( deckDetails, question ) {
+
+    if( question.learningStats.currentLevel == 'NS' ) {
+        deckDetails.notStartedCards++ ;
+    }
+    else if( question.learningStats.currentLevel == 'L0' ) {
+        deckDetails.l0Cards++ ;
+    }
+    else if( question.learningStats.currentLevel == 'L1' ) {
+        deckDetails.l1Cards++ ;
+    }
+    else if( question.learningStats.currentLevel == 'L2' ) {
+        deckDetails.l2Cards++ ;
+    }
+    else if( question.learningStats.currentLevel == 'L3' ) {
+        deckDetails.l3Cards++ ;
+    }
+    else if( question.learningStats.currentLevel == 'MAS' ) {
+        deckDetails.masteredCards++ ;
+    }
+
+    var ssrThresholdDelta = jnUtil.getSSRThresholdDelta( question ) ;
+    if( ssrThresholdDelta >= 0 || 
+        question.learningStats.currentLevel == 'NS') {
+        deckDetails.numSSRMaturedCards++ ;
     }
 }
 

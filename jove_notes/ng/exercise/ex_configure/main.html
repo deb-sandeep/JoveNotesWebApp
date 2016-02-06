@@ -5,7 +5,9 @@
     <table class="table tree table-hover table-condensed">
         <thead>
             <tr>
-                <th>Exercises</th>
+                <th></th>
+                <th>Subject</th>
+                <th>Exercise</th>
                 <th style="width:50px;text-align:center;">
                    <span class="glyphicon glyphicon-th"></span>
                 </th>
@@ -21,56 +23,42 @@
                         </tr>
                     </table>
                 </th>
-                <th></th>
             </tr>   
         </thead>    
         <tbody>
-            <tr ng-repeat="rowData in exerciseBanks"> 
+            <tr ng-repeat="rowData in exerciseBanks" 
+                ng-click="configureExercise(rowData.chapterDetails.chapterId)"
+                ng-class="getRowClass(rowData.chapterDetails.chapterId)"
+                on-render-complete> 
+                <td style="width:50px;text-align:center;">
+                    <span ng-show="rowData.chapterDetails.chapterId == currentlySelectedChapter"
+                          class="glyphicon glyphicon-tasks"></span>
+                </td>
                 <td> 
-                    <span ng-show="!rowData.isSyllabusRow()">
-                        <a href="/apps/jove_notes/ng/exercise/index.php?chapterId={{rowData.chapterId}}">
-                        {{rowData.name}}
-                        </a>
-                    </span>
-                    <span ng-show="rowData.isSyllabusRow()">{{rowData.name}}</span>
+                    {{rowData.chapterDetails.subjectName}}
                 </td>
                 <td>
-                   <span class="badge L3">{{rowData.numSSRMaturedCards}}</span>
+                    {{rowData.chapterDetails.chapterNumber}}.
+                    {{rowData.chapterDetails.subChapterNumber}} - 
+                    {{rowData.chapterDetails.chapterName}}
                 </td>
-                <td style="width:50px" align="center">
-                    <input id="push" type="checkbox" ng-change="rowData.selectionChanged()" 
-                           ng-model="rowData.isRowSelected"
-                           ui-indeterminate="rowData.isPartiallySelected" />
+                <td class="text-right">
+                   <span class="badge L3">{{rowData.deckDetails.numSSRMaturedCards}}</span>
                 </td>
                 <td class="text-center">
-                    <canvas width='200' height='20' id='canvas-{{rowData.rowId}}'>
+                    <canvas width='100' height='20' id='canvas-{{rowData.chapterDetails.chapterId}}'>
                     </canvas>
-                </td>
-                <td>
-                    <a type="button" class="btn btn-default btn-xs"
-                       ng-show="rowData.rowType == 2"
-                       ng-click="rowData.toggleVisibility()">
-                        <span class="glyphicon glyphicon-eye-close" style="color:red"   ng-hide="rowData.isHidden"></span>
-                        <span class="glyphicon glyphicon-eye-open"  style="color:green" ng-show="rowData.isHidden"></span>
-                    </a>
                 </td>
                 <td>
                     <table class="dashboard-stats">
                         <tr>
-                            <td class="text-right TOT">{{rowData.totalCards      }}</td>
-                            <td class="text-right NS" >{{rowData.notStartedCards }}</td>
-                            <td class="text-right L0" >{{rowData.l0Cards         }}</td>
-                            <td class="text-right L1" >{{rowData.l1Cards         }}</td>
-                            <td class="text-right MAS">{{rowData.masteredCards   }}</td>
+                            <td class="text-right TOT">{{rowData.questions.length            }}</td>
+                            <td class="text-right NS" >{{rowData.deckDetails.notStartedCards }}</td>
+                            <td class="text-right L0" >{{rowData.deckDetails.l0Cards         }}</td>
+                            <td class="text-right L1" >{{rowData.deckDetails.l1Cards         }}</td>
+                            <td class="text-right MAS">{{rowData.deckDetails.masteredCards   }}</td>
                             </tr>
                     </table>
-                </td>
-                <td>
-                    <a type="button" class="btn btn-default btn-xs"
-                       ng-show="rowData.isDeleteAuthorized"
-                       ng-click="deleteChapter( rowData.chapterId )">
-                        <span class="glyphicon glyphicon-remove" style="color:red"></span>
-                    </a>
                 </td>
             </tr>   
         </tbody>

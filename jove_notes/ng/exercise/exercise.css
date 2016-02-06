@@ -1,3 +1,7 @@
+.selected-row {
+    background-color: #D8DFFF;
+}
+
 .exercise_start_screen {
 	position:fixed;
 	top:0px;
