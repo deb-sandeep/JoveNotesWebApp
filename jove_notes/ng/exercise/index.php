@@ -39,6 +39,12 @@ $pageConfig = array(
     </script>
     <script type="text/javascript" src="/lib-ext/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
+    <script src="/lib-ext/rgraph/RGraph.common.core.js"></script>    
+    <script src="/lib-ext/rgraph/RGraph.common.key.js"></script>    
+    <script src="/lib-ext/rgraph/RGraph.line.js"></script>    
+    <script src="/lib-ext/rgraph/RGraph.pie.js"></script>    
+    <script src="/lib-ext/rgraph/RGraph.bar.js"></script>    
+
     <link rel='stylesheet' href='/lib-ext/pure/tables.css'>
     <link rel='stylesheet' href='/apps/jove_notes/ng/flashcard/flashcard.css'>
     <link rel='stylesheet' href='/apps/jove_notes/ng/exercise/exercise.css'>

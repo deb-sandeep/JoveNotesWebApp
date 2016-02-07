@@ -2,9 +2,11 @@ testPaperApp.controller( 'ExerciseConfigController', function( $scope, $http, $r
 // ---------------- Constants and inner class definition -----------------------
 
 // ---------------- Local variables --------------------------------------------
+var jnUtil = new JoveNotesUtil() ;
 
 // ---------------- Controller variables ---------------------------------------
-$scope.currentlySelectedChapter = 0 ;
+$scope.selChapterId   = 0 ;
+$scope.selChapterData = null ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -20,14 +22,19 @@ $scope.$on( 'onRenderComplete', function( scope ){
 
 // ---------------- Controller methods -----------------------------------------
 $scope.getRowClass = function( chapterId ) {
-    if( $scope.currentlySelectedChapter == chapterId ) 
+    if( $scope.selChapterId == chapterId ) 
         return "selected-row" ;
     return "" ;
 }
 
 $scope.configureExercise = function( chapterId ) {
     log.debug( "Configuring exercise - " + chapterId ) ;
-    $scope.currentlySelectedChapter = chapterId ;
+
+    $scope.selChapterId   = chapterId ;
+    $scope.selChapterData = $scope.$parent.exerciseBanksMap[ chapterId ] ;
+
+    jnUtil.renderLearningCurveGraph ( 'learningCurveGraph',
+                      $scope.selChapterData.deckDetails.learningCurveData ) ;
 }
 
 // ---------------- Private functions ------------------------------------------

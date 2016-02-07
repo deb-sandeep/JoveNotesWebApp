@@ -2,6 +2,17 @@
     background-color: #D8DFFF;
 }
 
+.ex_config_table {
+    width: 100%;
+}
+
+.ex_config_table th {
+    background-color: #C4D8FF;
+    text-align: center;
+    font-size: 16px;
+    padding: 3px;
+}
+
 .exercise_start_screen {
 	position:fixed;
 	top:0px;

@@ -41,7 +41,6 @@ $scope.purgeAllAlerts = function() {
 
 $scope.startExercise = function() {
     sessionStartTime = new Date().getTime() ;
-    setTimeout( handleTimerEvent, 100 ) ;
 }
 
 $scope.pauseSession = function() {
@@ -81,7 +80,7 @@ function processServerData( serverData ) {
         for( var i = 0; i < serverData.length; i++ ) {
             var chapterData = serverData[i] ;
             preProcessChapterData( chapterData ) ;
-            
+
             $scope.exerciseBanks.push( chapterData ) ;
             $scope.exerciseBanksMap[ chapterData.chapterDetails.chapterId ] = chapterData ;
         } ;
@@ -210,17 +209,6 @@ function associateHandler( chapterDetails, textFormatter, question ) {
         question.handler.initialize() ;
     }
 }
-
-function handleTimerEvent() {
-}
-
-function refreshClocks() {
-
-    durationTillNowInMillis = new Date().getTime() - sessionStartTime - totalPauseTime ;
-    $scope.sessionDuration = durationTillNowInMillis ;
-    $scope.$digest() ;
-}
-
 
 // ---------------- End of controller ------------------------------------------
 } ) ;

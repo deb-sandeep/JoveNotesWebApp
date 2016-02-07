@@ -6,6 +6,24 @@
         <thead>
             <tr>
                 <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>
+                    <table class="dashboard-stats">
+                        <tr>
+                            <td class="text-right TOT">20 </td>
+                            <td class="text-right NS" >10 </td>
+                            <td class="text-right L0" >3 </td>
+                            <td class="text-right L1" >0 </td>
+                        </tr>
+                    </table>
+                </th>
+            </tr>   
+            <tr>
+                <th></th>
                 <th>Subject</th>
                 <th>Exercise</th>
                 <th style="width:50px;text-align:center;">
@@ -23,6 +41,16 @@
                         </tr>
                     </table>
                 </th>
+                <th>
+                    <table class="dashboard-stats">
+                        <tr>
+                            <td class="text-right TOT">T  </td>
+                            <td class="text-right NS" >NS </td>
+                            <td class="text-right L0" >L0 </td>
+                            <td class="text-right L1" >L1 </td>
+                        </tr>
+                    </table>
+                </th>
             </tr>   
         </thead>    
         <tbody>
@@ -31,7 +59,7 @@
                 ng-class="getRowClass(rowData.chapterDetails.chapterId)"
                 on-render-complete> 
                 <td style="width:50px;text-align:center;">
-                    <span ng-show="rowData.chapterDetails.chapterId == currentlySelectedChapter"
+                    <span ng-show="rowData.chapterDetails.chapterId == selChapterId"
                           class="glyphicon glyphicon-tasks"></span>
                 </td>
                 <td> 
@@ -57,10 +85,37 @@
                             <td class="text-right L0" >{{rowData.deckDetails.l0Cards         }}</td>
                             <td class="text-right L1" >{{rowData.deckDetails.l1Cards         }}</td>
                             <td class="text-right MAS">{{rowData.deckDetails.masteredCards   }}</td>
-                            </tr>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table class="dashboard-stats">
+                        <tr>
+                            <td class="text-right TOT">{{rowData.questions.length            }}</td>
+                            <td class="text-right NS" >{{rowData.deckDetails.notStartedCards }}</td>
+                            <td class="text-right L0" >{{rowData.deckDetails.l0Cards         }}</td>
+                            <td class="text-right L1" >{{rowData.deckDetails.l1Cards         }}</td>
+                        </tr>
                     </table>
                 </td>
             </tr>   
         </tbody>
     </table>
+</div>
+<hr style="margin:3px">
+<table ng-show="selChapterData != null" class="ex_config_table">
+    <tr>
+        <th colspan="3">
+            Configure exercise - {{selChapterData.chapterDetails.chapterNumber}}.
+                                 {{selChapterData.chapterDetails.subChapterNumber}} - 
+                                 {{selChapterData.chapterDetails.chapterName}}
+        </th>
+    </tr>
+    <tr>
+        <td width="200">
+            <canvas id="learningCurveGraph" width="300" height="150"></canvas>
+        </td>
+        <td>
+        </td>
+    </tr>
 </div>

@@ -128,33 +128,48 @@ class PracticeCardService {
         $this->logger->debug( "Successfully obtained snapshots." ) ;
 
         $numSnapshots = count( $snapshots ) ;
-        for( $i=0; $i<$numSnapshots; $i++ ) {
+        if( $numSnapshots == 0 ) {
 
-            $pushSnapshot = false ;
-            $snapshot = $snapshots[ $i ] ;
-            if( $i == $numSnapshots-1 ) {
-                $progressSnapshotObj[ "numNS"  ] = $snapshot[ "num_NS" ] ;
-                $progressSnapshotObj[ "numL0"  ] = $snapshot[ "num_L0" ] ;
-                $progressSnapshotObj[ "numL1"  ] = $snapshot[ "num_L1" ] ;
-                $progressSnapshotObj[ "numL2"  ] = $snapshot[ "num_L2" ] ;
-                $progressSnapshotObj[ "numL3"  ] = $snapshot[ "num_L3" ] ;
-                $progressSnapshotObj[ "numMAS" ] = $snapshot[ "num_MAS" ] ;
+            $progressSnapshotObj[ "numNS"  ] = $this->numCards ;
+            $progressSnapshotObj[ "numL0"  ] = 0 ;
+            $progressSnapshotObj[ "numL1"  ] = 0 ;
+            $progressSnapshotObj[ "numL2"  ] = 0 ;
+            $progressSnapshotObj[ "numL3"  ] = 0 ;
+            $progressSnapshotObj[ "numMAS" ] = 0 ;
 
-                $pushSnapshot = true ;
-            }
-            else {
-                if( $snapshot[ "time_spent" ] > 10 ) {
+            array_push( $learningCurveDataObj, 
+                        array( $this->numCards, 0, 0, 0, 0, 0 ) ) ;
+        }
+        else {
+            for( $i=0; $i<$numSnapshots; $i++ ) {
+
+                $pushSnapshot = false ;
+                $snapshot = $snapshots[ $i ] ;
+                if( $i == $numSnapshots-1 ) {
+                    $progressSnapshotObj[ "numNS"  ] = $snapshot[ "num_NS" ] ;
+                    $progressSnapshotObj[ "numL0"  ] = $snapshot[ "num_L0" ] ;
+                    $progressSnapshotObj[ "numL1"  ] = $snapshot[ "num_L1" ] ;
+                    $progressSnapshotObj[ "numL2"  ] = $snapshot[ "num_L2" ] ;
+                    $progressSnapshotObj[ "numL3"  ] = $snapshot[ "num_L3" ] ;
+                    $progressSnapshotObj[ "numMAS" ] = $snapshot[ "num_MAS" ] ;
+
                     $pushSnapshot = true ;
                 }
-            }
+                else {
+                    if( $snapshot[ "time_spent" ] > 10 ) {
+                        $pushSnapshot = true ;
+                    }
+                }
 
-            if( $pushSnapshot ) {
-                array_push( $learningCurveDataObj, 
-                            array( $snapshot["num_NS"],$snapshot["num_L0"], 
-                                   $snapshot["num_L1"],$snapshot["num_L2"], 
-                                   $snapshot["num_L3"],$snapshot["num_MAS"] ));
+                if( $pushSnapshot ) {
+                    array_push( $learningCurveDataObj, 
+                                array( $snapshot["num_NS"],$snapshot["num_L0"], 
+                                       $snapshot["num_L1"],$snapshot["num_L2"], 
+                                       $snapshot["num_L3"],$snapshot["num_MAS"] ));
+                }
             }
         }
+
         $deckDetailsObj[ "progressSnapshot"  ] = $progressSnapshotObj ;
         $deckDetailsObj[ "learningCurveData" ] = $learningCurveDataObj ;
     }
