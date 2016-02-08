@@ -5,8 +5,8 @@ testPaperApp.controller( 'ExerciseConfigController', function( $scope, $http, $r
 var jnUtil = new JoveNotesUtil() ;
 
 // ---------------- Controller variables ---------------------------------------
-$scope.selChapterId   = 0 ;
-$scope.selChapterData = null ;
+$scope.selChId = 0 ;
+$scope.selCh   = null ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -22,7 +22,7 @@ $scope.$on( 'onRenderComplete', function( scope ){
 
 // ---------------- Controller methods -----------------------------------------
 $scope.getRowClass = function( chapterId ) {
-    if( $scope.selChapterId == chapterId ) 
+    if( $scope.selChId == chapterId ) 
         return "selected-row" ;
     return "" ;
 }
@@ -30,26 +30,78 @@ $scope.getRowClass = function( chapterId ) {
 $scope.configureExercise = function( chapterId ) {
     log.debug( "Configuring exercise - " + chapterId ) ;
 
-    $scope.selChapterId   = chapterId ;
-    $scope.selChapterData = $scope.$parent.exerciseBanksMap[ chapterId ] ;
+    $scope.selChId = chapterId ;
+    $scope.selCh   = $scope.$parent.exerciseBanksMap[ chapterId ] ;
 
     jnUtil.renderLearningCurveGraph ( 'learningCurveGraph',
-                      $scope.selChapterData.deckDetails.learningCurveData ) ;
+                      $scope.selCh.deckDetails.learningCurveData ) ;
+}
+
+$scope.incrementCardSelection = function( cardType, cardLevel ) {
+    updateCardSelection( cardType, cardLevel, 1 ) ;
+}
+
+$scope.decrementCardSelection = function( cardType, cardLevel ) {
+    updateCardSelection( cardType, cardLevel, -1 ) ;
+}
+
+$scope.getTotalSelCards = function( cardLevel ) {
+
+    var totalCards = 0 ;
+    for( var i=0; i<$scope.exerciseBanks.length; i++ ) {
+        var ex = $scope.exerciseBanks[i] ;
+        if( cardLevel == 'NS' ) {
+            totalCards += ( ex._selCfg.ssr.numNSCards ) ;
+        }
+        else if( cardLevel == 'L0' ) {
+            totalCards += ( ex._selCfg.ssr.numL0Cards + 
+                            ex._selCfg.nonSSR.numL0Cards ) ;
+        }
+        else if( cardLevel == 'L1' ) {
+            totalCards += ( ex._selCfg.ssr.numL1Cards + 
+                            ex._selCfg.nonSSR.numL1Cards ) ;
+        }
+        else if( cardLevel == 'Total' ) {
+            totalCards += ( ex._selCfg.ssr.numNSCards    + 
+                            ex._selCfg.ssr.numL0Cards    + 
+                            ex._selCfg.nonSSR.numL0Cards + 
+                            ex._selCfg.ssr.numL1Cards    +  
+                            ex._selCfg.nonSSR.numL1Cards ) ;
+        }
+    }
+    return totalCards ;
 }
 
 // ---------------- Private functions ------------------------------------------
+function updateCardSelection( cardType, cardLevel, increment ) {
+
+    var selConfig = ( cardType == 'ssr' ) ?
+                    $scope.selCh._selCfg.ssr : 
+                    $scope.selCh._selCfg.nonSSR ;
+
+    if( cardLevel == 'NS' ) {
+        selConfig.numNSCards += increment ;
+    }
+    else if( cardLevel == 'L0' ) {
+        selConfig.numL0Cards += increment ;        
+    }
+    else if( cardLevel == 'L1' ) {
+        selConfig.numL1Cards += increment ;
+    }
+}
+
 function paintProgressBars() {
 
     for( var i=0; i<$scope.exerciseBanks.length; i++ ) {
-        var chapterData = $scope.exerciseBanks[i] ;
-        drawProgressBar( "canvas-" + chapterData.chapterDetails.chapterId, 
-                         chapterData.questions.length,
-                         chapterData.deckDetails.notStartedCards,
-                         chapterData.deckDetails.l0Cards,
-                         chapterData.deckDetails.l1Cards,
-                         chapterData.deckDetails.l2Cards,
-                         chapterData.deckDetails.l3Cards,
-                         chapterData.deckDetails.masteredCards
+        var ex = $scope.exerciseBanks[i] ;
+        drawProgressBar( "canvas-" + ex.chapterDetails.chapterId, 
+                         ex.deckDetails.numCards,
+                         ex.deckDetails.progressSnapshot.numNS,
+                         ex.deckDetails.progressSnapshot.numL0,
+                         ex.deckDetails.progressSnapshot.numL1,
+                         ex.deckDetails.progressSnapshot.numL2,
+                         ex.deckDetails.progressSnapshot.numL3,
+                         ex.deckDetails.progressSnapshot.numMAS
                         ) ;
     }
 }

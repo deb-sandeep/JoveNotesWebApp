@@ -2,6 +2,10 @@
     background-color: #D8DFFF;
 }
 
+.ex_dashboard_table {
+    font-size: 13px;
+}
+
 .ex_config_table {
     width: 100%;
 }
@@ -13,60 +17,35 @@
     padding: 3px;
 }
 
-.exercise_start_screen {
-	position:fixed;
-	top:0px;
-	bottom:0px;
-	left:0px;
-	width:100%;
-	padding:0px;
-	background: #EEEEEE;
-}
-
-.exercise_body {
-	position:fixed;
-	top:0px;
-	bottom:60px;
-	left:0px;
-	width:100%;
-	overflow-y:auto;
-	overflow-x:auto;
-}
-
-.exercise_footer {
-	position:fixed;
-	bottom:0px;
-	left:0px;
-	width:100%;
-	color:#CCC;
-	background:#333;
-	padding:5px;
-}
-
-.active_question {
-	background-color: white;
-}
-
-.passive_question {
-	background-color: #f5f5f5;
-	color: #dddddd;
-}
-
-.check_answer {
-	background: #f5f5f5;
-}
-
-.footer_display_block {
-    padding: 10px 16px;
-    font-size: 20px;
-    line-height: 1.3333333;
-    border-radius: 6px;
-    color: #333;
-    background-color: #fff;
-    border-color: #ccc;    
-    display: inline-block;
+.ex_card_config_table td {
     text-align: center;
-    vertical-align: middle;
+    font-size: 12px;
+}
+
+.border-left {
+    border-left: thin solid #B4B4B4;
+}
+
+.ex_config_dialog {
+    position:fixed;
+    bottom:0px;
+    left:0px;
+    width:100%;
+    padding:0px;
+    background: #FFFFFF;
+    outline-width: 1px;
+    outline-style: solid;
+    outline-color: #0007FF;
+}
+
+.ex_dashboard {
+    position:fixed;
+    top:90px;
+    bottom:200px;
+    left:0px;
+    width:100%;
+    padding:0px;
+    background: #FFFFFF;
 }
 
 .modal-backdrop {

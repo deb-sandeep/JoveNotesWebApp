@@ -1,23 +1,40 @@
 <div ng-include="'/apps/jove_notes/ng/exercise/_fragments/exercise_header.html'">
 </div>
 
-<div class="table-responsive">
-    <table class="table tree table-hover table-condensed">
+<div class="container" style="width:95%">
+    <div class="row">
+        <div class="col-sm-12" style="height:40px;padding:3px">
+            <a type="button" class="btn btn-success btn-block gi-1-5x"
+               href="#PracticePage"
+               style="height:50px;"
+               ng-disabled="getTotalSelCards('Total') <= 0">
+                Start Exercise [{{getTotalSelCards('Total')}}]
+            </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive ex_dashboard">
+    <table class="table tree table-hover table-condensed ex_dashboard_table">
         <thead>
             <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>
+                <th colspan="6"></th>
+                <th class="border-left">
                     <table class="dashboard-stats">
                         <tr>
-                            <td class="text-right TOT">20 </td>
-                            <td class="text-right NS" >10 </td>
-                            <td class="text-right L0" >3 </td>
-                            <td class="text-right L1" >0 </td>
+                            <td class="text-right TOT">
+                                {{getTotalSelCards('Total')}}
+                            </td>
+                            <td class="text-right NS">
+                                {{getTotalSelCards('NS')}}
+                            </td>
+                            <td class="text-right L0">
+                                {{getTotalSelCards('L0')}}
+                            </td>
+                            <td class="text-right L1">
+                                {{getTotalSelCards('L1')}}
+                            </td>
                         </tr>
                     </table>
                 </th>
@@ -41,7 +58,7 @@
                         </tr>
                     </table>
                 </th>
-                <th>
+                <th class="border-left">
                     <table class="dashboard-stats">
                         <tr>
                             <td class="text-right TOT">T  </td>
@@ -59,7 +76,7 @@
                 ng-class="getRowClass(rowData.chapterDetails.chapterId)"
                 on-render-complete> 
                 <td style="width:50px;text-align:center;">
-                    <span ng-show="rowData.chapterDetails.chapterId == selChapterId"
+                    <span ng-show="rowData.chapterDetails.chapterId == selChId"
                           class="glyphicon glyphicon-tasks"></span>
                 </td>
                 <td> 
@@ -71,30 +88,40 @@
                     {{rowData.chapterDetails.chapterName}}
                 </td>
                 <td class="text-right">
-                   <span class="badge L3">{{rowData.deckDetails.numSSRMaturedCards}}</span>
+                   <span class="badge L3">{{rowData.deckDetails.progressSnapshot._numSSRMaturedCards}}</span>
                 </td>
                 <td class="text-center">
-                    <canvas width='100' height='20' id='canvas-{{rowData.chapterDetails.chapterId}}'>
+                    <canvas width='150' height='20' id='canvas-{{rowData.chapterDetails.chapterId}}'>
                     </canvas>
                 </td>
                 <td>
                     <table class="dashboard-stats">
                         <tr>
-                            <td class="text-right TOT">{{rowData.questions.length            }}</td>
-                            <td class="text-right NS" >{{rowData.deckDetails.notStartedCards }}</td>
-                            <td class="text-right L0" >{{rowData.deckDetails.l0Cards         }}</td>
-                            <td class="text-right L1" >{{rowData.deckDetails.l1Cards         }}</td>
-                            <td class="text-right MAS">{{rowData.deckDetails.masteredCards   }}</td>
+                            <td class="text-right TOT">{{rowData.deckDetails.numCards                }}</td>
+                            <td class="text-right NS" >{{rowData.deckDetails.progressSnapshot.numNS  }}</td>
+                            <td class="text-right L0" >{{rowData.deckDetails.progressSnapshot.numL0  }}</td>
+                            <td class="text-right L1" >{{rowData.deckDetails.progressSnapshot.numL1  }}</td>
+                            <td class="text-right MAS">{{rowData.deckDetails.progressSnapshot.numMAS }}</td>
                         </tr>
                     </table>
                 </td>
-                <td>
+                <td class="border-left">
                     <table class="dashboard-stats">
                         <tr>
-                            <td class="text-right TOT">{{rowData.questions.length            }}</td>
-                            <td class="text-right NS" >{{rowData.deckDetails.notStartedCards }}</td>
-                            <td class="text-right L0" >{{rowData.deckDetails.l0Cards         }}</td>
-                            <td class="text-right L1" >{{rowData.deckDetails.l1Cards         }}</td>
+                            <td class="text-right TOT">
+                            {{rowData._selCfg.ssr.numNSCards + 
+                              rowData._selCfg.ssr.numL0Cards + rowData._selCfg.nonSSR.numL0Cards + 
+                              rowData._selCfg.ssr.numL1Cards + rowData._selCfg.nonSSR.numL1Cards}}
+                            </td>
+                            <td class="text-right NS">
+                            {{rowData._selCfg.ssr.numNSCards + rowData._selCfg.nonSSR.numNSCards}}
+                            </td>
+                            <td class="text-right L0">
+                            {{rowData._selCfg.ssr.numL0Cards + rowData._selCfg.nonSSR.numL0Cards}}
+                            </td>
+                            <td class="text-right L1">
+                            {{rowData._selCfg.ssr.numL1Cards + rowData._selCfg.nonSSR.numL1Cards}}
+                            </td>
                         </tr>
                     </table>
                 </td>
@@ -102,20 +129,26 @@
         </tbody>
     </table>
 </div>
-<hr style="margin:3px">
-<table ng-show="selChapterData != null" class="ex_config_table">
-    <tr>
-        <th colspan="3">
-            Configure exercise - {{selChapterData.chapterDetails.chapterNumber}}.
-                                 {{selChapterData.chapterDetails.subChapterNumber}} - 
-                                 {{selChapterData.chapterDetails.chapterName}}
-        </th>
-    </tr>
-    <tr>
-        <td width="200">
-            <canvas id="learningCurveGraph" width="300" height="150"></canvas>
-        </td>
-        <td>
-        </td>
-    </tr>
+<div class="ex_config_dialog">
+    <div ng-hide="selCh != null" style="text-align:center;">
+        <b>Select an exercise bank to configure.</b>
+    </div>
+    <table class="ex_config_table" ng-show="selCh != null">
+        <tr>
+            <th colspan="3">
+                Configure exercise - {{selCh.chapterDetails.chapterNumber}}.
+                                     {{selCh.chapterDetails.subChapterNumber}} - 
+                                     {{selCh.chapterDetails.chapterName}}
+            </th>
+        </tr>
+        <tr>
+            <td width="300">
+                <canvas id="learningCurveGraph" width="300" height="150"></canvas>
+            </td>
+            <td valign="top">
+            <div ng-include="'/apps/jove_notes/ng/exercise/ex_configure/config_table.html'">
+            </div>
+            </td>
+        </tr>
+    </table>
 </div>
