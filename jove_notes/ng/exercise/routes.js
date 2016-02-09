@@ -9,17 +9,9 @@ testPaperApp.config( [ '$routeProvider',
             templateUrl: '/apps/jove_notes/ng/exercise/ex_configure/main.html',
             controller:  'ExerciseConfigController'
         })
-        .when('/StudyExercise', {
-            templateUrl: '/apps/jove_notes/ng/exercise/ex_study/main.html',
-            controller: 'ExerciseStudyController'
-        })
-        .when('/AttemptQuestion', {
-            templateUrl: '/apps/jove_notes/ng/exercise/q_attempt/main.html',
-            controller: 'ExerciseQuestionAttemptController'
-        })
-        .when('/ReviewQuestion', {
-            templateUrl: '/apps/jove_notes/ng/exercise/q_review/main.html',
-            controller: 'ExerciseQuestionReviewController'
+        .when('/ExecuteExercise', {
+            templateUrl: '/apps/jove_notes/ng/exercise/ex_execute/main.html',
+            controller: 'ExerciseExecutionController'
         })
         .when('/EvaluateExercise', {
             templateUrl: '/apps/jove_notes/ng/exercise/ex_evaluate/main.html',

@@ -2,7 +2,7 @@
 require_once( APP_ROOT  . "/php/api/service/practice_card_service.php" ) ;
 require_once( APP_ROOT  . "/php/dao/chapter_dao.php" ) ;
 
-class ExerciseBanksAction extends APIAction {
+class GetExerciseBanksAction extends APIAction {
 
     private $chapterDAO = null ;
 
@@ -13,7 +13,7 @@ class ExerciseBanksAction extends APIAction {
 
     public function execute( $request, &$response ) {
 
-        $this->logger->debug( "Executing ExerciseBanksAction" ) ;
+        $this->logger->debug( "Executing GetExerciseBanksAction" ) ;
 
         $chapterIds = $request->getPathComponent( 1 ) ;
         if( $chapterIds == NULL || $chapterIds == '' ) {

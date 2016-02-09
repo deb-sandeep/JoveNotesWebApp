@@ -12,18 +12,6 @@ if( !isset( $_REQUEST['chapterId'] ) ) {
 $log->info( "Rendering exercise for chapter " . $_REQUEST[ 'chapterId' ] . 
             " and user " . ExecutionContext::getCurrentUserName() ) ;
 
-// EXTENSION: Authorization
-//  If later it is required to check the entitlement of the user for the chapters
-//  this is the place to it. This can be done by:
-//  - exploding the value of chapterId parameter
-//  - checking each chapter id for entitlement (Sample code below)
-//      $chapterDAO = new ChapterDAO() ;
-//      $guard = $chapterDAO->getChapterGuard( $chapterIdForThisSession ) ;
-//      if( !Authorizer::hasAccess( $guard, "FLASH_CARD" ) ) {
-//          HTTPUtils::redirectTo( ServerContext::getUnauthRedirPage() ) ;
-//          return ;
-//      }
-
 $pageConfig = array(
     "tab_title"  => "Exercise"
 ) ;
@@ -67,9 +55,7 @@ $pageConfig = array(
     <script src="/apps/jove_notes/ng/exercise/controller.js"></script>    
 
     <script src="/apps/jove_notes/ng/exercise/ex_configure/controller.js"></script>    
-    <script src="/apps/jove_notes/ng/exercise/ex_study/controller.js"></script>    
-    <script src="/apps/jove_notes/ng/exercise/q_attempt/controller.js"></script>    
-    <script src="/apps/jove_notes/ng/exercise/q_review/controller.js"></script>    
+    <script src="/apps/jove_notes/ng/exercise/ex_execute/controller.js"></script>    
     <script src="/apps/jove_notes/ng/exercise/ex_evaluate/controller.js"></script>    
     <script src="/apps/jove_notes/ng/exercise/ex_summary/controller.js"></script>    
 

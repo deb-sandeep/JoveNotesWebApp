@@ -45,33 +45,6 @@ $scope.decrementCardSelection = function( cardType, cardLevel ) {
     updateCardSelection( cardType, cardLevel, -1 ) ;
 }
 
-$scope.getTotalSelCards = function( cardLevel ) {
-
-    var totalCards = 0 ;
-    for( var i=0; i<$scope.exerciseBanks.length; i++ ) {
-        var ex = $scope.exerciseBanks[i] ;
-        if( cardLevel == 'NS' ) {
-            totalCards += ( ex._selCfg.ssr.numNSCards ) ;
-        }
-        else if( cardLevel == 'L0' ) {
-            totalCards += ( ex._selCfg.ssr.numL0Cards + 
-                            ex._selCfg.nonSSR.numL0Cards ) ;
-        }
-        else if( cardLevel == 'L1' ) {
-            totalCards += ( ex._selCfg.ssr.numL1Cards + 
-                            ex._selCfg.nonSSR.numL1Cards ) ;
-        }
-        else if( cardLevel == 'Total' ) {
-            totalCards += ( ex._selCfg.ssr.numNSCards    + 
-                            ex._selCfg.ssr.numL0Cards    + 
-                            ex._selCfg.nonSSR.numL0Cards + 
-                            ex._selCfg.ssr.numL1Cards    +  
-                            ex._selCfg.nonSSR.numL1Cards ) ;
-        }
-    }
-    return totalCards ;
-}
-
 // ---------------- Private functions ------------------------------------------
 function updateCardSelection( cardType, cardLevel, increment ) {
 

@@ -3,11 +3,6 @@ testPaperApp.controller( 'ExerciseController', function( $scope, $http, $locatio
 
 // ---------------- Local variables --------------------------------------------
 var jnUtil                   = new JoveNotesUtil() ;
-var durationTillNowInMillis  = 0 ;
-var sessionStartTime         = null ;
-var sessionEndTime           = null ;
-var pauseStartTime           = 0 ;
-var totalPauseTime           = 0 ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.alerts = [] ;
@@ -21,6 +16,12 @@ $scope.sessionDuration = 0 ;
 
 $scope.exerciseBanks = [] ;
 $scope.exerciseBanksMap = [] ;
+
+$scope.durationTillNowInMillis  = 0 ;
+$scope.sessionStartTime         = null ;
+$scope.sessionEndTime           = null ;
+$scope.pauseStartTime           = 0 ;
+$scope.totalPauseTime           = 0 ;
 
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing ExerciseController." ) ;
@@ -39,18 +40,14 @@ $scope.purgeAllAlerts = function() {
     $scope.alerts.length = 0 ;
 }
 
-$scope.startExercise = function() {
-    sessionStartTime = new Date().getTime() ;
-}
-
 $scope.pauseSession = function() {
-    pauseStartTime = new Date().getTime() ;
+    $scope.pauseStartTime = new Date().getTime() ;
     $( '#modalResume' ).modal( 'show' ) ;
 }
 
 $scope.resumeSession = function() {
-    totalPauseTime += new Date().getTime() - pauseStartTime ;
-    pauseStartTime = 0 ;
+    $scope.totalPauseTime += new Date().getTime() - $scope.pauseStartTime ;
+    $scope.pauseStartTime = 0 ;
 
     $( '#modalResume' ).modal( 'hide' ) ;
 }
@@ -67,6 +64,44 @@ $scope.fetchAndProcessDataFromServer = function() {
          .error( function( data ){
             $scope.addErrorAlert( "API call failed. " + data ) ;
          });
+}
+
+$scope.getChapterIdsForExercise = function() {
+    var ids = [] ;
+
+    for( var i=0; i<$scope.exerciseBanks.length; i++ ) {
+        var ex = $scope.exerciseBanks[i] ;
+        ids.push( ex.chapterDetails.chapterId ) ;
+    }
+
+    return ids ;
+}
+
+$scope.getTotalSelCards = function( cardLevel ) {
+
+    var totalCards = 0 ;
+    for( var i=0; i<$scope.exerciseBanks.length; i++ ) {
+        var ex = $scope.exerciseBanks[i] ;
+        if( cardLevel == 'NS' ) {
+            totalCards += ( ex._selCfg.ssr.numNSCards ) ;
+        }
+        else if( cardLevel == 'L0' ) {
+            totalCards += ( ex._selCfg.ssr.numL0Cards + 
+                            ex._selCfg.nonSSR.numL0Cards ) ;
+        }
+        else if( cardLevel == 'L1' ) {
+            totalCards += ( ex._selCfg.ssr.numL1Cards + 
+                            ex._selCfg.nonSSR.numL1Cards ) ;
+        }
+        else if( cardLevel == 'Total' ) {
+            totalCards += ( ex._selCfg.ssr.numNSCards    + 
+                            ex._selCfg.ssr.numL0Cards    + 
+                            ex._selCfg.nonSSR.numL0Cards + 
+                            ex._selCfg.ssr.numL1Cards    +  
+                            ex._selCfg.nonSSR.numL1Cards ) ;
+        }
+    }
+    return totalCards ;
 }
 
 // ---------------- Private functions ------------------------------------------
@@ -155,9 +190,11 @@ function preProcessChapterData( chapterData ) {
 function updateCardLevelCount( deckDetails, question ) {
 
     var ssrThresholdDelta = jnUtil.getSSRThresholdDelta( question ) ;
+    question.learningStats._ssrQualified = false ;
     if( ssrThresholdDelta >= 0 || 
         question.learningStats.currentLevel == 'NS') {
 
+        question.learningStats._ssrQualified = true ;
         deckDetails.progressSnapshot._numSSRMaturedCards++ ;
 
         if( question.learningStats.currentLevel == 'NS' ) {
