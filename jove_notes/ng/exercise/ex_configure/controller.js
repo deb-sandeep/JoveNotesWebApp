@@ -45,12 +45,34 @@ $scope.decrementCardSelection = function( cardType, cardLevel ) {
     updateCardSelection( cardType, cardLevel, -1 ) ;
 }
 
+$scope.executeExercise = function() {
+    pruneUnusedExerciseBanks() ;
+    $location.path( "/ExecuteExercise" ) ;
+}
+
 // ---------------- Private functions ------------------------------------------
+function pruneUnusedExerciseBanks() {
+
+    var prunedExBanks    = [] ;
+    var prunedExBanksMap = [] ;
+
+    for( var i=0; i<$scope.$parent.exerciseBanks.length; i++ ) {
+        var ex = $scope.exerciseBanks[i] ;
+        if( $scope.$parent.getSelectedCardsForExercise( ex ) ) {
+            prunedExBanks.push( ex ) ;
+            prunedExBanksMap[ ex.chapterDetails.chapterId ] = ex ;
+        }
+    }
+
+    $scope.$parent.exerciseBanks    = prunedExBanks ;
+    $scope.$parent.exerciseBanksMap = prunedExBanksMap ;
+}
+
 function updateCardSelection( cardType, cardLevel, increment ) {
 
     var selConfig = ( cardType == 'ssr' ) ?
-                    $scope.selCh._selCfg.ssr : 
-                    $scope.selCh._selCfg.nonSSR ;
+                      $scope.selCh._selCfg.ssr : 
+                      $scope.selCh._selCfg.nonSSR ;
 
     if( cardLevel == 'NS' ) {
         selConfig.numNSCards += increment ;
@@ -65,7 +87,7 @@ function updateCardSelection( cardType, cardLevel, increment ) {
 
 function paintProgressBars() {
 
-    for( var i=0; i<$scope.exerciseBanks.length; i++ ) {
+    for( var i=0; i<$scope.$parent.exerciseBanks.length; i++ ) {
         var ex = $scope.exerciseBanks[i] ;
         drawProgressBar( "canvas-" + ex.chapterDetails.chapterId, 
                          ex.deckDetails.numCards,

@@ -70,7 +70,7 @@ $scope.getChapterIdsForExercise = function() {
     var ids = [] ;
     for( var i=0; i<$scope.exerciseBanks.length; i++ ) {
         var ex = $scope.exerciseBanks[i] ;
-        if( getSelectedCardsForExercise( ex ) > 0 ) {
+        if( $scope.getSelectedCardsForExercise( ex ) > 0 ) {
             ids.push( ex.chapterDetails.chapterId ) ;
         }
     }
@@ -81,13 +81,12 @@ $scope.getTotalSelCards = function( cardLevel ) {
     var totalCards = 0 ;
     for( var i=0; i<$scope.exerciseBanks.length; i++ ) {
         var ex = $scope.exerciseBanks[i] ;
-        totalCards += getSelectedCardsForExercise( ex, cardLevel ) ;
+        totalCards += $scope.getSelectedCardsForExercise( ex, cardLevel ) ;
     }
     return totalCards ;
 }
 
-// ---------------- Private functions ------------------------------------------
-function getSelectedCardsForExercise( questionBank, cardLevel ) {
+$scope.getSelectedCardsForExercise = function( questionBank, cardLevel ) {
 
     cardLevel = typeof cardLevel !== 'undefined' ? cardLevel : 'Total';
 
@@ -113,6 +112,7 @@ function getSelectedCardsForExercise( questionBank, cardLevel ) {
     return totalSelCards ;    
 }
 
+// ---------------- Private functions ------------------------------------------
 function processServerData( serverData ) {
 
     if( typeof serverData === "string" ) {

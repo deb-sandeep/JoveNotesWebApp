@@ -28,7 +28,7 @@ $scope.showCreatingSessionScreen = true ;
 
 // ---------------- Private functions ------------------------------------------
 function checkInvalidLoad() {
-    if( $scope.$parent.getTotalSelCards( 'Total' ) <= 0 ) {
+    if( $scope.$parent.exerciseBanks.length <= 0 ) {
         $location.path( "/ConfigureExercise" ) ;
         return true ;
     }
