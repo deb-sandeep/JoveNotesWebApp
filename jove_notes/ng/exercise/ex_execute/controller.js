@@ -1,9 +1,11 @@
-testPaperApp.controller( 'ExerciseExecutionController', function( $scope, $http, $routeParams, $location, $window ) {
+testPaperApp.controller( 'ExerciseExecutionController', 
+                         function( $scope, $http, $routeParams, $location, $window ) {
 // ---------------- Constants and inner class definition -----------------------
 
 // ---------------- Local variables --------------------------------------------
 
 // ---------------- Controller variables ---------------------------------------
+$scope.showCreatingSessionScreen = true ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -13,10 +15,13 @@ testPaperApp.controller( 'ExerciseExecutionController', function( $scope, $http,
         return ;
     }
 
+    $scope.$parent.pageTitle = "Exercise" ;
+
     // Create a new session at the server. Note that exercise sessions are 
     // different than learning sessions as exercise sessions can contain more
     // than one chapter's learning sessions.
-    callExerciseAPIToCreateNewSession( $scope.$parent.getChapterIdsForExercise(), 0 ) ;
+    callExerciseAPIToCreateNewSession( $scope.$parent.getChapterIdsForExercise(), 
+                                       0, postSessionCreation ) ;
 }
 
 // ---------------- Controller methods -----------------------------------------
@@ -28,6 +33,10 @@ function checkInvalidLoad() {
         return true ;
     }
     return false ;
+}
+
+function postSessionCreation( newSessionData ) {
+    // $scope.showCreatingSessionScreen = false ;
 }
 
 // ---------------- Server calls -----------------------------------------------
@@ -46,7 +55,8 @@ function checkInvalidLoad() {
  * @param chapterIds - An array of chapter ids which are included in this exercise
  */
 function callExerciseAPIToCreateNewSession( chapterIds, 
-                                            previousCallAttemptNumber ) {
+                                            previousCallAttemptNumber,
+                                            callback ) {
 
     var currentCallAttemptNumber = previousCallAttemptNumber + 1 ;
 
@@ -63,7 +73,7 @@ function callExerciseAPIToCreateNewSession( chapterIds,
         }
         else {
             log.debug( "New Session created." ) ;
-            log.debug( "Response = " + JSON.stringify( data ) ) ;
+            callback( data ) ;
         }
     })
     .error( function( data, status ){

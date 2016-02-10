@@ -68,43 +68,51 @@ $scope.fetchAndProcessDataFromServer = function() {
 
 $scope.getChapterIdsForExercise = function() {
     var ids = [] ;
-
     for( var i=0; i<$scope.exerciseBanks.length; i++ ) {
         var ex = $scope.exerciseBanks[i] ;
-        ids.push( ex.chapterDetails.chapterId ) ;
+        if( getSelectedCardsForExercise( ex ) > 0 ) {
+            ids.push( ex.chapterDetails.chapterId ) ;
+        }
     }
-
     return ids ;
 }
 
 $scope.getTotalSelCards = function( cardLevel ) {
-
     var totalCards = 0 ;
     for( var i=0; i<$scope.exerciseBanks.length; i++ ) {
         var ex = $scope.exerciseBanks[i] ;
-        if( cardLevel == 'NS' ) {
-            totalCards += ( ex._selCfg.ssr.numNSCards ) ;
-        }
-        else if( cardLevel == 'L0' ) {
-            totalCards += ( ex._selCfg.ssr.numL0Cards + 
-                            ex._selCfg.nonSSR.numL0Cards ) ;
-        }
-        else if( cardLevel == 'L1' ) {
-            totalCards += ( ex._selCfg.ssr.numL1Cards + 
-                            ex._selCfg.nonSSR.numL1Cards ) ;
-        }
-        else if( cardLevel == 'Total' ) {
-            totalCards += ( ex._selCfg.ssr.numNSCards    + 
-                            ex._selCfg.ssr.numL0Cards    + 
-                            ex._selCfg.nonSSR.numL0Cards + 
-                            ex._selCfg.ssr.numL1Cards    +  
-                            ex._selCfg.nonSSR.numL1Cards ) ;
-        }
+        totalCards += getSelectedCardsForExercise( ex, cardLevel ) ;
     }
     return totalCards ;
 }
 
 // ---------------- Private functions ------------------------------------------
+function getSelectedCardsForExercise( questionBank, cardLevel ) {
+
+    cardLevel = typeof cardLevel !== 'undefined' ? cardLevel : 'Total';
+
+    var totalSelCards = 0 ;
+    if( cardLevel == 'NS' ) {
+        totalSelCards += ( questionBank._selCfg.ssr.numNSCards ) ;
+    }
+    else if( cardLevel == 'L0' ) {
+        totalSelCards += ( questionBank._selCfg.ssr.numL0Cards + 
+                           questionBank._selCfg.nonSSR.numL0Cards ) ;
+    }
+    else if( cardLevel == 'L1' ) {
+        totalSelCards += ( questionBank._selCfg.ssr.numL1Cards + 
+                           questionBank._selCfg.nonSSR.numL1Cards ) ;
+    }
+    else if( cardLevel == 'Total' ) {
+        totalSelCards += ( questionBank._selCfg.ssr.numNSCards    + 
+                           questionBank._selCfg.ssr.numL0Cards    + 
+                           questionBank._selCfg.nonSSR.numL0Cards + 
+                           questionBank._selCfg.ssr.numL1Cards    +  
+                           questionBank._selCfg.nonSSR.numL1Cards ) ;
+    }
+    return totalSelCards ;    
+}
+
 function processServerData( serverData ) {
 
     if( typeof serverData === "string" ) {

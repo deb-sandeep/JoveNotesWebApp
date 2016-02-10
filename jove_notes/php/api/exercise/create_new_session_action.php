@@ -1,14 +1,27 @@
 <?php
 require_once( APP_ROOT  . "/php/api/service/practice_card_service.php" ) ;
-require_once( APP_ROOT  . "/php/dao/chapter_dao.php" ) ;
+require_once( APP_ROOT  . "/php/dao/exercise_session_dao.php" ) ;
 
+/**
+ * @input [Request Body] 
+ *           chapterIds = <Array of chapters associated with this exercise session>
+ *
+ * @response
+ *    {
+ *        'sessionId' : <int, learning session id>,
+ *        'exChapterSessionIdMap' : {
+ *            '<chapter id>' : <learning session id for chapter>,
+ *            ...
+ *        }
+ *    }
+ */
 class CreateNewSessionAction extends APIAction {
 
-    private $chapterDAO = null ;
+    private $esDAO = null ;
 
     function __construct() {
         parent::__construct() ;
-        $this->chapterDAO = new ChapterDAO() ;
+        $this->esDAO = new ExerciseSessionDAO() ;
     }
 
     public function execute( $request, &$response ) {
@@ -21,12 +34,11 @@ class CreateNewSessionAction extends APIAction {
             $response->responseCode = APIResponse::SC_ERR_BAD_REQUEST ;
         }
         else {
-            // Create a new exercise session id - ExerciseSessioNDAO
-            // For each chapter - create a new learning session
-            // Insert exercise session id versus chapter learning session id
-            // Return exercise session and the chapter session id map
+            $sessionIds = $this->esDAO->createNewSession( 
+                                         ExecutionContext::getCurrentUserName(), 
+                                         $chapterIds ) ;
 
-            $response->responseBody = "Processed request" ;
+            $response->responseBody = $sessionIds ;
             $response->responseCode = APIResponse::SC_OK ;
         }
     }
