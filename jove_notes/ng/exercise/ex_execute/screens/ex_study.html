@@ -1,1 +1,19 @@
-<h3>hello</h3>
+<div class="screen_body">
+    <div ng-repeat="currentQuestion in questions">
+        <render-exercise-question>
+        </render-exercise-question>
+    </div>
+</div>
+
+<div class="screen_footer">
+    <div class="col-sm-5"
+         style="padding-left:0px, padding-right:0px">
+        <button type="button" 
+                class="btn btn-warning btn-md"
+                ng-click="pauseSession()">
+            <span class="glyphicon glyphicon-pause"></span>
+        </button>
+    </div>
+    <div class="col-sm-7 pull-right">
+    </div>
+</div>

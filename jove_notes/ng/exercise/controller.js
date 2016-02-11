@@ -25,6 +25,9 @@ $scope.sessionStartTime         = null ;
 $scope.sessionEndTime           = null ;
 $scope.sessionActive            = false ;
 
+$scope.pauseStartTime = 0 ;
+$scope.totalPauseTime = 0 ;
+
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing ExerciseController." ) ;
 
@@ -38,7 +41,6 @@ $scope.closeAlert = function(index) {
 };
 
 $scope.purgeAllAlerts = function() {
-    log.debug( "Purging all alerts" ) ;
     $scope.alerts.length = 0 ;
 }
 
@@ -287,14 +289,22 @@ function associateHandler( chapterDetails, textFormatter, question ) {
 
 function handleTimerEvent() {
     if( $scope.sessionActive ) {
-        refreshClocks() ;
-        setTimeout( handleTimerEvent, 1000 ) ;
+        if( $scope.pauseStartTime == 0 ) {
+            refreshClocks() ;
+            setTimeout( handleTimerEvent, 1000 ) ;
+        }
+        else {
+            setTimeout( handleTimerEvent, 500 ) ;
+        }
     }
 }
 
 function refreshClocks() {
-    $scope.durationTillNowInMillis = new Date().getTime() - $scope.sessionStartTime ;
-    $scope.sessionDuration = $scope.durationTillNowInMillis ;
+    $scope.durationTillNowInMillis = new Date().getTime() - 
+                                     $scope.sessionStartTime ;
+
+    $scope.sessionDuration = $scope.durationTillNowInMillis - 
+                             $scope.totalPauseTime ;
     $scope.$digest() ;
 }
 

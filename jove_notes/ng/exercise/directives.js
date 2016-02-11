@@ -35,7 +35,7 @@ function HandlerProxy( handler ) {
 	}
 }
 
-testPaperApp.directive( 'renderTestQuestion', function() {
+testPaperApp.directive( 'renderExerciseQuestion', function() {
 
 	return {
 		restrict : 'E',
@@ -60,7 +60,7 @@ testPaperApp.directive( 'renderTestQuestion', function() {
 	} ;
 }) ;
 
-testPaperApp.directive( 'renderAnswer', function() {
+testPaperApp.directive( 'renderExerciseAnswer', function() {
 
 	return {
 		restrict : 'E',
