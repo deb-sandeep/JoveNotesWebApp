@@ -1,8 +1,10 @@
 <div ng-include="'/apps/jove_notes/ng/exercise/ex_execute/header.html'">
 </div>
 
-<div ng-show="showCreatingSessionScreen" align="center">
-    <h4>Please wait while JoveNotes configures the new session.</h4>
-    <p>
-    <img src="/apps/jove_notes/media/images/wait_screen.gif"/>
+<div ng-show="currentScreen == CREATING_SESSION_SCREEN"
+     ng-include="'/apps/jove_notes/ng/exercise/ex_execute/screens/ex_starting_session.html'">
+</div>
+
+<div ng-show="currentScreen == STUDY_QUESTIONS_SCREEN"
+     ng-include="'/apps/jove_notes/ng/exercise/ex_execute/screens/ex_study.html'">
 </div>

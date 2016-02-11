@@ -1,3 +1,30 @@
+/* Style for header bar */
+.ex_header {
+    display:table;
+    width:100%;
+    height:30px;
+    color:#CCC;
+    background:#333;
+    padding:0px;
+}
+
+.ex_header_left_cell {
+    display:table-cell;
+    width:40px;
+}
+
+.ex_header_center_cell {
+    display:table-cell;
+    text-align:center;
+}
+
+.ex_header_right_cell {
+    display:table-cell;
+    width:170px;
+    text-align:right;
+}
+
+/* Style for the selected row in execise configure dashboard */
 .selected-row {
     background-color: #D8DFFF;
 }
@@ -48,6 +75,7 @@
     background: #FFFFFF;
 }
 
+/* -------------------------------------------------------------------------- */
 .modal-backdrop {
    background-color: black;
    opacity:0.9 !important;

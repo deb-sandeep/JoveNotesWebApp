@@ -2,7 +2,7 @@ testPaperApp.controller( 'ExerciseController', function( $scope, $http, $locatio
 // ---------------- Constants and inner class definition -----------------------
 
 // ---------------- Local variables --------------------------------------------
-var jnUtil                   = new JoveNotesUtil() ;
+var jnUtil = new JoveNotesUtil() ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.alerts = [] ;
@@ -14,14 +14,16 @@ $scope.chapterIds = chapterIds ;
 $scope.textFormatter   = null ;
 $scope.sessionDuration = 0 ;
 
-$scope.exerciseBanks = [] ;
+$scope.exerciseBanks    = [] ;
 $scope.exerciseBanksMap = [] ;
+$scope.questions        = [] ;
+
+$scope.exerciseSessionId = -1 ;
 
 $scope.durationTillNowInMillis  = 0 ;
 $scope.sessionStartTime         = null ;
 $scope.sessionEndTime           = null ;
-$scope.pauseStartTime           = 0 ;
-$scope.totalPauseTime           = 0 ;
+$scope.sessionActive            = false ;
 
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing ExerciseController." ) ;
@@ -112,6 +114,12 @@ $scope.getSelectedCardsForExercise = function( questionBank, cardLevel ) {
     return totalSelCards ;    
 }
 
+$scope.startTimer = function() {
+    $scope.sessionStartTime = new Date().getTime() ;
+    $scope.sessionActive    = true ;
+    setTimeout( handleTimerEvent, 1000 ) ;
+}
+
 // ---------------- Private functions ------------------------------------------
 function processServerData( serverData ) {
 
@@ -170,6 +178,7 @@ function preProcessChapterData( chapterData ) {
         updateCardLevelCount( chapterData.deckDetails, question ) ;
 
         question.learningStats._numSecondsInSession  = 0 ;
+        question._chapterDetails = chapterDetails ;
         
         question._difficultyLabel = 
             jnUtil.getDifficultyLevelLabel( question.difficultyLevel ) ;
@@ -199,10 +208,14 @@ function updateCardLevelCount( deckDetails, question ) {
 
     var ssrThresholdDelta = jnUtil.getSSRThresholdDelta( question ) ;
     question.learningStats._ssrQualified = false ;
+    question.learningStats._ssrDelta     = -1 ;
+
     if( ssrThresholdDelta >= 0 || 
         question.learningStats.currentLevel == 'NS') {
 
         question.learningStats._ssrQualified = true ;
+        question.learningStats._ssrDelta     = ssrThresholdDelta ;
+
         deckDetails.progressSnapshot._numSSRMaturedCards++ ;
 
         if( question.learningStats.currentLevel == 'NS' ) {
@@ -270,6 +283,19 @@ function associateHandler( chapterDetails, textFormatter, question ) {
     if( question.handler != null ) {
         question.handler.initialize() ;
     }
+}
+
+function handleTimerEvent() {
+    if( $scope.sessionActive ) {
+        refreshClocks() ;
+        setTimeout( handleTimerEvent, 1000 ) ;
+    }
+}
+
+function refreshClocks() {
+    $scope.durationTillNowInMillis = new Date().getTime() - $scope.sessionStartTime ;
+    $scope.sessionDuration = $scope.durationTillNowInMillis ;
+    $scope.$digest() ;
 }
 
 // ---------------- End of controller ------------------------------------------

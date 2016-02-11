@@ -5,7 +5,10 @@ testPaperApp.controller( 'ExerciseExecutionController',
 // ---------------- Local variables --------------------------------------------
 
 // ---------------- Controller variables ---------------------------------------
-$scope.showCreatingSessionScreen = true ;
+$scope.CREATING_SESSION_SCREEN = "CreatingSessionScreen" ;
+$scope.STUDY_QUESTIONS_SCREEN  = "StudyQuestionsScreen" ;
+
+$scope.currentScreen = $scope.CREATING_SESSION_SCREEN ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -17,6 +20,9 @@ $scope.showCreatingSessionScreen = true ;
 
     $scope.$parent.pageTitle = "Exercise" ;
 
+    pruneUnusedExerciseBanks() ;
+    filterQuestionsForSession() ;
+
     // Create a new session at the server. Note that exercise sessions are 
     // different than learning sessions as exercise sessions can contain more
     // than one chapter's learning sessions.
@@ -27,16 +33,153 @@ $scope.showCreatingSessionScreen = true ;
 // ---------------- Controller methods -----------------------------------------
 
 // ---------------- Private functions ------------------------------------------
+function postSessionCreation( newSessionData ) {
+    
+    $scope.$parent.exerciseSessionId = newSessionData.sessionId ;
+    for( var key in newSessionData.exChapterSessionIdMap ) {
+        $scope.$parent.exerciseBanksMap[ key ]._sessionId = 
+                                   newSessionData.exChapterSessionIdMap[ key ] ;
+    }
+    $scope.currentScreen = $scope.STUDY_QUESTIONS_SCREEN ;
+    $scope.$parent.startTimer() ;
+}
+
+function pruneUnusedExerciseBanks() {
+
+    var prunedExBanks    = [] ;
+    var prunedExBanksMap = [] ;
+
+    for( var i=0; i<$scope.$parent.exerciseBanks.length; i++ ) {
+        var ex = $scope.exerciseBanks[i] ;
+        if( $scope.$parent.getSelectedCardsForExercise( ex ) > 0 ) {
+            prunedExBanks.push( ex ) ;
+            prunedExBanksMap[ ex.chapterDetails.chapterId ] = ex ;
+        }
+    }
+
+    $scope.$parent.exerciseBanks    = prunedExBanks ;
+    $scope.$parent.exerciseBanksMap = prunedExBanksMap ;
+}
+
+function filterQuestionsForSession() {
+
+    var exQuestions = [] ;
+
+    for( var i=0; i<$scope.$parent.exerciseBanks.length; i++ ) {
+
+        var ex                   = $scope.exerciseBanks[i] ;
+        var categorizedQuestions = categorizeQuestions( ex ) ;
+        var filteredQuestions    = [] ;
+
+        if( ex._selCfg.ssr.numNSCards > 0 ) {
+            filteredQuestions = filterQuestions( categorizedQuestions.ssr.nsQuestions, 
+                                                 ex._selCfg.ssr.numNSCards,
+                                                 ex._selCfg.ssr.strategyNS ) ;
+            exQuestions = exQuestions.concat( filteredQuestions ) ;
+        }
+
+        if( ex._selCfg.ssr.numL0Cards > 0 ) {
+            filteredQuestions = filterQuestions( categorizedQuestions.ssr.l0Questions, 
+                                                 ex._selCfg.ssr.numL0Cards,
+                                                 ex._selCfg.ssr.strategyL0 ) ;
+            exQuestions = exQuestions.concat( filteredQuestions ) ;
+        }
+
+        if( ex._selCfg.ssr.numL1Cards > 0 ) {
+            filteredQuestions = filterQuestions( categorizedQuestions.ssr.l1Questions, 
+                                                 ex._selCfg.ssr.numL1Cards,
+                                                 ex._selCfg.ssr.strategyL1 ) ;
+            exQuestions = exQuestions.concat( filteredQuestions ) ;
+        }
+
+        if( ex._selCfg.nonSSR.numL0Cards > 0 ) {
+            filteredQuestions = filterQuestions( categorizedQuestions.nonSSR.l0Questions, 
+                                                 ex._selCfg.nonSSR.numL0Cards,
+                                                 ex._selCfg.nonSSR.strategyL0 ) ;
+            exQuestions = exQuestions.concat( filteredQuestions ) ;
+        }
+
+        if( ex._selCfg.nonSSR.numL1Cards > 0 ) {
+            filteredQuestions = filterQuestions( categorizedQuestions.nonSSR.l1Questions, 
+                                                 ex._selCfg.nonSSR.numL1Cards,
+                                                 ex._selCfg.nonSSR.strategyL1 ) ;
+            exQuestions = exQuestions.concat( filteredQuestions ) ;
+        }
+    }
+
+    $scope.$parent.questions = exQuestions ;
+}
+
+function categorizeQuestions( exercise ) {
+
+    var categorizedQuestions = {
+        ssr : {
+            nsQuestions : [],
+            l0Questions : [],
+            l1Questions : []
+        },
+        nonSSR : {
+            l0Questions : [],
+            l1Questions : []
+        }
+    } ;
+
+    for( var i=0; i<exercise.questions.length; i++ ) {
+        var q = exercise.questions[i] ;
+        if( q.learningStats._ssrQualified ) {
+            if( q.learningStats.currentLevel == 'NS' ) {
+                categorizedQuestions.ssr.nsQuestions.push( q ) ;
+            }
+            else if( q.learningStats.currentLevel == 'L0' ) {
+                categorizedQuestions.ssr.l0Questions.push( q ) ;
+            }
+            else if( q.learningStats.currentLevel == 'L1' ) {
+                categorizedQuestions.ssr.l1Questions.push( q ) ;
+            }
+        }
+        else {
+            if( q.learningStats.currentLevel == 'L0' ) {
+                categorizedQuestions.nonSSR.l0Questions.push( q ) ;
+            }
+            else if( q.learningStats.currentLevel == 'L1' ) {
+                categorizedQuestions.nonSSR.l1Questions.push( q ) ;
+            }
+        }
+    }
+
+    return categorizedQuestions ;
+}
+
+function filterQuestions( questions, numQuestions, strategy ) {
+
+    var filteredQuestions = [] ;
+
+    if( strategy == 'Hard' ) {
+        questions.sort( function( q1, q2 ){
+            return -1*( q1.learningStats._absoluteLearningEfficiency - 
+                        q2.learningStats._absoluteLearningEfficiency ) ;
+        }) ;
+    }
+    else if( strategy == 'Age' ) {
+        questions.sort( function( q1, q2 ){
+            return ( q1.learningStats.lastAttemptTime - 
+                     q2.learningStats.lastAttemptTime ) ;
+        }) ;
+    }
+
+    for( var i=0; i<numQuestions; i++ ) {
+        filteredQuestions.push( questions[i] ) ;
+    }
+
+    return filteredQuestions ;
+}
+
 function checkInvalidLoad() {
     if( $scope.$parent.exerciseBanks.length <= 0 ) {
         $location.path( "/ConfigureExercise" ) ;
         return true ;
     }
     return false ;
-}
-
-function postSessionCreation( newSessionData ) {
-    // $scope.showCreatingSessionScreen = false ;
 }
 
 // ---------------- Server calls -----------------------------------------------
