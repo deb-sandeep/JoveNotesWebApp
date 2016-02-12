@@ -1,10 +1,14 @@
 <div ng-include="'/apps/jove_notes/ng/exercise/ex_execute/header.html'">
 </div>
 
-<div ng-show="currentScreen == CREATING_SESSION_SCREEN"
+<div ng-if="currentScreen == CREATING_SESSION_SCREEN"
      ng-include="'/apps/jove_notes/ng/exercise/ex_execute/screens/ex_starting_session.html'">
 </div>
 
-<div ng-show="currentScreen == STUDY_QUESTIONS_SCREEN"
+<div ng-if="currentScreen == STUDY_QUESTIONS_SCREEN"
      ng-include="'/apps/jove_notes/ng/exercise/ex_execute/screens/ex_study.html'">
+</div>
+
+<div ng-if="currentScreen == SOLVE_PAPER_SCREEN"
+     ng-include="'/apps/jove_notes/ng/exercise/ex_execute/screens/ex_solve_paper.html'">
 </div>

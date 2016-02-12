@@ -17,6 +17,7 @@ $scope.selCh   = null ;
 
 // -------------Scope watch and event functions --------------------------------
 $scope.$on( 'onRenderComplete', function( scope ){
+    log.debug( "onRenderComplete ex_configure." ) ;
     paintProgressBars() ;
 } ) ;
 

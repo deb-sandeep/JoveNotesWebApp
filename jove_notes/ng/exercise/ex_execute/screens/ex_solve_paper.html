@@ -1,9 +1,6 @@
 <div class="screen_body">
     <div ng-repeat="currentQuestion in questions" 
-         class="panel panel-success" 
-         id="study_q_{{currentQuestion.questionId}}"
-         ng-show="currentQuestion._sessionVars.showForStudy"
-         on-render-complete>
+         class="panel panel-success">
         <div class="panel-heading" style="padding: 2px 2px;">
             <table width="100%">
             <tr>
@@ -11,6 +8,14 @@
                 <span class="glyphicon glyphicon-question-sign"></span>
                 &nbsp;&nbsp;
                 <span class="panel-title">Question {{$index + 1}}</span>
+            </td>
+            <td>
+                <button type="button" class="btn btn-default btn-xs">
+                Attempt
+                </button>
+                <button type="button" class="btn btn-default btn-xs">
+                Mark
+                </button>
             </td>
             <td>
                 <span class="badge {{currentQuestion._difficultyLabel}}">
@@ -24,7 +29,7 @@
             </table>
         </div>
         <div class="panel-body">
-            <render-exercise-question freeze-question>
+            <render-exercise-question initialize freeze-question>
             </render-exercise-question>
         </div>
     </div>

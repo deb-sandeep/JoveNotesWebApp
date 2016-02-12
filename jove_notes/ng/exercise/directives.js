@@ -41,20 +41,19 @@ testPaperApp.directive( 'renderExerciseQuestion', function() {
 		restrict : 'E',
 		link : function( $scope, element, attributes ) {
 
-			// NOTE: The initialize of the handler has been called during the
-			// construction of the handler in the controller. No need to call
-			// it again.
-			var handler    = new HandlerProxy( $scope.currentQuestion.handler ) ;
+			var handler = new HandlerProxy( $scope.currentQuestion.handler ) ;
+			if( attributes.hasOwnProperty( "initialize" ) ) {
+				handler.initialize() ;
+			}
+
 			var questionUI = handler.getQuestionUI() ;
 
 			element.empty() ;
 			element.append( questionUI ) ;
 
 			handler.initializeQuestionUI() ;
-			if( attributes.hasOwnProperty( "freezequestion" ) ) {
-				if( attributes.freezequestion ) {
-					handler.freezeQuestionUI() ;
-				}
+			if( attributes.hasOwnProperty( "freezeQuestion" ) ) {
+				handler.freezeQuestionUI() ;
 			}
 
 			MathJax.Hub.Queue( ["Typeset", MathJax.Hub, element.get(0)] ) ;

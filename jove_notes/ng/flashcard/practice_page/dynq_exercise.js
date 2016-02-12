@@ -5,13 +5,13 @@ function ExerciseManager( questionObj, textFormatter, $scope ) {
     var formattedQuestion = null ;
     var formattedAnswer   = null ;
     var formattedHints    = [] ;
-    var currentHintIndex  = 0 ;
 
-    var questionDiv     = null ;
-    var questionPara    = null ;
-    var showNextHintBtn = null ;
-    var hintsTable      = null ;
-    var hintsTRList     = [] ;
+    var currentHintIndex   = 0 ;
+    var questionDiv        = null ;
+    var questionPara       = null ;
+    var showNextHintBtnDiv = null ;
+    var showNextHintBtn    = null ;
+    var hintsTable         = null ;
 
     var construct = function( questionObj, textFormatter, $scope ) {
 
@@ -29,6 +29,12 @@ function ExerciseManager( questionObj, textFormatter, $scope ) {
 
     // -------------------------------------------------------------------------
     this.initialize = function() {
+        currentHintIndex   = 0 ;
+        questionDiv        = null ;
+        questionPara       = null ;
+        showNextHintBtnDiv = null ;
+        showNextHintBtn    = null ;
+        hintsTable         = null ;
         prepareQuestionUI() ;
     } ;
 
@@ -58,7 +64,8 @@ function ExerciseManager( questionObj, textFormatter, $scope ) {
         hintsTable = TABLE( { class : "table table-striped hint_table" } ) ;
 
         if( formattedHints.length > 0 ) {
-            questionDiv = DIV( questionPara, showNextHintBtn, hintsTable ) ;        
+            showNextHintBtnDiv = DIV( showNextHintBtn ) ;
+            questionDiv = DIV( questionPara, showNextHintBtnDiv, hintsTable ) ;        
         }
         else {
             questionDiv = DIV( questionPara ) ;

@@ -7,6 +7,7 @@ testPaperApp.controller( 'ExerciseExecutionController',
 // ---------------- Controller variables ---------------------------------------
 $scope.CREATING_SESSION_SCREEN = "CreatingSessionScreen" ;
 $scope.STUDY_QUESTIONS_SCREEN  = "StudyQuestionsScreen" ;
+$scope.SOLVE_PAPER_SCREEN      = "SolvePaperScreen" ;
 
 $scope.currentScreen = $scope.CREATING_SESSION_SCREEN ;
 $scope.statusMessage = "" ;
@@ -21,9 +22,6 @@ $scope.statusMessage = "" ;
 
     $scope.$parent.pageTitle = "Exercise" ;
 
-    pruneUnusedExerciseBanks() ;
-    filterQuestionsForSession() ;
-
     // Create a new session at the server. Note that exercise sessions are 
     // different than learning sessions as exercise sessions can contain more
     // than one chapter's learning sessions.
@@ -31,19 +29,80 @@ $scope.statusMessage = "" ;
                                        0, postSessionCreation ) ;
 }
 
+// -------------Scope watch and event functions --------------------------------
+$scope.$on( 'onRenderComplete', function( scope ){
+    transitionStudyQuestion() ;
+} ) ;
+
 // ---------------- Controller methods -----------------------------------------
 
 // ---------------- Private functions ------------------------------------------
+var curStudyQIndex = 0 ;
+var transitionStudyQuestion = function() {
+
+    var questions = $scope.$parent.questions ;
+    if( curStudyQIndex >= questions.length ) {
+        questions[ questions.length - 1 ]._sessionVars.showForStudy = false ;
+        showSolvePaperScreen() ;
+        return ;
+    }
+    else if( curStudyQIndex > 0 ) {
+        questions[ curStudyQIndex - 1 ]._sessionVars.showForStudy = false ;
+    }
+
+    var curQ = questions[ curStudyQIndex ] ;
+    curQ._sessionVars.showForStudy = true ;
+    curStudyQIndex++ ;
+
+    var divId = "#study_q_" + curQ.questionId ;
+    setTimeout( function(){
+        $( divId ).fadeOut( 1000, transitionStudyQuestion ) ;
+    }, 4000 ) ;
+}
+
 function postSessionCreation( newSessionData ) {
     
+    pruneUnusedExerciseBanks() ;
+    var questions = filterQuestionsForSession() ;
+    associateSessionVariablesToQuestions( questions ) ;
+
     $scope.$parent.exerciseSessionId = newSessionData.sessionId ;
     for( var key in newSessionData.exChapterSessionIdMap ) {
         $scope.$parent.exerciseBanksMap[ key ]._sessionId = 
                                    newSessionData.exChapterSessionIdMap[ key ] ;
     }
-    $scope.currentScreen = $scope.STUDY_QUESTIONS_SCREEN ;
-    $scope.statusMessage = "Please study the questions before attempting." ;
+
+    $scope.$parent.questions = questions ;
+    showStudyQuestionsScreen() ;
+
     $scope.$parent.startTimer() ;
+}
+
+function showStudyQuestionsScreen() {
+
+    $scope.statusMessage = "[Study phase] Each question will show for 30 seconds. " + 
+                           "Please read the questions carefully" ;
+    $scope.$parent.pageTitle = "Exercise (" + $scope.$parent.questions.length + 
+                               " questions) - Study Phase" ;
+    $scope.currentScreen = $scope.STUDY_QUESTIONS_SCREEN ;
+}
+
+function showSolvePaperScreen() {
+
+    $scope.statusMessage = "[Solve Questions] Click attempt/review for " + 
+                           "questions you want to work on." ;
+    $scope.$parent.pageTitle = "Exercise (" + $scope.$parent.questions.length + 
+                               " questions) - Solve Phase" ;
+    $scope.currentScreen = $scope.SOLVE_PAPER_SCREEN ;
+}
+
+function associateSessionVariablesToQuestions( questions ) {
+
+    for( var i=0; i<questions.length; i++ ) {
+        questions[i]._sessionVars = {
+            showForStudy : false
+        }
+    }
 }
 
 function pruneUnusedExerciseBanks() {
@@ -109,7 +168,7 @@ function filterQuestionsForSession() {
         }
     }
 
-    $scope.$parent.questions = exQuestions ;
+    return exQuestions ;
 }
 
 function categorizeQuestions( exercise ) {
