@@ -1,0 +1,197 @@
+<div class="table-responsive">
+    <table class="table tree table-hover table-striped table-condensed ex_card_config_table">
+        <thead>
+            <tr>
+                <td></td>
+                <td colspan="5" align="center" class="border-left"><b>SSR</b></td>
+                <td colspan="5" align="center" class="border-left"><b>Non SSR</b></td>
+            </tr>   
+            <tr>
+                <td></td>
+                <td class="border-left">Total</td>
+                <td></td>
+                <td></td>
+                <td>Sel</td>
+                <td>Strategy</td>
+                <td class="border-left">Total</td>
+                <td></td>
+                <td></td>
+                <td>Sel</td>
+                <td>Strategy</td>
+            </tr>   
+        </thead>    
+        <tbody>
+            <!-- =============== NS Card selection ========================= -->
+            <tr>
+                <td># NS</td>
+                <!-- =================  NS ssr ============================= -->
+                <td align="right" class="border-left">
+                {{selCh.deckDetails.progressSnapshot._numSSR_NS - 
+                  selCh._selCfg.ssr.numNSCards}}
+                </td>
+                <td align="center">
+                    <button type="button" class="btn btn-default btn-xs"
+                            ng-click="incrementCardSelection( 'ssr', 'NS' )"
+                            ng-disabled="(selCh.deckDetails.progressSnapshot._numSSR_NS - 
+                                          selCh._selCfg.ssr.numNSCards) <= 0">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </button>
+                </td>
+                <td align="center" class="border-left">
+                    <button type="button" class="btn btn-default btn-xs"
+                            ng-click="decrementCardSelection( 'ssr', 'NS' )"
+                            ng-disabled="selCh._selCfg.ssr.numNSCards <= 0">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </button>
+                </td>
+                <td align="right">
+                {{selCh._selCfg.ssr.numNSCards}}
+                </td>
+                <td>
+                    <select ng-model="selCh._selCfg.ssr.strategyNS">
+                        <option value="Sequential" selected>Seq</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </td>
+                <!-- =================  NS non-ssr ========================= -->
+                <td class="border-left"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>   
+            <!-- =============== L0 Card selection ========================= -->
+            <tr>
+                <td># L0</td>
+                <!-- =================  L0 ssr ============================= -->
+                <td align="right" class="border-left">
+                {{selCh.deckDetails.progressSnapshot._numSSR_L0 - 
+                  selCh._selCfg.ssr.numL0Cards}}
+                </td>
+                <td align="center">
+                    <button type="button" class="btn btn-default btn-xs"
+                            ng-click="incrementCardSelection( 'ssr', 'L0' )"
+                            ng-disabled="(selCh.deckDetails.progressSnapshot._numSSR_L0 - 
+                                          selCh._selCfg.ssr.numL0Cards) <= 0">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </button>
+                </td>
+                <td align="center" class="border-left">
+                    <button type="button" class="btn btn-default btn-xs"
+                            ng-click="decrementCardSelection( 'ssr', 'L0' )"
+                            ng-disabled="selCh._selCfg.ssr.numL0Cards <= 0">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </button>
+                </td>
+                <td align="right">
+                {{selCh._selCfg.ssr.numL0Cards}}
+                </td>
+                <td>
+                    <select ng-model="selCh._selCfg.ssr.strategyL0">
+                        <option value="Age" selected>Age</option>
+                        <option value="Sequential">Seq</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </td>
+                <!-- =================  L0 non-ssr ========================= -->
+                <td align="right" class="border-left">
+                {{selCh.deckDetails.progressSnapshot.numL0 - 
+                  selCh.deckDetails.progressSnapshot._numSSR_L0 - 
+                  selCh._selCfg.nonSSR.numL0Cards}}
+                </td>
+                <td align="center">
+                    <button type="button" class="btn btn-default btn-xs"
+                            ng-click="incrementCardSelection( 'non-ssr', 'L0' )"
+                            ng-disabled="(selCh.deckDetails.progressSnapshot.numL0 - 
+                                          selCh.deckDetails.progressSnapshot._numSSR_L0 - 
+                                          selCh._selCfg.nonSSR.numL0Cards) <= 0">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </button>
+                </td>
+                <td align="center" class="border-left">
+                    <button type="button" class="btn btn-default btn-xs"
+                            ng-click="decrementCardSelection( 'non-ssr', 'L0' )"
+                            ng-disabled="selCh._selCfg.nonSSR.numL0Cards <= 0">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </button>
+                </td>
+                <td align="right">
+                {{selCh._selCfg.nonSSR.numL0Cards}}
+                </td>
+                <td>
+                    <select ng-model="selCh._selCfg.nonSSR.strategyL0">
+                        <option value="Age" selected>Age</option>
+                        <option value="Sequential">Seq</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </td>
+            </tr>   
+            <!-- =============== L1 Card selection ========================= -->
+            <tr>
+                <td># L1</td>
+                <!-- =================  L1 ssr ============================= -->
+                <td align="right" class="border-left">
+                {{selCh.deckDetails.progressSnapshot._numSSR_L1 - 
+                  selCh._selCfg.ssr.numL1Cards}}
+                </td>
+                <td align="center">
+                    <button type="button" class="btn btn-default btn-xs"
+                            ng-click="incrementCardSelection( 'ssr', 'L1' )"
+                            ng-disabled="(selCh.deckDetails.progressSnapshot._numSSR_L1 - 
+                                          selCh._selCfg.ssr.numL1Cards) <= 0">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </button>
+                </td>
+                <td align="center" class="border-left">
+                    <button type="button" class="btn btn-default btn-xs"
+                            ng-click="decrementCardSelection( 'ssr', 'L1' )"
+                            ng-disabled="selCh._selCfg.ssr.numL1Cards <= 0">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </button>
+                </td>
+                <td align="right">
+                {{selCh._selCfg.ssr.numL0Cards}}
+                </td>
+                <td>
+                    <select ng-model="selCh._selCfg.ssr.strategyL1">
+                        <option value="Age" selected>Age</option>
+                        <option value="Sequential">Seq</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </td>
+                <!-- =================  L1 non-ssr ========================= -->
+                <td align="right" class="border-left">
+                {{selCh.deckDetails.progressSnapshot.numL1 - 
+                  selCh.deckDetails.progressSnapshot._numSSR_L1 - 
+                  selCh._selCfg.nonSSR.numL1Cards}}
+                </td>
+                <td align="center">
+                    <button type="button" class="btn btn-default btn-xs"
+                            ng-click="incrementCardSelection( 'non-ssr', 'L1' )"
+                            ng-disabled="(selCh.deckDetails.progressSnapshot.numL1 - 
+                                          selCh.deckDetails.progressSnapshot._numSSR_L1 - 
+                                          selCh._selCfg.nonSSR.numL1Cards) <= 0">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </button>
+                </td>
+                <td align="center" class="border-left">
+                    <button type="button" class="btn btn-default btn-xs"
+                            ng-click="decrementCardSelection( 'non-ssr', 'L1' )"
+                            ng-disabled="selCh._selCfg.nonSSR.numL1Cards <= 0">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </button>
+                </td>
+                <td align="right">
+                {{selCh._selCfg.nonSSR.numL1Cards}}
+                </td>
+                <td>
+                    <select ng-model="selCh._selCfg.nonSSR.strategyL1">
+                        <option value="Age" selected>Age</option>
+                        <option value="Sequential">Seq</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </td>
+            </tr>   
+        </tbody>
+    </table>
+</div>

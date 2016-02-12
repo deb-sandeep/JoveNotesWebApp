@@ -4,11 +4,8 @@ require_once( DOCUMENT_ROOT . "/lib-app/php/dao/abstract_dao.php" ) ;
 
 class RemoteFlashQueueDAO extends AbstractDAO {
 
-	private $logger ;
-
 	function __construct() {
 		parent::__construct() ;
-		$this->logger = Logger::getLogger( __CLASS__ ) ;
 	}
 
 	function addMessage( $userName, $sessionId, $msgType, $content=NULL ) {

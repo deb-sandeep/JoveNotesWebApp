@@ -4,11 +4,8 @@ require_once( DOCUMENT_ROOT . "/lib-app/php/dao/abstract_dao.php" ) ;
 
 class ChapterDAO extends AbstractDAO {
 
-	private $logger ;
-
 	function __construct() {
 		parent::__construct() ;
-		$this->logger = Logger::getLogger( __CLASS__ ) ;
 	}
 
 	function getChapterMetaData( $chapterId ) {
@@ -156,6 +153,31 @@ where
 QUERY;
 
 		return parent::selectSingleValue( $query ) ;
+	}
+
+	/**
+	 * This function returns an associative array of chapterId versus the 
+	 * guard for the chapter.
+	 */
+	function getChapterGuardMap( $chapterIdList ) {
+
+		$chapterIds = implode( ",", $chapterIdList ) ;
+
+$query = <<< QUERY
+select 
+	chapter_id,
+	concat( "chapter:", syllabus_name, "/", 
+		                subject_name, "/", 
+		                chapter_num, "/", 
+		                sub_chapter_num, "/", 
+		                chapter_name ) as guard
+from 
+	jove_notes.chapter 
+where 
+	chapter_id in ($chapterIds)
+QUERY;
+
+		return parent::getResultAsMap( $query ) ;
 	}
 
 	function deleteChapter( $chapterId ) {

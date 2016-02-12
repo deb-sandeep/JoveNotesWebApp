@@ -50,12 +50,12 @@
                 ng-show="rowData.isTreeRowVisible()"
                 on-render-complete> 
                 <td> 
-                    <span ng-show="rowData.isChapterRow()">
+                    <span ng-show="!rowData.isSyllabusRow()">
                         <a href="/apps/jove_notes/ng/exercise/index.php?chapterId={{rowData.chapterId}}">
                         {{rowData.name}}
                         </a>
                     </span>
-                    <span ng-show="!rowData.isChapterRow()">{{rowData.name}}</span>
+                    <span ng-show="rowData.isSyllabusRow()">{{rowData.name}}</span>
                 </td>
                 <td>
                    <span class="badge L3">{{rowData.numSSRMaturedCards}}</span>

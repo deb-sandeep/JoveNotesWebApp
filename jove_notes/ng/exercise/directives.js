@@ -35,7 +35,7 @@ function HandlerProxy( handler ) {
 	}
 }
 
-testPaperApp.directive( 'renderTestQuestion', function() {
+testPaperApp.directive( 'renderExerciseQuestion', function() {
 
 	return {
 		restrict : 'E',
@@ -51,6 +51,12 @@ testPaperApp.directive( 'renderTestQuestion', function() {
 			element.append( questionUI ) ;
 
 			handler.initializeQuestionUI() ;
+			if( attributes.hasOwnProperty( "freezequestion" ) ) {
+				if( attributes.freezequestion ) {
+					handler.freezeQuestionUI() ;
+				}
+			}
+
 			MathJax.Hub.Queue( ["Typeset", MathJax.Hub, element.get(0)] ) ;
 
 			element.find( 'pre code' ).each( function(i, block) {
@@ -60,7 +66,7 @@ testPaperApp.directive( 'renderTestQuestion', function() {
 	} ;
 }) ;
 
-testPaperApp.directive( 'renderAnswer', function() {
+testPaperApp.directive( 'renderExerciseAnswer', function() {
 
 	return {
 		restrict : 'E',
@@ -84,3 +90,14 @@ testPaperApp.directive( 'renderAnswer', function() {
         }
 	} ;
 }) ;
+
+testPaperApp.directive( 'onRenderComplete', function() {
+    
+    return function( scope, element, attrs ) {
+    	if( scope.$last ) {
+	    	setTimeout( function(){ 
+	            scope.$emit( 'onRenderComplete' ) ;
+	        }, 1 ) ;
+    	}
+    } ;
+} ) ;

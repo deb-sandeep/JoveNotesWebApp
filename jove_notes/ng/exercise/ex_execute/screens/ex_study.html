@@ -1,0 +1,47 @@
+<div class="screen_body">
+    <div class="panel panel-success" ng-repeat="currentQuestion in questions">
+        <div class="panel-heading" style="padding: 2px 2px;">
+            <table width="100%">
+            <tr>
+            <td>
+                <span class="glyphicon glyphicon-question-sign"></span>
+                &nbsp;&nbsp;
+                <span class="panel-title">Question {{$index + 1}} - </span>
+            </td>
+            <td>
+                <!-- The attempt button goes here -->                   
+            </td>
+            <td>
+                <span class="badge {{currentQuestion._difficultyLabel}}">
+                {{currentQuestion._difficultyLabel}}
+                </span>
+                <span class="badge {{currentQuestion.learningStats.currentLevel}}">
+                {{currentQuestion.learningStats.currentLevel}}
+                </span>                    
+            </td>
+            </tr>
+            </table>
+        </div>
+        <div class="panel-body">
+            <render-exercise-question freezeQuestion="true">
+            </render-exercise-question>
+        </div>
+    </div>
+</div>
+
+<div class="screen_footer">
+    <div class="col-sm-5"
+         style="padding-left:0px, padding-right:0px">
+        <button type="button" 
+                class="btn btn-warning btn-md"
+                ng-click="pauseSession()">
+            <span class="glyphicon glyphicon-pause"></span>
+        </button>
+    </div>
+    <div class="col-sm-7 pull-right">
+    </div>
+</div>
+
+<div class="screen_message_bar">
+{{statusMessage}}
+</div>
