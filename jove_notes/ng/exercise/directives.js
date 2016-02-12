@@ -51,6 +51,12 @@ testPaperApp.directive( 'renderExerciseQuestion', function() {
 			element.append( questionUI ) ;
 
 			handler.initializeQuestionUI() ;
+			if( attributes.hasOwnProperty( "freezequestion" ) ) {
+				if( attributes.freezequestion ) {
+					handler.freezeQuestionUI() ;
+				}
+			}
+
 			MathJax.Hub.Queue( ["Typeset", MathJax.Hub, element.get(0)] ) ;
 
 			element.find( 'pre code' ).each( function(i, block) {

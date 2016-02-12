@@ -5,9 +5,13 @@ function ExerciseManager( questionObj, textFormatter, $scope ) {
     var formattedQuestion = null ;
     var formattedAnswer   = null ;
     var formattedHints    = [] ;
-    var showNextHintBtn   = null ;
+    var currentHintIndex  = 0 ;
 
-    var questionDiv = null ;
+    var questionDiv     = null ;
+    var questionPara    = null ;
+    var showNextHintBtn = null ;
+    var hintsTable      = null ;
+    var hintsTRList     = [] ;
 
     var construct = function( questionObj, textFormatter, $scope ) {
 
@@ -33,7 +37,9 @@ function ExerciseManager( questionObj, textFormatter, $scope ) {
     } ;
     
     this.freezeQuestionUI = function() {
-        // Disable the show next hint button
+        if( formattedHints.length > 0 ) {
+            showNextHintBtn.parentNode.removeChild( showNextHintBtn ) ;
+        }
     } ;
     
     this.getAnswerUI = function() {
@@ -43,18 +49,35 @@ function ExerciseManager( questionObj, textFormatter, $scope ) {
     // -------------------------------------------------------------------------
     var prepareQuestionUI = function() {
 
-        var questionP = P( { innerHTML : formattedQuestion } ) ;
+        questionPara    = P( { innerHTML : formattedQuestion } ) ;
+        showNextHintBtn = BUTTON( { type  : "button", 
+                                    class : "btn btn-default btn-xs" },
+                                  "Show next hint." ) ;
+        showNextHintBtn.onclick = showNextHint ;
 
-        var trDOMs    = [] ;
-        var numRows   = questionObj.hints.length + 2 ;
+        hintsTable = TABLE( { class : "table table-striped hint_table" } ) ;
 
-        trDOMs.push( TR( TD( questionP ) ) ) ;
-        trDOMs.push( TR( TD( BUTTON( "Show next hint" ) ) ) ) ;
-
-        for( var i=2; i<numRows; i++ ) {
-            trDOMs.push( TR( TD( { innerHTML : optionValue } ) ) ) ;
+        if( formattedHints.length > 0 ) {
+            questionDiv = DIV( questionPara, showNextHintBtn, hintsTable ) ;        
         }
+        else {
+            questionDiv = DIV( questionPara ) ;
+        }
+    }
 
-        questionDiv = DIV( questionP, TABLE( trDOMs ) ) ;        
+    var showNextHint = function() {
+        if( currentHintIndex < formattedHints.length ) {
+            var tr          = hintsTable.insertRow(-1) ;
+            var indexCell   = tr.insertCell( 0 ) ;
+            var contentCell = tr.insertCell( 1 ) ;
+
+            indexCell.innerHTML   = (currentHintIndex+1) + " )" ;
+            contentCell.innerHTML = formattedHints[currentHintIndex] ;
+
+            currentHintIndex++ ;
+            if( currentHintIndex >= formattedHints.length ) {
+                showNextHintBtn.style.visibility = "hidden" ;
+            }
+        }
     }
 } ;

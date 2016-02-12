@@ -9,6 +9,7 @@ $scope.CREATING_SESSION_SCREEN = "CreatingSessionScreen" ;
 $scope.STUDY_QUESTIONS_SCREEN  = "StudyQuestionsScreen" ;
 
 $scope.currentScreen = $scope.CREATING_SESSION_SCREEN ;
+$scope.statusMessage = "" ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -41,6 +42,7 @@ function postSessionCreation( newSessionData ) {
                                    newSessionData.exChapterSessionIdMap[ key ] ;
     }
     $scope.currentScreen = $scope.STUDY_QUESTIONS_SCREEN ;
+    $scope.statusMessage = "Please study the questions before attempting." ;
     $scope.$parent.startTimer() ;
 }
 
