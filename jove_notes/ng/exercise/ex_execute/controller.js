@@ -4,6 +4,7 @@ testPaperApp.controller( 'ExerciseExecutionController',
 
 // ---------------- Local variables --------------------------------------------
 var currentQuestionAttemptStartTime = 0 ;
+var evaluateExerciseRouteChange     = false ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.CREATING_SESSION_SCREEN = "CreatingSessionScreen" ;
@@ -16,6 +17,10 @@ $scope.statusMessage = "" ;
 
 $scope.currentQuestion = null ;
 $scope.timeSpentOnCurrentQuestion = 0 ;
+
+$scope.numQNotStarted  = 0 ;
+$scope.numQNotReviewed = 0 ;
+$scope.numQDone        = 0 ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -44,10 +49,32 @@ $scope.$on( 'timerEvent', function( event, args ){
 } ) ;
 
 $scope.$on('$locationChangeStart', function( ev ) {
-    ev.preventDefault();
+    if( !evaluateExerciseRouteChange ) {
+        ev.preventDefault();
+    }
 } ) ;
 
 // ---------------- Controller methods -----------------------------------------
+$scope.showEvaluateScreen = function() {
+    log.debug( "Show evaluate screen." ) ;
+    evaluateExerciseRouteChange = true ;
+    $location.path( "/EvaluateExercise" ) ;
+}
+
+$scope.getQuestionPanelClass = function( question ) {
+    var cls = "panel " ;
+    if( question._sessionVars.numAttempts == 0 ) {
+        cls += "panel-danger" ;
+    }
+    else if( question._sessionVars.numAttempts == 1 ) {
+        cls += "panel-warning" ;
+    }
+    else if( question._sessionVars.numAttempts > 1 ) {
+        cls += "panel-success" ;
+    }
+    return cls ;
+}
+
 $scope.attemptQuestion = function( question ) {
     log.debug( "Attempting question " + question.questionId ) ;
 
@@ -63,6 +90,14 @@ $scope.doneAttemptQuestion = function( question ) {
 
     question._sessionVars.numAttempts++ ;
     question._sessionVars.timeSpent += new Date().getTime() - currentQuestionAttemptStartTime ;
+
+    if( question._sessionVars.numAttempts == 1 ) {
+        $scope.numQNotStarted-- ;
+    }
+    else if( question._sessionVars.numAttempts == 2 ) {
+        $scope.numQNotReviewed-- ;
+        $scope.numQDone++ ;
+    }
 
     currentQuestionAttemptStartTime = 0 ;
     $scope.currentQuestion = null ;
@@ -107,8 +142,8 @@ var transitionStudyQuestion = function() {
     curQ._sessionVars.showForStudy = true ;
     curStudyQIndex++ ;
 
-    var divId = "#study_q_" + curQ.questionId ;
     setTimeout( function(){
+        var divId = "#study_q_" + curQ.questionId ;
         $( divId ).fadeOut( 500, transitionStudyQuestion ) ;
     }, 2000 ) ;
 }
@@ -126,6 +161,10 @@ function postSessionCreation( newSessionData ) {
     }
 
     $scope.$parent.questions = questions ;
+    $scope.numQNotStarted = questions.length ;
+    $scope.numQNotReviewed = questions.length ;
+    $scope.numQDone       = 0 ;
+
     showStudyQuestionsScreen() ;
 
     $scope.$parent.startTimer() ;

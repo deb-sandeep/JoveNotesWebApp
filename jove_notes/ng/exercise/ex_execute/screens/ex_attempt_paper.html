@@ -29,15 +29,11 @@
 </div>
 
 <div class="screen_footer">
-    <div class="col-sm-4"
-         style="padding-left:0px, padding-right:0px">
-        <button type="button" 
-                class="btn btn-warning btn-md"
-                ng-click="pauseSession()">
-            <span class="glyphicon glyphicon-pause"></span>
-        </button>
+    <div class="col-sm-3"
+         style="padding-left:0px, padding-right:0px"
+         ng-include="'/apps/jove_notes/ng/exercise/ex_execute/screens/_common_footer_controls.html'">
     </div>
-    <div class="col-sm-5 pull-right">
+    <div class="col-sm-5">
         <button type="button" class="btn btn-info btn-md"
                 ng-click="doneAttemptQuestion( currentQuestion )">
             Done
@@ -52,7 +48,7 @@
             </span>
         </button>
     </div>
-    <div class="col-sm-3 pull-right">
+    <div class="col-sm-4 pull-right">
         <button type="button" class="btn btn-default btn-sm" disabled="true">
             <span class="badge NS gi-1-25x">
             {{timeSpentOnCurrentQuestion | duration}}

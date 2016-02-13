@@ -1,28 +1,28 @@
-Pending dev cards
---------------------------------------------------------------------------------
 TODO:
 --------------------------------------------------------------------------------
-XX Track time spent in a question
-XX Assign time spent to question when attempt is done
+@feature/exercise
+----------------------
+* X Bulk operation menu
+  * X Launch exercise with selected cards
 
-On the footer bar, the following controls should be present
-Applies to all screens:
-    Pause
-    Abort Exercise
+* On the footer bar, the following controls should be present
+  * X Applies to all screens:
+      * Pause
+      * Abort Exercise
 
-Study Screen
+  * X Attempt Screen
+      X Time spent till now - dynamic
+      X Done attempt
+      X Unmark question
 
-Attempt Screen
-    X Time spent till now - dynamic
-    X Done attempt
-    X Unmark question
-
-Full question screen
-    Number questions
-    Number attempted
-    Number reviewed
-    Number yet to attempt
-    Done exercise
+  * Solve question screen
+      * Number questions
+      * Number attempted
+      * Number reviewed
+      * Number yet to attempt
+      * Done exercise
+      Filter by not attempted
+      Filter by not reviewed
 
 ================================================================================
 Completed

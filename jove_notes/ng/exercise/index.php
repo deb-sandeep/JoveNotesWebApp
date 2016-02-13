@@ -32,6 +32,7 @@ $pageConfig = array(
     <script src="/lib-ext/rgraph/RGraph.line.js"></script>    
     <script src="/lib-ext/rgraph/RGraph.pie.js"></script>    
     <script src="/lib-ext/rgraph/RGraph.bar.js"></script>    
+    <script src="/lib-ext/bootbox/bootbox.min.js"></script>
 
     <link rel='stylesheet' href='/lib-ext/pure/tables.css'>
     <link rel='stylesheet' href='/apps/jove_notes/ng/flashcard/flashcard.css'>

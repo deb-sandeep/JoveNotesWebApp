@@ -1,4 +1,4 @@
-testPaperApp.controller( 'ExerciseController', function( $scope, $http, $location ) {
+testPaperApp.controller( 'ExerciseController', function( $scope, $http, $routeParams, $location, $window ) {
 // ---------------- Constants and inner class definition -----------------------
 
 // ---------------- Local variables --------------------------------------------
@@ -54,6 +54,18 @@ $scope.resumeSession = function() {
     $scope.pauseStartTime = 0 ;
 
     $( '#modalResume' ).modal( 'hide' ) ;
+}
+
+$scope.abortSession = function() {
+    bootbox.confirm( "<h3>Are you sure you want to abort this exercise?</h3>" + 
+                     "You will not get any credit for the attempted questions.",
+        function( okSelected ) {
+            if( okSelected ) {
+                $window.location.href = "http://" + $window.location.host + 
+                                        "/#/Exercises" ;
+            }
+        }
+    ) ;    
 }
 
 $scope.fetchAndProcessDataFromServer = function() {

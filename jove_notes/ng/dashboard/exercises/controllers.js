@@ -284,6 +284,24 @@ $scope.deleteChapter = function( chapterId ) {
         }) ;
 }
 
+$scope.launchExerciseWithSelectedChapters = function() {
+
+    var selectedChapters = [] ;
+    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+        var rowData = $scope.progressSnapshot[i] ;
+        if( rowData.isChapterRow() && rowData.isRowSelected ) {
+            selectedChapters.push( rowData.chapterId ) ;
+        }
+    }
+
+    if( selectedChapters.length > 0 ) {
+        var url = "/apps/jove_notes/ng/exercise/index.php" ;
+        url += "?chapterId=" + selectedChapters.join() ;
+
+        window.location.href = url ;        
+    }
+}
+
 $scope.resetLevelOfAllCards = function( level ) {
 
     var selectedChapters = getSelectedChapterIds() ;
