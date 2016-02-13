@@ -159,9 +159,9 @@ function postSessionCreation( newSessionData ) {
     }
 
     $scope.$parent.questions = questions ;
-    $scope.numQNotStarted = questions.length ;
-    $scope.numQNotReviewed = questions.length ;
-    $scope.numQDone       = 0 ;
+    $scope.numQNotStarted    = questions.length ;
+    $scope.numQNotReviewed   = questions.length ;
+    $scope.numQDone          = 0 ;
 
     showStudyQuestionsScreen() ;
 
@@ -204,7 +204,10 @@ function associateSessionVariablesToQuestions( questions ) {
             numAttempts  : 0,
             marked       : false,
             timeSpent    : 0,
-            rating       : null
+            rating       : null,
+            ratingText   : null,
+            ratingTextCls: "btn btn-sm",
+            scoreEarned  : 0
         }
     }
 }

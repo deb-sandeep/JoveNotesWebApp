@@ -21,37 +21,62 @@
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-default btn-sm" 
                                 disabled="true">
-                            <span class="badge NS gi-1-25x">
+                            <span class="badge NS gi-1-25x"
+                                  ng-show="currentQuestion._sessionVars.timeSpent > 0">
                                 {{currentQuestion._sessionVars.timeSpent | duration}}
+                            </span>                
+                            <span class="badge NS gi-1-25x"
+                                  ng-show="currentQuestion._sessionVars.timeSpent == 0">
+                                Not Attempted
                             </span>                
                         </button>
                     </div>
                     <div class="btn-group" role="group" 
-                         ng-show="currentQuestion._sessionVars.rating == null">
+                         ng-show="currentQuestion._sessionVars.rating == null &&
+                                  currentQuestion._sessionVars.timeSpent > 0">
                         <button type="button" class="btn btn-danger btn-sm"
                                 ng-click="rateSolution( 'H', currentQuestion )">
                         &nbsp;
                         </button>
                     </div>
                     <div class="btn-group" role="group"
-                         ng-show="currentQuestion._sessionVars.rating == null">
+                         ng-show="currentQuestion._sessionVars.rating == null &&
+                                  currentQuestion._sessionVars.timeSpent > 0">
                         <button type="button" class="btn btn-warning btn-sm"
-                                ng-click="rateSolution( 'P' )">
+                                ng-click="rateSolution( 'P', currentQuestion )">
                         &nbsp;
                         </button>
                     </div>
                     <div class="btn-group" role="group"
-                         ng-show="currentQuestion._sessionVars.rating == null">
+                         ng-show="currentQuestion._sessionVars.rating == null &&
+                                  currentQuestion._sessionVars.timeSpent > 0">
                         <button type="button" class="btn btn-info btn-sm"
-                                ng-click="rateSolution( 'A' )">
+                                ng-click="rateSolution( 'A', currentQuestion )">
                         &nbsp;
                         </button>
                     </div>
                     <div class="btn-group" role="group"
-                         ng-show="currentQuestion._sessionVars.rating == null">
+                         ng-show="currentQuestion._sessionVars.rating == null &&
+                                  currentQuestion._sessionVars.timeSpent > 0">
                         <button type="button" class="btn btn-success btn-sm"
-                                ng-click="rateSolution( 'E' )">
+                                ng-click="rateSolution( 'E', currentQuestion )">
                         &nbsp;
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group"
+                         ng-show="currentQuestion._sessionVars.ratingText != null">
+                        <button type="button" 
+                                ng-class="currentQuestion._sessionVars.ratingTextCls"
+                                disabled="true">
+                        {{currentQuestion._sessionVars.ratingText}}
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group"
+                         ng-show="currentQuestion._sessionVars.ratingText != null">
+                        <button type="button" 
+                                ng-class="currentQuestion._sessionVars.ratingTextCls"
+                                disabled="true">
+                        {{currentQuestion._sessionVars.scoreEarned}}
                         </button>
                     </div>
                 </div>
@@ -73,20 +98,27 @@
         </div>
         <div class="panel-footer">
             <b>Answer:</b><p>
-            <render-exercise-answer>
+            <render-exercise-answer ng-if="currentQuestion._sessionVars.timeSpent > 0">
             </render-exercise-answer>
+            <span ng-if="currentQuestion._sessionVars.timeSpent == 0">
+                Answer will not be displayed for questions which are not attempted.
+            </span>
         </div>
     </div>
 </div>
 
 <div class="screen_footer">
     <div class="col-sm-3"
-         style="padding-left:0px, padding-right:0px"
-         ng-include="'/apps/jove_notes/ng/exercise/ex_execute/screens/_common_footer_controls.html'">
+         style="padding-left:0px, padding-right:0px">
     </div>
     <div class="col-sm-5">
     </div>
     <div class="col-sm-4" style="text-align:right">
+        <button type="button" class="btn btn-info btn-md"
+                ng-disabled="!allQuestionsRated"
+                ng-click="showSummaryScreen()">
+            Show Summary
+        </button>
     </div>
 </div>
 
