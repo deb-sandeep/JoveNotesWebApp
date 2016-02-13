@@ -1,10 +1,28 @@
 Pending dev cards
 --------------------------------------------------------------------------------
-. Think of better visualization using D3
-. Report of subjects studied per day and time spent and number of quesitons
+TODO:
+--------------------------------------------------------------------------------
+XX Track time spent in a question
+XX Assign time spent to question when attempt is done
 
-. Report to see the subject that was studied in a range and the, chapters/time
-  spent on them. angular-grid?
+On the footer bar, the following controls should be present
+Applies to all screens:
+    Pause
+    Abort Exercise
+
+Study Screen
+
+Attempt Screen
+    X Time spent till now - dynamic
+    X Done attempt
+    X Unmark question
+
+Full question screen
+    Number questions
+    Number attempted
+    Number reviewed
+    Number yet to attempt
+    Done exercise
 
 ================================================================================
 Completed
