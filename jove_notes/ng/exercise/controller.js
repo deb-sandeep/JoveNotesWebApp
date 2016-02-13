@@ -291,6 +291,7 @@ function handleTimerEvent() {
     if( $scope.sessionActive ) {
         if( $scope.pauseStartTime == 0 ) {
             refreshClocks() ;
+            $scope.$broadcast( 'timerEvent' ) ;
             setTimeout( handleTimerEvent, 1000 ) ;
         }
         else {

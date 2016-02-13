@@ -1,16 +1,14 @@
 <div class="screen_body">
-    <div ng-repeat="currentQuestion in questions" 
-         class="panel panel-success" 
-         id="study_q_{{currentQuestion.questionId}}"
-         ng-show="currentQuestion._sessionVars.showForStudy"
-         on-render-complete>
+    <div class="panel panel-success">
         <div class="panel-heading" style="padding: 2px 2px;">
             <table width="100%">
             <tr>
             <td>
                 <span class="glyphicon glyphicon-question-sign"></span>
                 &nbsp;&nbsp;
-                <span class="panel-title">Question {{$index + 1}}</span>
+                <span class="panel-title">Question {{currentQuestion._sessionVars.index+1}}</span>
+            </td>
+            <td>
             </td>
             <td>
                 <span class="badge {{currentQuestion._difficultyLabel}}">
@@ -24,14 +22,14 @@
             </table>
         </div>
         <div class="panel-body" style="font-size:20px">
-            <render-exercise-question freeze-question>
+            <render-exercise-question initialize>
             </render-exercise-question>
         </div>
     </div>
 </div>
 
 <div class="screen_footer">
-    <div class="col-sm-5"
+    <div class="col-sm-4"
          style="padding-left:0px, padding-right:0px">
         <button type="button" 
                 class="btn btn-warning btn-md"
@@ -39,7 +37,27 @@
             <span class="glyphicon glyphicon-pause"></span>
         </button>
     </div>
-    <div class="col-sm-7 pull-right">
+    <div class="col-sm-5 pull-right">
+        <button type="button" class="btn btn-info btn-md"
+                ng-click="doneAttemptQuestion( currentQuestion )">
+            Done
+        </button>
+        <button type="button" class="btn btn-warning btn-md"
+                ng-click="toggleMark( currentQuestion )">
+            <span ng-if="!currentQuestion._sessionVars.marked">
+                Mark
+            </span>
+            <span ng-if="currentQuestion._sessionVars.marked">
+                Unmark
+            </span>
+        </button>
+    </div>
+    <div class="col-sm-3 pull-right">
+        <button type="button" class="btn btn-default btn-sm" disabled="true">
+            <span class="badge NS gi-1-25x">
+            {{timeSpentOnCurrentQuestion | duration}}
+            </span>                
+        </button>
     </div>
 </div>
 

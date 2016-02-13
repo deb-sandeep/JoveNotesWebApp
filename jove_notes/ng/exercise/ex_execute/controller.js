@@ -1,16 +1,21 @@
 testPaperApp.controller( 'ExerciseExecutionController', 
-                         function( $scope, $http, $routeParams, $location, $window ) {
+                         function( $scope, $http, $routeParams, $location, $window, $anchorScroll ) {
 // ---------------- Constants and inner class definition -----------------------
 
 // ---------------- Local variables --------------------------------------------
+var currentQuestionAttemptStartTime = 0 ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.CREATING_SESSION_SCREEN = "CreatingSessionScreen" ;
 $scope.STUDY_QUESTIONS_SCREEN  = "StudyQuestionsScreen" ;
 $scope.SOLVE_PAPER_SCREEN      = "SolvePaperScreen" ;
+$scope.ATTEMPT_SCREEN          = "AttemptScreen" ;
 
 $scope.currentScreen = $scope.CREATING_SESSION_SCREEN ;
 $scope.statusMessage = "" ;
+
+$scope.currentQuestion = null ;
+$scope.timeSpentOnCurrentQuestion = 0 ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -34,9 +39,57 @@ $scope.$on( 'onRenderComplete', function( scope ){
     transitionStudyQuestion() ;
 } ) ;
 
+$scope.$on( 'timerEvent', function( event, args ){
+    handleTimerEvent() ;
+} ) ;
+
+$scope.$on('$locationChangeStart', function( ev ) {
+    ev.preventDefault();
+} ) ;
+
 // ---------------- Controller methods -----------------------------------------
+$scope.attemptQuestion = function( question ) {
+    log.debug( "Attempting question " + question.questionId ) ;
+
+    $scope.currentQuestion = question ;
+    $scope.timeSpentOnCurrentQuestion = question._sessionVars.timeSpent ;
+
+    currentQuestionAttemptStartTime = new Date().getTime() ;
+    showAttemptScreen() ;
+}
+
+$scope.doneAttemptQuestion = function( question ) {
+    log.debug( "Done attempting question." ) ;
+
+    question._sessionVars.numAttempts++ ;
+    question._sessionVars.timeSpent += new Date().getTime() - currentQuestionAttemptStartTime ;
+
+    currentQuestionAttemptStartTime = 0 ;
+    $scope.currentQuestion = null ;
+
+    showSolvePaperScreen() ;
+
+    setTimeout( function(){
+        var anchorName = "anchor_q_" + question.questionId ;
+        log.debug( "Showing anchor " + anchorName ) ;
+        $location.hash( anchorName ) ; 
+        $anchorScroll() ;
+    }, 100 ) ;
+}
+
+$scope.toggleMark = function( question ) {
+    question._sessionVars.marked = !question._sessionVars.marked ;
+}
 
 // ---------------- Private functions ------------------------------------------
+function handleTimerEvent() {
+    if( $scope.currentScreen == $scope.ATTEMPT_SCREEN ) {
+        $scope.timeSpentOnCurrentQuestion = $scope.currentQuestion._sessionVars.timeSpent + 
+                                            new Date().getTime() - 
+                                            currentQuestionAttemptStartTime ;
+    }
+}
+
 var curStudyQIndex = 0 ;
 var transitionStudyQuestion = function() {
 
@@ -56,8 +109,8 @@ var transitionStudyQuestion = function() {
 
     var divId = "#study_q_" + curQ.questionId ;
     setTimeout( function(){
-        $( divId ).fadeOut( 1000, transitionStudyQuestion ) ;
-    }, 4000 ) ;
+        $( divId ).fadeOut( 500, transitionStudyQuestion ) ;
+    }, 2000 ) ;
 }
 
 function postSessionCreation( newSessionData ) {
@@ -96,11 +149,24 @@ function showSolvePaperScreen() {
     $scope.currentScreen = $scope.SOLVE_PAPER_SCREEN ;
 }
 
+function showAttemptScreen() {
+
+    $scope.statusMessage = "[Attempt Questions] Solve the question. " +
+                           "To go back to question paper, press done."   ;
+    $scope.$parent.pageTitle = "Exercise (" + $scope.$parent.questions.length + 
+                               " questions) - Attempt Question" ;
+    $scope.currentScreen = $scope.ATTEMPT_SCREEN ;
+}
+
 function associateSessionVariablesToQuestions( questions ) {
 
     for( var i=0; i<questions.length; i++ ) {
         questions[i]._sessionVars = {
-            showForStudy : false
+            index        : i,
+            showForStudy : false,
+            numAttempts  : 0,
+            marked       : false,
+            timeSpent    : 0
         }
     }
 }

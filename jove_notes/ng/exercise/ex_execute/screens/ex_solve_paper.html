@@ -1,6 +1,7 @@
 <div class="screen_body">
     <div ng-repeat="currentQuestion in questions" 
          class="panel panel-success">
+        <a name="anchor_q_{{currentQuestion.questionId}}"></a>
         <div class="panel-heading" style="padding: 2px 2px;">
             <table width="100%">
             <tr>
@@ -10,11 +11,28 @@
                 <span class="panel-title">Question {{$index + 1}}</span>
             </td>
             <td>
-                <button type="button" class="btn btn-default btn-xs">
-                Attempt
+                <button type="button" class="btn btn-default btn-sm" disabled="true">
+                    <span class="badge NS gi-1-25x">
+                        {{currentQuestion._sessionVars.timeSpent | duration}}
+                    </span>                
                 </button>
-                <button type="button" class="btn btn-default btn-xs">
-                Mark
+                <button type="button" class="btn btn-info btn-sm"
+                        ng-click="attemptQuestion( currentQuestion )">
+                    <span ng-if="currentQuestion._sessionVars.numAttempts == 0 ">
+                        Attempt
+                    </span>
+                    <span ng-if="currentQuestion._sessionVars.numAttempts > 0 ">
+                        Review
+                    </span>
+                </button>
+                <button type="button" class="btn btn-warning btn-sm"
+                        ng-click="toggleMark( currentQuestion )">
+                    <span ng-if="!currentQuestion._sessionVars.marked">
+                        Mark
+                    </span>
+                    <span ng-if="currentQuestion._sessionVars.marked">
+                        Unmark
+                    </span>
                 </button>
             </td>
             <td>
