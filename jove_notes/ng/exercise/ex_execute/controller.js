@@ -56,8 +56,9 @@ $scope.$on('$locationChangeStart', function( ev ) {
 
 // ---------------- Controller methods -----------------------------------------
 $scope.showEvaluateScreen = function() {
-    log.debug( "Show evaluate screen." ) ;
     evaluateExerciseRouteChange = true ;
+    $scope.$parent.currentStage = $scope.$parent.SESSION_EVALUATE_STAGE ;
+    $scope.$parent.stopTimer() ;
     $location.path( "/EvaluateExercise" ) ;
 }
 
@@ -76,7 +77,6 @@ $scope.getQuestionPanelClass = function( question ) {
 }
 
 $scope.attemptQuestion = function( question ) {
-    log.debug( "Attempting question " + question.questionId ) ;
 
     $scope.currentQuestion = question ;
     $scope.timeSpentOnCurrentQuestion = question._sessionVars.timeSpent ;
@@ -86,7 +86,6 @@ $scope.attemptQuestion = function( question ) {
 }
 
 $scope.doneAttemptQuestion = function( question ) {
-    log.debug( "Done attempting question." ) ;
 
     question._sessionVars.numAttempts++ ;
     question._sessionVars.timeSpent += new Date().getTime() - currentQuestionAttemptStartTime ;
@@ -106,7 +105,6 @@ $scope.doneAttemptQuestion = function( question ) {
 
     setTimeout( function(){
         var anchorName = "anchor_q_" + question.questionId ;
-        log.debug( "Showing anchor " + anchorName ) ;
         $location.hash( anchorName ) ; 
         $anchorScroll() ;
     }, 100 ) ;
@@ -205,7 +203,8 @@ function associateSessionVariablesToQuestions( questions ) {
             showForStudy : false,
             numAttempts  : 0,
             marked       : false,
-            timeSpent    : 0
+            timeSpent    : 0,
+            rating       : null
         }
     }
 }
@@ -341,7 +340,7 @@ function filterQuestions( questions, numQuestions, strategy ) {
 }
 
 function checkInvalidLoad() {
-    if( $scope.$parent.exerciseBanks.length <= 0 ) {
+    if( $scope.$parent.currentStage != $scope.$parent.SESSION_EXECUTE_STAGE ) {
         $location.path( "/ConfigureExercise" ) ;
         return true ;
     }

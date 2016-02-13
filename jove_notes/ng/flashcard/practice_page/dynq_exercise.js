@@ -18,7 +18,7 @@ function ExerciseManager( questionObj, textFormatter, $scope ) {
         jnUtils = new JoveNotesUtil() ;
 
         formattedQuestion = textFormatter.format( questionObj.question ) ;
-        formattedAnswer   = textFormatter.format( questionObj.explanation ) ;
+        formattedAnswer   = textFormatter.format( questionObj.answer ) ;
 
         for( var i=0; i<questionObj.hints.length; i++ ) {
             formattedHints.push( textFormatter.format( questionObj.hints[i] ) ) ;
@@ -44,7 +44,9 @@ function ExerciseManager( questionObj, textFormatter, $scope ) {
     
     this.freezeQuestionUI = function() {
         if( formattedHints.length > 0 ) {
-            showNextHintBtn.parentNode.removeChild( showNextHintBtn ) ;
+            if( showNextHintBtn.parentNode != null ) {
+                showNextHintBtn.parentNode.removeChild( showNextHintBtn ) ;
+            }
         }
     } ;
     

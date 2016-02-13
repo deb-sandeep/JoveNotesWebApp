@@ -1,1 +1,95 @@
-<h1>Evalute Screen</h1>
+<div ng-include="'/apps/jove_notes/ng/exercise/ex_evaluate/header.html'">
+</div>
+
+<div class="screen_body">
+    <div ng-repeat="currentQuestion in questions" 
+         class="panel panel-success">
+        <div class="panel-heading" style="padding: 2px 2px;">
+            <table width="100%">
+            <tr>
+            <td width="25%">
+                <span class="glyphicon glyphicon-question-sign"></span>
+                &nbsp;&nbsp;
+                <span class="panel-title">Question {{$index + 1}}</span>
+                &nbsp;&nbsp;
+               <span class="glyphicon glyphicon-star"
+                      ng-show="currentQuestion._sessionVars.marked">
+                </span>
+            </td>
+            <td width="60%">
+                <div class="btn-group btn-group-justified" role="group">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default btn-sm" 
+                                disabled="true">
+                            <span class="badge NS gi-1-25x">
+                                {{currentQuestion._sessionVars.timeSpent | duration}}
+                            </span>                
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group" 
+                         ng-show="currentQuestion._sessionVars.rating == null">
+                        <button type="button" class="btn btn-danger btn-sm"
+                                ng-click="rateSolution( 'H', currentQuestion )">
+                        &nbsp;
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group"
+                         ng-show="currentQuestion._sessionVars.rating == null">
+                        <button type="button" class="btn btn-warning btn-sm"
+                                ng-click="rateSolution( 'P' )">
+                        &nbsp;
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group"
+                         ng-show="currentQuestion._sessionVars.rating == null">
+                        <button type="button" class="btn btn-info btn-sm"
+                                ng-click="rateSolution( 'A' )">
+                        &nbsp;
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group"
+                         ng-show="currentQuestion._sessionVars.rating == null">
+                        <button type="button" class="btn btn-success btn-sm"
+                                ng-click="rateSolution( 'E' )">
+                        &nbsp;
+                        </button>
+                    </div>
+                </div>
+            </td>
+            <td align="right">
+                <span class="badge {{currentQuestion._difficultyLabel}}">
+                {{currentQuestion._difficultyLabel}}
+                </span>
+                <span class="badge {{currentQuestion.learningStats.currentLevel}}">
+                {{currentQuestion.learningStats.currentLevel}}
+                </span>                    
+            </td>
+            </tr>
+            </table>
+        </div>
+        <div class="panel-body">
+            <render-exercise-question initialize freeze-question>
+            </render-exercise-question>
+        </div>
+        <div class="panel-footer">
+            <b>Answer:</b><p>
+            <render-exercise-answer>
+            </render-exercise-answer>
+        </div>
+    </div>
+</div>
+
+<div class="screen_footer">
+    <div class="col-sm-3"
+         style="padding-left:0px, padding-right:0px"
+         ng-include="'/apps/jove_notes/ng/exercise/ex_execute/screens/_common_footer_controls.html'">
+    </div>
+    <div class="col-sm-5">
+    </div>
+    <div class="col-sm-4" style="text-align:right">
+    </div>
+</div>
+
+<div class="screen_message_bar">
+{{statusMessage}}
+</div>

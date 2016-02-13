@@ -5,6 +5,10 @@ testPaperApp.controller( 'ExerciseController', function( $scope, $http, $routePa
 var jnUtil = new JoveNotesUtil() ;
 
 // ---------------- Controller variables ---------------------------------------
+$scope.SESSION_CONFIGURE_STAGE = "SESSION_CONFIGURE_STAGE" ;
+$scope.SESSION_EXECUTE_STAGE   = "SESSION_EXECUTE_STAGE" ;
+$scope.SESSION_EVALUATE_STAGE  = "SESSION_EVALUATE_STAGE" ;
+
 $scope.alerts = [] ;
 
 $scope.pageTitle  = '' ;
@@ -27,6 +31,8 @@ $scope.sessionActive            = false ;
 
 $scope.pauseStartTime = 0 ;
 $scope.totalPauseTime = 0 ;
+
+$scope.currentStage = null ;
 
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing ExerciseController." ) ;
@@ -132,6 +138,11 @@ $scope.startTimer = function() {
     $scope.sessionStartTime = new Date().getTime() ;
     $scope.sessionActive    = true ;
     setTimeout( handleTimerEvent, 1000 ) ;
+}
+
+$scope.stopTimer = function() {
+    $scope.sessionEndTime = new Date().getTime() ;
+    $scope.sessionActive  = false ;
 }
 
 // ---------------- Private functions ------------------------------------------

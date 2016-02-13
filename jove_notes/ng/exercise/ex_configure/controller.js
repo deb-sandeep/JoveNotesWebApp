@@ -12,6 +12,8 @@ $scope.selCh   = null ;
 {
     log.debug( "Executing ExerciseConfigController." ) ;
     $scope.$parent.pageTitle = "Configure Exercise" ;
+    $scope.$parent.currentStage = $scope.$parent.SESSION_CONFIGURE_STAGE ;
+
     $scope.$parent.fetchAndProcessDataFromServer() ;
 }
 
@@ -47,6 +49,7 @@ $scope.decrementCardSelection = function( cardType, cardLevel ) {
 }
 
 $scope.executeExercise = function() {
+    $scope.$parent.currentStage = $scope.$parent.SESSION_EXECUTE_STAGE ;
     $location.path( "/ExecuteExercise" ) ;
 }
 
