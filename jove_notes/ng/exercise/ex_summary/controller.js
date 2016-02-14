@@ -16,10 +16,6 @@ testPaperApp.controller( 'ExerciseSummaryController', function( $scope, $http, $
 }
 
 // ---------------- Controller methods -----------------------------------------
-$scope.returnToDashboard = function() {
-    window.location.href = "/apps/jove_notes/ng/exercise/index.php" ;
-}
-
 $scope.getTotalScore = function() {
     var totalScore = 0 ;
     for( var i=0; i < $scope.$parent.questions.length; i++ ) {

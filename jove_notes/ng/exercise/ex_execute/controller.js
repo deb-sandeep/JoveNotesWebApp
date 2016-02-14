@@ -142,8 +142,8 @@ var transitionStudyQuestion = function() {
 
     setTimeout( function(){
         var divId = "#study_q_" + curQ.questionId ;
-        $( divId ).fadeOut( 500, transitionStudyQuestion ) ;
-    }, 2000 ) ;
+        $( divId ).fadeOut( 5000, transitionStudyQuestion ) ;
+    }, 25000 ) ;
 }
 
 function postSessionCreation( newSessionData ) {

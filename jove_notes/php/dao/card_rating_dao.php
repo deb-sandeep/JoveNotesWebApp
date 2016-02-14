@@ -73,7 +73,7 @@ where
   cr.student_name = '$userName' and 
   cr.timestamp between '$startDate' and '$endDate' 
 group by 
-  date, subject_name, chapter_name 
+  date, subject_name, chapter_name, cr.chapter_id 
 order 
   by cr.timestamp desc 
 QUERY;
