@@ -26,7 +26,7 @@ class CreateNewSessionAction extends APIAction {
 
     public function execute( $request, &$response ) {
 
-        $this->logger->error( "Executing CreateNewSessionAction" ) ;
+        $this->logger->debug( "Executing CreateNewSessionAction" ) ;
 
         $chapterIds = $request->requestBody->chapterIds ;
         if( empty( $chapterIds ) ) {

@@ -1,1 +1,96 @@
-<h1>Summary Page</h1>
+<div ng-include="'/apps/jove_notes/ng/exercise/ex_summary/header.html'">
+</div>
+
+<div class="screen_body">
+    <div class="table-responsive">
+        <table class="table table-condensed table-bordered">
+            <thead>
+            <tr class="info">
+                <th align="center">#</th>
+                <th align="center">Level (old)</th>
+                <th align="center">Level (new)</th>
+                <th align="center">Difficulty</th>
+                <th align="center">Time spent</th>
+                <th align="center">Rating</th>
+                <th align="center">Score</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="currentQuestion in $parent.questions">
+                <td>Q {{$index + 1}}</td>
+                <td align="center">
+                    <span class="badge {{currentQuestion.learningStats.currentLevel}}">
+                    {{currentQuestion.learningStats.currentLevel}}
+                    </span>                          
+                </td>
+                <td align="center">
+                    <span class="badge {{currentQuestion._sessionVars.newLevel}}">
+                    {{currentQuestion._sessionVars.newLevel}}
+                    </span>                          
+                </td>
+                <td align="center">
+                    <span class="badge {{currentQuestion._difficultyLabel}}">
+                    {{currentQuestion._difficultyLabel}}
+                    </span>
+                </td>
+                <td align="center">
+                    <span class="badge NS">
+                    {{currentQuestion._sessionVars.timeSpent | duration}}
+                    </span>                
+                </td>
+                <td>
+                    <button type="button" 
+                            class="btn-block btn-xs" 
+                            ng-class="currentQuestion._sessionVars.ratingTextCls"
+                            disabled="true">
+                    {{currentQuestion._sessionVars.ratingText}}
+                    </button>
+                </td>
+                <td>
+                    <button type="button"
+                            class="btn-block btn-xs" 
+                            ng-class="currentQuestion._sessionVars.ratingTextCls"
+                            disabled="true">
+                    {{currentQuestion._sessionVars.scoreEarned}}
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+            <thead>
+            <tr class="info">
+                <th align="center"></th>
+                <th align="center"></th>
+                <th align="center"></th>
+                <th align="center"></th>
+                <th align="center"></th>
+                <th align="center">Total score</th>
+                <th align="center">
+                    <button type="button"
+                            class="btn-block btn-xs btn-success" 
+                            disabled="true">
+                    {{getTotalScore()}}
+                    </button>
+                </th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<div class="screen_footer">
+    <div class="col-sm-3"
+         style="padding-left:0px, padding-right:0px">
+    </div>
+    <div class="col-sm-5">
+    </div>
+    <div class="col-sm-4" style="text-align:right">
+        <button type="button" class="btn btn-info btn-md"
+                ng-click="returnToDashboard()">
+            Return to dashboard
+        </button>
+    </div>
+</div>
+
+<div class="screen_message_bar">
+{{statusMessage}}
+</div>

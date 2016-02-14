@@ -24,6 +24,25 @@ QUERY;
         return $sessionId ;
 	}
 
+    function refreshProgressSnapshotOfLatestSession( $userName, $chapterId ) {
+
+$selQuery = <<< SEL_QUERY
+select max(session_id)
+from jove_notes.learning_session
+where 
+    student_name = '$userName' and
+    chapter_id = $chapterId
+SEL_QUERY;
+
+        $latestSessionId = parent::selectSingleValue( $selQuery, -1 ) ;
+        if( $latestSessionId == -1 ) {
+            $this->createNewSession( $userName, $chapterId ) ;
+        }
+        else {
+            $this->refreshProgressSnapshot( $userName, $chapterId, $latestSessionId ) ;
+        }
+    }    
+
     function refreshProgressSnapshot( $userName, $chapterId, $sessionId ) {
 
 $selQuery = <<< SEL_QUERY

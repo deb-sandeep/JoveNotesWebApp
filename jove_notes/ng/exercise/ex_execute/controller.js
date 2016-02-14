@@ -207,7 +207,8 @@ function associateSessionVariablesToQuestions( questions ) {
             rating       : null,
             ratingText   : null,
             ratingTextCls: "btn btn-sm",
-            scoreEarned  : 0
+            scoreEarned  : 0,
+            newLevel     : questions[i].learningStats.currentLevel
         }
     }
 }

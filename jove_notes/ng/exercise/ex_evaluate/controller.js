@@ -182,6 +182,7 @@ function callGradeCardAPI( question, chapterId, sessionId, cardId, curLevel, nex
             log.debug( "Grading of card " + cardId + " success." ) ;
             log.debug( "Score earned = " + data.score ) ;
             question._sessionVars.scoreEarned = data.score ;
+            question._sessionVars.newLevel    = nextLevel ;
             computeRatingCompletedFlag() ;
         }
     })

@@ -536,7 +536,7 @@ function computeAggregateFlashCardChapterList() {
 
                 updateCardCounts( chapter, rowData.subjectRD, rowData.syllabusRD ) ;
 
-                if( chapter.isFlashcardAuthorized && chapter.numSSRMaturedCards > 0 ) {
+                if( chapter.isFlashcardAuthorized ) {
                     chaptersForSubject.push( chapter.chapterId ) ;
                     chaptersForSyllabus.push( chapter.chapterId ) ;
                 }

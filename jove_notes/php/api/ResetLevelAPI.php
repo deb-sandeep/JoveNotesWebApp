@@ -8,10 +8,12 @@ class ResetLevelAPI extends AbstractJoveNotesAPI {
 	private $requestObj = null ;
 
 	private $clsDAO = null ;
+	private $lsDAO  = null ;
 
 	function __construct() {
 		parent::__construct() ;
 		$this->clsDAO = new CardLearningSummaryDAO() ;
+		$this->lsDAO  = new LearningSessionDAO() ;
 	}
 
 	public function doPost( $request, &$response ) {
@@ -27,6 +29,10 @@ class ResetLevelAPI extends AbstractJoveNotesAPI {
 										ExecutionContext::getCurrentUserName(), 
 										$chapterId,
 										$this->requestObj->level ) ;
+
+				$this->lsDAO->refreshProgressSnapshotOfLatestSession( 
+										ExecutionContext::getCurrentUserName(), 
+										$chapterId ) ;
 			}
 		}
 
