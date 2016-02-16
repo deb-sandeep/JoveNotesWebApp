@@ -7,7 +7,8 @@
     <div style="display:table-cell;text-align:center;">
     	<span class="gi-1-15x">{{pageTitle}}</span>
     </div>
-    <div style="display:table-cell;width:170px;text-align:right;">
+    <div style="display:table-cell;width:270px;text-align:right;">
+    	T/C - <span class="badge muted">{{timePerQuestion | duration}}</span>
         <span class="badge muted">{{sessionDuration | duration}}</span>
         <span class="small">[ {{userName}} ]</span>
     </div>
@@ -17,12 +18,12 @@
      style="padding-bottom:5px">
 
     <div class="col-sm-3 small">
-    	<span class="badge NS">{{progressSnapshot.numNS}}</span>
-    	<span class="badge L0">{{progressSnapshot.numL0}}</span>
-    	<span class="badge L1">{{progressSnapshot.numL1}}</span>
-    	<span class="badge L2">{{progressSnapshot.numL2}}</span>
-    	<span class="badge L3">{{progressSnapshot.numL3}}</span>
-    	<span class="badge MAS">{{progressSnapshot.numMAS}}</span>
+        <span class="badge NS">{{progressSnapshot.numNS}}</span>
+        <span class="badge L0">{{progressSnapshot.numL0}}</span>
+        <span class="badge L1">{{progressSnapshot.numL1}}</span>
+        <span class="badge L2">{{progressSnapshot.numL2}}</span>
+        <span class="badge L3">{{progressSnapshot.numL3}}</span>
+        <span class="badge MAS">{{progressSnapshot.numMAS}}</span>
     </div>
     <div class="col-sm-4 small" style="text-align:center;">
         <span class="badge L1">{{pointsLostInThisSession}}</span>
@@ -30,10 +31,9 @@
         <span class="badge L3">{{pointsEarnedInThisSession}}</span>
     </div>
     <div class="col-sm-5 small" style="text-align:right;">
-    	NC - <span class="badge muted">{{sessionStats.numCards}}</span>&nbsp;.&nbsp;
-    	NL - <span class="badge muted">{{sessionStats.numCardsLeft}}</span>&nbsp;.&nbsp;
-    	NA - <span class="badge muted">{{sessionStats.numCardsAnswered}}</span>&nbsp;.&nbsp;
-    	T/C - <span class="badge muted">{{timePerQuestion | duration}}</span>
+        C <span class="badge muted">{{sessionStats.numCards}}</span>&nbsp;.&nbsp;
+        L <span class="badge muted">{{sessionStats.numCardsLeft}}</span>&nbsp;.&nbsp;
+        A <span class="badge muted">{{sessionStats.numCardsAnswered}}</span>&nbsp;.&nbsp;
     </div>
 </div>
 
