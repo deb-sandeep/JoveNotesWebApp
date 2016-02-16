@@ -1,0 +1,23 @@
+<div class="ex_header">
+    <div class="ex_header_left_cell">
+        <img src="/apps/jove_notes/media/images/logo_for_navbar.png" 
+             style="height: 20px" />
+    </div>
+    <div class="ex_header_center_cell">
+        <span class="gi-1-15x">
+        Exercise - {{$parent.exerciseBanks[0].chapterDetails.chapterNumber}}.
+                   {{$parent.exerciseBanks[0].chapterDetails.subChapterNumber}} - 
+                   {{$parent.exerciseBanks[0].chapterDetails.chapterName}}
+        </span>
+    </div>
+    <div class="ex_header_right_cell">
+        <span class="small">
+        [ {{ userName }} ] &nbsp;
+        </span>
+        <div class="pull-right" style="margin-top: 0px">
+            <a href="/apps/jove_notes/ng/dashboard/index.php#Exercises">
+                <span class="glyphicon glyphicon-eye-open gi-1-5x"></span>
+            </a>
+        </div>
+    </div>
+</div>

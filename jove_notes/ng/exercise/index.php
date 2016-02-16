@@ -59,6 +59,7 @@ $pageConfig = array(
     <script src="/apps/jove_notes/ng/exercise/ex_execute/controller.js"></script>    
     <script src="/apps/jove_notes/ng/exercise/ex_evaluate/controller.js"></script>    
     <script src="/apps/jove_notes/ng/exercise/ex_summary/controller.js"></script>    
+    <script src="/apps/jove_notes/ng/exercise/ex_list/controller.js"></script>    
 
     <script>
     var userName   = '<?php echo ExecutionContext::getCurrentUserName() ?>' ;

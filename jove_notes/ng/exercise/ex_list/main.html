@@ -1,0 +1,35 @@
+<div ng-include="'/apps/jove_notes/ng/exercise/ex_list/header.html'">
+</div>
+
+<div class="screen_body" style="bottom:0;">
+    <div ng-repeat="currentQuestion in $parent.exerciseBanks[0].questions" 
+         class="panel panel-info">
+        <a name="anchor_q_{{currentQuestion.questionId}}"></a>
+        <div class="panel-heading" style="padding: 2px 2px;">
+            <table width="100%">
+            <tr>
+            <td width="30%">
+                <span class="glyphicon glyphicon-question-sign"></span>
+                &nbsp;&nbsp;
+                <span class="panel-title">Question {{$index + 1}}</span>
+                &nbsp;&nbsp;
+            </td>
+            <td width="30%">
+            </td>
+            <td align="right">
+                <span class="badge {{currentQuestion._difficultyLabel}}">
+                {{currentQuestion._difficultyLabel}}
+                </span>
+                <span class="badge {{currentQuestion.learningStats.currentLevel}}">
+                {{currentQuestion.learningStats.currentLevel}}
+                </span>                    
+            </td>
+            </tr>
+            </table>
+        </div>
+        <div class="panel-body">
+            <render-exercise-question initialize freeze-question>
+            </render-exercise-question>
+        </div>
+    </div>
+</div>
