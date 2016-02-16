@@ -88,8 +88,8 @@ function getNextLevel( curLevel, rating ) {
 
     var nextLevelMatrix = {
         //       E      A     P     H
-        NS : [ 'L1' , 'L1', 'L0', 'L0' ],
-        L0 : [ 'L1' , 'L0', 'L0', 'L0' ],
+        NS : [ 'MAS', 'L0', 'L0', 'L0' ],
+        L0 : [ 'MAS', 'L0', 'L0', 'L0' ],
         L1 : [ 'MAS', 'L1', 'L0', 'L0' ],
     } ;
 
