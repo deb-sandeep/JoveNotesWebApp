@@ -1,10 +1,18 @@
 testPaperApp.controller( 'ExerciseExecutionController', 
                          function( $scope, $http, $routeParams, $location, $window, $anchorScroll ) {
 // ---------------- Constants and inner class definition -----------------------
+var STUDY_Q_FADEOUT_TIME = 4000 ;
+var STUDY_Q_DEFAULT_SHOW_TIME = 26000 ;
 
 // ---------------- Local variables --------------------------------------------
 var currentQuestionAttemptStartTime = 0 ;
 var evaluateExerciseRouteChange     = false ;
+
+var curStudyQ = {
+    index : 0,
+    displayStartTime : 0,
+    fastFwdFlag : false
+}
 
 // ---------------- Controller variables ---------------------------------------
 $scope.CREATING_SESSION_SCREEN = "CreatingSessionScreen" ;
@@ -114,6 +122,10 @@ $scope.toggleMark = function( question ) {
     question._sessionVars.marked = !question._sessionVars.marked ;
 }
 
+$scope.fastForwardStudyQuestion = function() {
+    curStudyQ.fastFwdFlag = true ;
+}
+
 // ---------------- Private functions ------------------------------------------
 function handleTimerEvent() {
     if( $scope.currentScreen == $scope.ATTEMPT_SCREEN ) {
@@ -123,27 +135,47 @@ function handleTimerEvent() {
     }
 }
 
-var curStudyQIndex = 0 ;
-var transitionStudyQuestion = function() {
+function transitionStudyQuestion() {
 
     var questions = $scope.$parent.questions ;
-    if( curStudyQIndex >= questions.length ) {
-        questions[ questions.length - 1 ]._sessionVars.showForStudy = false ;
+    var displayTimeTilLNow = new Date().getTime() - curStudyQ.displayStartTime ;
+
+    if( curStudyQ.fastFwdFlag == true || 
+        displayTimeTilLNow >= STUDY_Q_DEFAULT_SHOW_TIME ) {
+
+        if( curStudyQ.index > 0 ) {
+            var divId = "#study_q_" + questions[ curStudyQ.index - 1 ].questionId ;
+            $( divId ).fadeOut( STUDY_Q_FADEOUT_TIME, showNextQuestionForStudy ) ;
+        }
+        else {
+            showNextQuestionForStudy() ;
+        }
+        return ;
+    }
+    setTimeout( transitionStudyQuestion, 500 ) ;
+}
+
+function showNextQuestionForStudy() {
+
+    var questions = $scope.$parent.questions ;
+
+    if( curStudyQ.index > 0 ) {
+        questions[ curStudyQ.index - 1 ]._sessionVars.showForStudy = false ;
+    }
+
+    if( curStudyQ.index >= questions.length ) {
         showSolvePaperScreen() ;
         return ;
     }
-    else if( curStudyQIndex > 0 ) {
-        questions[ curStudyQIndex - 1 ]._sessionVars.showForStudy = false ;
+    else {
+        var curQ = questions[ curStudyQ.index ] ;
+        curQ._sessionVars.showForStudy = true ;
+        curStudyQ.index++ ;
+
+        curStudyQ.displayStartTime = new Date().getTime() ;
+        curStudyQ.fastFwdFlag = false ;
+        setTimeout( transitionStudyQuestion, 500 ) ;
     }
-
-    var curQ = questions[ curStudyQIndex ] ;
-    curQ._sessionVars.showForStudy = true ;
-    curStudyQIndex++ ;
-
-    setTimeout( function(){
-        var divId = "#study_q_" + curQ.questionId ;
-        $( divId ).fadeOut( 8000, transitionStudyQuestion ) ;
-    }, 12000 ) ;
 }
 
 function postSessionCreation( newSessionData ) {
