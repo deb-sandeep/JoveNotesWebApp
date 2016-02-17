@@ -125,3 +125,11 @@
    background-color: black;
    opacity:0.9 !important;
 }
+
+body {
+  padding-right: 0px !important
+}
+
+.modal-open {
+  overflow-y: auto;
+}
