@@ -1,5 +1,6 @@
 testPaperApp.controller( 'ExerciseEvaluationController', function( $scope, $http, $routeParams, $location, $window ) {
 // ---------------- Constants and inner class definition -----------------------
+var MAX_GRADE_CARD_API_CALL_RETRIES = 3 ;
 
 // ---------------- Local variables --------------------------------------------
 
@@ -21,8 +22,6 @@ $scope.allQuestionsRated = false ;
 $scope.rateSolution = function( rating, question ) {
 
     log.debug( "Rating current card as " + rating )  ;
-
-    populateRatingTextAndCls( rating, question ) ;
 
     var cardId       = question.questionId ;
     var curLevel     = question.learningStats.currentLevel ;
@@ -55,7 +54,8 @@ $scope.rateSolution = function( rating, question ) {
         timeSpent,
         numAttempts,
         overshootPct,
-        0 
+        0,
+        populateRatingTextAndCls 
     ) ;
 }
 
@@ -160,7 +160,7 @@ function checkInvalidLoad() {
  */
 function callGradeCardAPI( question, chapterId, sessionId, cardId, curLevel, nextLevel, 
                            rating, timeTaken, numAttempts, overshootPct,
-                           previousCallAttemptNumber ) {
+                           previousCallAttemptNumber, callback ) {
 
     var currentCallAttemptNumber = previousCallAttemptNumber + 1 ;
 
@@ -197,6 +197,7 @@ function callGradeCardAPI( question, chapterId, sessionId, cardId, curLevel, nex
             question._sessionVars.scoreEarned = data.score ;
             question._sessionVars.newLevel    = nextLevel ;
             computeRatingCompletedFlag() ;
+            callback( rating, question ) ;
         }
     })
     .error( function( data, status ){
@@ -208,7 +209,7 @@ function callGradeCardAPI( question, chapterId, sessionId, cardId, curLevel, nex
                 callGradeCardAPI( 
                     question, chapterId, sessionId, cardId, curLevel, nextLevel, 
                     rating, timeTaken, numAttempts, overshootPct, 
-                    currentCallAttemptNumber 
+                    currentCallAttemptNumber, callback 
                 ) ;
                 return ;
             }
@@ -217,7 +218,7 @@ function callGradeCardAPI( question, chapterId, sessionId, cardId, curLevel, nex
 
         $scope.addErrorAlert( "Grade Card API call failed. " + 
                               "Status = " + status + ", " + 
-                              "Response = " + response ) ;
+                              "Response = " + data ) ;
     }) ;
 }
 

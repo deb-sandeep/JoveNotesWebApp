@@ -38,4 +38,34 @@ String.prototype.replaceAll = function( substringToBeReplaced, replacementString
 // -----------------------------------------------------------------------------
 // Utility functions
 // -----------------------------------------------------------------------------
+function callIfServerAlive( successCallback, errorCallback, previousCallAttemptNumber ) {
 
+    if( typeof( previousCallAttemptNumber )==='undefined' ) 
+        previousCallAttemptNumber = 0 ;
+
+    var currentCallAttemptNumber = previousCallAttemptNumber + 1 ;
+
+    $.get( '/__fw__/api/Ping', function( data ){
+        if( typeof data === 'string' ) {
+            if( data.trim() == 'Pong' ) {
+                successCallback() ;
+            }
+            else if( errorCallback != null ) {
+                errorCallback() ;
+            }
+        }
+    })
+    .fail( function( data, status ){
+        log.debug( "Faulty connection determined." ) ;
+        if( currentCallAttemptNumber < 3 ) {
+            log.debug( "Retrying the call again." ) ;
+            callIfServerAlive( successCallback, errorCallback, 
+                               currentCallAttemptNumber ) ; 
+            return ;
+        }
+
+        if( errorCallback != null ) {
+            errorCallback() ;
+        }
+    }) ;
+}

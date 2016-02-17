@@ -69,10 +69,17 @@ $scope.$on('$locationChangeStart', function( ev ) {
 
 // ---------------- Controller methods -----------------------------------------
 $scope.showEvaluateScreen = function() {
-    evaluateExerciseRouteChange = true ;
-    $scope.$parent.currentStage = $scope.$parent.SESSION_EVALUATE_STAGE ;
-    $scope.$parent.stopTimer() ;
-    $location.path( "/EvaluateExercise" ) ;
+    callIfServerAlive( function(){
+        evaluateExerciseRouteChange = true ;
+        $scope.$parent.currentStage = $scope.$parent.SESSION_EVALUATE_STAGE ;
+        $scope.$parent.stopTimer() ;
+        $location.path( "/EvaluateExercise" ) ;
+        $scope.$apply() ;
+    },
+    function() {
+        $scope.addErrorAlert( "Server seems to be down. Check network " + 
+                              "connection and try again." ) ;        
+    } ) ;
 }
 
 $scope.getQuestionPanelClass = function( question ) {
