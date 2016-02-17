@@ -1,7 +1,10 @@
 <div class="ex_header">
     <div class="ex_header_left_cell">
-        <img src="/apps/jove_notes/media/images/logo_for_navbar.png" 
-             style="height: 20px" />
+        <a ng-click="fastTrack()">
+            <img src="/apps/jove_notes/media/images/logo_for_navbar.png" 
+                 style="height: 20px" />
+        </a>
+        <span ng-if="$parent.fastTrackRequested"> (F) </span>
     </div>
     <div class="ex_header_center_cell">
         <span class="gi-1-15x">{{$parent.pageTitle}}</span>

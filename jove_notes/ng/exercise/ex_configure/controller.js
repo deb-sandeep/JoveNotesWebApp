@@ -53,6 +53,10 @@ $scope.executeExercise = function() {
     $location.path( "/ExecuteExercise" ) ;
 }
 
+$scope.fastTrack = function() {
+    $scope.$parent.fastTrackRequested = !$scope.$parent.fastTrackRequested ;
+}
+
 // ---------------- Private functions ------------------------------------------
 function updateCardSelection( cardType, cardLevel, increment ) {
 

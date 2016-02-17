@@ -49,7 +49,12 @@ $scope.numQDone        = 0 ;
 
 // -------------Scope watch and event functions --------------------------------
 $scope.$on( 'onRenderComplete', function( scope ){
-    transitionStudyQuestion() ;
+    if( $scope.$parent.fastTrackRequested ) {
+        showSolvePaperScreen() ;
+    }
+    else {
+        transitionStudyQuestion() ;
+    }
 } ) ;
 
 $scope.$on( 'timerEvent', function( event, args ){
@@ -237,7 +242,7 @@ function associateSessionVariablesToQuestions( questions ) {
             marked       : false,
             timeSpent    : 0,
             rating       : null,
-            ratingText   : null,
+            ratingText   : "Not Rated",
             ratingTextCls: "btn btn-sm",
             scoreEarned  : 0,
             newLevel     : questions[i].learningStats.currentLevel

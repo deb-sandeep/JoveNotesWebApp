@@ -64,6 +64,21 @@ $scope.showSummaryScreen = function() {
     $location.path( "/ExerciseSummary" ) ;
 }
 
+$scope.showTimeDuration = function( currentQuestion ) {
+    if( !$scope.$parent.fastTrackRequested ) {
+         return currentQuestion._sessionVars.timeSpent > 0 ;
+    }
+    return true ;
+}
+
+$scope.showRatingButton = function( currentQuestion ) {
+    if( !$scope.$parent.fastTrackRequested ) {
+        return ( currentQuestion._sessionVars.rating == null ) &&
+               ( currentQuestion._sessionVars.timeSpent > 0 ) ;
+    }
+    return true ;
+}
+
 // ---------------- Private functions ------------------------------------------
 function computeRatingCompletedFlag() {
 
@@ -73,11 +88,9 @@ function computeRatingCompletedFlag() {
         var question = $scope.$parent.questions[i] ;
         var vars     = question._sessionVars ;
 
-        if( vars.timeSpent > 0 ) {
-            if( vars.ratingText == null || vars.scoreEarned == 0 ) {
-                allRatedFlag = false ;
-                break ;
-            }
+        if( vars.ratingText == null || vars.scoreEarned == 0 ) {
+            allRatedFlag = false ;
+            break ;
         }
     }
 

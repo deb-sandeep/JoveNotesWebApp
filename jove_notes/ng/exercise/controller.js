@@ -35,6 +35,8 @@ $scope.totalPauseTime = 0 ;
 
 $scope.currentStage = null ;
 
+$scope.fastTrackRequested = false ;
+
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing ExerciseController." ) ;
 
