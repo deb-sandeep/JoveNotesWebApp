@@ -1,5 +1,6 @@
 testPaperApp.controller( 'ExerciseEvaluationController', function( $scope, $http, $routeParams, $location, $window ) {
 // ---------------- Constants and inner class definition -----------------------
+var MAX_GRADE_CARD_API_CALL_RETRIES = 3 ;
 
 // ---------------- Local variables --------------------------------------------
 
@@ -21,8 +22,6 @@ $scope.allQuestionsRated = false ;
 $scope.rateSolution = function( rating, question ) {
 
     log.debug( "Rating current card as " + rating )  ;
-
-    populateRatingTextAndCls( rating, question ) ;
 
     var cardId       = question.questionId ;
     var curLevel     = question.learningStats.currentLevel ;
@@ -55,13 +54,29 @@ $scope.rateSolution = function( rating, question ) {
         timeSpent,
         numAttempts,
         overshootPct,
-        0 
+        0,
+        populateRatingTextAndCls 
     ) ;
 }
 
 $scope.showSummaryScreen = function() {
     $scope.$parent.currentStage = $scope.$parent.SESSION_SUMMARY_STAGE ;
     $location.path( "/ExerciseSummary" ) ;
+}
+
+$scope.showTimeDuration = function( currentQuestion ) {
+    if( !$scope.$parent.fastTrackRequested ) {
+         return currentQuestion._sessionVars.timeSpent > 0 ;
+    }
+    return true ;
+}
+
+$scope.showRatingButton = function( currentQuestion ) {
+    if( !$scope.$parent.fastTrackRequested ) {
+        return ( currentQuestion._sessionVars.rating == null ) &&
+               ( currentQuestion._sessionVars.timeSpent > 0 ) ;
+    }
+    return true ;
 }
 
 // ---------------- Private functions ------------------------------------------
@@ -73,11 +88,9 @@ function computeRatingCompletedFlag() {
         var question = $scope.$parent.questions[i] ;
         var vars     = question._sessionVars ;
 
-        if( vars.timeSpent > 0 ) {
-            if( vars.ratingText == null || vars.scoreEarned == 0 ) {
-                allRatedFlag = false ;
-                break ;
-            }
+        if( vars.ratingText == null || vars.scoreEarned == 0 ) {
+            allRatedFlag = false ;
+            break ;
         }
     }
 
@@ -88,8 +101,8 @@ function getNextLevel( curLevel, rating ) {
 
     var nextLevelMatrix = {
         //       E      A     P     H
-        NS : [ 'L1' , 'L1', 'L0', 'L0' ],
-        L0 : [ 'L1' , 'L0', 'L0', 'L0' ],
+        NS : [ 'MAS', 'L0', 'L0', 'L0' ],
+        L0 : [ 'MAS', 'L0', 'L0', 'L0' ],
         L1 : [ 'MAS', 'L1', 'L0', 'L0' ],
     } ;
 
@@ -147,7 +160,7 @@ function checkInvalidLoad() {
  */
 function callGradeCardAPI( question, chapterId, sessionId, cardId, curLevel, nextLevel, 
                            rating, timeTaken, numAttempts, overshootPct,
-                           previousCallAttemptNumber ) {
+                           previousCallAttemptNumber, callback ) {
 
     var currentCallAttemptNumber = previousCallAttemptNumber + 1 ;
 
@@ -184,6 +197,7 @@ function callGradeCardAPI( question, chapterId, sessionId, cardId, curLevel, nex
             question._sessionVars.scoreEarned = data.score ;
             question._sessionVars.newLevel    = nextLevel ;
             computeRatingCompletedFlag() ;
+            callback( rating, question ) ;
         }
     })
     .error( function( data, status ){
@@ -195,7 +209,7 @@ function callGradeCardAPI( question, chapterId, sessionId, cardId, curLevel, nex
                 callGradeCardAPI( 
                     question, chapterId, sessionId, cardId, curLevel, nextLevel, 
                     rating, timeTaken, numAttempts, overshootPct, 
-                    currentCallAttemptNumber 
+                    currentCallAttemptNumber, callback 
                 ) ;
                 return ;
             }
@@ -204,7 +218,7 @@ function callGradeCardAPI( question, chapterId, sessionId, cardId, curLevel, nex
 
         $scope.addErrorAlert( "Grade Card API call failed. " + 
                               "Status = " + status + ", " + 
-                              "Response = " + response ) ;
+                              "Response = " + data ) ;
     }) ;
 }
 

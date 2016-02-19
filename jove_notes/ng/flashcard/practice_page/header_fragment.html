@@ -8,7 +8,8 @@
     <div style="display:table-cell;text-align:center;">
     	<span class="gi-1-15x">{{$parent.pageTitle}}</span>
     </div>
-    <div style="display:table-cell;width:170px;text-align:right;">
+    <div style="display:table-cell;width:270px;text-align:right;">
+        <span class="badge muted">{{$parent.timePerQuestion | duration}}</span>
         <span class="badge muted">{{$parent.sessionDuration | duration}}</span>
         <span class="small">[ {{$parent.userName}} ]</span>
     </div>
@@ -32,10 +33,9 @@
         <span class="badge L3">{{pointsEarnedInThisSession}}</span>
     </div>
     <div class="col-sm-4 small" style="text-align:right;">
-    	NC - <span class="badge muted">{{$parent.sessionStats.numCards}}</span>&nbsp;.&nbsp;
-    	NL - <span class="badge muted">{{$parent.sessionStats.numCardsLeft}}</span>&nbsp;.&nbsp;
-    	NA - <span class="badge muted">{{$parent.sessionStats.numCardsAnswered}}</span>&nbsp;.&nbsp;
-    	T/C - <span class="badge muted">{{$parent.timePerQuestion | duration}}</span>
+    	N <span class="badge muted">{{$parent.sessionStats.numCards}}</span>&nbsp;.&nbsp;
+    	L <span class="badge muted">{{$parent.sessionStats.numCardsLeft}}</span>&nbsp;.&nbsp;
+    	C <span class="badge muted">{{$parent.sessionStats.numCardsAnswered}}</span>&nbsp;.&nbsp;
     </div>
 </div>
 

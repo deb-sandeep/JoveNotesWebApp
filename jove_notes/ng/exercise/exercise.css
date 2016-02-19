@@ -10,7 +10,7 @@
 
 .ex_header_left_cell {
     display:table-cell;
-    width:40px;
+    width:100px;
 }
 
 .ex_header_center_cell {
@@ -124,4 +124,12 @@
 .modal-backdrop {
    background-color: black;
    opacity:0.9 !important;
+}
+
+body {
+  padding-right: 0px !important
+}
+
+.modal-open {
+  overflow-y: auto;
 }

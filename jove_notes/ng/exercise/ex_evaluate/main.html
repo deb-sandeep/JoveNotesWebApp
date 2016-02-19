@@ -22,49 +22,45 @@
                         <button type="button" class="btn btn-default btn-sm" 
                                 disabled="true">
                             <span class="badge NS gi-1-25x"
-                                  ng-show="currentQuestion._sessionVars.timeSpent > 0">
+                                  ng-show="showTimeDuration( currentQuestion )">
                                 {{currentQuestion._sessionVars.timeSpent | duration}}
                             </span>                
                             <span class="badge NS gi-1-25x"
-                                  ng-show="currentQuestion._sessionVars.timeSpent == 0">
+                                  ng-hide="showTimeDuration( currentQuestion )">
                                 Not Attempted
                             </span>                
                         </button>
                     </div>
                     <div class="btn-group" role="group" 
-                         ng-show="currentQuestion._sessionVars.rating == null &&
-                                  currentQuestion._sessionVars.timeSpent > 0">
+                         ng-show="showRatingButton( currentQuestion )">
                         <button type="button" class="btn btn-danger btn-sm"
                                 ng-click="rateSolution( 'H', currentQuestion )">
                         &nbsp;
                         </button>
                     </div>
                     <div class="btn-group" role="group"
-                         ng-show="currentQuestion._sessionVars.rating == null &&
-                                  currentQuestion._sessionVars.timeSpent > 0">
+                         ng-show="showRatingButton( currentQuestion )">
                         <button type="button" class="btn btn-warning btn-sm"
                                 ng-click="rateSolution( 'P', currentQuestion )">
                         &nbsp;
                         </button>
                     </div>
                     <div class="btn-group" role="group"
-                         ng-show="currentQuestion._sessionVars.rating == null &&
-                                  currentQuestion._sessionVars.timeSpent > 0">
+                         ng-show="showRatingButton( currentQuestion )">
                         <button type="button" class="btn btn-info btn-sm"
                                 ng-click="rateSolution( 'A', currentQuestion )">
                         &nbsp;
                         </button>
                     </div>
                     <div class="btn-group" role="group"
-                         ng-show="currentQuestion._sessionVars.rating == null &&
-                                  currentQuestion._sessionVars.timeSpent > 0">
+                         ng-show="showRatingButton( currentQuestion )">
                         <button type="button" class="btn btn-success btn-sm"
                                 ng-click="rateSolution( 'E', currentQuestion )">
                         &nbsp;
                         </button>
                     </div>
                     <div class="btn-group" role="group"
-                         ng-show="currentQuestion._sessionVars.ratingText != null">
+                         ng-show="currentQuestion._sessionVars.rating != null">
                         <button type="button" 
                                 ng-class="currentQuestion._sessionVars.ratingTextCls"
                                 disabled="true">
@@ -72,7 +68,7 @@
                         </button>
                     </div>
                     <div class="btn-group" role="group"
-                         ng-show="currentQuestion._sessionVars.ratingText != null">
+                         ng-show="currentQuestion._sessionVars.rating != null">
                         <button type="button" 
                                 ng-class="currentQuestion._sessionVars.ratingTextCls"
                                 disabled="true">
@@ -115,7 +111,7 @@
     </div>
     <div class="col-sm-4" style="text-align:right">
         <button type="button" class="btn btn-info btn-md"
-                ng-disabled="!allQuestionsRated"
+                ng-disabled="!allQuestionsRated && !$parent.fastTrackRequested"
                 ng-click="showSummaryScreen()">
             Show Summary
         </button>

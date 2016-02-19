@@ -42,6 +42,7 @@
                     </table>
                 </th>
                 <th></th>
+                <th></th>
             </tr>   
         </thead>    
         <tbody>
@@ -93,6 +94,13 @@
                        ng-show="rowData.isDeleteAuthorized"
                        ng-click="deleteChapter( rowData.chapterId )">
                         <span class="glyphicon glyphicon-remove" style="color:red"></span>
+                    </a>
+                </td>
+                <td>
+                    <a type="button" class="btn btn-default btn-xs"
+                       ng-show="rowData.rowType == 2"
+                       href="/apps/jove_notes/ng/exercise/index.php?chapterId={{rowData.chapterId}}#/ExerciseList">
+                        <span class="glyphicon glyphicon-list" style="color:blue"></span>
                     </a>
                 </td>
             </tr>   

@@ -88,7 +88,7 @@
     </div>
     <div class="col-sm-4" style="text-align:right">
         <button type="button" class="btn btn-success btn-sm" 
-                ng-disabled="numQNotReviewed > 0"
+                ng-disabled="numQNotReviewed > 0 && !$parent.fastTrackRequested"
                 ng-click="showEvaluateScreen()">
             Exercise Completed!
         </button>

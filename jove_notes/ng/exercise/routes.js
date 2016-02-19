@@ -21,6 +21,10 @@ testPaperApp.config( [ '$routeProvider',
             templateUrl: '/apps/jove_notes/ng/exercise/ex_summary/main.html',
             controller: 'ExerciseSummaryController'
         })
+        .when('/ExerciseList', {
+            templateUrl: '/apps/jove_notes/ng/exercise/ex_list/main.html',
+            controller: 'ExerciseListController'
+        })
         .otherwise({
             redirectTo: '/ConfigureExercise'
         }) ;
