@@ -94,9 +94,9 @@
         </div>
         <div class="panel-footer">
             <b>Answer:</b><p>
-            <render-exercise-answer ng-if="currentQuestion._sessionVars.timeSpent > 0">
+            <render-exercise-answer ng-if="currentQuestion._sessionVars.timeSpent > 0 || $parent.fastTrackRequested">
             </render-exercise-answer>
-            <span ng-if="currentQuestion._sessionVars.timeSpent == 0">
+            <span ng-if="currentQuestion._sessionVars.timeSpent == 0 && !$parent.fastTrackRequested">
                 Answer will not be displayed for questions which are not attempted.
             </span>
         </div>
