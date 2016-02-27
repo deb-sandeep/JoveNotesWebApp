@@ -19,6 +19,12 @@
                 </a>
             </li>
             <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="pushQuestion()">
+                    <span class="glyphicon glyphicon-send"></span>
+                    Push question
+                </a>
+            </li>
+            <li role="presentation">
                 <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L0-Hdr')">Toggle Title Header</a>
             </li>
             <li role="presentation">
@@ -64,6 +70,24 @@
 
             <button type="button" 
                     class="btn btn-info btn-lg"
+                    ng-click="increaseFontSize()"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Increase font size">
+                <span class="glyphicon glyphicon-text-size"></span>
+                <span class="glyphicon glyphicon-plus-sign"></span>
+            </button>
+
+            <button type="button" 
+                    class="btn btn-info btn-lg"
+                    ng-click="decreaseFontSize()"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Decrease font size">
+                <span class="glyphicon glyphicon-text-size"></span>
+                <span class="glyphicon glyphicon-minus-sign"></span>
+            </button>
+
+            <button type="button" 
+                    class="btn btn-info btn-lg"
                     ng-click="purgeCard()"
                     data-toggle="tooltip" data-placement="top" 
                     title="Purge Card"
@@ -77,17 +101,6 @@
                     data-toggle="tooltip" data-placement="top" 
                     title="Pause Session">
                 <span class="glyphicon glyphicon-pause"></span>
-            </button>
-
-            <!-- The Push Question button button. This is shown only if we are  -->
-            <!-- conducting a remote session                                    -->
-            <button type="button" 
-                    class="btn btn-success btn-lg"
-                    ng-click="pushQuestion()"
-                    ng-show="studyCriteria.push"
-                    data-toggle="tooltip" data-placement="top" 
-                    title="Push question">
-                <span class="glyphicon glyphicon-send"></span>
             </button>
 
             <!-- The Push Answer button button. This is shown only if we are  -->
@@ -233,17 +246,6 @@
                 <span class="glyphicon glyphicon-share-alt"></span>
             </button>
 
-            <!-- The Push Question button button. This is shown only if we are  -->
-            <!-- conducting a remote session                                    -->
-            <button type="button" 
-                    class="btn btn-success btn-lg"
-                    ng-click="pushQuestion()"
-                    ng-show="studyCriteria.push"
-                    data-toggle="tooltip" data-placement="top" 
-                    title="Push question">
-                <span class="glyphicon glyphicon-send"></span>
-            </button>
-            
             <button type="button" 
                     class="btn btn-warning btn-lg"
                     ng-click="pauseSession()"
@@ -260,6 +262,24 @@
                     ng-show="currentQuestion.markedForReview">
                 <span class="glyphicon glyphicon-export"></span>
             </button>
+
+            <button type="button" 
+                    class="btn btn-info btn-lg"
+                    ng-click="increaseFontSize()"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Increase font size">
+                <span class="glyphicon glyphicon-text-size"></span>
+                <span class="glyphicon glyphicon-plus-sign"></span>
+            </button>
+
+            <button type="button" 
+                    class="btn btn-info btn-lg"
+                    ng-click="decreaseFontSize()"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Decrease font size">
+                <span class="glyphicon glyphicon-text-size"></span>
+                <span class="glyphicon glyphicon-minus-sign"></span>
+            </button>
         </div>
 
         <!-- The toggle header popup -->
@@ -275,6 +295,12 @@
                 <a role="menuitem" tabindex="-1" ng-click="endSession()">
                     <span class="glyphicon glyphicon-off"></span>
                     End session
+                </a>
+            </li>
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="pushQuestion()">
+                    <span class="glyphicon glyphicon-send"></span>
+                    Push question
                 </a>
             </li>
             <li role="presentation">

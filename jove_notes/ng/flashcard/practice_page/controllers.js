@@ -35,6 +35,9 @@ var totalQuestionPauseTime = 0 ;
 
 var currentTimerStage = PROGRESS_STAGE_GREEN ;
 
+var initialQADivFontSize = -1 ;
+var currentFontZoomDelta = 0 ;
+
 // ---------------- Controller variables ---------------------------------------
 $scope.showL0Header     = true ;
 $scope.showL1Header     = true ;
@@ -273,7 +276,58 @@ $scope.markForReview = function() {
     } ) ;
 }
 
+$scope.increaseFontSize = function() {
+    currentFontZoomDelta++ ;
+    resizeFontRecursive( document.getElementById( "flashCardQDiv" ), 1 ) ;
+    resizeFontRecursive( document.getElementById( "flashCardADiv" ), 1 ) ;
+}
+
+$scope.decreaseFontSize = function() {
+    currentFontZoomDelta-- ;
+    resizeFontRecursive( document.getElementById( "flashCardQDiv" ), -1 ) ;
+    resizeFontRecursive( document.getElementById( "flashCardADiv" ), -1 ) ;
+}
+
+$scope.resetFontForQDiv = function() {
+
+    if( initialQADivFontSize == -1 ) {
+        initialQADivFontSize = parseInt( $( "#flashCardQDiv" ).css( 'font-size' ) ) ;
+    }
+    else {
+        $( "#flashCardQDiv" ).css( 'font-size', initialQADivFontSize ) ;
+    }
+}
+
+$scope.resetFontForADiv = function() {
+
+    if( initialQADivFontSize == -1 ) {
+        initialQADivFontSize = parseInt( $( "#flashCardQDiv" ).css( 'font-size' ) ) ;
+    }
+    else {
+        $( "#flashCardADiv" ).css( 'font-size', initialQADivFontSize ) ;
+    }
+}
+
+$scope.applyZoomDeltaToQFont = function() {
+    if( currentFontZoomDelta != 0 ) {
+        var qDiv = document.getElementById( "flashCardQDiv" ) ;
+        resizeFontRecursive( qDiv, currentFontZoomDelta ) ;
+    }
+}
+
+$scope.applyZoomDeltaToAFont = function() {
+    if( currentFontZoomDelta != 0 ) {
+        var aDiv = document.getElementById( "flashCardADiv" ) ;
+        resizeFontRecursive( aDiv, currentFontZoomDelta ) ;
+    }
+}
+
 // ---------------- Private functions ------------------------------------------
+function resizeFontRecursive( domElement, magnifier ) {
+    var curSize = parseInt( $( domElement ).css( 'font-size' ) ) + magnifier ;
+    $( domElement ).css( 'font-size', curSize ) ;
+}
+
 function loadLocalState() {
 
     var crit = $.cookie( 'flashCardFooterDir' ) ;

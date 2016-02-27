@@ -1,4 +1,4 @@
-<div align="center">
+<div align="center" id="flashCardQDiv">
 	<span class="glyphicon glyphicon-cloud-upload" 
 		  style="color: #6464FF"
 	      ng-show="pushQuestionSuccess"></span>
@@ -8,7 +8,8 @@
 	<render-flash-card-question></render-flash-card-question>
 </div>
 <hr>
-<div align="{{answerAlign}}" style="padding-left : 15px; padding-right : 15px;">
+<div align="{{answerAlign}}" style="padding-left : 15px; padding-right : 15px;"
+      id="flashCardADiv">
 	<span class="glyphicon glyphicon-cloud-upload" 
 		  style="color: #6464FF"
 	      ng-show="pushAnswerSuccess"></span>

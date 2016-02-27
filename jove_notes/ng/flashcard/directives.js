@@ -52,6 +52,8 @@ flashCardApp.directive( 'renderFlashCardQuestion', function() {
 					var questionUI = handler.getQuestionUI() ;
 
 					element.empty() ;
+					$scope.resetFontForQDiv() ;
+
 					element.append( questionUI ) ;
 
 					handler.initializeQuestionUI() ;
@@ -60,6 +62,7 @@ flashCardApp.directive( 'renderFlashCardQuestion', function() {
 					element.find( 'pre code' ).each( function(i, block) {
 						hljs.highlightBlock( block ) ;
 					});
+					$scope.applyZoomDeltaToQFont() ;
   				}
 			}) ; 
         }
@@ -85,6 +88,8 @@ flashCardApp.directive( 'renderFlashCardAnswer', function() {
 					var answerUI = handler.getAnswerUI() ;
 					
 					element.empty() ;
+					$scope.resetFontForADiv() ;
+
 					element.append( answerUI ) ;
 
 					handler.initializeAnswerUI() ;
@@ -93,6 +98,7 @@ flashCardApp.directive( 'renderFlashCardAnswer', function() {
 					element.find( 'pre code' ).each( function(i, block) {
 						hljs.highlightBlock( block ) ;
 					});
+					$scope.applyZoomDeltaToAFont() ;
 				}
 			}) ; 
         }
