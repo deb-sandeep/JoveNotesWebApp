@@ -379,6 +379,9 @@ function filterQuestions( questions, numQuestions, strategy ) {
                      q2.learningStats.lastAttemptTime ) ;
         }) ;
     }
+    else if( strategy == 'Random' ) {
+        questions.shuffle() ;
+    }
 
     for( var i=0; i<numQuestions; i++ ) {
         filteredQuestions.push( questions[i] ) ;
