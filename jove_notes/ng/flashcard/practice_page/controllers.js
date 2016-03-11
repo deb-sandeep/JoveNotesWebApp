@@ -93,6 +93,8 @@ $scope.gradingButtonPlacement = "right" ;
         return ;
     }
 
+    fetchZoomDeltaFromServer() ;
+
     // Publish the start message if required and only after a successful publish,
     // we start the timer and show the next card. i.e. We don't start the session
     // till we have published the start session messsage in case push is 
@@ -280,12 +282,14 @@ $scope.increaseFontSize = function() {
     currentFontZoomDelta++ ;
     resizeFontRecursive( document.getElementById( "flashCardQDiv" ), 1 ) ;
     resizeFontRecursive( document.getElementById( "flashCardADiv" ), 1 ) ;
+    saveZoomDeltaAtServer() ;
 }
 
 $scope.decreaseFontSize = function() {
     currentFontZoomDelta-- ;
     resizeFontRecursive( document.getElementById( "flashCardQDiv" ), -1 ) ;
     resizeFontRecursive( document.getElementById( "flashCardADiv" ), -1 ) ;
+    saveZoomDeltaAtServer() ;
 }
 
 $scope.resetFontForQDiv = function() {
@@ -1158,6 +1162,19 @@ function callRFMApiToPauseResumeSession( action, previousCallAttemptNumber, call
                       "Response = " + data ;
         log.error( message ) ;
         $scope.addErrorAlert( message ) ;
+    }) ;
+}
+
+function fetchZoomDeltaFromServer() {
+    $http.get( '/__fw__/api/UserPreference?keys=jove_notes.flashCardFontZoomDelta' )
+    .success( function( data ){
+        currentFontZoomDelta = data[ "jove_notes.flashCardFontZoomDelta" ] ;
+    } ) ;
+}
+
+function saveZoomDeltaAtServer() {
+    $http.put( '/__fw__/api/UserPreference', { 
+        "jove_notes.flashCardFontZoomDelta" : currentFontZoomDelta
     }) ;
 }
 
