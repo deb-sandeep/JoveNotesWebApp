@@ -93,31 +93,32 @@ $scope.gradingButtonPlacement = "right" ;
         return ;
     }
 
-    fetchZoomDeltaFromServer() ;
+    fetchZoomDeltaFromServer( function(){
 
-    // Publish the start message if required and only after a successful publish,
-    // we start the timer and show the next card. i.e. We don't start the session
-    // till we have published the start session messsage in case push is 
-    // configured. If push is not configured, the callback would be called without
-    // publishing any message to the server.
-    callRFMApiToPublisStartSession( function(){
+        // Publish the start message if required and only after a successful 
+        // publish, we start the timer and show the next card. i.e. We don't 
+        // start the session till we have published the start session messsage 
+        // in case push is configured. If push is not configured, the callback 
+        // would be called without publishing any message to the server.
+        callRFMApiToPublisStartSession( function(){
 
-        log.debug( "Starting timer." ) ;
-        setTimeout( handleTimerEvent, 1000 ) ;
+            log.debug( "Starting timer." ) ;
+            setTimeout( handleTimerEvent, 1000 ) ;
 
-        onWindowResize() ;
-        window.addEventListener( "resize", onWindowResize ) ;
+            onWindowResize() ;
+            window.addEventListener( "resize", onWindowResize ) ;
 
-        window.addEventListener( "beforeunload", function ( event ) {
-            if( sessionActive ) {
-                event.returnValue = 
-                    "A session is in progress. \nIf you leave this page " + 
-                    $scope.$parent.sessionStats.numCardsLeft + 
-                    " cards will remains unattempted" ;
-            }
-        });
+            window.addEventListener( "beforeunload", function ( event ) {
+                if( sessionActive ) {
+                    event.returnValue = 
+                        "A session is in progress. \nIf you leave this page " + 
+                        $scope.$parent.sessionStats.numCardsLeft + 
+                        " cards will remains unattempted" ;
+                }
+            });
 
-        showNextCard() ;
+            showNextCard() ;
+        }) ;
     }) ;
 }
 
@@ -1165,13 +1166,16 @@ function callRFMApiToPauseResumeSession( action, previousCallAttemptNumber, call
     }) ;
 }
 
-function fetchZoomDeltaFromServer() {
+function fetchZoomDeltaFromServer( callback ) {
     $http.get( '/__fw__/api/UserPreference?keys=jove_notes.flashCardFontZoomDelta' )
     .success( function( data ){
         currentFontZoomDelta = data[ "jove_notes.flashCardFontZoomDelta" ] ;
-        $scope.applyZoomDeltaToQFont() ;
-        $scope.applyZoomDeltaToAFont() ;
-    } ) ;
+        callback() ;
+    } )
+    .error( function( data, status ){
+        $scope.addErrorAlert( "Could not get zoom delta preference." ) ;
+        callback() ;
+    } )  ;
 }
 
 function saveZoomDeltaAtServer() {
