@@ -280,15 +280,15 @@ $scope.markForReview = function() {
 
 $scope.increaseFontSize = function() {
     currentFontZoomDelta++ ;
-    resizeFontRecursive( document.getElementById( "flashCardQDiv" ), 1 ) ;
-    resizeFontRecursive( document.getElementById( "flashCardADiv" ), 1 ) ;
+    resizeFont( document.getElementById( "flashCardQDiv" ), 1 ) ;
+    resizeFont( document.getElementById( "flashCardADiv" ), 1 ) ;
     saveZoomDeltaAtServer() ;
 }
 
 $scope.decreaseFontSize = function() {
     currentFontZoomDelta-- ;
-    resizeFontRecursive( document.getElementById( "flashCardQDiv" ), -1 ) ;
-    resizeFontRecursive( document.getElementById( "flashCardADiv" ), -1 ) ;
+    resizeFont( document.getElementById( "flashCardQDiv" ), -1 ) ;
+    resizeFont( document.getElementById( "flashCardADiv" ), -1 ) ;
     saveZoomDeltaAtServer() ;
 }
 
@@ -315,19 +315,19 @@ $scope.resetFontForADiv = function() {
 $scope.applyZoomDeltaToQFont = function() {
     if( currentFontZoomDelta != 0 ) {
         var qDiv = document.getElementById( "flashCardQDiv" ) ;
-        resizeFontRecursive( qDiv, currentFontZoomDelta ) ;
+        resizeFont( qDiv, currentFontZoomDelta ) ;
     }
 }
 
 $scope.applyZoomDeltaToAFont = function() {
     if( currentFontZoomDelta != 0 ) {
         var aDiv = document.getElementById( "flashCardADiv" ) ;
-        resizeFontRecursive( aDiv, currentFontZoomDelta ) ;
+        resizeFont( aDiv, currentFontZoomDelta ) ;
     }
 }
 
 // ---------------- Private functions ------------------------------------------
-function resizeFontRecursive( domElement, magnifier ) {
+function resizeFont( domElement, magnifier ) {
     var curSize = parseInt( $( domElement ).css( 'font-size' ) ) + magnifier ;
     $( domElement ).css( 'font-size', curSize ) ;
 }
@@ -1169,6 +1169,8 @@ function fetchZoomDeltaFromServer() {
     $http.get( '/__fw__/api/UserPreference?keys=jove_notes.flashCardFontZoomDelta' )
     .success( function( data ){
         currentFontZoomDelta = data[ "jove_notes.flashCardFontZoomDelta" ] ;
+        $scope.applyZoomDeltaToQFont() ;
+        $scope.applyZoomDeltaToAFont() ;
     } ) ;
 }
 
