@@ -173,17 +173,17 @@ function preProcessChapterData( chapterData ) {
     chapterData._selCfg = {
         ssr : {
             numNSCards : 0,
-            strategyNS : 'Sequential',
+            strategyNS : 'Random',
             numL0Cards : 0,
-            strategyL0 : 'Age',
+            strategyL0 : 'Random',
             numL1Cards : 0,
-            strategyL1 : 'Age'
+            strategyL1 : 'Random'
         },
         nonSSR : {
             numL0Cards : 0,
-            strategyL0 : 'Age',
+            strategyL0 : 'Random',
             numL1Cards : 0,
-            strategyL1 : 'Age'
+            strategyL1 : 'Random'
         },
     } ;
 
