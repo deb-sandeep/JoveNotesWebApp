@@ -1,6 +1,22 @@
 <div ng-include="'/apps/jove_notes/ng/exercise/ex_evaluate/header.html'">
 </div>
 
+
+<div id="HOMTraceDialog" class="modal fade" data-backdrop="static">
+  <div class="modal-dialog" style="width:500px;height:500px;top:50px;">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0px">
+        Hello
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" ng-click="hideHOMDialog()">
+            Hide
+        </button>
+      </div>      
+    </div>
+  </div>
+</div>
+
 <div class="screen_body">
     <div ng-repeat="currentQuestion in questions" 
          class="panel panel-success">

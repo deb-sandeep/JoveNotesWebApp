@@ -79,6 +79,10 @@ $scope.showRatingButton = function( currentQuestion ) {
     return true ;
 }
 
+$scope.hideHOMDialog = function() {
+    $( "#HOMTraceDialog" ).modal( 'hide' ) ;
+}
+
 // ---------------- Private functions ------------------------------------------
 function computeRatingCompletedFlag() {
 
@@ -134,6 +138,9 @@ function populateRatingTextAndCls( rating, question ) {
         vars.ratingText = "Wrong" ; 
         vars.ratingTextCls += " btn-danger" ;
     }
+
+    $( '#HOMTraceDialog' ).modal( 'show' ) ;
+
 }
 
 function checkInvalidLoad() {

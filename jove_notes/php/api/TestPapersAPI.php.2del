@@ -1,4 +1,6 @@
 <?php
+// This file can be deleted on or after 12th May 2016
+
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/abstract_jove_notes_api.php" ) ;
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/test_papers/snapshot_action.php" ) ;
 
