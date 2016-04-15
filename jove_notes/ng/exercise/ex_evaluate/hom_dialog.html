@@ -1,0 +1,179 @@
+<div id="HOMTraceDialog" class="modal fade" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="padding:0px">
+        <h4><b>Root cause attribution.</b></h4>
+      </div>
+      <div class="modal-body" style="padding:0px">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-3">
+                <a type="button" class="btn btn-block"
+                   ng-click="toggleApplyHOMAttribute( 'gathering_data_through_all_senses' )">
+                  <img ng-show="!isHOMSelected( 'gathering_data_through_all_senses' )" 
+                      src="/apps/jove_notes/media/images/hom/gathering_data_through_all_senses.png"/>
+                  <img ng-show="isHOMSelected( 'gathering_data_through_all_senses' )"
+                      src="/apps/jove_notes/media/images/hom/sel/gathering_data_through_all_senses.png"/>
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <a type="button" class="btn btn-block"
+                   ng-click="toggleApplyHOMAttribute( 'persisting' )">
+                  <img ng-show="!isHOMSelected( 'persisting' )" 
+                      src="/apps/jove_notes/media/images/hom/persisting.png"/>
+                  <img ng-show="isHOMSelected( 'persisting' )"
+                      src="/apps/jove_notes/media/images/hom/sel/persisting.png"/>
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <a type="button" class="btn btn-block"
+                   ng-click="toggleApplyHOMAttribute( 'finding_humour' )">
+                  <img ng-show="!isHOMSelected( 'finding_humour' )" 
+                      src="/apps/jove_notes/media/images/hom/finding_humour.png"/>
+                  <img ng-show="isHOMSelected( 'finding_humour' )"
+                      src="/apps/jove_notes/media/images/hom/sel/finding_humour.png"/>
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <a type="button" class="btn btn-block"
+                   ng-click="toggleApplyHOMAttribute( 'flexibility' )">
+                  <img ng-show="!isHOMSelected( 'flexibility' )" 
+                      src="/apps/jove_notes/media/images/hom/flexibility.png"/>
+                  <img ng-show="isHOMSelected( 'flexibility' )"
+                      src="/apps/jove_notes/media/images/hom/sel/flexibility.png"/>
+                </a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+                <a type="button" class="btn btn-block"
+                   ng-click="toggleApplyHOMAttribute( 'applying_past_knowledge_to_new_situations' )">
+                  <img ng-show="!isHOMSelected( 'applying_past_knowledge_to_new_situations' )" 
+                      src="/apps/jove_notes/media/images/hom/applying_past_knowledge_to_new_situations.png"/>
+                  <img ng-show="isHOMSelected( 'applying_past_knowledge_to_new_situations' )"
+                      src="/apps/jove_notes/media/images/hom/sel/applying_past_knowledge_to_new_situations.png"/>
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <a type="button" class="btn btn-block"
+                   ng-click="toggleApplyHOMAttribute( 'listening_with_understanding_and_empathy' )">
+                  <img ng-show="!isHOMSelected( 'listening_with_understanding_and_empathy' )" 
+                      src="/apps/jove_notes/media/images/hom/listening_with_understanding_and_empathy.png"/>
+                  <img ng-show="isHOMSelected( 'listening_with_understanding_and_empathy' )"
+                      src="/apps/jove_notes/media/images/hom/sel/listening_with_understanding_and_empathy.png"/>
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <a type="button" class="btn btn-block"
+                   ng-click="toggleApplyHOMAttribute( 'managing_impulsivity' )">
+                  <img ng-show="!isHOMSelected( 'managing_impulsivity' )" 
+                      src="/apps/jove_notes/media/images/hom/managing_impulsivity.png"/>
+                  <img ng-show="isHOMSelected( 'managing_impulsivity' )"
+                      src="/apps/jove_notes/media/images/hom/sel/managing_impulsivity.png"/>
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <a type="button" class="btn btn-block"
+                   ng-click="toggleApplyHOMAttribute( 'questioning_and_posing_problems' )">
+                  <img ng-show="!isHOMSelected( 'questioning_and_posing_problems' )" 
+                      src="/apps/jove_notes/media/images/hom/questioning_and_posing_problems.png"/>
+                  <img ng-show="isHOMSelected( 'questioning_and_posing_problems' )"
+                      src="/apps/jove_notes/media/images/hom/sel/questioning_and_posing_problems.png"/>
+                </a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+                <a type="button" class="btn btn-block"
+                   ng-click="toggleApplyHOMAttribute( 'creating_imaginating_and_innovating' )">
+                  <img ng-show="!isHOMSelected( 'creating_imaginating_and_innovating' )" 
+                      src="/apps/jove_notes/media/images/hom/creating_imaginating_and_innovating.png"/>
+                  <img ng-show="isHOMSelected( 'creating_imaginating_and_innovating' )"
+                      src="/apps/jove_notes/media/images/hom/sel/creating_imaginating_and_innovating.png"/>
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <a type="button" class="btn btn-block"
+                   ng-click="toggleApplyHOMAttribute( 'remaining_open_to_continuous_learning' )">
+                  <img ng-show="!isHOMSelected( 'remaining_open_to_continuous_learning' )" 
+                      src="/apps/jove_notes/media/images/hom/remaining_open_to_continuous_learning.png"/>
+                  <img ng-show="isHOMSelected( 'remaining_open_to_continuous_learning' )"
+                      src="/apps/jove_notes/media/images/hom/sel/remaining_open_to_continuous_learning.png"/>
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <a type="button" class="btn btn-block"
+                   ng-click="toggleApplyHOMAttribute( 'responding_with_wonderment_and_awe' )">
+                  <img ng-show="!isHOMSelected( 'responding_with_wonderment_and_awe' )" 
+                      src="/apps/jove_notes/media/images/hom/responding_with_wonderment_and_awe.png"/>
+                  <img ng-show="isHOMSelected( 'responding_with_wonderment_and_awe' )"
+                      src="/apps/jove_notes/media/images/hom/sel/responding_with_wonderment_and_awe.png"/>
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <a type="button" class="btn btn-block"
+                   ng-click="toggleApplyHOMAttribute( 'striving_for_accuracy' )">
+                  <img ng-show="!isHOMSelected( 'striving_for_accuracy' )" 
+                      src="/apps/jove_notes/media/images/hom/striving_for_accuracy.png"/>
+                  <img ng-show="isHOMSelected( 'striving_for_accuracy' )"
+                      src="/apps/jove_notes/media/images/hom/sel/striving_for_accuracy.png"/>
+                </a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+                <a type="button" class="btn btn-block"
+                   ng-click="toggleApplyHOMAttribute( 'taking_responsibile_risks' )">
+                  <img ng-show="!isHOMSelected( 'taking_responsibile_risks' )" 
+                      src="/apps/jove_notes/media/images/hom/taking_responsibile_risks.png"/>
+                  <img ng-show="isHOMSelected( 'taking_responsibile_risks' )"
+                      src="/apps/jove_notes/media/images/hom/sel/taking_responsibile_risks.png"/>
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <a type="button" class="btn btn-block"
+                   ng-click="toggleApplyHOMAttribute( 'thinking_about_your_thinking' )">
+                  <img ng-show="!isHOMSelected( 'thinking_about_your_thinking' )" 
+                      src="/apps/jove_notes/media/images/hom/thinking_about_your_thinking.png"/>
+                  <img ng-show="isHOMSelected( 'thinking_about_your_thinking' )"
+                      src="/apps/jove_notes/media/images/hom/sel/thinking_about_your_thinking.png"/>
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <a type="button" class="btn btn-block"
+                   ng-click="toggleApplyHOMAttribute( 'thinking_and_communicating_with_clarity_and_precision' )">
+                  <img ng-show="!isHOMSelected( 'thinking_and_communicating_with_clarity_and_precision' )" 
+                      src="/apps/jove_notes/media/images/hom/thinking_and_communicating_with_clarity_and_precision.png"/>
+                  <img ng-show="isHOMSelected( 'thinking_and_communicating_with_clarity_and_precision' )"
+                      src="/apps/jove_notes/media/images/hom/sel/thinking_and_communicating_with_clarity_and_precision.png"/>
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <a type="button" class="btn btn-block"
+                   ng-click="toggleApplyHOMAttribute( 'thinking_interdependently' )">
+                  <img ng-show="!isHOMSelected( 'thinking_interdependently' )" 
+                      src="/apps/jove_notes/media/images/hom/thinking_interdependently.png"/>
+                  <img ng-show="isHOMSelected( 'thinking_interdependently' )"
+                      src="/apps/jove_notes/media/images/hom/sel/thinking_interdependently.png"/>
+                </a>
+            </div>
+          </div>
+        </div>        
+      </div>
+      <div class="modal-footer">
+        <div class="row">
+          <div class="col-sm-9" style="text-align: left">
+            {{selectedHOMDescription}}
+          </div>
+          <div class="col-sm-3">
+            <button ng-show="getNumHOMSelected() > 0" 
+                    type="button" class="btn btn-info" 
+                    ng-click="applySelectedHOMs()">
+                Apply
+            </button>
+          </div>
+        </div>
+      </div>      
+    </div>
+  </div>
+</div>

@@ -206,6 +206,7 @@ function preProcessChapterData( chapterData ) {
         updateCardLevelCount( chapterData.deckDetails, question ) ;
 
         question.learningStats._numSecondsInSession  = 0 ;
+        question.learningStats._homAttributes = [] ;
         question._chapterDetails = chapterDetails ;
         
         question._difficultyLabel = 

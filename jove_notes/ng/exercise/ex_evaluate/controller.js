@@ -3,10 +3,63 @@ testPaperApp.controller( 'ExerciseEvaluationController', function( $scope, $http
 var MAX_GRADE_CARD_API_CALL_RETRIES = 3 ;
 
 // ---------------- Local variables --------------------------------------------
+var homDescription = [] ;
+
+homDescription[ "gathering_data_through_all_senses" ] = 
+    "Gathering data through all senses" ;
+    
+homDescription[ "persisting" ] = 
+    "Persisting" ;
+    
+homDescription[ "finding_humour" ] = 
+    "Finding humour" ;
+    
+homDescription[ "flexibility" ] = 
+    "Flexibility" ;
+    
+homDescription[ "applying_past_knowledge_to_new_situations" ] = 
+    "Applying past knowledge to new situations" ;
+    
+homDescription[ "listening_with_understanding_and_empathy" ] = 
+    "Listening with understanding and empathy" ;
+    
+homDescription[ "managing_impulsivity" ] = 
+    "Managing impulsivity" ;
+    
+homDescription[ "questioning_and_posing_problems" ] = 
+    "Questioning and posing problems" ;
+    
+homDescription[ "creating_imaginating_and_innovating" ] = 
+    "Creating, imagining and innovating" ;
+    
+homDescription[ "remaining_open_to_continuous_learning" ] = 
+    "Remaining open to continuous learning" ;
+    
+homDescription[ "responding_with_wonderment_and_awe" ] = 
+    "Responding with wonderment and awe" ;
+    
+homDescription[ "striving_for_accuracy" ] = 
+    "Striving for accuracy" ;
+    
+homDescription[ "taking_responsibile_risks" ] = 
+    "Taking responsible risks" ;
+    
+homDescription[ "thinking_about_your_thinking" ] = 
+    "Thinking about your thinking" ;
+    
+homDescription[ "thinking_and_communicating_with_clarity_and_precision" ] = 
+    "Thinking and communicating with clarity and precision" ;
+    
+homDescription[ "thinking_interdependently" ] = 
+    "Thinking interdependently" ;
+    
+var selectedHOMsForCurrentQuestion = [] ;
+var currentQuestionBeingRated = null ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.statusMessage     = "Rate each question as per performance." ;
 $scope.allQuestionsRated = false ;
+$scope.selectedHOMDescription = "" ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -22,6 +75,8 @@ $scope.allQuestionsRated = false ;
 $scope.rateSolution = function( rating, question ) {
 
     log.debug( "Rating current card as " + rating )  ;
+    selectedHOMsForCurrentQuestion.length = 0 ;
+    currentQuestionBeingRated = question ;
 
     var cardId       = question.questionId ;
     var curLevel     = question.learningStats.currentLevel ;
@@ -79,8 +134,40 @@ $scope.showRatingButton = function( currentQuestion ) {
     return true ;
 }
 
-$scope.hideHOMDialog = function() {
+$scope.applySelectedHOMs = function() {
     $( "#HOMTraceDialog" ).modal( 'hide' ) ;
+
+    var cardId       = currentQuestionBeingRated.questionId ;
+    var chSessionId  = $scope.$parent.exerciseBanksMap
+                       [ currentQuestionBeingRated._chapterDetails.chapterId ]._sessionId ;
+
+    currentQuestionBeingRated.learningStats._homAttributes = 
+                                          selectedHOMsForCurrentQuestion.slice()
+
+    callApplyHOMAPI( cardId, chSessionId, 
+                     currentQuestionBeingRated.learningStats._homAttributes ) ;
+
+    selectedHOMsForCurrentQuestion.length = 0 ;
+    currentQuestionBeingRated = null ;
+}
+
+$scope.toggleApplyHOMAttribute = function( homName ) {
+    log.debug( "Applying HOM " + homName ) ;
+    if( selectedHOMsForCurrentQuestion.indexOf( homName ) != -1 ) {
+        selectedHOMsForCurrentQuestion.splice( selectedHOMsForCurrentQuestion.indexOf( homName ), 1 ) ;
+    }
+    else {
+        selectedHOMsForCurrentQuestion.push( homName ) ;
+    }
+    $scope.selectedHOMDescription = homDescription[ homName ] ;
+}
+
+$scope.isHOMSelected = function( homName ) {
+    return selectedHOMsForCurrentQuestion.indexOf( homName ) != -1 ;
+}
+
+$scope.getNumHOMSelected = function() {
+    return selectedHOMsForCurrentQuestion.length ;
 }
 
 // ---------------- Private functions ------------------------------------------
@@ -139,8 +226,9 @@ function populateRatingTextAndCls( rating, question ) {
         vars.ratingTextCls += " btn-danger" ;
     }
 
-    $( '#HOMTraceDialog' ).modal( 'show' ) ;
-
+    if( rating != 'E' ) {
+        $( '#HOMTraceDialog' ).modal( 'show' ) ;
+    }
 }
 
 function checkInvalidLoad() {
@@ -229,6 +317,19 @@ function callGradeCardAPI( question, chapterId, sessionId, cardId, curLevel, nex
     }) ;
 }
 
+function callApplyHOMAPI( cardId, chSessionId, homAttributes ) {
+
+    $http.post( '/jove_notes/api/HOM', { 
+        "cardId"       : cardId,
+        "sessionId"    : chSessionId,
+        "homAttributes": homAttributes
+    })
+    .error( function( data, status ){
+        $scope.addErrorAlert( "Grade Card API call failed. " + 
+                              "Status = " + status + ", " + 
+                              "Response = " + data ) ;
+    }) ;
+}
 
 // ---------------- End of controller ------------------------------------------
 } ) ;

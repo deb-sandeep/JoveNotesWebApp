@@ -1,4 +1,37 @@
 --------------------------------------------------------------------------------
+-- Change put to production on 15th April 2016
+-- Adding table for capturing habits of mind attributes which have contributed
+-- to the wrong answer for an exercise
+CREATE TABLE `jove_notes`.`exercise_hom` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `student_name` VARCHAR(45) NOT NULL,
+  `card_id` INT NOT NULL,
+  `session_id` INT NOT NULL COMMENT '       ',
+  `hom_attribute` VARCHAR(256) NOT NULL,
+  PRIMARY KEY (`id`));
+
+ALTER TABLE `jove_notes`.`exercise_hom` 
+ADD INDEX `fk_eh_student_name_idx` (`student_name` ASC),
+ADD INDEX `fk_eh_card_id_idx` (`card_id` ASC),
+ADD INDEX `fk_eh_session_id_idx` (`session_id` ASC);
+ALTER TABLE `jove_notes`.`exercise_hom` 
+ADD CONSTRAINT `fk_eh_student_name`
+  FOREIGN KEY (`student_name`)
+  REFERENCES `user`.`user` (`name`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+ADD CONSTRAINT `fk_eh_card_id`
+  FOREIGN KEY (`card_id`)
+  REFERENCES `jove_notes`.`card` (`card_id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_eh_session_id`
+  FOREIGN KEY (`session_id`)
+  REFERENCES `jove_notes`.`learning_session` (`session_id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+--------------------------------------------------------------------------------
 -- Change put to production on 27th Mar 2016
 -- Adding roles of class 9 and iit prep user for Deba and adding the required 
 -- roles, entitlements, selectors, aliases etc.
