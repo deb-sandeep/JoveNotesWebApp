@@ -144,6 +144,7 @@ $scope.applySelectedHOMs = function() {
     currentQuestionBeingRated.learningStats._homAttributes = 
                                           selectedHOMsForCurrentQuestion.slice()
 
+    $scope.$parent.updateHOMHistogram( selectedHOMsForCurrentQuestion ) ;
     callApplyHOMAPI( cardId, chSessionId, 
                      currentQuestionBeingRated.learningStats._homAttributes ) ;
 

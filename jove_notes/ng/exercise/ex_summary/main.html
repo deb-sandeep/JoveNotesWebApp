@@ -75,6 +75,34 @@
             </thead>
         </table>
     </div>
+    <div class="table-responsive">
+        <table class="table table-condensed">
+            <thead>
+                <tr class="info">
+                    <th></th>
+                    <th></th>
+                    <th>Habits of mind</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="(hom, count) in $parent.homHistogram | orderBy:count">
+                    <td style="text-align: left;width:100px">
+                        <table class="temporal">
+                            <tr>
+                                <td ng-repeat="i in getNumber(count) track by $index"
+                                    class="rating-H"></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <img ng-src="/apps/jove_notes/media/images/hom/{{makeHOMId(hom)}}.png"
+                             width="32" />
+                    </td>
+                    <td>{{hom}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div class="screen_footer">

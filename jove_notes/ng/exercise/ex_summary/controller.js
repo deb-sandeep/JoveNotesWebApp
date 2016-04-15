@@ -25,6 +25,10 @@ $scope.getTotalScore = function() {
     return totalScore ;
 }
 
+$scope.getNumber = function( num ) {
+    return new Array( num ) ;
+}
+
 // ---------------- Private functions ------------------------------------------
 function checkInvalidLoad() {
     if( $scope.$parent.currentStage != $scope.$parent.SESSION_SUMMARY_STAGE ) {

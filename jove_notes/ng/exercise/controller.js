@@ -37,6 +37,8 @@ $scope.currentStage = null ;
 
 $scope.fastTrackRequested = false ;
 
+$scope.homHistogram = {} ;
+
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing ExerciseController." ) ;
 
@@ -148,7 +150,34 @@ $scope.stopTimer = function() {
     $scope.sessionActive  = false ;
 }
 
+$scope.updateHOMHistogram = function( homAttributes ) {
+
+    for( var i=0; i<homAttributes.length; i++ ) {
+        var curAttribute = cleanHOMAttribute( homAttributes[i] ) ;
+        if( $scope.homHistogram[ curAttribute ] === undefined ) {
+            $scope.homHistogram[ curAttribute ] = 1 ;
+        }
+        else {
+            $scope.homHistogram[ curAttribute ] = $scope.homHistogram[ curAttribute ]+1 ;
+        }
+    }
+}
+
+$scope.makeHOMId = function( homName ) {
+
+    var id = homName.replaceAll( " ", "_" ) ;
+    id = id.charAt( 0 ).toLowerCase() + id.slice( 1 ) ;
+    return id ;
+}
+
 // ---------------- Private functions ------------------------------------------
+function cleanHOMAttribute( attribute ) {
+
+    var cleanedAttribute = attribute.replaceAll( "_", " " ) ;
+    cleanedAttribute = cleanedAttribute.charAt(0).toUpperCase() + cleanedAttribute.slice(1) ;
+    return cleanedAttribute ;
+}
+
 function processServerData( serverData ) {
 
     if( typeof serverData === "string" ) {
