@@ -1,4 +1,32 @@
 --------------------------------------------------------------------------------
+-- Change only for development - 24th May
+
+insert into user.roles
+( name, child_role ) 
+values 
+( "JN_CLASS_10_USER", null );
+
+insert into user.entitlement_selector_alias 
+( alias_name, selector_type, selector_value, description )
+values
+( 'JN_ALL_CHAPTERS_CLASS_10', 'PATH', '+:chapter:Class-10/**', 'Only Class-10 chapters' ) ;
+
+insert into user.entitlement_alias 
+( alias_name, entitlement_type, child_entitlement_alias, selector_alias, permissible_ops )
+values
+( 'JN_ENT_USE_CLASS_10_CHAPTERS',  'RAW', null, 'JN_ALL_CHAPTERS_CLASS_10', 'NOTES, FLASH_CARD, CHAPTER_STATS' );
+
+insert into user.entity_entitlement
+( entity_type, entity_name, entitlement_type, entitlement_alias )
+values
+( 'ROLE', 'JN_CLASS_10_USER',  'ENT_ALIAS', 'JN_ENT_USE_CLASS_10_CHAPTERS' );
+
+insert into user.user_roles
+( user_name, role_name )
+values
+( 'Deba', 'JN_CLASS_10_USER' ) ;
+
+--------------------------------------------------------------------------------
 -- Change put to production on 15th April 2016
 -- Adding table for capturing habits of mind attributes which have contributed
 -- to the wrong answer for an exercise
