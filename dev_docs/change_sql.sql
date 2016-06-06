@@ -1,4 +1,16 @@
 --------------------------------------------------------------------------------
+-- Change put to production on 7th April 2016
+-- Updated referencial integrity to cascade
+ALTER TABLE `jove_notes`.`exercise_hom` 
+DROP FOREIGN KEY `fk_eh_card_id`;
+ALTER TABLE `jove_notes`.`exercise_hom` 
+ADD CONSTRAINT `fk_eh_card_id`
+  FOREIGN KEY (`card_id`)
+  REFERENCES `jove_notes`.`card` (`card_id`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
+--------------------------------------------------------------------------------
 -- Change only for development - 24th May
 
 insert into user.roles
