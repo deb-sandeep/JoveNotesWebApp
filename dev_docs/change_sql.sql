@@ -1,4 +1,33 @@
 --------------------------------------------------------------------------------
+-- Change put to porduction on 13th June
+-- Entitlement for class 4 notes to Parth
+
+insert into user.roles
+( name, child_role ) 
+values 
+( "JN_CLASS_4_USER", null );
+
+insert into user.entitlement_selector_alias 
+( alias_name, selector_type, selector_value, description )
+values
+( 'JN_ALL_CHAPTERS_CLASS_4', 'PATH', '+:chapter:Class-4/**', 'Only Class-4 chapters' ) ;
+
+insert into user.entitlement_alias 
+( alias_name, entitlement_type, child_entitlement_alias, selector_alias, permissible_ops )
+values
+( 'JN_ENT_USE_CLASS_4_CHAPTERS',  'RAW', null, 'JN_ALL_CHAPTERS_CLASS_4', 'NOTES, FLASH_CARD, CHAPTER_STATS' );
+
+insert into user.entity_entitlement
+( entity_type, entity_name, entitlement_type, entitlement_alias )
+values
+( 'ROLE', 'JN_CLASS_4_USER',  'ENT_ALIAS', 'JN_ENT_USE_CLASS_4_CHAPTERS' );
+
+insert into user.user_roles
+( user_name, role_name )
+values
+( 'Parth', 'JN_CLASS_4_USER' ) ;
+
+--------------------------------------------------------------------------------
 -- Change put to porduction on 8th June
 -- Entitlement for class 2 notes to Munni
 
