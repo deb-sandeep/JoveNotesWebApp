@@ -18,6 +18,7 @@ NotesElementsTypes.prototype.EQUATION      = "equation" ;
 NotesElementsTypes.prototype.REF_TO_CONTEXT= "rtc" ;
 NotesElementsTypes.prototype.MULTI_CHOICE  = "multi_choice" ;
 NotesElementsTypes.prototype.EXERCISE      = "exercise" ;
+NotesElementsTypes.prototype.VOICE2TEXT    = "voice2text" ;
 
 // -----------------------------------------------------------------------------
 function QuestionTypes(){}
@@ -30,6 +31,7 @@ QuestionTypes.prototype.QT_IMGLABEL  = "image_label" ;
 QuestionTypes.prototype.QT_SPELLBEE  = "spellbee" ;
 QuestionTypes.prototype.MULTI_CHOICE = "multi_choice" ;
 QuestionTypes.prototype.EXERCISE     = "exercise" ;
+QuestionTypes.prototype.VOICE2TEXT   = "voice2text" ;
 
 // -----------------------------------------------------------------------------
 function StudyStrategyTypes(){}

@@ -262,6 +262,11 @@ function NotesElementFormatter( chapterDetails, $sce ) {
 		return mcElement ;
 	}
 
+	this.formatVoice2TextQuestion = function( v2tElement ) {
+		v2tElement.text = textFormatter.format( v2tElement.text ) ;
+		return v2tElement ;
+	}
+
 	var getPrintRulers = function( formattedText ) {
 
 		var ansLength = textFormatter.stripHTMLTags( formattedText ).length ;

@@ -44,6 +44,7 @@ define( "IMGLABEL_FRAGMENT_PATH", FRAGMENT_PATH . "/image_label_template.html" )
 define( "EQUATION_FRAGMENT_PATH", FRAGMENT_PATH . "/equation_template.html" ) ;
 define( "RTC_FRAGMENT_PATH",      FRAGMENT_PATH . "/rtc_template.html" ) ;
 define( "MC_FRAGMENT_PATH",       FRAGMENT_PATH . "/mc_template.html" ) ;
+define( "V2C_FRAGMENT_PATH",      FRAGMENT_PATH . "/voice2text_template.html" ) ;
 
 define( "PHP_FRAGMENT_PATH",      DOCUMENT_ROOT . "/apps/jove_notes/ng/notes/php_fragments" ) ;
 define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
@@ -104,6 +105,10 @@ define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
 
     <div ng-if="spellbeeWords.length">
         <div ng-include="'<?php echo SPELLBEE_FRAGMENT_PATH ?>'"></div>
+    </div>
+
+    <div ng-if="voice2TextQuestions.length">
+        <div ng-include="'<?php echo V2C_FRAGMENT_PATH ?>'"></div>
     </div>
 
     <div ng-if="chemCompounds.length">

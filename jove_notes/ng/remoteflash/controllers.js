@@ -312,6 +312,10 @@ function processIncomingQuestion( message ) {
         handler = new MultiChoiceHandler( $scope.chapterDetails, $scope.currentQuestion,
                                           $scope.textFormatter ) ;
     }
+    else if( questionType == QuestionTypes.prototype.VOICE2TEXT ) {
+        handler = new VoiceToTextHandler( $scope.chapterDetails, $scope.currentQuestion, 
+                                          $scope.textFormatter ) ;
+    }
     else {
         log.error( "Unrecognized question type = " + questionType ) ;
         throw "Unrecognized question type. Can't associate formatter." ;

@@ -268,3 +268,25 @@ function ExerciseHandler( chapterDetails, question, textFormatter ) {
 	this.freezeQuestionUI = function() { manager.freezeQuestionUI() ;     } ;
 	this.getAnswerUI      = function() { return manager.getAnswerUI() ;   } ;
 }
+
+// =============================================================================
+// VoiceToText Handler
+// =============================================================================
+function VoiceToTextHandler( chapterDetails, question, textFormatter ) {
+
+	var manager      = null ;
+	var answerLength = textFormatter.stripHTMLTags( question.answer ).length ;
+
+	this.initialize = function( $scope ){ 
+		
+		initializeScriptSupport( question, textFormatter ) ;
+
+		manager = new VoiceToTextManager( question, textFormatter, $scope ) ;
+		manager.initialize() ;
+	}	
+	
+	this.getAnswerLength  = function() { return answerLength ;            } ;
+	this.getQuestionUI    = function() { return manager.getQuestionUI() ; } ;
+	this.freezeQuestionUI = function() { manager.freezeQuestionUI() ;     } ;
+	this.getAnswerUI      = function() { return manager.getAnswerUI() ;   } ;
+}

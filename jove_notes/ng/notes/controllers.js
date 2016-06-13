@@ -68,6 +68,7 @@ $scope.imageLabels           = [] ;
 $scope.equations             = [] ;
 $scope.referenceToContexts   = [] ;
 $scope.multiChoiceQuestions  = [] ;
+$scope.voice2TextQuestions   = [] ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -176,6 +177,7 @@ function processNotesElements() {
 	$scope.equations.length             = 0 ;
 	$scope.referenceToContexts.length   = 0 ;
 	$scope.multiChoiceQuestions.length  = 0 ;
+	$scope.voice2TextQuestions.length   = 0 ;
 
 	for( index=0; index<$scope.notesElements.length; index++ ) {
 
@@ -236,6 +238,9 @@ function processNotesElements() {
 			}
 			else if( type == NotesElementsTypes.prototype.MULTI_CHOICE ) {
 				$scope.multiChoiceQuestions.push( neFormatter.formatMultiChoiceQuestion( element ) ) ;
+			}
+			else if( type == NotesElementsTypes.prototype.VOICE2TEXT ) {
+				$scope.voice2TextQuestions.push( neFormatter.formatVoice2TextQuestion( element ) ) ;
 			}
 		}
 		else {

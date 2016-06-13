@@ -304,6 +304,10 @@ function associateHandler( question ) {
         question.handler = new MultiChoiceHandler( $scope.chapterDetails, question, 
                                                    $scope.textFormatter ) ;
     }
+    else if( questionType == QuestionTypes.prototype.VOICE2TEXT ) {
+        question.handler = new VoiceToTextHandler( $scope.chapterDetails, question, 
+                                                   $scope.textFormatter ) ;
+    }
     else {
         log.error( "Unrecognized question type = " + questionType ) ;
         throw "Unrecognized question type. Can't associate formatter." ;
@@ -418,6 +422,7 @@ function prepareCardTypeFilterOptions() {
     optionText[ "equation"        ] = "Equation" ;
     optionText[ "rtc"             ] = "Reference to context" ;
     optionText[ "multi_choice"    ] = "Multiple choice" ;  
+    optionText[ "voice2text"      ] = "Voice to Text" ;
 
     populateFilterOptions( $scope.currentHistogram.typeHistogram, optionText, 
                            $scope.filterOptions.cardTypeOptions,
