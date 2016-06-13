@@ -52,9 +52,7 @@ function VoiceToTextManager( questionObj, textFormatter, $scope ) {
 	}
 
 	var playPressed = function() {
-
-		audio.src = "/apps/jove_notes/workspace/_spellbee/" + clipName + ".mp3" ;
-		audio.load() ;
-		audio.play() ;
+		var audioResPath = jnUtils.getAudioResourcePath( $scope.chapterDetails ) ;
+		jnUtils.playSoundClip( audioResPath + clipName + '.mp3' ) ;
 	} ;
 } ;
