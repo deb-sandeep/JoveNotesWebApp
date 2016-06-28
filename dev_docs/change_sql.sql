@@ -69,7 +69,7 @@ ADD CONSTRAINT `fk_eh_card_id`
   ON UPDATE CASCADE;
 
 --------------------------------------------------------------------------------
--- Change only for development - 24th May
+-- Change moved to production on 28th June 2016
 
 insert into user.roles
 ( name, child_role ) 
