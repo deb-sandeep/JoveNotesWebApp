@@ -47,6 +47,7 @@ $pageConfig = array(
 
     <link rel='stylesheet' href='/lib-ext/pure/tables.css'>
     <link rel='stylesheet' href='/apps/jove_notes/ng/flashcard/flashcard.css'>
+    <link rel='stylesheet' href='/apps/jove_notes/ng/remoteflash/remoteflash.css'>
 
     <script src="/lib-ext/rgraph/RGraph.common.core.js"></script>    
     <script src="/lib-ext/rgraph/RGraph.common.key.js"></script>    

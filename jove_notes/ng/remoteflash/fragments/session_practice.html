@@ -1,12 +1,21 @@
 <div class="container-fluid fixedheader"
      ng-include="'/apps/jove_notes/ng/remoteflash/fragments/session_practice_header.html'">
 </div>
+<div class="floating_rf_menu">
+    <a ng-click="increaseFont()">
+        <span class="glyphicon glyphicon-plus-sign gi-2x"></span>
+    </a>
+    <p>
+    <a ng-click="decreaseFont()">
+        <span class="glyphicon glyphicon-minus-sign gi-2x"></span>
+    </a>
+</div>
 <div ng-style="bodyDivStyle" class="container-fluid flashcardbody">
-	<div align="center">
+	<div id="remoteFlashQDiv" align="center">
 		<render-remote-flash-card-question></render-remote-flash-card-question>
 	</div>
 	<hr>
-	<div align="{{answerAlign}}" style="padding-left : 15px; padding-right : 15px;">
+	<div id="remoteFlashADiv" align="{{answerAlign}}">
 		<render-remote-flash-card-answer></render-remote-flash-card-answer>
 	</div>
 </div>

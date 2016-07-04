@@ -1,0 +1,18 @@
+#remoteFlashQDiv {
+    font-size:25px; 
+}
+
+#remoteFlashADiv {
+    font-size:25px;
+    padding-left : 15px; 
+    padding-right : 15px;
+}
+
+.floating_rf_menu {
+  position: fixed;
+  right: 0px;
+  bottom: 0%;
+  width: 40px;
+  margin-top: 0em;  
+  z-index: 1000;
+}

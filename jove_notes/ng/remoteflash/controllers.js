@@ -93,7 +93,22 @@ $scope.showAnswer = function() {
                                         + $scope.currentQuestion.questionId ;
 }
 
+$scope.increaseFont = function() {
+    resizeFont( document.getElementById( "remoteFlashQDiv" ), 1 ) ;
+    resizeFont( document.getElementById( "remoteFlashADiv" ), 1 ) ;
+}
+
+$scope.decreaseFont = function() {
+    resizeFont( document.getElementById( "remoteFlashQDiv" ), -1 ) ;
+    resizeFont( document.getElementById( "remoteFlashADiv" ), -1 ) ;
+}
+
 // ---------------- Private functions ------------------------------------------
+function resizeFont( domElement, magnifier ) {
+    var curSize = parseInt( $( domElement ).css( 'font-size' ) ) + magnifier ;
+    $( domElement ).css( 'font-size', curSize ) ;
+}
+
 function runMesssageFetchPump() {
 
     $http.get( "/jove_notes/api/RemoteFlashMessage?lastMessageId=" + lastMessageId )
