@@ -35,11 +35,13 @@ where
 SEL_QUERY;
 
         $latestSessionId = parent::selectSingleValue( $selQuery, -1 ) ;
-        if( $latestSessionId == -1 ) {
-            $this->createNewSession( $userName, $chapterId ) ;
-        }
-        else {
-            $this->refreshProgressSnapshot( $userName, $chapterId, $latestSessionId ) ;
+        if( $latestSessionId != "" ) {
+          if( $latestSessionId == -1 ) {
+              $this->createNewSession( $userName, $chapterId ) ;
+          }
+          else {
+              $this->refreshProgressSnapshot( $userName, $chapterId, $latestSessionId ) ;
+          }
         }
     }    
 
