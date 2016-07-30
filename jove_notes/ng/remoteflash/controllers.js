@@ -114,6 +114,8 @@ function resizeFont( domElement, magnifier ) {
 
 function runMesssageFetchPump() {
 
+    var that = this ;
+
     $http.get( "/jove_notes/api/RemoteFlashMessage?lastMessageId=" + lastMessageId )
     .success( function( data ){
 
@@ -153,17 +155,18 @@ function runMesssageFetchPump() {
 
             log.debug( "Empty payload. " + msgPumpEmptyCycles ) ;
             msgPumpEmptyCycles++ ;
+
             if( msgPumpEmptyCycles < 3 ) {
-                msgPumpDelay = 3000 ;
+                that.msgPumpDelay = 3000 ;
             }
             else if( msgPumpEmptyCycles >= 3 && msgPumpEmptyCycles < 10 ) {
-                msgPumpDelay = 4000 ;
+                that.msgPumpDelay = 4000 ;
             }
             else if( msgPumpEmptyCycles >= 10 && msgPumpEmptyCycles < 20 ) {
-                msgPumpDelay = 3000 ;
+                that.msgPumpDelay = 3000 ;
             }
             else {
-                msgPumpDelay = 2000 ;
+                that.msgPumpDelay = 2000 ;
             }
         }
     })
@@ -171,8 +174,9 @@ function runMesssageFetchPump() {
         log.error( "Error getting remote flash messages." + data ) ;
         $scope.addErrorAlert( "Could not receive remote flash messages." + data ) ;
     }) ;
-    log.debug( "Will invoke pump after " + (msgPumpDelay/1000) + " seconds." ) ;
-    setTimeout( runMesssageFetchPump, msgPumpDelay ) ;
+
+    log.debug( "Will invoke pump after " + (that.msgPumpDelay/1000) + " seconds." ) ;
+    setTimeout( runMesssageFetchPump, that.msgPumpDelay ) ;
 }
 
 function runMessageProcessPump() {
