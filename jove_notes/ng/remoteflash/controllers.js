@@ -157,16 +157,16 @@ function runMesssageFetchPump() {
             msgPumpEmptyCycles++ ;
 
             if( msgPumpEmptyCycles < 3 ) {
-                that.msgPumpDelay = 3000 ;
-            }
-            else if( msgPumpEmptyCycles >= 3 && msgPumpEmptyCycles < 10 ) {
                 that.msgPumpDelay = 4000 ;
             }
+            else if( msgPumpEmptyCycles >= 3 && msgPumpEmptyCycles < 10 ) {
+                that.msgPumpDelay = 5000 ;
+            }
             else if( msgPumpEmptyCycles >= 10 && msgPumpEmptyCycles < 20 ) {
-                that.msgPumpDelay = 3000 ;
+                that.msgPumpDelay = 4000 ;
             }
             else {
-                that.msgPumpDelay = 2000 ;
+                that.msgPumpDelay = 3000 ;
             }
         }
     })
