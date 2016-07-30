@@ -17,6 +17,9 @@ var resumeModalShowTime    = 0 ;
 var totalSessionPauseTime  = 0 ;
 var totalQuestionPauseTime = 0 ;
 
+var msgPumpDelay = 1000 ;
+var msgPumpEmptyCycles = 0 ;
+
 // ---------------- Controller variables ---------------------------------------
 $scope.SCREEN_WAITING_TO_START = "waiting_to_start" ;
 $scope.SCREEN_SESSION_SETTINGS = "session_settings" ;
@@ -113,7 +116,22 @@ function runMesssageFetchPump() {
 
     $http.get( "/jove_notes/api/RemoteFlashMessage?lastMessageId=" + lastMessageId )
     .success( function( data ){
-        if( Array.isArray( data ) ) {
+
+        var effectivelyEmptyPayload = true ;
+
+        if( Array.isArray( data ) && (data.length > 0) ) {
+
+            effectivelyEmptyPayload = false ;
+
+            if( data.length == 1 ) {
+                if( data[0].msgType == "yet_to_start" ) {
+                    effectivelyEmptyPayload = true ;
+                }
+            }
+
+            if( !effectivelyEmptyPayload ) {
+                msgPumpEmptyCycles = 0 ;
+            }
 
             for( var i=0; i<data.length; i++ ) {
 
@@ -130,12 +148,31 @@ function runMesssageFetchPump() {
                 }
             }
         }
+
+        if( effectivelyEmptyPayload ) {
+
+            log.debug( "Empty payload. " + msgPumpEmptyCycles ) ;
+            msgPumpEmptyCycles++ ;
+            if( msgPumpEmptyCycles < 3 ) {
+                msgPumpDelay = 3000 ;
+            }
+            else if( msgPumpEmptyCycles >= 3 && msgPumpEmptyCycles < 10 ) {
+                msgPumpDelay = 4000 ;
+            }
+            else if( msgPumpEmptyCycles >= 10 && msgPumpEmptyCycles < 20 ) {
+                msgPumpDelay = 3000 ;
+            }
+            else {
+                msgPumpDelay = 2000 ;
+            }
+        }
     })
     .error( function( data ){
         log.error( "Error getting remote flash messages." + data ) ;
         $scope.addErrorAlert( "Could not receive remote flash messages." + data ) ;
     }) ;
-    setTimeout( runMesssageFetchPump, 1000 ) ;
+    log.debug( "Will invoke pump after " + (msgPumpDelay/1000) + " seconds." ) ;
+    setTimeout( runMesssageFetchPump, msgPumpDelay ) ;
 }
 
 function runMessageProcessPump() {
@@ -147,30 +184,39 @@ function runMessageProcessPump() {
         try {
             if( message.msgType == "yet_to_start" ) {
                 $scope.currentScreen = $scope.SCREEN_WAITING_TO_START ;
+                msgPumpDelay = 2000 ;
             }
             else if( message.msgType == "start_session" ) {
                 processStartSessionMessage( message ) ;
+                msgPumpDelay = 3000 ;
             }
             else if( message.msgType == "question" ) {
                 processIncomingQuestion( message ) ;
+                msgPumpDelay = 2000 ;
             }
             else if( message.msgType == "answer" ) {
                 $scope.showAnswer() ;
+                msgPumpDelay = 4000 ;
             }
             else if( message.msgType == "delta_score" ) {
                 processDeltaScoreMessage( message ) ;
+                msgPumpDelay = 1000 ;
             }
             else if( message.msgType == "end_session" ) {
                 processEndSessionMessage( message ) ;
+                msgPumpDelay = 5000 ;
             }
             else if( message.msgType == "pause_session" ) {
                 pauseSession() ;
+                msgPumpDelay = 5000 ;
             }
             else if( message.msgType == "resume_session" ) {
                 resumeSession() ;
+                msgPumpDelay = 2000 ;
             }
             else if( message.msgType == "alert" ) {
                 processAlertMessage() ;
+                msgPumpDelay = 2000 ;
             }
             else {
                 throw "Unknown message type " + message.msgType ;
