@@ -369,8 +369,8 @@ function filterQuestions( questions, numQuestions, strategy ) {
 
     if( strategy == 'Hard' ) {
         questions.sort( function( q1, q2 ){
-            return -1*( q1.learningStats._absoluteLearningEfficiency - 
-                        q2.learningStats._absoluteLearningEfficiency ) ;
+            return -1*( q1.difficultyLevel - 
+                        q2.difficultyLevel ) ;
         }) ;
     }
     else if( strategy == 'Age' ) {
@@ -381,6 +381,18 @@ function filterQuestions( questions, numQuestions, strategy ) {
     }
     else if( strategy == 'Random' ) {
         questions.shuffle() ;
+    }
+    else if( strategy == 'Efficiency_Hard' ) {
+        questions.sort( function( q1, q2 ){
+            return -1*( q1.learningStats.learningEfficiency - 
+                        q2.learningStats.learningEfficiency ) ;
+        }) ;
+    }
+    else if( strategy == 'Efficiency_Easy' ) {
+        questions.sort( function( q1, q2 ){
+            return ( q1.learningStats.learningEfficiency - 
+                     q2.learningStats.learningEfficiency ) ;
+        }) ;
     }
 
     for( var i=0; i<numQuestions; i++ ) {
