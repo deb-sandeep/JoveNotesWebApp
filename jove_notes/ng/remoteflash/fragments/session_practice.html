@@ -2,6 +2,13 @@
      ng-include="'/apps/jove_notes/ng/remoteflash/fragments/session_practice_header.html'">
 </div>
 <div class="floating_rf_menu">
+    <span ng-show="serverRequestInProgress">
+        <img src="/apps/jove_notes/media/images/green_circle.png"/>
+    </span>
+    <span ng-show="!serverRequestInProgress">
+        <img src="/apps/jove_notes/media/images/transparent_circle.png"/>
+    </span>
+    <p>
     <a ng-click="increaseFont()">
         <span class="glyphicon glyphicon-plus-sign gi-2x"></span>
     </a>

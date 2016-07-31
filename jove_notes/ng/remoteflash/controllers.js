@@ -60,6 +60,8 @@ $scope.pointsEarnedInThisSession = 0 ;
 $scope.pointsLostInThisSession   = 0 ;
 $scope.messageForEndPage         = "" ;
 
+$scope.serverRequestInProgress = false ;
+
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing RemoteFlashCardController." ) ;
 runMesssageFetchPump() ;
@@ -116,9 +118,10 @@ function runMesssageFetchPump() {
 
     var that = this ;
 
+    $scope.serverRequestInProgress = true ;
     $http.get( "/jove_notes/api/RemoteFlashMessage?lastMessageId=" + lastMessageId )
     .success( function( data ){
-
+        $scope.serverRequestInProgress = false ;
         var effectivelyEmptyPayload = true ;
 
         if( Array.isArray( data ) && (data.length > 0) ) {
