@@ -19,6 +19,18 @@ p {
 	padding-top: 8px;
 }
 
+.green {
+    color: #006F07;
+}
+
+.red {
+    color: #FF0000;
+}
+
+.blue {
+    color: #0012FF;
+}
+
 .floating_notes_menu {
   position: fixed;
   right: 0;
