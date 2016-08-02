@@ -165,16 +165,11 @@ function runMesssageFetchPump() {
             else if( msgPumpEmptyCycles >= 5 && msgPumpEmptyCycles < 10 ) {
                 that.msgPumpDelay = 5000 ;
             }
-            else if( msgPumpEmptyCycles >= 10 && msgPumpEmptyCycles < 20 ) {
+            else if( msgPumpEmptyCycles >= 10 && msgPumpEmptyCycles < 50 ) {
                 that.msgPumpDelay = 4000 ;
             }
-            else if( msgPumpEmptyCycles >= 20 && msgPumpEmptyCycles < 50 ) {
-                that.msgPumpDelay = 7000 ;
-            }
             else {
-                log.debug( "Session seems inactive. Terminating remote flash." ) ;
-                $scope.currentScreen = $scope.SCREEN_SESSION_END ;
-                return ;
+                that.msgPumpDelay = 7000 ;
             }
         }
         else {

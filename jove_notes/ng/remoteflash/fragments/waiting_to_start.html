@@ -1,7 +1,12 @@
-<div class="container well well-lg">
-	<div class="jumbotron" align="center">
-		<img src="/apps/jove_notes/media/images/jove_notes_logo.png" />
-		<h1>Remote Flash Card</h1> 
-		<h3>Please wait for your session to start.</h3>
-	</div>
+<div class="full_screen" align="center">
+	<img src="/apps/jove_notes/media/images/jove_notes_logo.png" />
+	<h1>Remote Flash Card</h1> 
+	<h3>Please wait for your session to start.</h3>
+    <p>
+    <span ng-show="serverRequestInProgress">
+        <img src="/apps/jove_notes/media/images/green_circle.png"/>
+    </span>
+    <span ng-show="!serverRequestInProgress">
+        <img src="/apps/jove_notes/media/images/transparent_circle.png"/>
+    </span>
 </div>
