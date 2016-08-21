@@ -163,6 +163,16 @@
         </div>
 
         <div class="btn-group btn-group-justified" role="group" ng-show="questionMode">
+          <!-- APMNS - Auto promote to mastered without scoring. -->
+          <div class="btn-group" role="group" ng-show="recommendPromoteToMasteredWithoutScore">
+            <button type="button" class="btn btn-primary btn-lg"
+                    ng-click="rateCard( 'APMNS' )"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Auto promote to mastered">
+                <span class="glyphicon glyphicon-education"></span>
+                <span class="glyphicon glyphicon-education"></span>
+            </button>
+          </div>
           <div class="btn-group" role="group">
             <button type="button" class="btn btn-primary btn-lg"
                     ng-click="showAnswer()">
@@ -224,6 +234,16 @@
             <button type="button" class="btn btn-primary btn-lg"
                     ng-click="showAnswer()">
                 Show Answer
+            </button>
+          </div>
+          <!-- APMNS - Auto promote to mastered without scoring. -->
+          <div class="btn-group" role="group" ng-show="recommendPromoteToMasteredWithoutScore">
+            <button type="button" class="btn btn-primary btn-lg"
+                    ng-click="rateCard( 'APMNS' )"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Auto promote to mastered">
+                <span class="glyphicon glyphicon-education"></span>
+                <span class="glyphicon glyphicon-education"></span>
             </button>
           </div>
         </div>
@@ -340,7 +360,6 @@
             </li>
           </ul>
         </div>
-
     </div>
 </div>
 
