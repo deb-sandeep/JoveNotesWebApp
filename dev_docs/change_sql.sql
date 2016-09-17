@@ -1,4 +1,13 @@
 --------------------------------------------------------------------------------
+-- Altered the auth_token table for the ghostly latency problem
+--
+
+ALTER TABLE `user`.`auth_token` 
+CHANGE COLUMN `token` `token` VARCHAR(45) NOT NULL,
+ADD PRIMARY KEY (`token`),
+DROP INDEX `token_UNIQUE` ;
+
+--------------------------------------------------------------------------------
 -- Change put to porduction on 13th June
 -- Entitlement for class 4 notes to Parth
 
