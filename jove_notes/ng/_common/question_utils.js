@@ -36,11 +36,15 @@ QuestionTypes.prototype.VOICE2TEXT   = "voice2text" ;
 // -----------------------------------------------------------------------------
 function StudyStrategyTypes(){}
 
-StudyStrategyTypes.prototype.SSR        = "SSR" ;
-StudyStrategyTypes.prototype.EFF_HARD   = "EFF_HARD" ;
-StudyStrategyTypes.prototype.EFF_EASY   = "EFF_EASY" ;
-StudyStrategyTypes.prototype.OBJECTIVE  = "OBJECTIVE" ;
-StudyStrategyTypes.prototype.SUBJECTIVE = "SUBJECTIVE" ;
+StudyStrategyTypes.prototype.SSR          = "SSR" ;
+StudyStrategyTypes.prototype.EFF_HARD     = "EFF_HARD" ;
+StudyStrategyTypes.prototype.EFF_EASY     = "EFF_EASY" ;
+StudyStrategyTypes.prototype.OBJECTIVE    = "OBJECTIVE" ;
+StudyStrategyTypes.prototype.SUBJECTIVE   = "SUBJECTIVE" ;
+StudyStrategyTypes.prototype.BOTTOM_UP_L0 = "BOTTOM_UP_L0" ;
+StudyStrategyTypes.prototype.BOTTOM_UP_L1 = "BOTTOM_UP_L1" ;
+StudyStrategyTypes.prototype.BOTTOM_UP_L2 = "BOTTOM_UP_L2" ;
+StudyStrategyTypes.prototype.BOTTOM_UP_L3 = "BOTTOM_UP_L3" ;
 
 // -----------------------------------------------------------------------------
 function CardLevels(){}

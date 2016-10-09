@@ -555,13 +555,13 @@ function computeSessionCards() {
     log.debug( "Computing cards for this session." ) ;
     log.debug( "\tTotal cards in chapter = " + $scope.$parent.questions.length ) ;
 
+    preProcessBottomsUpStrategy() ;
     applyStudyCriteriaFilter() ;
     sortCardsAsPerStudyStrategy() ;
 
     var strategy = $scope.studyCriteria.strategy ;
     if( ( strategy == StudyStrategyTypes.prototype.OBJECTIVE ) ||
         ( strategy == StudyStrategyTypes.prototype.SUBJECTIVE ) ) {
-    
         sortCardsAsPerStudyStrategy() ;
     }
     
@@ -569,6 +569,37 @@ function computeSessionCards() {
 
     $scope.$parent.sessionStats.numCards     = $scope.questionsForSession.length ;
     $scope.$parent.sessionStats.numCardsLeft = $scope.questionsForSession.length ;
+}
+
+function preProcessBottomsUpStrategy() {
+
+    var strategy = $scope.studyCriteria.strategy ;
+    if( strategy == StudyStrategyTypes.prototype.BOTTOM_UP_L0 ) {
+        $scope.studyCriteria.currentLevelFilters.length = 0 ;
+        $scope.studyCriteria.currentLevelFilters.push( "NS" ) ;
+        $scope.studyCriteria.currentLevelFilters.push( "L0" ) ;
+    }
+    else if( strategy == StudyStrategyTypes.prototype.BOTTOM_UP_L1 ) {
+        $scope.studyCriteria.currentLevelFilters.length = 0 ;
+        $scope.studyCriteria.currentLevelFilters.push( "NS" ) ;
+        $scope.studyCriteria.currentLevelFilters.push( "L0" ) ;
+        $scope.studyCriteria.currentLevelFilters.push( "L1" ) ;
+    }
+    else if( strategy == StudyStrategyTypes.prototype.BOTTOM_UP_L2 ) {
+        $scope.studyCriteria.currentLevelFilters.length = 0 ;
+        $scope.studyCriteria.currentLevelFilters.push( "NS" ) ;
+        $scope.studyCriteria.currentLevelFilters.push( "L0" ) ;
+        $scope.studyCriteria.currentLevelFilters.push( "L1" ) ;
+        $scope.studyCriteria.currentLevelFilters.push( "L2" ) ;
+    }
+    else if( strategy == StudyStrategyTypes.prototype.BOTTOM_UP_L3 ) {
+        $scope.studyCriteria.currentLevelFilters.length = 0 ;
+        $scope.studyCriteria.currentLevelFilters.push( "NS" ) ;
+        $scope.studyCriteria.currentLevelFilters.push( "L0" ) ;
+        $scope.studyCriteria.currentLevelFilters.push( "L1" ) ;
+        $scope.studyCriteria.currentLevelFilters.push( "L2" ) ;
+        $scope.studyCriteria.currentLevelFilters.push( "L3" ) ;
+    }
 }
 
 function applyStudyCriteriaFilter() {
@@ -647,6 +678,24 @@ function sortCardsAsPerStudyStrategy() {
         log.debug( "\tSorting cards as per SUBJECTIVE study strategy." ) ;
         $scope.questionsForSession.sort( function( q1, q2 ){
             return q2.handler.getAnswerLength() - q1.handler.getAnswerLength() ;
+        }) ;
+    }
+    else if( strategy == StudyStrategyTypes.prototype.BOTTOM_UP ) {
+        log.debug( "\tSorting cards as per BOTTOM_UP study strategy." ) ;
+        $scope.questionsForSession.sort( function( q1, q2 ){
+            var q1Level = q1.learningStats.currentLevel ;
+            var q2Level = q2.learningStats.currentLevel ;
+
+            if( q1Level == q2Level ) {
+                return 0 ;
+            }
+            else if( q1Level == CardLevels.prototype.NS ) {
+                return -1 ;
+            }
+            else if( q2Level == CardLevels.prototype.NS ) {
+                return 1 ;
+            }
+            return q1Level.localeCompare( q2Level ) ;
         }) ;
     } 
 
