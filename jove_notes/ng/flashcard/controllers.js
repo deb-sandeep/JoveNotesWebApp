@@ -5,7 +5,6 @@ function StudyCriteria() {
     this.maxCards       = 10000 ;
     this.maxTime        = -1 ;
     this.maxNewCards    = 10000 ;
-    this.oldMaxNewCards = 10000 ;
 
     this.currentLevelFilters       = [] ;
     this.learningEfficiencyFilters = [] ;
@@ -17,8 +16,6 @@ function StudyCriteria() {
     this.assistedStudy = false ;
 
     this.serialize = function() {
-        this.oldMaxNewCards = this.maxNewCards ;
-
         $.cookie.json = true ;
         $.cookie( 'studyCriteria', this, { expires: 30 } ) ;
     }
@@ -30,7 +27,6 @@ function StudyCriteria() {
             this.maxCards       = crit.maxCards ;
             this.maxTime        = crit.maxTime ;
             this.maxNewCards    = crit.maxNewCards ;
-            this.oldMaxNewCards = crit.oldMaxNewCards ;
             this.strategy       = crit.strategy ;
             this.push           = crit.push ;
             this.assistedStudy  = crit.assistedStudy ;
@@ -134,8 +130,6 @@ $scope.numNonMasteredCards = 0 ;
 $scope.numNSCards          = 0 ;
 $scope.totalCards          = 0 ;
 
-$scope.disableMaxNSCardChoice = false ;
-
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing FlashCardController." ) ;
 
@@ -155,19 +149,6 @@ $scope.$watch( 'studyCriteria.push', function( newValue, oldValue ){
 
 $scope.$watch( 'studyCriteria.strategy', function( newVal, oldVal ){
     refreshCardFilterOptions() ;
-} ) ;
-
-$scope.$watch( 'studyCriteria.currentLevelFilters', function( newVal, oldVal ){
-    if( newVal != "" ) {
-        if( newVal.indexOf( "NS" ) == -1 ) {
-            $scope.studyCriteria.maxNewCards = -1 ;
-            $scope.disableMaxNSCardChoice = true ;
-        }
-        else {
-            $scope.disableMaxNSCardChoice = false ;
-            $scope.studyCriteria.maxNewCards = $scope.studyCriteria.oldMaxNewCards ;
-        }
-    }
 } ) ;
 
 // ---------------- Controller methods -----------------------------------------
@@ -260,15 +241,6 @@ function preProcessFlashCardQuestions( questions ) {
         collateNSCardCount( question ) ;
         collateNonMasteredCardHistogramCount( question ) ;
         collateSSRCardHistogramCount( question ) ;
-    }
-
-    if( $scope.numNSCards == 0 ) {
-        $scope.disableMaxNSCardChoice = true ;
-        $scope.studyCriteria.maxNewCards = -1 ;
-    }
-    else {
-        $scope.disableMaxNSCardChoice = false ;
-        $scope.studyCriteria.maxNewCards = $scope.studyCriteria.oldMaxNewCards ;
     }
 }
 
