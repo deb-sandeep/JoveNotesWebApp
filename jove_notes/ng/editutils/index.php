@@ -14,7 +14,7 @@ $pageConfig = array(
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({ TeX: { extensions: ["mhchem.js"] }});
     </script>
-    <script type="text/javascript" src="/lib-ext/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="/lib-ext/MathJax/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
 
     <script src="/apps/jove_notes/ng/editutils/controllers.js"></script>    
     <script src="/apps/jove_notes/ng/editutils/directives.js"></script>    

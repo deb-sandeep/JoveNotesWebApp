@@ -65,7 +65,7 @@ define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
             displayAlign: "left"
         });
     </script>
-    <script src="/lib-ext/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="/lib-ext/MathJax/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
     <script src="/lib-ext/math/math.min.js"></script>    
 
     <script src="/apps/jove_notes/ng/_common/jove_notes_utils.js"></script>    

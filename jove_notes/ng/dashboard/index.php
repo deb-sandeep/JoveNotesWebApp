@@ -53,7 +53,7 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
             displayAlign: "left"
         });
     </script>
-    <script src="/lib-ext/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="/lib-ext/MathJax/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
     <script src="/lib-ext/math/math.min.js"></script>    
 
     <script src="/lib-app/js/simple_pivot/simple_pivot.js"></script> 
