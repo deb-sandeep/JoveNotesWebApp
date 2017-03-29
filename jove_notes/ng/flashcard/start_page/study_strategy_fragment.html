@@ -1,5 +1,6 @@
 <div class="form-group pad-10px">
     <label for="strategy">Strategy:</label>
+<!--
     <select id="strategy" class="form-control" ng-model="studyCriteria.strategy">
         <option value="SSR" selected>Spaced Repetition</option>
         <option value="EFF_HARD">Efficiency (Hard)</option>
@@ -10,6 +11,13 @@
         <option value="BOTTOM_UP_L1">Bottoms Up (L1)</option>
         <option value="BOTTOM_UP_L2">Bottoms Up (L2)</option>
         <option value="BOTTOM_UP_L3">Bottoms Up (L3)</option>
+    </select>
+    <p>
+-->
+    <select id="strategy" 
+            class="form-control" 
+            ng-model="studyCriteria.strategy"
+            ng-options="obj.id as obj.displayName for obj in studyStrategies">
     </select>
 </div>
 

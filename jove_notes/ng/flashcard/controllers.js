@@ -130,6 +130,20 @@ $scope.numNonMasteredCards = 0 ;
 $scope.numNSCards          = 0 ;
 $scope.totalCards          = 0 ;
 
+$scope.studyStrategies = [
+    new SSR_StudyStrategy(),
+    new NuHard_StudyStrategy(),
+    new NuEasy_StudyStrategy(),
+    new Objective_StudyStrategy(),
+    new Subjective_StudyStrategy(),
+    new BottomUpL0_StudyStrategy(),
+    new BottomUpL1_StudyStrategy(),
+    new BottomUpL2_StudyStrategy(),
+    new BottomUpL3_StudyStrategy(),
+] ;
+
+$scope.selectedStudyStrategy = null ;
+
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing FlashCardController." ) ;
 
@@ -148,7 +162,12 @@ $scope.$watch( 'studyCriteria.push', function( newValue, oldValue ){
 }) ;
 
 $scope.$watch( 'studyCriteria.strategy', function( newVal, oldVal ){
+    $scope.selectedStudyStrategy = lookupStudyStrategy( newVal ) ;
     refreshCardFilterOptions() ;
+} ) ;
+
+$scope.$watch( 'studyCriteria.currentLevelFilters', function( newVal, oldVal ){
+    log.debug( "Current level selection changed " + newVal ) ;
 } ) ;
 
 // ---------------- Controller methods -----------------------------------------
@@ -203,9 +222,24 @@ $scope.processServerData = function( serverData ) {
 
     preProcessFlashCardQuestions( $scope.questions ) ;
     refreshCardFilterOptions() ;
+
+    for( var i=0; i<$scope.studyStrategies.length; i++ ) {
+        var strategy = $scope.studyStrategies[i] ;
+        log.debug( strategy.id + " num questions " + strategy.questions.length ) ;
+    }
 }
 
 // ---------------- Private functions ------------------------------------------
+function lookupStudyStrategy( strategyId ) {
+    var strategy = null ;
+    for( var i=0; i<$scope.studyStrategies.length; i++ ) {
+        if( $scope.studyStrategies[i].id == strategyId ) {
+            strategy = $scope.studyStrategies[i] ;
+            break ;
+        }
+    }
+    return strategy ;
+}
 
 function preProcessFlashCardQuestions( questions ) {
 
@@ -241,6 +275,10 @@ function preProcessFlashCardQuestions( questions ) {
         collateNSCardCount( question ) ;
         collateNonMasteredCardHistogramCount( question ) ;
         collateSSRCardHistogramCount( question ) ;
+
+        for( var j=0; j<$scope.studyStrategies.length; j++ ) {
+            $scope.studyStrategies[j].offer( question ) ;
+        }
     }
 }
 

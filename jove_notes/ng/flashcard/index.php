@@ -85,6 +85,7 @@ $score = $scoreDAO->getScore( ExecutionContext::getCurrentUserName() ) ;
     <script src="/apps/jove_notes/ng/flashcard/filters.js"></script>    
     <script src="/apps/jove_notes/ng/flashcard/directives.js"></script>    
     <script src="/apps/jove_notes/ng/flashcard/controllers.js"></script>    
+    <script src="/apps/jove_notes/ng/flashcard/strategies.js"></script>    
 
     <script src="/apps/jove_notes/ng/flashcard/start_page/controllers.js"></script>
     <script src="/apps/jove_notes/ng/flashcard/practice_page/controllers.js"></script>
