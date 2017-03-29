@@ -163,6 +163,8 @@ $scope.$watch( 'studyCriteria.push', function( newValue, oldValue ){
 
 $scope.$watch( 'studyCriteria.strategy', function( newVal, oldVal ){
     $scope.selectedStudyStrategy = lookupStudyStrategy( newVal ) ;
+    $scope.selectedStudyStrategy.initializeForFirstTimeUsage() ;
+    
     refreshCardFilterOptions() ;
 } ) ;
 
@@ -225,7 +227,8 @@ $scope.processServerData = function( serverData ) {
 
     for( var i=0; i<$scope.studyStrategies.length; i++ ) {
         var strategy = $scope.studyStrategies[i] ;
-        log.debug( strategy.id + " num questions " + strategy.questions.length ) ;
+        // TODO: Remove this if not required.
+        // strategy.initializeFilterOptions() ;
     }
 }
 
