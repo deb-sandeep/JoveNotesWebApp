@@ -208,6 +208,11 @@ StudyStrategy.prototype.initializeForFirstTimeUsage = function() {
     }
 }
 
+StudyStrategy.prototype.initialize = function() {
+    log.debug( this.displayName + ". Force initializing." ) ;
+    this.prepareFilterOptions() ;
+}
+
 // -----------------------------------------------------------------------------
 SSR_StudyStrategy.prototype = new StudyStrategy() ;
 SSR_StudyStrategy.prototype.constructor = SSR_StudyStrategy;

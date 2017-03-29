@@ -109,25 +109,7 @@ $scope.assistedStudyCBDisabled = false ;
 
 $scope.textFormatter = null ;
 
-$scope.histogram = {
-    all : {
-        typeHistogram       : [],
-        levelHistogram      : [],
-        difficultyHistogram : [],
-        efficiencyHistogram : []
-    },
-    ssr : {
-        typeHistogram       : [],
-        levelHistogram      : [],
-        difficultyHistogram : [],
-        efficiencyHistogram : []
-    }
-}
-
-$scope.currentHistogram    = $scope.histogram.all ;
-$scope.numSSRCards         = 0 ;
-$scope.numNonMasteredCards = 0 ;
-$scope.numNSCards          = 0 ;
+$scope.currentHistogram    = null ;
 $scope.totalCards          = 0 ;
 
 $scope.studyStrategies = [
@@ -162,10 +144,7 @@ $scope.$watch( 'studyCriteria.push', function( newValue, oldValue ){
 }) ;
 
 $scope.$watch( 'studyCriteria.strategy', function( newVal, oldVal ){
-    $scope.selectedStudyStrategy = lookupStudyStrategy( newVal ) ;
-    $scope.selectedStudyStrategy.initializeForFirstTimeUsage() ;
-    
-    refreshCardFilterOptions() ;
+    refreshStudyStrategy( newVal, false ) ;
 } ) ;
 
 $scope.$watch( 'studyCriteria.currentLevelFilters', function( newVal, oldVal ){
@@ -207,43 +186,11 @@ $scope.processServerData = function( serverData ) {
     $scope.pageTitle              = jnUtil.constructPageTitle( $scope.chapterDetails ) ;
     $scope.textFormatter          = new TextFormatter( $scope.chapterDetails, null ) ;
 
-    $scope.histogram.all.typeHistogram       = [] ;
-    $scope.histogram.all.levelHistogram      = [] ;
-    $scope.histogram.all.difficultyHistogram = [] ;
-    $scope.histogram.all.efficiencyHistogram = [] ;
-
-    $scope.histogram.ssr.typeHistogram       = [] ;
-    $scope.histogram.ssr.levelHistogram      = [] ;
-    $scope.histogram.ssr.difficultyHistogram = [] ;
-    $scope.histogram.ssr.efficiencyHistogram = [] ;
-
-    $scope.numSSRCards         = 0 ;
-    $scope.numNonMasteredCards = 0 ;
-    $scope.numNSCards          = 0 ;
-    $scope.numCards            = 0 ;
-
     preProcessFlashCardQuestions( $scope.questions ) ;
-    refreshCardFilterOptions() ;
-
-    for( var i=0; i<$scope.studyStrategies.length; i++ ) {
-        var strategy = $scope.studyStrategies[i] ;
-        // TODO: Remove this if not required.
-        // strategy.initializeFilterOptions() ;
-    }
+    refreshStudyStrategy( $scope.studyCriteria.strategy, true ) ;
 }
 
 // ---------------- Private functions ------------------------------------------
-function lookupStudyStrategy( strategyId ) {
-    var strategy = null ;
-    for( var i=0; i<$scope.studyStrategies.length; i++ ) {
-        if( $scope.studyStrategies[i].id == strategyId ) {
-            strategy = $scope.studyStrategies[i] ;
-            break ;
-        }
-    }
-    return strategy ;
-}
-
 function preProcessFlashCardQuestions( questions ) {
 
     for( i=0; i<questions.length; i++ ) {
@@ -274,10 +221,6 @@ function preProcessFlashCardQuestions( questions ) {
 
         associateHandler( question ) ;
         processTestDataHints( question ) ;
-
-        collateNSCardCount( question ) ;
-        collateNonMasteredCardHistogramCount( question ) ;
-        collateSSRCardHistogramCount( question ) ;
 
         for( var j=0; j<$scope.studyStrategies.length; j++ ) {
             $scope.studyStrategies[j].offer( question ) ;
@@ -327,66 +270,6 @@ function associateHandler( question ) {
     }
 }
 
-function collateNSCardCount( question ) {
-
-    if( question.learningStats.currentLevel == "NS" ) {
-        $scope.numNSCards++ ;
-    }
-}
-
-function collateNonMasteredCardHistogramCount( question ) {
-
-    if( question.learningStats.currentLevel == "MAS" ) return ;
-
-    $scope.numNonMasteredCards++ ;
-    collateHistogramCount( question, $scope.histogram.all ) ;
-}
-
-function collateSSRCardHistogramCount( question ) {
-
-    var thresholdDelta = jnUtil.getSSRThresholdDelta( question ) ;
-    if( thresholdDelta < 0 && question.learningStats.currentLevel != 'NS' ) return ;
-
-    $scope.numSSRCards++ ;
-    collateHistogramCount( question, $scope.histogram.ssr ) ;
-}
-
-function collateHistogramCount( question, histCluster ) {
-
-    var cardParentType  = question.elementType ;
-    var difficultyLabel = question.difficultyLabel ;
-    var currentLevel    = question.learningStats.currentLevel ;
-    var efficiencyLabel = question.learningStats.efficiencyLabel ;
-
-    if( histCluster.typeHistogram.hasOwnProperty( cardParentType ) ) {
-        histCluster.typeHistogram[ cardParentType ]++ ;
-    }
-    else {
-        histCluster.typeHistogram[ cardParentType ] = 1 ;
-    }
-
-    if( histCluster.levelHistogram.hasOwnProperty( currentLevel ) ) {
-        histCluster.levelHistogram[ currentLevel ]++ ;
-    }
-    else {
-        histCluster.levelHistogram[ currentLevel ] = 1 ;
-    }
-
-    if( histCluster.difficultyHistogram.hasOwnProperty( difficultyLabel ) ) {
-        histCluster.difficultyHistogram[ difficultyLabel ]++ ;
-    }
-    else {
-        histCluster.difficultyHistogram[ difficultyLabel ] = 1 ;
-    }
-
-    if( histCluster.efficiencyHistogram.hasOwnProperty( efficiencyLabel ) ) {
-        histCluster.efficiencyHistogram[ efficiencyLabel ]++ ;
-    }
-    else {
-        histCluster.efficiencyHistogram[ efficiencyLabel ] = 1 ;
-    }
-}
-
 function processTestDataHints( question ) {
 
     if( question.learningStats.hasOwnProperty( '_testLATLag' ) ) {
@@ -395,137 +278,54 @@ function processTestDataHints( question ) {
     }
 }
 
-function refreshCardFilterOptions() {
+function refreshStudyStrategy( strategyId, forceInitialize ) {
 
-    pointToCorrectSet() ;
-
-    prepareCardTypeFilterOptions() ;
-    prepareCardLevelOptions() ;
-    prepareCardDifficultyOptions() ;
-    prepareCardEfficiencyOptions() ;
-}
-
-function pointToCorrectSet() {
-    if( $scope.studyCriteria.strategy == StudyStrategyTypes.prototype.SSR ) {
-        $scope.currentHistogram = $scope.histogram.ssr ;
-        $scope.totalCards = $scope.numSSRCards ;
+    $scope.selectedStudyStrategy = lookupStudyStrategy( strategyId ) ;
+    if( forceInitialize ) {
+        $scope.selectedStudyStrategy.initialize() ;
     }
     else {
-        $scope.currentHistogram = $scope.histogram.all ;
-        $scope.totalCards = $scope.numNonMasteredCards ;
+        $scope.selectedStudyStrategy.initializeForFirstTimeUsage() ;
     }
+
+    refreshCardFilterOptions() ;
 }
 
-function prepareCardTypeFilterOptions() {
-
-    var optionText = [] ;
-
-    optionText[ "word_meaning"    ] = "Word Meaning" ;
-    optionText[ "question_answer" ] = "Question Answer" ;
-    optionText[ "fib"             ] = "Fill in the blanks" ;
-    optionText[ "definition"      ] = "Definition" ;
-    optionText[ "character"       ] = "Character" ;
-    optionText[ "matching"        ] = "Matching" ;
-    optionText[ "event"           ] = "Event" ;
-    optionText[ "true_false"      ] = "True False" ;
-    optionText[ "chem_equation"   ] = "Chemical Equation" ;
-    optionText[ "chem_compound"   ] = "Chemical Compound" ;
-    optionText[ "spellbee"        ] = "Spellbee" ;
-    optionText[ "image_label"     ] = "Image label" ;
-    optionText[ "equation"        ] = "Equation" ;
-    optionText[ "rtc"             ] = "Reference to context" ;
-    optionText[ "multi_choice"    ] = "Multiple choice" ;  
-    optionText[ "voice2text"      ] = "Voice to Text" ;
-
-    populateFilterOptions( $scope.currentHistogram.typeHistogram, optionText, 
-                           $scope.filterOptions.cardTypeOptions,
-                           $scope.studyCriteria.cardTypeFilters ) ;
-}
-
-function prepareCardLevelOptions() {
-
-    var optionText = [] ;
-
-    optionText[ "NS" ] = "Not Started" ;
-    optionText[ "L0" ] = "Level 0" ;
-    optionText[ "L1" ] = "Level 1" ;
-    optionText[ "L2" ] = "Level 2" ;
-    optionText[ "L3" ] = "Level 3" ;
-
-    populateFilterOptions( $scope.currentHistogram.levelHistogram, optionText,
-                           $scope.filterOptions.currentLevelOptions,
-                           $scope.studyCriteria.currentLevelFilters ) ;
-}
-
-function prepareCardDifficultyOptions() {
-
-    var optionText = [] ;
-
-    optionText[ "VE" ] = "Very easy" ;
-    optionText[ "E"  ] = "Easy" ;
-    optionText[ "M"  ] = "Moderate" ;
-    optionText[ "H"  ] = "Hard" ;
-    optionText[ "VH" ] = "Very hard" ;
-
-    populateFilterOptions( $scope.currentHistogram.difficultyHistogram, optionText,
-                           $scope.filterOptions.difficultyOptions,
-                           $scope.studyCriteria.difficultyFilters ) ;
-}
-
-function prepareCardEfficiencyOptions() {
-
-    var optionText = [] ;
-
-    optionText[ "A1" ] = "A1" ;
-    optionText[ "A2" ] = "A2" ;
-    optionText[ "B1" ] = "B1" ;
-    optionText[ "B2" ] = "B2" ;
-    optionText[ "C1" ] = "C1" ;
-    optionText[ "C2" ] = "C2" ;
-    optionText[ "D"  ] = "D" ;
-
-    populateFilterOptions( $scope.currentHistogram.efficiencyHistogram, optionText,
-                           $scope.filterOptions.learningEfficiencyOptions,
-                           $scope.studyCriteria.learningEfficiencyFilters ) ;
-}
-
-function populateFilterOptions( histogram, keyNameMapping, filterOptions, 
-                                filterCriteria ) {
-
-    filterOptions.length = 0 ;
-    filterCriteria.length = 0 ;
-
-    for( var key in histogram ) {
-
-        if( histogram.hasOwnProperty( key ) ) {
-
-            var count = histogram[ key ] ;
-            if( count > 0 ) {
-
-                var name = 'Unknown Element' ;
-                if( keyNameMapping.hasOwnProperty( key ) ) {
-                    name = keyNameMapping[ key ] ;
-                }
-
-                var str = "" + count ;
-                var pad = "000" ;
-                str = pad.substring( 0, pad.length - str.length ) + str ;
-                str = str + " - " + name ;
-
-                filterOptions.push( {
-                    id : key,
-                    name : str,
-                    count : count
-                }) ;
-
-                filterCriteria.push( key ) ;
-            }
+function lookupStudyStrategy( strategyId ) {
+    var strategy = null ;
+    for( var i=0; i<$scope.studyStrategies.length; i++ ) {
+        if( $scope.studyStrategies[i].id == strategyId ) {
+            strategy = $scope.studyStrategies[i] ;
+            break ;
         }
     }
+    return strategy ;
+}
 
-    filterOptions.sort( function( a, b ){ 
-        return b.count - a.count ; 
-    } ) ;
+function refreshCardFilterOptions() {
+
+    $scope.currentHistogram = $scope.selectedStudyStrategy.histograms ;
+    $scope.totalCards = $scope.selectedStudyStrategy.questions.length ;
+    $scope.filterOptions = $scope.selectedStudyStrategy.filterOptions ;
+
+    refreshStudyCriteriaFilter( $scope.filterOptions.cardTypeOptions,
+                                $scope.studyCriteria.cardTypeFilters ) ;
+    
+    refreshStudyCriteriaFilter( $scope.filterOptions.currentLevelOptions,
+                                $scope.studyCriteria.currentLevelFilters ) ;
+    
+    refreshStudyCriteriaFilter( $scope.filterOptions.difficultyOptions,
+                                $scope.studyCriteria.difficultyFilters ) ;
+    
+    refreshStudyCriteriaFilter( $scope.filterOptions.learningEfficiencyOptions,
+                                $scope.studyCriteria.learningEfficiencyFilters ) ;
+}
+
+function refreshStudyCriteriaFilter( filterOptions, filterCriteria ) {
+    filterCriteria.length = 0 ;
+    for( var i=0; i<filterOptions.length; i++ ) {
+        filterCriteria.push( filterOptions[i].id ) ;
+    }
 }
 
 // ---------------- End of controller ------------------------------------------
