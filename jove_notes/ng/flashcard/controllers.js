@@ -125,6 +125,7 @@ $scope.studyStrategies = [
 ] ;
 
 $scope.selectedStudyStrategy = null ;
+$scope.filteredCards = [] ;
 
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing FlashCardController." ) ;
@@ -147,8 +148,15 @@ $scope.$watch( 'studyCriteria.strategy', function( newVal, oldVal ){
     refreshStudyStrategy( newVal, false ) ;
 } ) ;
 
-$scope.$watch( 'studyCriteria.currentLevelFilters', function( newVal, oldVal ){
-    log.debug( "Current level selection changed " + newVal ) ;
+$scope.$watchGroup( ['studyCriteria.currentLevelFilters',
+                     'studyCriteria.learningEfficiencyFilters',
+                     'studyCriteria.difficultyFilters',
+                     'studyCriteria.cardTypeFilters',
+                     'studyCriteria.maxCards',
+                     'studyCriteria.maxNewCards'], 
+                    function( newVals, oldVals ) {
+
+    handleFilterChange() ;
 } ) ;
 
 // ---------------- Controller methods -----------------------------------------
@@ -280,15 +288,22 @@ function processTestDataHints( question ) {
 
 function refreshStudyStrategy( strategyId, forceInitialize ) {
 
-    $scope.selectedStudyStrategy = lookupStudyStrategy( strategyId ) ;
+    var studyStrategy = lookupStudyStrategy( strategyId ) ;
     if( forceInitialize ) {
-        $scope.selectedStudyStrategy.initialize() ;
+        studyStrategy.initialize() ;
+        studyStrategy.sortQuestions() ;
     }
     else {
-        $scope.selectedStudyStrategy.initializeForFirstTimeUsage() ;
+        if( !studyStrategy.initialized ) {
+            studyStrategy.initialize() ;
+            studyStrategy.sortQuestions() ;
+        }
     }
 
+    $scope.selectedStudyStrategy = studyStrategy ;
+
     refreshCardFilterOptions() ;
+    handleFilterChange() ;
 }
 
 function lookupStudyStrategy( strategyId ) {
@@ -328,6 +343,11 @@ function refreshStudyCriteriaFilter( filterOptions, filterCriteria ) {
     }
 }
 
+function handleFilterChange() {
+    $scope.filteredCards = $scope.selectedStudyStrategy
+                                 .getFilteredCards( $scope.studyCriteria ) ;
+    $scope.totalCards = $scope.filteredCards.length ;
+}
 // ---------------- End of controller ------------------------------------------
 } ) ;
 

@@ -194,23 +194,63 @@ function StudyStrategy( id, displayName ) {
             return b.count - a.count ; 
         } ) ;
     }
+
+    this.getFilteredCards = function( studyCriteria ) {
+
+        var nsQuestionsAdded = 0 ;
+        var filteredCards = [] ;
+
+        for( var i=0; i<this.questions.length; i++ ) {
+
+            var q = this.questions[i] ;
+            
+            if( studyCriteria.matchesFilter( q ) ) {
+                if( q.learningStats.currentLevel != 'NS' ) {
+                    filteredCards.push( q ) ;
+                }
+                else {
+                    if( nsQuestionsAdded < studyCriteria.maxNewCards ) {
+                        filteredCards.push( q ) ;
+                        nsQuestionsAdded++ ;
+                    }
+                }
+            }
+
+            if( filteredCards.length >= studyCriteria.maxCards ) {
+                break ;
+            }
+        }
+        return filteredCards ;
+    }
+
+    this.sortQuestionsByLevel = function() {
+
+        if( this.questions.length == 0 ) return ;
+        this.questions.sort( function( q1, q2 ){
+            var q1Level = q1.learningStats.currentLevel ;
+            var q2Level = q2.learningStats.currentLevel ;
+
+            if( q1Level == q2Level ) {
+                return 0 ;
+            }
+            else if( q1Level == CardLevels.prototype.NS ) {
+                return -1 ;
+            }
+            else if( q2Level == CardLevels.prototype.NS ) {
+                return 1 ;
+            }
+            return q1Level.localeCompare( q2Level ) ;
+        } ) ;
+    }
 }
 
 StudyStrategy.prototype.offer = function( question ) {
     this.addQuestion( question ) ;
 }
 
-StudyStrategy.prototype.initializeForFirstTimeUsage = function() {
-    if( !this.initialized ) {
-        log.debug( this.displayName + ". Initializing for first time usage." ) ;
-        this.prepareFilterOptions() ;
-        this.initialized = true ;
-    }
-}
-
 StudyStrategy.prototype.initialize = function() {
-    log.debug( this.displayName + ". Force initializing." ) ;
     this.prepareFilterOptions() ;
+    this.initialized = true ;
 }
 
 // -----------------------------------------------------------------------------
@@ -219,6 +259,27 @@ SSR_StudyStrategy.prototype.constructor = SSR_StudyStrategy;
 
 function SSR_StudyStrategy() {
     StudyStrategy.call( this, "SSR", "Spaced Repetition" ) ;
+}
+
+SSR_StudyStrategy.prototype.sortQuestions = function() {
+
+    var util = this.jnUtil ;
+
+    if( this.questions.length == 0 ) return ;
+    this.questions.sort( function( q1, q2 ){
+
+        // tla => Time since Last Attempt
+        var tlaCard1 = util.getSSRThresholdDelta( q1 ) ;
+        var tlaCard2 = util.getSSRThresholdDelta( q2 ) ;
+
+        if( tlaCard1 == -1 && tlaCard2 > -1 ) {
+            return -1 ;
+        }
+        else if( tlaCard2 == -1 && tlaCard1 > -1 ) {
+            return 1 ;
+        }
+        return tlaCard2 - tlaCard1 ;
+    } ) ;
 }
 
 SSR_StudyStrategy.prototype.offer = function( question ) {
@@ -237,12 +298,28 @@ function NuHard_StudyStrategy() {
     StudyStrategy.call( this, "EFF_HARD", "Efficiency (Hard)" ) ;
 }
 
+NuHard_StudyStrategy.prototype.sortQuestions = function() {
+    if( this.questions.length == 0 ) return ;
+    this.questions.sort( function( q1, q2 ){
+        return q1.learningStats.absoluteLearningEfficiency - 
+               q2.learningStats.absoluteLearningEfficiency ;
+    } ) ;
+}
+
 // -----------------------------------------------------------------------------
 NuEasy_StudyStrategy.prototype = new StudyStrategy() ;
 NuEasy_StudyStrategy.prototype.constructor = NuEasy_StudyStrategy ;
 
 function NuEasy_StudyStrategy() {
     StudyStrategy.call( this, "EFF_EASY", "Efficiency (Easy)" ) ;
+}
+
+NuEasy_StudyStrategy.prototype.sortQuestions = function() {
+    if( this.questions.length == 0 ) return ;
+    this.questions.sort( function( q1, q2 ){
+        return q2.learningStats.absoluteLearningEfficiency - 
+               q1.learningStats.absoluteLearningEfficiency ;
+    } ) ;
 }
 
 // -----------------------------------------------------------------------------
@@ -253,6 +330,13 @@ function Objective_StudyStrategy() {
     StudyStrategy.call( this, "OBJECTIVE", "Objective" ) ;
 }
 
+Objective_StudyStrategy.prototype.sortQuestions = function() {
+    if( this.questions.length == 0 ) return ;
+    this.questions.sort( function( q1, q2 ){
+        return q1.handler.getAnswerLength() - q2.handler.getAnswerLength() ;
+    } ) ;
+}
+
 // -----------------------------------------------------------------------------
 Subjective_StudyStrategy.prototype = new StudyStrategy() ;
 Subjective_StudyStrategy.prototype.constructor = Subjective_StudyStrategy ;
@@ -261,12 +345,23 @@ function Subjective_StudyStrategy() {
     StudyStrategy.call( this, "SUBJECTIVE", "Subjective" ) ;
 }
 
+Subjective_StudyStrategy.prototype.sortQuestions = function() {
+    if( this.questions.length == 0 ) return ;
+    this.questions.sort( function( q1, q2 ){
+        return q2.handler.getAnswerLength() - q1.handler.getAnswerLength() ;
+    } ) ;
+}
+
 // -----------------------------------------------------------------------------
 BottomUpL0_StudyStrategy.prototype = new StudyStrategy() ;
 BottomUpL0_StudyStrategy.prototype.constructor = BottomUpL0_StudyStrategy ;
 
 function BottomUpL0_StudyStrategy() {
     StudyStrategy.call( this, "BOTTOM_UP_L0", "Bottoms Up (L0)" ) ;
+}
+
+BottomUpL0_StudyStrategy.prototype.sortQuestions = function() {
+    this.sortQuestionsByLevel() ;
 }
 
 BottomUpL0_StudyStrategy.prototype.offer = function( question ) {
@@ -281,6 +376,10 @@ function BottomUpL1_StudyStrategy() {
     StudyStrategy.call( this, "BOTTOM_UP_L1", "Bottoms Up (L1)" ) ;
 }
 
+BottomUpL1_StudyStrategy.prototype.sortQuestions = function() {
+    this.sortQuestionsByLevel() ;
+}
+
 BottomUpL1_StudyStrategy.prototype.offer = function( question ) {
     this.addQuestionAtLevel( ['NS', 'L0', 'L1' ], question ) ; 
 }
@@ -293,6 +392,10 @@ function BottomUpL2_StudyStrategy() {
     StudyStrategy.call( this, "BOTTOM_UP_L2", "Bottoms Up (L2)" ) ;
 }
 
+BottomUpL2_StudyStrategy.prototype.sortQuestions = function() {
+    this.sortQuestionsByLevel() ;
+}
+
 BottomUpL2_StudyStrategy.prototype.offer = function( question ) {
     this.addQuestionAtLevel( ['NS', 'L0', 'L1', 'L2' ], question ) ; 
 }
@@ -303,6 +406,10 @@ BottomUpL3_StudyStrategy.prototype.constructor = BottomUpL3_StudyStrategy ;
 
 function BottomUpL3_StudyStrategy() {
     StudyStrategy.call( this, "BOTTOM_UP_L3", "Bottoms Up (L3)" ) ;
+}
+
+BottomUpL3_StudyStrategy.prototype.sortQuestions = function() {
+    this.sortQuestionsByLevel() ;
 }
 
 BottomUpL3_StudyStrategy.prototype.offer = function( question ) {
