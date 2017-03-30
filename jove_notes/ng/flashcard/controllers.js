@@ -14,6 +14,7 @@ function StudyCriteria() {
     this.strategy      = "SSR" ;
     this.push          = false ;
     this.assistedStudy = false ;
+    this.excludeMarkedForReview = true ;
 
     this.serialize = function() {
         $.cookie.json = true ;
@@ -24,16 +25,21 @@ function StudyCriteria() {
         $.cookie.json = true ;
         var crit = $.cookie( 'studyCriteria' ) ;
         if( typeof crit != 'undefined' ) {
-            this.maxCards       = crit.maxCards ;
-            this.maxTime        = crit.maxTime ;
-            this.maxNewCards    = crit.maxNewCards ;
-            this.strategy       = crit.strategy ;
-            this.push           = crit.push ;
-            this.assistedStudy  = crit.assistedStudy ;
+            this.maxCards               = crit.maxCards ;
+            this.maxTime                = crit.maxTime ;
+            this.maxNewCards            = crit.maxNewCards ;
+            this.strategy               = crit.strategy ;
+            this.push                   = crit.push ;
+            this.assistedStudy          = crit.assistedStudy ;
+            this.excludeMarkedForReview = crit.excludeMarkedForReview ;
         } ;
     }
 
     this.matchesFilter = function( question ) {
+
+        if( this.excludeMarkedForReview && question.markedForReview==1 ) {
+            return false ;
+        }
 
         var currentLevel = question.learningStats.currentLevel ;
         var lrnEffLabel  = question.learningStats.efficiencyLabel ;
@@ -153,7 +159,8 @@ $scope.$watchGroup( ['studyCriteria.currentLevelFilters',
                      'studyCriteria.difficultyFilters',
                      'studyCriteria.cardTypeFilters',
                      'studyCriteria.maxCards',
-                     'studyCriteria.maxNewCards'], 
+                     'studyCriteria.maxNewCards',
+                     'studyCriteria.excludeMarkedForReview'], 
                     function( newVals, oldVals ) {
 
     handleFilterChange() ;

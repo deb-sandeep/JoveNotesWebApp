@@ -1,19 +1,5 @@
 <div class="form-group pad-10px">
     <label for="strategy">Strategy:</label>
-<!--
-    <select id="strategy" class="form-control" ng-model="studyCriteria.strategy">
-        <option value="SSR" selected>Spaced Repetition</option>
-        <option value="EFF_HARD">Efficiency (Hard)</option>
-        <option value="EFF_EASY">Efficiency (Easy)</option>
-        <option value="OBJECTIVE">Objective</option>
-        <option value="SUBJECTIVE">Subjective</option>
-        <option value="BOTTOM_UP_L0">Bottoms Up (L0)</option>
-        <option value="BOTTOM_UP_L1">Bottoms Up (L1)</option>
-        <option value="BOTTOM_UP_L2">Bottoms Up (L2)</option>
-        <option value="BOTTOM_UP_L3">Bottoms Up (L3)</option>
-    </select>
-    <p>
--->
     <select id="strategy" 
             class="form-control" 
             ng-model="studyCriteria.strategy"
@@ -22,14 +8,23 @@
 </div>
 
 <div class="form-group pad-10px">
-    <input id="push" type="checkbox" ng-model="studyCriteria.push"/>
+    <input id="push" 
+           type="checkbox" 
+           ng-model="studyCriteria.push"/>
     <label for="push"> Enable remote flash</label>
 </div>
 
 <div class="form-group pad-10px">
-    <input id="assistedStudy" type="checkbox" 
+    <input id="assistedStudy" 
+           type="checkbox" 
            ng-model="studyCriteria.assistedStudy"
            ng-disabled="assistedStudyCBDisabled" />
     <label for="assistedStudy"> Assisted study</label>
 </div>
 
+<div class="form-group pad-10px">
+    <input id="excludeMarkedForReview" 
+           type="checkbox" 
+           ng-model="studyCriteria.excludeMarkedForReview" />
+    <label for="excludeMarkedForReview"> Exclude marked for review</label>
+</div>
