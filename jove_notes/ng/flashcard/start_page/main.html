@@ -42,22 +42,8 @@
 
 <!-- The graphs which show the progress of the user and the chapter stats    -->
 <!-- ======================================================================= -->
-<table width="100%">
-  <tr>
-    <td width="33%" align="center">
-        <b>Difficulty level of cards</b><p>
-        <canvas id="difficultyStatsBarGraph" width="250" height="200"></canvas>
-    </td>
-    <td width="33%" align="center">
-        <b>Current learning level</b><p>
-        <canvas id="learningStatsPieGraph" width="250" height="200"></canvas>
-    </td>
-    <td width="33%" align="center">
-        <b>Learning curve</b><p>
-        <canvas id="learningCurveGraph" width="350" height="200"></canvas>
-    </td>
-  </tr>
-</table>
+<div ng-include="'/apps/jove_notes/ng/flashcard/start_page/chart_fragment.html'">
+</div>
 
 <!-- The input values which will influence the study session.                -->
 <!-- ======================================================================= -->

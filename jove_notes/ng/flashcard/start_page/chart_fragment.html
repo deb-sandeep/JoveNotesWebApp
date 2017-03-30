@@ -1,0 +1,59 @@
+<div id="chartCarousel" class="carousel" data-ride="carousel" align="center" data-interval="false" data-wrap="false">
+    <div align="center">
+        <ol class="carousel-indicators">
+            <li data-target="#chartCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#chartCarousel" data-slide-to="1"></li>
+            <li data-target="#chartCarousel" data-slide-to="2"></li>
+        </ol>
+    </div>
+    <div class="carousel-inner" role="listbox" style="width:90%">
+
+        <!-- Default chart -->
+        <div class="item active">
+          <table>
+            <tr>
+              <td align="center">
+                  <b>Current learning level</b><p>
+                  <canvas id="learningStatsPieGraph" width="250" height="200"></canvas>
+              </td>
+              <td align="center">
+                  <b>Learning curve</b><p>
+                  <canvas id="learningCurveGraph" width="550" height="200"></canvas>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Tab 1 charts -->
+        <div class="item">
+          <table>
+            <tr>
+              <td align="center">
+                  <b>Difficulty level of cards</b><p>
+                  <canvas id="difficultyStatsBarGraph" width="250" height="200"></canvas>
+              </td>
+            </tr>
+          </table>
+        </div>
+        
+        <!-- Tab 2 charts -->
+        <div class="item">
+        </div>
+    </div>
+    <a class="left carousel-control" 
+       data-target="#chartCarousel" 
+       role="button" 
+       data-slide="prev" 
+       ng-non-bindable
+       style="width:5%">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <a class="right carousel-control" 
+       data-target="#chartCarousel" 
+       role="button" 
+       data-slide="next" 
+       ng-non-bindable
+       style="width:5%">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
+</div>
