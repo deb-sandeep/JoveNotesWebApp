@@ -216,6 +216,8 @@ function preProcessFlashCardQuestions( questions ) {
         question.learningStats.absoluteLearningEfficiency = 
             jnUtil.getAbsoluteLearningEfficiency( question.learningStats.temporalScores ) ;
 
+        question.learningStats.recencyInDays = jnUtil.getRecencyInDays( question ) ;
+
         question.learningStats.averageTimeSpent = 0 ;
         if( question.learningStats.numAttempts != 0 ) {
             question.learningStats.averageTimeSpent = Math.ceil( question.learningStats.totalTimeSpent / 
@@ -371,7 +373,9 @@ function updateSelectedCardStatistics( questions ) {
     var statsGenerator = new CardStatistics( questions ) ;
     statsGenerator.computeStatistics() ;
 
-    jnUtil.renderBarChart( "selCardNuStatsChart", statsGenerator.nuStatistics ) ;
+    jnUtil.renderBarChart( "selCardEffStatsChart",     statsGenerator.nuStatistics ) ;
+    jnUtil.renderBarChart( "selCardLevelStatsChart",   statsGenerator.levelStatistics ) ;
+    jnUtil.renderBarChart( "selCardRecencyStatsChart", statsGenerator.recencyStatistics ) ;
 }
 
 // ---------------- End of controller ------------------------------------------

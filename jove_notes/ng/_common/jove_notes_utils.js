@@ -259,6 +259,8 @@ this.renderDifficultyStatsBar = function( divName, difficultyStats ) {
 
 this.renderBarChart = function( divName, chartData ) {
 
+    if( document.getElementById( divName ) == null ) return ;
+
     var dataVals  = [] ;
     var labelVals = [] ;
     var colorVals = [] ;
@@ -415,6 +417,16 @@ this.getSSRThresholdDelta = function( question ) {
     return delta ;
 }
 
+this.getRecencyInDays = function( question ) {
+
+    var millis = new Date().getTime() - question.learningStats.lastAttemptTime ;
+
+    var numSecs = Math.floor( millis / 1000 ) ;
+    var days    = Math.floor( numSecs / ( 3600 * 24 ) ) ;
+
+    return days ;
+}
+
 // ----------------------- Private functions for JoveNoteUtils -----------------
 
 function isDebug() {
@@ -425,7 +437,6 @@ function isDebug() {
 }
 
 function clearCanvas( canvasId ) {
-
     var canvas = document.getElementById( canvasId ) ;
     var context = canvas.getContext( "2d" ) ;
     context.clearRect( 0, 0, canvas.width, canvas.height ) ;
