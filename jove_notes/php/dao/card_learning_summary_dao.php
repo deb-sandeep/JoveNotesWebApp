@@ -102,7 +102,8 @@ where
     c.card_id = cls.card_id and  
     cls.student_name = '$userName' and  
     c.chapter_id = $chapterId and
-    c.notes_element_id = ne.notes_element_id
+    c.notes_element_id = ne.notes_element_id and
+    cls.current_level <> 'MAS'
 QUERY;
 
         $colNames = [ "card_id", "card_type", "difficulty_level", "content", 

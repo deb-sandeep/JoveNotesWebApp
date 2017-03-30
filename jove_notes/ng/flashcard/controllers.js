@@ -359,7 +359,7 @@ function computeProjectedDuration( questions ) {
     for( var i = 0; i < questions.length; i++ ) {
         var q = questions[i] ;
         var avgTime = q.learningStats.averageTimeSpent ;
-        if( avgTime == 0 ) {
+        if( avgTime <= 0 ) {
             avgTime = 30 ;
         }
 
