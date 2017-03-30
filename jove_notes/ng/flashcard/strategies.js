@@ -385,3 +385,26 @@ BottomUpL3_StudyStrategy.prototype.sortQuestions = function() {
 BottomUpL3_StudyStrategy.prototype.offer = function( question ) {
     this.addQuestionAtLevel( ['NS', 'L0', 'L1', 'L2', 'L3' ], question ) ; 
 }
+
+// -----------------------------------------------------------------------------
+Recency_StudyStrategy.prototype = new StudyStrategy() ;
+Recency_StudyStrategy.prototype.constructor = Recency_StudyStrategy ;
+
+function Recency_StudyStrategy() {
+    StudyStrategy.call( this, "RECENCY", "Recency" ) ;
+}
+
+Recency_StudyStrategy.prototype.sortQuestions = function() {
+    if( this.questions.length == 0 ) return ;
+    this.questions.sort( function( q1, q2 ){
+        if( q2.learningStats.recencyInDays == 0 && 
+            q1.learningStats.recencyInDays == 0 ) {
+
+            return q1.learningStats.lastAttemptTime -
+                   q2.learningStats.lastAttemptTime ;
+        }
+        
+        return q2.learningStats.recencyInDays - 
+               q1.learningStats.recencyInDays ;
+    } ) ;
+}
