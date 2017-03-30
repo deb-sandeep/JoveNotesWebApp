@@ -323,36 +323,6 @@ NuEasy_StudyStrategy.prototype.sortQuestions = function() {
 }
 
 // -----------------------------------------------------------------------------
-Objective_StudyStrategy.prototype = new StudyStrategy() ;
-Objective_StudyStrategy.prototype.constructor = Objective_StudyStrategy ;
-
-function Objective_StudyStrategy() {
-    StudyStrategy.call( this, "OBJECTIVE", "Objective" ) ;
-}
-
-Objective_StudyStrategy.prototype.sortQuestions = function() {
-    if( this.questions.length == 0 ) return ;
-    this.questions.sort( function( q1, q2 ){
-        return q1.handler.getAnswerLength() - q2.handler.getAnswerLength() ;
-    } ) ;
-}
-
-// -----------------------------------------------------------------------------
-Subjective_StudyStrategy.prototype = new StudyStrategy() ;
-Subjective_StudyStrategy.prototype.constructor = Subjective_StudyStrategy ;
-
-function Subjective_StudyStrategy() {
-    StudyStrategy.call( this, "SUBJECTIVE", "Subjective" ) ;
-}
-
-Subjective_StudyStrategy.prototype.sortQuestions = function() {
-    if( this.questions.length == 0 ) return ;
-    this.questions.sort( function( q1, q2 ){
-        return q2.handler.getAnswerLength() - q1.handler.getAnswerLength() ;
-    } ) ;
-}
-
-// -----------------------------------------------------------------------------
 BottomUpL0_StudyStrategy.prototype = new StudyStrategy() ;
 BottomUpL0_StudyStrategy.prototype.constructor = BottomUpL0_StudyStrategy ;
 

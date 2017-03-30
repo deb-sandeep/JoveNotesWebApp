@@ -117,8 +117,6 @@ $scope.studyStrategies = [
     new SSR_StudyStrategy(),
     new NuHard_StudyStrategy(),
     new NuEasy_StudyStrategy(),
-    new Objective_StudyStrategy(),
-    new Subjective_StudyStrategy(),
     new BottomUpL0_StudyStrategy(),
     new BottomUpL1_StudyStrategy(),
     new BottomUpL2_StudyStrategy(),
@@ -349,6 +347,7 @@ function handleFilterChange() {
                                  .getFilteredCards( $scope.studyCriteria ) ;
     $scope.totalCards = $scope.filteredCards.length ;
     computeProjectedDuration( $scope.filteredCards ) ;
+    updateSelectedCardStatistics( $scope.filteredCards ) ;
 }
 
 function computeProjectedDuration( questions ) {
@@ -366,6 +365,15 @@ function computeProjectedDuration( questions ) {
     // Convert it into millis as duration decorator takes millis as input
     $scope.projectedDuration *= 1000 ;
 }
+
+function updateSelectedCardStatistics( questions ) {
+
+    var statsGenerator = new CardStatistics( questions ) ;
+    statsGenerator.computeStatistics() ;
+
+    jnUtil.renderBarChart( "selCardNuStatsChart", statsGenerator.nuStatistics ) ;
+}
+
 // ---------------- End of controller ------------------------------------------
 } ) ;
 

@@ -257,6 +257,42 @@ this.renderDifficultyStatsBar = function( divName, difficultyStats ) {
     .draw();
 } ;
 
+this.renderBarChart = function( divName, chartData ) {
+
+    var dataVals  = [] ;
+    var labelVals = [] ;
+    var colorVals = [] ;
+
+    for( var seriesName in chartData ) {
+        if( chartData.hasOwnProperty( seriesName ) ) {
+            labelVals.push( seriesName ) ;
+            dataVals.push( chartData[ seriesName ][0] ) ;
+            colorVals.push( chartData[ seriesName ][1] ) ;
+        }
+    }
+
+    clearCanvas( divName ) ;
+    var bar = new RGraph.Bar( {
+        id     : divName,
+        data   : dataVals,
+        options: {
+            labels: labelVals,
+            colors: colorVals,
+            gutter: {
+                left   : 30,
+                right  : 30,
+                top    : 30,
+                bottom : 30
+            },
+            background: {
+                grid: true
+            }
+        }
+    })
+    .set( 'colors.sequential', true )
+    .draw();
+}
+
 this.renderLearningCurveGraph = function( divName, learningCurveData ) {
 
     if( isDebug() )return ;
