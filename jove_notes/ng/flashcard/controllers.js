@@ -111,6 +111,7 @@ $scope.textFormatter = null ;
 
 $scope.currentHistogram    = null ;
 $scope.totalCards          = 0 ;
+$scope.projectedDuration   = 0 ;
 
 $scope.studyStrategies = [
     new SSR_StudyStrategy(),
@@ -347,6 +348,23 @@ function handleFilterChange() {
     $scope.filteredCards = $scope.selectedStudyStrategy
                                  .getFilteredCards( $scope.studyCriteria ) ;
     $scope.totalCards = $scope.filteredCards.length ;
+    computeProjectedDuration( $scope.filteredCards ) ;
+}
+
+function computeProjectedDuration( questions ) {
+
+    $scope.projectedDuration = 0 ;
+    for( var i = 0; i < questions.length; i++ ) {
+        var q = questions[i] ;
+        var avgTime = q.learningStats.averageTimeSpent ;
+        if( avgTime == 0 ) {
+            avgTime = 30 ;
+        }
+
+        $scope.projectedDuration += avgTime ;
+    }
+    // Convert it into millis as duration decorator takes millis as input
+    $scope.projectedDuration *= 1000 ;
 }
 // ---------------- End of controller ------------------------------------------
 } ) ;

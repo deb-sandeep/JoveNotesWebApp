@@ -28,7 +28,9 @@
           <a type="button" class="btn btn-success btn-block gi-2x"
              href="#PracticePage"
              style="height:50px;">
-              Start Session
+              Start &nbsp;
+              [{{totalCards}}] &nbsp;
+              ({{$parent.projectedDuration | duration}}) &nbsp;&nbsp;
               <span class="glyphicon glyphicon-play"></span>
           </a>
           </p>
@@ -84,7 +86,12 @@
     <td class="pad-5px" valign="top">
         <div class="panel panel-info">
           <div class="panel-heading">
-            <b>Filter Criteria ({{totalCards}})</b>&nbsp;&nbsp;
+            <b>Filter Criteria 
+            [
+             <font color="red">{{totalCards}}</font> cards selected, 
+             ~duration <font color="red">{{$parent.projectedDuration | duration}}</font>
+            ]
+            </b>&nbsp;&nbsp;
           </div>
           <div class="panel-body">
             <div align="center" 
