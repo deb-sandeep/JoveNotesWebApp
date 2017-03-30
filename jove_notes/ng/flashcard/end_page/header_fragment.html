@@ -2,16 +2,16 @@
 
     <div style="display:table;width:100%;padding-bottom:5px">
 
-    	<div style="display:table-cell;width:40px;">
+    	<div style="display:table-cell;width:150px;">
         	<img src="/apps/jove_notes/media/images/logo_for_navbar.png" 
         	     style="height: 20px" />
+            <span class="small">[ {{$parent.userName}} ]</span>
         </div>
         <div style="display:table-cell;text-align:center;">
-        	<span class="gi-1-15x">{{$parent.pageTitle}}</span>
+            <span class="gi-1-15x">{{$parent.pageTitle}}</span>
         </div>
-        <div style="display:table-cell;width:170px;text-align:right;">
+        <div style="display:table-cell;width:150px;text-align:right;">
             <span class="badge muted">{{sessionDuration | duration}}</span>
-            <span class="small">[ {{$parent.userName}} ]</span>
         </div>
     </div>
 

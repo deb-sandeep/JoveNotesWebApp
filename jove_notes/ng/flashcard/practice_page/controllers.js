@@ -67,6 +67,8 @@ $scope.questionMode = false ;
 // The direction of the footer buttons on the flashcard page.
 $scope.gradingButtonPlacement = "right" ;
 
+$scope.projectedTimeLeft = 0 ;
+
 // ---------------- Main logic for the controller ------------------------------
 {
     log.debug( "Executing PracticePageController." ) ;
@@ -190,6 +192,22 @@ $scope.purgeCard = function() {
     $scope.questionsForSession.shift() ;
     
     showNextCard() ;
+}
+
+$scope.purgeNotAttemptedCards = function() {
+
+    for( var i = $scope.questionsForSession.length-1; i >= 0; i-- ) {
+        var q = $scope.questionsForSession[i] ;
+        if( q.learningStats.numAttemptsInSession == 0 ) {
+            $scope.questionsForSession.splice( i, 1 ) ;
+            $scope.$parent.sessionStats.numCards-- ;
+            $scope.$parent.sessionStats.numCardsLeft-- ;
+
+            if( i == 0 ) {
+                showNextCard() ;
+            }
+        }
+    }
 }
 
 $scope.rateCard = function( rating ) {
@@ -428,10 +446,21 @@ function showNextCard() {
 
             $scope.showAnswer() ;
         }
+
+        updateProjectedTimeLeft() ;
     }
     else {
         endSession() ;
     }
+}
+
+function updateProjectedTimeLeft() {
+
+    var timeLeft = 0 ;
+    for (var i = 0; i < $scope.questionsForSession.length; i++) {
+        timeLeft += $scope.questionsForSession[i].learningStats.averageTimeSpent ;
+    }
+    $scope.projectedTimeLeft = timeLeft*1000 ;
 }
 
 function computeRecommendPromoteFlag() {
@@ -575,6 +604,10 @@ function refreshClocks() {
 
     $scope.$parent.timePerQuestion = durationTillNowInMillis / 
                              ( $scope.$parent.sessionStats.numCardsAnswered + 1 ) ;
+
+    if( $scope.projectedTimeLeft >= 1000 ) {
+        $scope.projectedTimeLeft -= 1000 ;
+    }
 
     if( $scope.$parent.studyCriteria.maxTime != -1 ) {
 

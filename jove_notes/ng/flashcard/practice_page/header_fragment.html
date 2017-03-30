@@ -1,17 +1,18 @@
 <div ng-show="showL0Header"
      style="display:table;width:100%;padding-bottom:5px">
 
-	<div style="display:table-cell;width:40px;">
+	<div style="display:table-cell;width:200px;">
     	<img src="/apps/jove_notes/media/images/logo_for_navbar.png" 
     	     style="height: 20px" />
+        <span class="small">[ {{$parent.userName}} ]</span>
     </div>
     <div style="display:table-cell;text-align:center;">
     	<span class="gi-1-15x">{{$parent.pageTitle}}</span>
     </div>
-    <div style="display:table-cell;width:270px;text-align:right;">
+    <div style="display:table-cell;width:200px;text-align:right;">
         <span class="badge muted">{{$parent.timePerQuestion | duration}}</span>
         <span class="badge muted">{{$parent.sessionDuration | duration}}</span>
-        <span class="small">[ {{$parent.userName}} ]</span>
+        <span class="badge muted">{{projectedTimeLeft | duration}}</span>
     </div>
 </div>
 
@@ -87,7 +88,7 @@
             <span class="badge muted">{{currentQuestion.learningStats.numAttempts}}</span>
             <span class="badge muted">{{currentQuestion.learningStats.lastAttemptTime | elapsedDuration}}</span>
             <span class="badge C1" ng-show="currentQuestion.markedForReview">Review</span>
-            {{currentQuestion.learningStats.absoluteLearningEfficiency}} 
+            <span class="badge muted">{{currentQuestion.learningStats.absoluteLearningEfficiency}} %</span>
             <table class="temporal">
                 <tr>
                     <td ng-repeat="score in currentQuestion.learningStats.temporalScores track by $index"
