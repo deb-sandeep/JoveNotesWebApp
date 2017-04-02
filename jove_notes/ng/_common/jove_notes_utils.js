@@ -50,6 +50,19 @@ function RatingMatrix() {
         L3 : [  -1,    1,   0.5,   0.25 ]
     }
 
+    // This matrix decides on the base fatigue score. The base figure is further
+    // attenuated by other factors like overshoot percentage and time taken
+    // The base fatigue score is an decimal in the range -1 to 1. -1 implies
+    // decrease in fatigue
+    this.fatigueScoreMatrix = {
+        //       E     A     P    H
+        NS : [  -1.0, -0.5, 0.5,  1 ],
+        L0 : [  -0.5,  0.5, 0.7,  1 ],
+        L1 : [  -0.5,  0.6, 0.8,  1 ],
+        L2 : [  -0.8,  0.7, 0.9,  1 ],
+        L3 : [  -1.0,  0.8, 1.0,  1 ]
+    }
+
     function getIndexIntoMatrix( rating ) {
 
         var index = 0 ;
@@ -92,6 +105,28 @@ function RatingMatrix() {
             return getMatrixValue( this.nextActionMatrix, 
                                    currentLevel, currentRating ) ;
         }
+    } ;
+
+    this.getFatigueContribution = function( currentLevel, currentRating,
+                                            timeSpent ) {
+        var baseScore = 0 ;
+        if( currentRating == 'APM' || currentRating == 'APMNS' ) {
+            baseScore = -1 ;
+        }
+        else {
+            baseScore = getMatrixValue( this.fatigueScoreMatrix, 
+                                        currentLevel, currentRating ) ;
+        }
+        baseScore *= 10 ;
+        // At this point baseScore is in the range -10 to 10
+
+        // The more the time spent, the higher the fatigue
+        if( timeSpent > 10 ) {
+            var timeContributionToFatigue = Math.round( 5 * ( 1 - Math.exp( -timeSpent/25 ) ) ) ;
+            baseScore += timeContributionToFatigue ;
+        }
+
+        return baseScore ;
     } ;
 }
 
@@ -369,6 +404,65 @@ this.getAbsoluteLearningEfficiency = function( temporalScores ) {
         absLE = Math.ceil( totalRatingScores / temporalScores.length ) ;
     }
     return absLE ;
+}
+
+this.computeFatiguePotential = function( question ) {
+
+    var nu       = question.learningStats.absoluteLearningEfficiency ;
+    var recency  = question.learningStats.recencyInDays ;
+    var attempts = question.learningStats.numAttempts ;
+    var avgTime  = question.learningStats.averageTimeSpent ;
+    var diffLevel= question.difficultyLevel ;
+
+    var nuNormal       = nu ;
+    var recencyNormal  = 0 ;
+    var attemptsNormal = 0 ;
+    var avgTimeNormal  = 0 ;
+    var diffLevelNormal= 100 - diffLevel ;
+
+    // Compute recency normal
+    if( recency == 0 ) {
+        recencyNormal = 100 ;
+    }
+    else {
+        recencyNormal = Math.round( 100 * ( 1 - Math.exp( -recency/95 ) ) ) ;
+    }
+    recencyNormal = 100 - recencyNormal ;
+
+    // Compute attemps normal
+    attemptsNormal = Math.round( 100 * ( 1 - Math.exp( -attempts/5 ) ) ) ;
+
+    // Compute average time normal
+    if( avgTimeNormal == 0 ) {
+        avgTimeNormal = 100 ;
+    }
+    else {
+        avgTimeNormal = Math.round( 100 * ( 1 - Math.exp( -avtTime/20 ) ) ) ;
+    }
+    avgTimeNormal = 100 - avgTimeNormal ;
+
+
+    var NU_MULTIPLIER       = 10 ;
+    var RECENCY_MULTIPLIER  = 20 ;
+    var ATTEMPTS_MULTIPLIER = 8 ;
+    var AVGTIME_MULTIPLIER  = 5 ;
+    var DIFFLEVEL_MULTIPLIER= 10 ;
+    var TOTAL_MULTIPLIERS   = NU_MULTIPLIER + RECENCY_MULTIPLIER + 
+                              ATTEMPTS_MULTIPLIER + AVGTIME_MULTIPLIER + 
+                              DIFFLEVEL_MULTIPLIER ;
+
+    var nuScore       = nuNormal       * NU_MULTIPLIER ;
+    var recencyScore  = recencyNormal  * RECENCY_MULTIPLIER ;
+    var attemptsScore = attemptsNormal * ATTEMPTS_MULTIPLIER ;
+    var avgTimeScore  = avgTimeNormal  * AVGTIME_MULTIPLIER ;
+    var diffLevelScore= diffLevelNormal* DIFFLEVEL_MULTIPLIER ;
+
+    var total = nuScore + recencyScore + attemptsScore + 
+                avgTimeScore + diffLevelScore ;
+
+    var fatiguePotential = 100 - (Math.round( total )/(TOTAL_MULTIPLIERS*100))*100 ;
+
+    return fatiguePotential ;
 }
 
 this.playSoundClip = function( clipPath ) {

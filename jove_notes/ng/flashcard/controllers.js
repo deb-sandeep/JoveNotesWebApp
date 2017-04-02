@@ -11,10 +11,11 @@ function StudyCriteria() {
     this.difficultyFilters         = [] ;
     this.cardTypeFilters           = [] ;
 
-    this.strategy      = "SSR" ;
-    this.push          = false ;
-    this.assistedStudy = false ;
+    this.strategy               = "SSR" ;
+    this.push                   = false ;
+    this.assistedStudy          = false ;
     this.excludeMarkedForReview = true ;
+    this.engageFatigueBuster    = true ;
 
     this.serialize = function() {
         $.cookie.json = true ;
@@ -32,6 +33,7 @@ function StudyCriteria() {
             this.push                   = crit.push ;
             this.assistedStudy          = crit.assistedStudy ;
             this.excludeMarkedForReview = crit.excludeMarkedForReview ;
+            this.engageFatigueBuster    = crit.engageFatigueBuster ;
         } ;
     }
 
@@ -231,6 +233,8 @@ function preProcessFlashCardQuestions( questions ) {
             question.learningStats.averageTimeSpent = Math.ceil( question.learningStats.totalTimeSpent / 
                                                                  question.learningStats.numAttempts ) ;
         }
+
+        question.learningStats.fatiguePotential = jnUtil.computeFatiguePotential( question ) ;
 
         question.scriptObj = jnUtil.makeObjectInstanceFromString( 
                                     question.scriptBody,

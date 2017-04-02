@@ -10,6 +10,9 @@ var PROGRESS_STAGE_GREEN = 0 ;
 var PROGRESS_STAGE_AMBER = 1 ;
 var PROGRESS_STAGE_RED   = 2 ;
 
+var FATIGUE_UPPER_THRESHOLD = 30 ;
+var FATIGUE_LOWER_THRESHOLD = -30 ;
+
 // ---------------- Local variables --------------------------------------------
 var ratingMatrix = new RatingMatrix() ;
 var jnUtils      = new JoveNotesUtil() ;
@@ -59,6 +62,7 @@ $scope.pushAnswerSuccess   = false ;
 
 $scope.recommendPromoteToMastered = true ;
 $scope.recommendPromoteToMasteredWithoutScore = true ;
+$scope.ratings = [] ;
 
 // questionMode is used by the view to show the appropriate controls when either
 // the question or the answer is shown.
@@ -68,6 +72,7 @@ $scope.questionMode = false ;
 $scope.gradingButtonPlacement = "right" ;
 
 $scope.projectedTimeLeft = 0 ;
+$scope.currentFatigueLevel = 0 ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -233,6 +238,7 @@ $scope.rateCard = function( rating ) {
     updateLearningStatsForCurrentQuestion( rating, nextLevel, timeSpent ) ;
     updateLearningStatsForChapter( curLevel, nextLevel ) ;
     updateSessionStats() ;
+    updateRatings( rating ) ;
 
     log.debug( "Card id       = " + $scope.currentQuestion.questionId ) ;
     log.debug( "Current level = " + curLevel ) ;
@@ -259,6 +265,14 @@ $scope.rateCard = function( rating ) {
         0 
     ) ;
     
+    var fatiqueContribution = ratingMatrix.getFatigueContribution( 
+                                                 curLevel, rating, timeSpent ) ;
+
+    log.debug( "Fatigue contribution = " + fatiqueContribution ) ;
+    $scope.currentFatigueLevel += fatiqueContribution ;
+
+    log.debug( "Current Fatigue level = " + $scope.currentFatigueLevel ) ;
+
     showNextCard() ;
 }
 
@@ -387,6 +401,15 @@ function updateSessionStats() {
     $scope.$parent.sessionStats.numCardsAnswered++ ;
 }
 
+function updateRatings( rating ) {
+    if( rating == 'APM' || rating == 'APMNS' ) {
+        $scope.ratings.push( 'E' ) ;
+    }
+    else {
+        $scope.ratings.push( rating ) ;
+    }
+}
+
 function processNextAction( actionValue ) {
 
     if( actionValue != -1 ) {
@@ -400,6 +423,9 @@ function showNextCard() {
     if( !hasSessionEnded() ) {
 
         log.debug( "Showing next question." ) ;
+
+        rearrangeQuestionsForFatigueBusting() ;
+
         $scope.currentQuestion = $scope.questionsForSession[0] ;
 
         $scope.currentQuestion.handler.initialize( $scope ) ;
@@ -451,6 +477,50 @@ function showNextCard() {
     }
     else {
         endSession() ;
+    }
+}
+
+function rearrangeQuestionsForFatigueBusting() {
+    if( !$scope.studyCriteria.engageFatigueBuster ) {
+        return ;
+    }
+
+    if( $scope.questionsForSession.length < 2 ) {
+        return ;
+    }
+
+    var targetQIndex = 0 ;
+
+    if( $scope.currentFatigueLevel >= FATIGUE_UPPER_THRESHOLD ) {
+        // Present a question with minimum fatigue potential
+        var minFaitiguePotential = $scope.questionsForSession[0].learningStats.fatiguePotential ;
+
+        for( var i=1; i<$scope.questionsForSession.length; i++ ) {
+            var q = $scope.questionsForSession[i] ;
+            if( q.learningStats.fatiguePotential < minFaitiguePotential ) {
+                minFaitiguePotential = q.learningStats.fatiguePotential ;
+                targetQIndex = i ;
+            }
+        }
+    }
+    else if( $scope.currentFatigueLevel <= FATIGUE_LOWER_THRESHOLD ) {
+        // Present a quesiton with maximum fatigue potential
+        var qIndexWithMaxFatiguePotential = 0 ;
+        var maxFaitiguePotential = $scope.questionsForSession[0].learningStats.fatiguePotential ;
+
+        for( var i=1; i<$scope.questionsForSession.length; i++ ) {
+            var q = $scope.questionsForSession[i] ;
+            if( q.learningStats.fatiguePotential > maxFaitiguePotential ) {
+                maxFaitiguePotential = q.learningStats.fatiguePotential ;
+                targetQIndex = i ;
+            }
+        }
+    }
+
+    if( targetQIndex != 0 ) {
+        var targetQ = $scope.questionsForSession[targetQIndex] ;
+        $scope.questionsForSession[targetQIndex] = $scope.questionsForSession[0] ;
+        $scope.questionsForSession[0] = targetQ ;
     }
 }
 

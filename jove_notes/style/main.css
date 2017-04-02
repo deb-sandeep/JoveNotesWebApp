@@ -229,6 +229,36 @@ table.temporal {
 	background-color: #FF0000;
 }
 
+table.header_rating {
+    border-collapse: separate;
+    border-spacing: 2px;
+    display:inline-block;
+    float:left;
+}
+
+.header_rating td {
+    padding: 0px;
+    width: 5px;
+    line-height: 5 px;
+    height:5px;
+}
+
+.header_rating .rating-E {
+    background-color: #00FF00;
+}
+
+.header_rating .rating-A {
+    background-color: #C5FF00;
+}
+
+.header_rating .rating-P {
+    background-color: #FFAB00;
+}
+
+.header_rating .rating-H {
+    background-color: #FF0000;
+}
+
 .mcq_option_table {
 	border-collapse:separate;
 	border-spacing: 5px;

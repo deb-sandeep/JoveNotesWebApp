@@ -89,10 +89,20 @@
             <span class="badge muted">{{currentQuestion.learningStats.lastAttemptTime | elapsedDuration}}</span>
             <span class="badge C1" ng-show="currentQuestion.markedForReview">Review</span>
             <span class="badge muted">{{currentQuestion.learningStats.absoluteLearningEfficiency}} %</span>
+            {{currentFatigueLevel}}
             <table class="temporal">
                 <tr>
                     <td ng-repeat="score in currentQuestion.learningStats.temporalScores track by $index"
                         class="rating-{{score}}"></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="col-sm-12 small">
+            <table class="header_rating">
+                <tr>
+                    <td ng-repeat="rating in ratings track by $index"
+                        class="rating-{{rating}}"></td>
                 </tr>
             </table>
         </div>
