@@ -1,23 +1,23 @@
 <div style="display:table;width:100%;padding-bottom:5px">
-
-	<div style="display:table-cell;width:40px;">
-    	<img src="/apps/jove_notes/media/images/logo_for_navbar.png" 
-    	     style="height: 20px" />
+    <div style="display:table-cell;width:200px;">
+        <img src="/apps/jove_notes/media/images/logo_for_navbar.png" 
+             style="height: 20px" />
+        <span class="small">[ {{$parent.userName}} ]</span>
     </div>
     <div style="display:table-cell;text-align:center;">
-    	<span class="gi-1-15x">{{pageTitle}}</span>
+        <span class="gi-1-15x">{{$parent.pageTitle}}</span>
     </div>
-    <div style="display:table-cell;width:270px;text-align:right;">
-    	T/C - <span class="badge muted">{{timePerQuestion | duration}}</span>
-        <span class="badge muted">{{sessionDuration | duration}}</span>
-        <span class="small">[ {{userName}} ]</span>
+    <div style="display:table-cell;width:200px;text-align:right;">
+        <span class="badge muted">{{$parent.timePerQuestion | duration}}</span>
+        <span class="badge muted">{{$parent.sessionDuration | duration}}</span>
+        <span class="badge muted">{{projectedTimeLeft | duration}}</span>
     </div>
 </div>
 
 <div class="row" 
      style="padding-bottom:5px">
 
-    <div class="col-sm-3 small">
+    <div class="col-sm-4 small">
         <span class="badge NS">{{progressSnapshot.numNS}}</span>
         <span class="badge L0">{{progressSnapshot.numL0}}</span>
         <span class="badge L1">{{progressSnapshot.numL1}}</span>
@@ -30,7 +30,7 @@
         <span class="badge NS">{{userScore}}</span>
         <span class="badge L3">{{pointsEarnedInThisSession}}</span>
     </div>
-    <div class="col-sm-5 small" style="text-align:right;">
+    <div class="col-sm-4 small" style="text-align:right;">
         C <span class="badge muted">{{sessionStats.numCards}}</span>&nbsp;.&nbsp;
         L <span class="badge muted">{{sessionStats.numCardsLeft}}</span>&nbsp;.&nbsp;
         A <span class="badge muted">{{sessionStats.numCardsAnswered}}</span>&nbsp;.&nbsp;
@@ -77,7 +77,7 @@
     </div>         
 </div>
 
-<div class="row" style="background-color:white">
+<div class="row" style="background-color:white;padding-left: 10px;padding-right: 10px">
     <div class="col-sm-12 small">
         <span class="badge {{currentQuestion.difficultyLabel}}">{{currentQuestion.difficultyLabel}}</span>
         <span class="badge {{currentQuestion.learningStats.currentLevel}}">{{currentQuestion.learningStats.currentLevel}}</span>
@@ -85,10 +85,20 @@
         <span class="badge muted">{{currentQuestion.learningStats.numAttempts}}</span>
         <span class="badge muted">{{currentQuestion.learningStats.lastAttemptTime | elapsedDuration }}</span>
         <span class="badge C1" ng-show="currentQuestion.markedForReview">Review</span>
+        <span class="badge muted">{{currentQuestion.learningStats.absoluteLearningEfficiency}} %</span>
         <table class="temporal">
             <tr>
                 <td ng-repeat="score in currentQuestion.learningStats.temporalScores track by $index"
                     class="rating-{{score}}"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="col-sm-12 small">
+        <table class="header_rating">
+            <tr>
+                <td ng-repeat="rating in ratings track by $index"
+                    class="rating-{{rating}}"></td>
             </tr>
         </table>
     </div>

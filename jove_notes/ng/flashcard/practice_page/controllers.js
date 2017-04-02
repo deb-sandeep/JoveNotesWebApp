@@ -460,6 +460,7 @@ function showNextCard() {
         $scope.questionChangeTrigger = "Question-" + questionChangeTriggerIndex ;
 
         renderTimeMarkersForCurrentQuestion() ;
+        updateProjectedTimeLeft() ;
 
         if( $scope.$parent.studyCriteria.push ) {
             log.debug( "Session is configured for remote push. " + 
@@ -472,8 +473,6 @@ function showNextCard() {
 
             $scope.showAnswer() ;
         }
-
-        updateProjectedTimeLeft() ;
     }
     else {
         endSession() ;
@@ -1065,12 +1064,14 @@ function callRFMApiToPushQuestion( previousCallAttemptNumber ) {
         chapterId   : chapterId,
         msgType     : 'question',
         msgContent  : {
-            "progressSnapshot": $scope.$parent.progressSnapshot,
-            "sessionStats"    : $scope.$parent.sessionStats,
-            "currentQuestion" : $scope.currentQuestion,
-            "answerAlign"     : $scope.answerAlign,
-            "predictedTime"   : currentQuestionAvPredictedTime,
-            "avgSelfTime"     : currentQuestionAvSelfTime
+            "progressSnapshot"  : $scope.$parent.progressSnapshot,
+            "sessionStats"      : $scope.$parent.sessionStats,
+            "currentQuestion"   : $scope.currentQuestion,
+            "answerAlign"       : $scope.answerAlign,
+            "predictedTime"     : currentQuestionAvPredictedTime,
+            "avgSelfTime"       : currentQuestionAvSelfTime,
+            "ratings"           : $scope.ratings,
+            "projectedTimeLeft" : $scope.projectedTimeLeft 
         }
     })
     .success( function( data ){

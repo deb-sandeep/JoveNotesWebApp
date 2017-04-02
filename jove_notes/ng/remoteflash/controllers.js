@@ -52,6 +52,7 @@ $scope.userScore       = 0 ;
 $scope.currentQuestion = null ;
 $scope.answerAlign     = "center" ;
 $scope.bodyDivStyle    = { top : 90 } ;
+$scope.ratings         = [] ;
 
 $scope.showQuestionTrigger = "" ;
 $scope.showAnswerTrigger   = "" ;
@@ -347,6 +348,8 @@ function processIncomingQuestion( message ) {
     $scope.answerAlign      = message.content.answerAlign ;
     predictedTime           = message.content.predictedTime ;
     avgSelfTime             = message.content.avgSelfTime ;
+    $scope.ratings          = message.content.ratings ;
+    $scope.projectedTimeLeft= message.content.projectedTimeLeft ;
 
     var questionType = message.content.currentQuestion.questionType ;
     var handler = null ;
