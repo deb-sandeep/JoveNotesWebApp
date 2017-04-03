@@ -1,4 +1,25 @@
 --------------------------------------------------------------------------------
+-- Data model chnagesin preparation of the 'preparedness' feature changes
+--
+-- TODO - Yet to be updated in production
+--
+ALTER TABLE `user`.`auth_token` 
+ADD COLUMN `auto_expire` BIT(1) NOT NULL DEFAULT 1 AFTER `token_type`;
+
+UPDATE `user`.`auth_token` 
+SET `auto_expire` = 1 ;
+
+INSERT INTO `user`.`user` 
+(`name`, `password`, `last_access_time`) 
+VALUES 
+('BatchRobot', 'r0b0', '');
+
+INSERT INTO `user`.`auth_token` 
+(`user_name`, `token`, `last_access_time`, `creation_time`, `token_type`, `auto_expire`) 
+VALUES 
+('BatchRobot', 'BATCH_ROBOT_AUTH_TOKEN', '', '', 'REMEMBER_ME', b'0');
+
+--------------------------------------------------------------------------------
 -- Altered the auth_token table for the ghostly latency problem
 --
 
