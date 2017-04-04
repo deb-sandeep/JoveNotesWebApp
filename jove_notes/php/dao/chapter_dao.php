@@ -114,7 +114,11 @@ on
 	c.chapter_id = ucp.chapter_id
 where 
 	$chapterTypeSQLFilter and 
-	( ucp.is_hidden = 0 or ucp.is_hidden is null )
+	( 
+	  ucp.is_hidden = 0 or 
+	  ucp.is_hidden is null or 
+	  ucp.is_in_syllabus = 1 
+	)
 order by 
 	c.syllabus_name asc,
 	c.subject_name asc,

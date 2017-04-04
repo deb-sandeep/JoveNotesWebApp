@@ -23,6 +23,12 @@ INSERT INTO `user`.`user_roles`
 (`user_name`, `role_name`) 
 VALUES ('BatchRobot', 'JN_BATCH_ROBOT');
 
+ALTER TABLE `jove_notes`.`user_chapter_preferences` 
+ADD COLUMN `is_in_syllabus` BIT(1) NOT NULL DEFAULT b'1' AFTER `is_deselected`;
+
+UPDATE `jove_notes`.`user_chapter_preferences` 
+SET `is_in_syllabus`=b'0';
+
 --------------------------------------------------------------------------------
 -- Altered the auth_token table for the ghostly latency problem
 --

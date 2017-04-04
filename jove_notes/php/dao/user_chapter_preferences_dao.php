@@ -50,6 +50,33 @@ QUERY;
 		parent::executeUpdate( $query, 0 ) ;
 	}
 
+	function updateInSyllabusPreference( $userName, $chapterIds, $selectionState ) {
+
+		$inSyllabusBool = $selectionState ? 1 : 0 ;
+
+		$valuesStr = "" ;
+		$chapterIdArray = explode( ",", $chapterIds ) ;
+
+		if( count( $chapterIdArray ) == 1 && $chapterIdArray[0] == "" ) {
+			return ;
+		}		
+
+		foreach( $chapterIdArray as $id ) {
+			$valuesStr = $valuesStr . "( '$userName', $id, $inSyllabusBool )," ;
+		}
+		$valuesStr = substr( $valuesStr, 0, strlen( $valuesStr ) - 1 ) ;
+
+$query = <<< QUERY
+insert into 
+	jove_notes.user_chapter_preferences( student_name, chapter_id, is_in_syllabus ) 
+values $valuesStr 
+on duplicate key update    
+	is_in_syllabus = values( is_in_syllabus )
+QUERY;
+
+		parent::executeUpdate( $query, 0 ) ;
+	}
+
 	/**
 	 * This function returns an associative array with key as the chapter ID and
 	 * value as either 0 or 1.. implying whether the chapter is visible or
@@ -58,13 +85,13 @@ QUERY;
 	function getChapterPreferencesForUser( $userName ) {
 
 $query = <<< QUERY
-select chapter_id, is_hidden, is_deselected
+select chapter_id, is_hidden, is_deselected, is_in_syllabus
 from jove_notes.user_chapter_preferences
 where
 	student_name = '$userName'
 QUERY;
 
-		$colNames = [ "chapter_id", "is_hidden", "is_deselected" ] ;
+		$colNames = [ "chapter_id", "is_hidden", "is_deselected", "is_in_syllabus" ] ;
 		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
 	}
 

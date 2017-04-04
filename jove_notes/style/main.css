@@ -345,6 +345,10 @@ table.pure-table ol {
 	background-color: #DBF9D7;
 }
 
+.selected-insyllabus-row {
+    background-color: #F7FFD3;
+}
+
 .dropdown-submenu {
     position: relative;
 }

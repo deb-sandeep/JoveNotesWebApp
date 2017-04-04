@@ -30,6 +30,8 @@ class ChapterProgressSnapshot {
 	public $masteredCards ;
 	public $numSSRMaturedCards ;
 	public $isHidden ;
+	public $isDeselected ;
+	public $isInSyllabus ;
 
 	function __construct( $meta ) {
 
@@ -56,6 +58,7 @@ class ChapterProgressSnapshot {
 		$this->numSSRMaturedCards = 0 ;
 		$this->isHidden           = false ;
 		$this->isDeselected       = false ;
+		$this->isInSyllabus       = false ;
 	}
 
 	public function isUserEntitled() {
@@ -109,6 +112,13 @@ class ProgressSnapshotAPI extends API {
 		}
 		else if( $action == "update_selection" ) {
 			$this->ucpDAO->updateDeselectPreference( ExecutionContext::getCurrentUserName(),
+												   $request->requestBody->chapterIds,
+				                                   $request->requestBody->selectionState ) ;
+			$response->responseCode = APIResponse::SC_OK ;
+			$response->responseBody = "Success" ;
+		}
+		else if( $action == "update_in_syllabus" ) {
+			$this->ucpDAO->updateInSyllabusPreference( ExecutionContext::getCurrentUserName(),
 												   $request->requestBody->chapterIds,
 				                                   $request->requestBody->selectionState ) ;
 			$response->responseCode = APIResponse::SC_OK ;
@@ -297,6 +307,7 @@ class ProgressSnapshotAPI extends API {
 			$chapterId    = $pref[ "chapter_id"    ] ;
 			$isHidden     = $pref[ "is_hidden"     ] ;
 			$isDeselected = $pref[ "is_deselected" ] ;
+			$isInSyllabus = $pref[ "is_in_syllabus"] ;
 
 			if( array_key_exists( $chapterId, $this->chapters ) ) {
 				$chapter = &$this->chapters[ $chapterId ] ;
@@ -305,6 +316,9 @@ class ProgressSnapshotAPI extends API {
 				}
 				if( $isDeselected == 1 ) {
 					$chapter->isDeselected = true ;
+				}
+				if( $isInSyllabus == 1 ) {
+					$chapter->isInSyllabus = true ;
 				}
 			}
 		}
@@ -332,6 +346,7 @@ class ProgressSnapshotAPI extends API {
 		$responseObj[ "numSSRMaturedCards"     ] = $chapter->numSSRMaturedCards ;
 		$responseObj[ "isHidden"               ] = $chapter->isHidden ;
 		$responseObj[ "isDeselected"           ] = $chapter->isDeselected ;
+		$responseObj[ "isInSyllabus"           ] = $chapter->isInSyllabus ;
 
 		return $responseObj ;
 	}

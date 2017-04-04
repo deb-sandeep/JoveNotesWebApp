@@ -36,6 +36,9 @@ function RowData( rowType, name, rowId, parentRowId ) {
     this.isRowSelected       = true ;
     this.isPartiallySelected = false ;
 
+    this.isRowInSyllabus          = false ;
+    this.isRowPartiallyInSyllabus = false ;
+
     this.isChapterRow = function() {
         return this.rowType == this.ROW_TYPE_CHAPTER ;
     }
@@ -45,20 +48,10 @@ function RowData( rowType, name, rowId, parentRowId ) {
     }
 
     this.selectionChanged = function() {
-        var affectedChapterIds = [] ;
 
-        if( !this.isChapterRow() ) {
-            for( var i=0; i<this.children.length; i++ ) {
-                this.children[i].isRowSelected = this.isRowSelected ;
-                var affectedIds = this.children[i].handleSelectionChangeCascade() ;
-
-                affectedChapterIds = affectedChapterIds.concat( affectedIds ) ;
-            }
-        }
-        else {
-            affectedChapterIds.push( this.chapterId ) ;
-        }
-
+        var affectedChapterIds = 
+                  this.getAffectedChaptersDueToSelectionChangeCascade( "SEL" ) ;
+        
         if( affectedChapterIds.length > 0 ) {
             $http.post( "/jove_notes/api/ProgressSnapshot", {
                 'action'         : 'update_selection',
@@ -72,17 +65,41 @@ function RowData( rowType, name, rowId, parentRowId ) {
         }
     }
 
-    this.handleSelectionChangeCascade = function() {
+    this.inSyllabusSelectionChanged = function() {
+
+        var affectedChapterIds = 
+             this.getAffectedChaptersDueToSelectionChangeCascade( "SYLLABUS" ) ;
+        
+        if( affectedChapterIds.length > 0 ) {
+            $http.post( "/jove_notes/api/ProgressSnapshot", {
+                'action'         : 'update_in_syllabus',
+                'chapterIds'     : affectedChapterIds.join(),
+                'selectionState' : this.isRowInSyllabus
+            } )
+            .error( function( data ){
+                $scope.addErrorAlert( "API call failed. " + data ) ;
+            });
+            recomputeStatistics() ;
+        }
+    }
+
+    this.getAffectedChaptersDueToSelectionChangeCascade = function( selType ) {
 
         var affectedChapterIds = [] ;
 
         if( !this.isChapterRow() ) {
             for( var i=0; i<this.children.length; i++ ) {
                 var child = this.children[i] ;
-                child.isRowSelected = this.isRowSelected ;
-                var affectedIds = child.handleSelectionChangeCascade() ;
 
-                affectedChapterIds = affectedChapterIds.concat( affectedIds ) ;
+                if( selType == "SEL" ) {
+                    child.isRowSelected = this.isRowSelected ;
+                }
+                else if( selType == "SYLLABUS" ) {
+                    child.isRowInSyllabus = this.isRowInSyllabus ;
+                }
+
+                var ids = child.getAffectedChaptersDueToSelectionChangeCascade( selType ) ;
+                affectedChapterIds = affectedChapterIds.concat( ids ) ;
             }
         }
         else {
@@ -130,6 +147,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
         this.isDeleteAuthorized     = chapter.isDeleteAuthorized ;
         this.isHidden               = chapter.isHidden ;
         this.isRowSelected          = !chapter.isDeselected ;
+        this.isRowInSyllabus        = chapter.isInSyllabus ;
     }
 
     this.getTreeRowClass = function() {
@@ -152,6 +170,10 @@ function RowData( rowType, name, rowId, parentRowId ) {
             classStr += " selected-dashboard-row" ;
         }
 
+        if( this.isRowInSyllabus ) {
+            classStr += " selected-insyllabus-row" ;
+        }
+
         return classStr ;
     }
 
@@ -159,6 +181,9 @@ function RowData( rowType, name, rowId, parentRowId ) {
 
         if( this.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
             if( this.isHidden ) {
+                if( this.isRowInSyllabus ) {
+                    return true ;
+                }
                 if( !$scope.showHiddenChapters ) {
                     return false ;
                 }
@@ -184,8 +209,14 @@ function RowData( rowType, name, rowId, parentRowId ) {
             this.isRowSelected       = false ;
             this.isPartiallySelected = false ;
 
+            this.isRowInSyllabus          = false ;
+            this.isRowPartiallyInSyllabus = false ;
+
             var numChildrenSelected          = 0 ;
             var numChildrenPartiallySelected = 0 ;
+
+            var numChildrenInSyllabus          = 0 ;
+            var numChildrenPartiallyInSyllabus = 0 ;
 
             for( var i=0; i < this.children.length; i++ ) {
                 var child = this.children[i] ;
@@ -196,6 +227,13 @@ function RowData( rowType, name, rowId, parentRowId ) {
                     else if( child.isRowSelected ) {
                         numChildrenSelected++ ;
                     }
+
+                    if( child.isRowPartiallyInSyllabus ) {
+                        numChildrenPartiallyInSyllabus++ ;
+                    }
+                    else if( child.isRowInSyllabus ) {
+                        numChildrenInSyllabus++ ;
+                    }
                 }
             }
 
@@ -205,6 +243,14 @@ function RowData( rowType, name, rowId, parentRowId ) {
                 if( ( numChildrenSelected < this.children.length ) || 
                     ( numChildrenPartiallySelected > 0 ) ) {
                     this.isPartiallySelected = true ;
+                }
+            }
+
+            if( numChildrenInSyllabus > 0 || numChildrenPartiallyInSyllabus > 0 ) {
+                this.isRowInSyllabus = true ;
+                if( ( numChildrenInSyllabus < this.children.length ) || 
+                    ( numChildrenPartiallyInSyllabus > 0 ) ) {
+                    this.isRowPartiallyInSyllabus = true ;
                 }
             }
         }

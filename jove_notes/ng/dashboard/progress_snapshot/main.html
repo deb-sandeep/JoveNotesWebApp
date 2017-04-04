@@ -43,6 +43,9 @@
                         </tr>
                     </table>
                 </th>
+                <th style="width:50px;text-align:center;">
+                    <span class="glyphicon glyphicon-fire"></span>
+                </th>
                 <th></th>
             </tr>   
         </thead>    
@@ -53,9 +56,9 @@
                 on-render-complete> 
                 <td> 
                     <span ng-show="rowData.isNotesAuthorized">
-                    <a href="/apps/jove_notes/ng/notes/index.php?chapterId={{rowData.chapterId}}">
-                    {{rowData.name}}
-                    </a>
+                        <a href="/apps/jove_notes/ng/notes/index.php?chapterId={{rowData.chapterId}}">
+                        {{rowData.name}}
+                        </a>
                     </span>
                     <span ng-show="!rowData.isNotesAuthorized">{{rowData.name}}</span>
                 </td>
@@ -96,6 +99,11 @@
                             <td class="text-right MAS">{{rowData.masteredCards   }}</td>
                             </tr>
                     </table>
+                </td>
+                <td style="width:50px" align="center">
+                    <input id="push" type="checkbox" ng-change="rowData.inSyllabusSelectionChanged()" 
+                           ng-model="rowData.isRowInSyllabus"
+                           ui-indeterminate="rowData.isRowPartiallyInSyllabus" />
                 </td>
                 <td>
                     <a type="button" class="btn btn-default btn-xs"
