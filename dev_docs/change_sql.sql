@@ -19,6 +19,10 @@ INSERT INTO `user`.`auth_token`
 VALUES 
 ('BatchRobot', 'BATCH_ROBOT_AUTH_TOKEN', '', '', 'REMEMBER_ME', b'0');
 
+INSERT INTO `user`.`user_roles` 
+(`user_name`, `role_name`) 
+VALUES ('BatchRobot', 'JN_BATCH_ROBOT');
+
 --------------------------------------------------------------------------------
 -- Altered the auth_token table for the ghostly latency problem
 --
