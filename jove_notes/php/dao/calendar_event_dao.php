@@ -50,7 +50,7 @@ SET
 	type         = '$event->type',
 	subject      = '$event->subject',
 	title        = '$event->title',
-	date         = FROM_UNIXTIME( $event->startsAt, '%Y-%m-%D' ),
+	date         = FROM_UNIXTIME( $event->startsAt, '%Y-%m-%d' ),
 	color        = '$event->color'
 WHERE 
 	id = $event->id;
@@ -74,7 +74,7 @@ VALUES(
 	'$event->type',
 	'$event->subject',
 	'$event->title',
-	FROM_UNIXTIME( $event->startsAt, '%Y-%m-%D' ),
+	FROM_UNIXTIME( $event->startsAt, '%Y-%m-%d' ),
 	'$event->color'
 ) ;
 QUERY;

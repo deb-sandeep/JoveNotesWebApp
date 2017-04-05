@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Data model chnagesin preparation of the 'preparedness' feature changes
 --
--- TODO - Yet to be updated in production
+-- Implemented in production on 6th April 2017 - 1:06 AM
 --
 ALTER TABLE `user`.`auth_token` 
 ADD COLUMN `auto_expire` BIT(1) NOT NULL DEFAULT 1 AFTER `token_type`;
@@ -12,12 +12,12 @@ SET `auto_expire` = 1 ;
 INSERT INTO `user`.`user` 
 (`name`, `password`, `last_access_time`) 
 VALUES 
-('BatchRobot', 'r0b0', '');
+('BatchRobot', 'r0b0', NULL);
 
 INSERT INTO `user`.`auth_token` 
 (`user_name`, `token`, `last_access_time`, `creation_time`, `token_type`, `auto_expire`) 
 VALUES 
-('BatchRobot', 'BATCH_ROBOT_AUTH_TOKEN', '', '', 'REMEMBER_ME', b'0');
+('BatchRobot', 'BATCH_ROBOT_AUTH_TOKEN', NULL, NOW(), 'REMEMBER_ME', b'0');
 
 INSERT INTO `user`.`user_roles` 
 (`user_name`, `role_name`) 
@@ -41,7 +41,6 @@ CREATE TABLE `calendar_event` (
   KEY `fk_calendar_event_1_idx` (`student_name`),
   CONSTRAINT `fk_calendar_event_1` FOREIGN KEY (`student_name`) REFERENCES `user`.`user` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 --------------------------------------------------------------------------------
 -- Altered the auth_token table for the ghostly latency problem
