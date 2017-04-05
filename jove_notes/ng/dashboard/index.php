@@ -22,9 +22,12 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
 <head>
     <?php include( HEAD_CONTENT_FILE ); ?>
 
-    <link rel="stylesheet" href="/lib-ext/jquery/css/jquery.treegrid.css">
+    <link rel="stylesheet" type="text/css" href="/lib-ext/jquery/css/jquery.treegrid.css">
     <link rel="stylesheet" type="text/css" href="/lib-ext/treetable/jquery.treetable.css">
     <link rel="stylesheet" type="text/css" href="/lib-ext/treetable/jquery.treetable.theme.css">
+    <link rel="stylesheet" type="text/css" href="/lib-ext/bootstrap-3.3.4/angular/calendar/angular-bootstrap-calendar.min.css" >
+    <link rel="stylesheet" type="text/css" href="/lib-ext/bootstrap-3.3.4/angular/colorpicker/colorpicker.min.css" >
+    <link rel="stylesheet" type="text/css" href="/apps/jove_notes/ng/dashboard/calendar/settings.css" >
 
     <script src="/lib-ext/angular/angular-ui-indeterminate.min.js"></script>
 
@@ -55,6 +58,8 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
     </script>
     <script src="/lib-ext/MathJax/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
     <script src="/lib-ext/math/math.min.js"></script>    
+    <script src="/lib-ext/bootstrap-3.3.4/angular/calendar/angular-bootstrap-calendar-tpls.min.js"></script>
+    <script src="/lib-ext/bootstrap-3.3.4/angular/colorpicker/bootstrap-colorpicker-module.min.js"></script>
 
     <script src="/lib-app/js/simple_pivot/simple_pivot.js"></script> 
     <script src="/apps/jove_notes/ng/_common/jove_notes_utils.js"></script>    
@@ -72,6 +77,7 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
     <script src="/apps/jove_notes/ng/dashboard/chapter_progress_snapshot/controllers.js"></script>    
     <script src="/apps/jove_notes/ng/dashboard/notes_review/controllers.js"></script>    
     <script src="/apps/jove_notes/ng/dashboard/exercises/controllers.js"></script>    
+    <script src="/apps/jove_notes/ng/dashboard/calendar/controllers.js"></script>    
 
     <script>
       var currentUserName = "<?php echo ExecutionContext::getCurrentUserName(); ?>" ;
@@ -120,6 +126,14 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
        href="/apps/jove_notes/ng/remoteflash/index.php">
     Remote Flash
     </a>
+
+    <a type="button" class="btn btn-default btn-md" 
+       href="#Calendar" 
+       ng-class="getBtnActiveClass( 'Calendar' )"
+       ng-click="setActiveReport( 'Calendar' )">
+      <span class="glyphicon glyphicon-calendar"></span>
+    </a>
+
   	<div class="ng-view"></div>	
 </body>
 </html>

@@ -1,0 +1,81 @@
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr class="success">
+      <th>Type</th>
+      <th>Subject</th>
+      <th>Title</th>
+      <th>Color</th>
+      <th>Date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="event in calendar.eventsForEditing track by $index">
+      <td style="width: 150px">
+        <div class="form-group pad-10px">
+          <select id="eventType" class="form-control" ng-model="event.type">
+              <option value="Exam" selected>Exam</option>
+              <option value="General">General</option>
+          </select>
+        </div>      
+      </td>
+      <td style="width: 200px">
+        <input
+          type="text"
+          class="form-control"
+          ng-model="event.subject">
+      </td>
+      <td>
+        <input
+          type="text"
+          class="form-control"
+          ng-model="event.title">
+      </td>
+      <td style="width: 100px">
+        <input class="form-control" 
+               colorpicker 
+               type="text"
+               ng-readonly="true" 
+               ng-model="event.color.primary"
+               ng-style="getColorPickerStyle( event )">
+      </td>
+      <td style="width: 200px">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            readonly
+            uib-datepicker-popup="dd MMMM yyyy"
+            ng-model="event.startsAt"
+            is-open="event.startOpen"
+            close-text="Close" >
+          <span class="input-group-btn">
+            <button
+              type="button"
+              class="btn btn-default"
+              ng-click="toggleCalendar($event, 'startOpen', event)">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </span>
+        </div>
+      </td>
+      <td style="width: 40px">
+        <button
+          class="btn btn-danger"
+          ng-click="events.splice($index, 1)">
+          <i class="glyphicon glyphicon-minus"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div class="row">
+    <div class="col-md-12">
+      <button
+        class="btn btn-primary"
+        ng-click="addNewEvent()">
+        <span class="glyphicon glyphicon-plus"></span>
+        Add new event
+      </button>
+    </div>                
+</div>

@@ -1,4 +1,4 @@
-var dashboardApp = angular.module( 'dashboardApp', [ 'ngRoute', 'ui.bootstrap', 'ngSanitize', 'ui.indeterminate' ] ) ;
+var dashboardApp = angular.module( 'dashboardApp', [ 'ngRoute', 'ui.bootstrap', 'ngSanitize', 'ui.indeterminate', 'mwl.calendar', 'colorpicker.module' ] ) ;
 
 dashboardApp.config(['$routeProvider',
 
@@ -24,6 +24,10 @@ dashboardApp.config(['$routeProvider',
         .when('/Exercises', {
             templateUrl: '/apps/jove_notes/ng/dashboard/exercises/main.html',
             controller: 'ExercisesDashboardController'
+        })
+        .when('/Calendar', {
+            templateUrl: '/apps/jove_notes/ng/dashboard/calendar/main.html',
+            controller: 'CalendarController'
         })
         .when('/ChapterProgressSnapshot/:chapterId', {
             templateUrl: '/apps/jove_notes/ng/dashboard/chapter_progress_snapshot/main.html',

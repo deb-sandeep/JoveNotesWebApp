@@ -1,0 +1,80 @@
+<p>
+<div style="padding-left:10px;padding-right:10px">
+    <h2 class="text-center">{{ calendar.calendarTitle }}</h2>
+    <div class="row">
+        <div class="col-md-4 text-center">
+          <div class="btn-group">
+            <button
+              class="btn btn-primary"
+              mwl-date-modifier
+              date="calendar.viewDate"
+              decrement="calendar.calendarView"
+              ng-click="calendar.cellIsOpen = false">
+              Previous
+            </button>
+            <button
+              class="btn btn-default"
+              mwl-date-modifier
+              date="calendar.viewDate"
+              set-to-today
+              ng-click="calendar.cellIsOpen = false">
+              Today
+            </button>
+            <button
+              class="btn btn-primary"
+              mwl-date-modifier
+              date="calendar.viewDate"
+              increment="calendar.calendarView"
+              ng-click="calendar.cellIsOpen = false">
+              Next
+            </button>
+          </div>
+        </div>            
+        <div class="col-md-6 text-center">
+          <div class="btn-group">
+            <label class="btn btn-primary" ng-model="calendar.calendarView" 
+                   uib-btn-radio="'year'"  ng-click="calendar.cellIsOpen = false">
+                Year
+            </label>
+            <label class="btn btn-primary" ng-model="calendar.calendarView" 
+                   uib-btn-radio="'month'" ng-click="calendar.cellIsOpen = false">
+                Month
+            </label>
+            <label class="btn btn-primary" ng-model="calendar.calendarView" 
+                   uib-btn-radio="'week'"  ng-click="calendar.cellIsOpen = false">
+                Week
+            </label>
+          </div>
+        </div>                
+        <div class="col-md-2 text-right">
+          <button
+            class="btn btn-primary"
+            ng-click="calendar.editEvents = !calendar.editEvents"
+            ng-class="calendar.editEvents ? 'btn_inactive' : ''">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </button>
+          <input id="editAllEvents" 
+                 type="checkbox" 
+                 ng-model="calendar.editAllEvents"/>
+          <label for="editAllEvents"> All</label>
+        </div>                
+    </div>
+    <p>
+    <div ng-include="'/apps/jove_notes/ng/dashboard/calendar/fragments/event_editor.html'"
+         ng-if="calendar.editEvents">
+    </div>
+    <mwl-calendar
+        view="calendar.calendarView"
+        view-date="calendar.viewDate"
+        events="calendar.events"
+        view-title="calendar.calendarTitle"
+        on-event-click="eventClicked(calendarEvent)"
+        cell-is-open="calendar.cellIsOpen"
+        cell-modifier="renderCell(calendarCell)"
+        on-view-change-click="false"
+        on-timespan-click="timespanClicked(calendarDate, calendarCell)"
+        day-view-start="09:00"
+        day-view-end="22:59"
+        day-view-split="30">
+    </mwl-calendar>
+</div>
