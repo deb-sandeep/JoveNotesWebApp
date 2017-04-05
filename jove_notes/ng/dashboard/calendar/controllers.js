@@ -2,6 +2,7 @@ dashboardApp.controller( 'CalendarController', function( $scope, $http, $sce ) {
 
 // ---------------- Constants and inner class definition -----------------------
 function Event() {
+    this.id = -1 ;
     this.type = "" ;
     this.subject = "" ;
     this.title = "" ;
@@ -48,50 +49,27 @@ function Event() {
 }
 
 // ---------------- Local variables --------------------------------------------
-var e1 = new Event() ;
-var e2 = new Event() ;
 
-e1.type          = 'Exam' ;
-e1.subject       = 'Literature' ;
-e1.title         = 'English Literature' ;
-e1.startsAt      = new Date(2017,3,6) ;
-e1.color.primary = '#e3bc08' ;
-
-e2.type          = 'General' ;
-e2.subject       = 'Hindi' ;
-e2.title         = 'Naya Rasta Test' ;
-e2.startsAt      = new Date(2017,3,7) ;
-e2.color.primary = '#E33D08' ;
-
-e1.createSnapshot() ;
-e2.createSnapshot() ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.$parent.pageTitle     = "Event Calendar" ;
 $scope.$parent.currentReport = "Calendar" ;
 
 $scope.calendar = {
-    calendarView : 'month',
-    cellIsOpen   : true,
-    viewDate     : new Date(),
-    calendarTitle: "",
-    editEvents   : false,
-    selectedDate : new Date(),
-    editAllEvents: false,
-    events       : [e1, e2],
-    possibleSubjects : [
-        'English',
-        'Hindi',
-        'Marathi',
-        'Mathematics',
-        'Hindi - Naya Rasta',
-        'Literature'
-    ],
+    calendarView     : 'month',
+    cellIsOpen       : true,
+    viewDate         : new Date(),
+    calendarTitle    : "",
+    editEvents       : false,
+    selectedDate     : new Date(),
+    editAllEvents    : false,
+    events           : [],
+    possibleSubjects : [],
     eventsForEditing : []
 }
 
 // ---------------- Main logic for the controller ------------------------------
-recomputeEditableEvents() ;
+refreshData() ;
 
 // ---------------- Controller methods (Watch) ---------------------------------
 $scope.$watch( 'calendar.editAllEvents', function( newValue, oldValue ){
@@ -136,13 +114,19 @@ $scope.getColorPickerStyle = function( event ) {
 $scope.saveEvent = function( event ) {
     event.createSnapshot() ;
     recomputeEditableEvents() ;
-    // TODO: Save it to the server
+    saveEvent( event ) ;
 }
 
 $scope.deleteEvent = function( index ) {
-    var event = $scope.calendar.events.splice( index, 1 ) ;
+    var event = $scope.calendar.eventsForEditing.splice( index, 1 ) ;
+    for (var i = $scope.calendar.events.length - 1; i >= 0; i--) {
+        if( $scope.calendar.events[i].id == event[0].id ) {
+            $scope.calendar.events.splice( i, 1 ) ;
+            break ;
+        }
+    }
+    deleteEvent( event[0].id ) ;
     recomputeEditableEvents() ;
-    // TODO: Delete it from the server
 }
 
 $scope.newEvent = function() {
@@ -171,7 +155,63 @@ function recomputeEditableEvents() {
     $scope.calendar.eventsForEditing = editableEvents ;
 }
 
+function processBaseCalendarData( data ) {
+    $scope.calendar.possibleSubjects = data.possibleSubjects ;
+    $scope.calendar.events.length = 0 ;
+
+    for (var i = 0; i < data.events.length; i++) {
+        var e = data.events[i] ;
+        var event = new Event() ;
+        event.id            = e.id ;
+        event.type          = e.type ;
+        event.subject       = e.subject ;
+        event.title         = e.title ;
+        event.startsAt      = new Date( e.date * 1000 ) ;
+        event.color.primary = e.color ;
+
+        event.createSnapshot() ;
+        $scope.calendar.events.push( event ) ;
+    }
+
+    recomputeEditableEvents() ;
+}
+
 // ---------------- Server calls -----------------------------------------------
+function refreshData() {
+
+    $http.get( "/jove_notes/api/Calendar" )
+         .success( function( data ){
+            processBaseCalendarData( data ) ;
+         })
+         .error( function( data ){
+            $scope.addErrorAlert( "API call failed. " + data ) ;
+         });
+}
+
+function saveEvent( event ) {
+    $http.post( "/jove_notes/api/Calendar", {
+            'id'       : event.id,
+            'type'     : event.type,
+            'subject'  : event.subject,
+            'title'    : event.title,
+            'startsAt' : event.startsAt.getTime()/1000,
+            'color'    : event.color.primary
+         })
+         .success( function( data ){
+            event.id = data[0] ;
+         })
+         .error( function( data ){
+            $scope.addErrorAlert( "API call failed. " + data ) ;
+         });
+}
+
+function deleteEvent( eventId ) {
+    $http.delete( "/jove_notes/api/Calendar/" + eventId )
+         .error( function( data ){
+            $scope.addErrorAlert( "API call failed. " + data ) ;
+         });
+}
+
 
 
 // ---------------- End of controller ------------------------------------------

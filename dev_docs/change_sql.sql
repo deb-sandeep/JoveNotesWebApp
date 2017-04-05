@@ -29,6 +29,20 @@ ADD COLUMN `is_in_syllabus` BIT(1) NOT NULL DEFAULT b'1' AFTER `is_deselected`;
 UPDATE `jove_notes`.`user_chapter_preferences` 
 SET `is_in_syllabus`=b'0';
 
+CREATE TABLE `calendar_event` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `student_name` varchar(45) NOT NULL,
+  `type` enum('Exam','General') NOT NULL,
+  `subject` varchar(45) DEFAULT NULL,
+  `title` varchar(128) NOT NULL,
+  `date` date NOT NULL,
+  `color` varchar(7) NOT NULL DEFAULT '#e3bc08',
+  PRIMARY KEY (`id`),
+  KEY `fk_calendar_event_1_idx` (`student_name`),
+  CONSTRAINT `fk_calendar_event_1` FOREIGN KEY (`student_name`) REFERENCES `user`.`user` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 --------------------------------------------------------------------------------
 -- Altered the auth_token table for the ghostly latency problem
 --
