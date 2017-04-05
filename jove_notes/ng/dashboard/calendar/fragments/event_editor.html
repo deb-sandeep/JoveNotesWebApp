@@ -1,4 +1,4 @@
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped table-compact">
   <thead>
     <tr class="success">
       <th>Type</th>
@@ -7,23 +7,27 @@
       <th>Color</th>
       <th>Date</th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="event in calendar.eventsForEditing track by $index">
+    <tr ng-repeat="event in calendar.eventsForEditing track by $index"
+        ng-class="event.isDirty()?'dirty_row':''">
       <td style="width: 150px">
-        <div class="form-group pad-10px">
-          <select id="eventType" class="form-control" ng-model="event.type">
-              <option value="Exam" selected>Exam</option>
-              <option value="General">General</option>
-          </select>
-        </div>      
+        <select id="eventType" class="form-control" ng-model="event.type">
+            <option value="Exam" selected>Exam</option>
+            <option value="General">General</option>
+        </select>
       </td>
       <td style="width: 200px">
-        <input
-          type="text"
-          class="form-control"
-          ng-model="event.subject">
+        <div ng-if="event.type == 'Exam'">
+          <select id="subject" 
+                  class="form-control"
+                  ng-model="event.subject"
+                  ng-options="obj as obj for obj in calendar.possibleSubjects"
+                  ng-change="event.subjectChanged()">
+          </select>          
+        </div>
       </td>
       <td>
         <input
@@ -62,8 +66,15 @@
       <td style="width: 40px">
         <button
           class="btn btn-danger"
-          ng-click="events.splice($index, 1)">
+          ng-click="deleteEvent( $index )">
           <i class="glyphicon glyphicon-minus"></i>
+        </button>
+      </td>
+      <td style="width: 40px">
+        <button class="btn btn-info"
+                ng-click="saveEvent(event)"
+                ng-if="event.isDirty()">
+          <i class="glyphicon glyphicon-floppy-disk"></i>
         </button>
       </td>
     </tr>
@@ -73,7 +84,7 @@
     <div class="col-md-12">
       <button
         class="btn btn-primary"
-        ng-click="addNewEvent()">
+        ng-click="newEvent()">
         <span class="glyphicon glyphicon-plus"></span>
         Add new event
       </button>

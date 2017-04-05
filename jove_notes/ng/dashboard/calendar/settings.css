@@ -5,3 +5,7 @@
 .btn_inactive {
     background-color: #D4D4D4 !important;
 }
+
+.dirty_row {
+    background-color: #FFB0B0 !important;
+}
