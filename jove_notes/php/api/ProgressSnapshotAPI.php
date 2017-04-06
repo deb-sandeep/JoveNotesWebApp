@@ -282,7 +282,8 @@ class ProgressSnapshotAPI extends API {
 	private function associateNumSSRMaturedCardsWithChapters() {
 
 		$chapterMaturedCardsMap = $this->clsDAO->getChapterWiseSSRMaturedCards( 
-									  ExecutionContext::getCurrentUserName() ) ;
+									  ExecutionContext::getCurrentUserName(),
+									  $this->selectedChapterIdList ) ;
 
 		foreach( $chapterMaturedCardsMap as $chapterRow ) {
 
@@ -300,7 +301,8 @@ class ProgressSnapshotAPI extends API {
 	private function associateUserChapterPreferences() {
 
 		$preferences = $this->ucpDAO->getChapterPreferencesForUser( 
-									  ExecutionContext::getCurrentUserName() ) ;
+									  ExecutionContext::getCurrentUserName(),
+									  $this->selectedChapterIdList ) ;
 
 		foreach( $preferences as $pref ) {
 

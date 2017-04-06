@@ -82,13 +82,16 @@ QUERY;
 	 * value as either 0 or 1.. implying whether the chapter is visible or
 	 * hidden respectively.
 	 */
-	function getChapterPreferencesForUser( $userName ) {
+	function getChapterPreferencesForUser( $userName, $chapterIdList ) {
+
+      $idList = implode( $chapterIdList, "," ) ;
 
 $query = <<< QUERY
 select chapter_id, is_hidden, is_deselected, is_in_syllabus
 from jove_notes.user_chapter_preferences
 where
-	student_name = '$userName'
+	student_name = '$userName' and
+	chapter_id in ( $idList ) 
 QUERY;
 
 		$colNames = [ "chapter_id", "is_hidden", "is_deselected", "is_in_syllabus" ] ;
