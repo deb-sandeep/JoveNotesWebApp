@@ -54,6 +54,14 @@ function pushSessionEndMessage() {
 		log.error( "Server says - " + data ) ;
         $scope.addErrorAlert( message ) ;
 	}) ;
+
+	$http.post( '/jove_notes/api/FlashCard/' + $scope.$parent.chapterId + "/EndStudy" )
+		 .error( function( data ){
+			 var message = "Could not push end session message to remote." ;
+			 log.error( message ) ;
+			 log.error( "Server says - " + data ) ;
+	         $scope.addErrorAlert( message ) ;
+		 }) ;
 }
 
 function checkInvalidLoad() {

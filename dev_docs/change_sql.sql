@@ -1,4 +1,42 @@
 --------------------------------------------------------------------------------
+-- Data model chnages in preparation of the 'preparedness batch' feature changes
+--
+-- TODO: Yet to be put in production
+--
+CREATE TABLE `jove_notes`.`run_stats` (
+  `daemon_id` VARCHAR(45) NOT NULL,
+  `last_run_time` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`daemon_id`));
+
+CREATE TABLE `jove_notes`.`rt_chap_prep_proc_req_q` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `student_name` VARCHAR(45) NOT NULL,
+  `chapter_id` INT NOT NULL,
+  `submission_time` TIMESTAMP NOT NULL,
+  `processing_start_time` TIMESTAMP NULL,
+  `processing_end_time` TIMESTAMP NULL DEFAULT NULL,
+  PRIMARY KEY (`id`));
+
+ALTER TABLE `jove_notes`.`rt_chap_prep_proc_req_q` 
+ADD INDEX `fk_rt_chap_prep_proc_req_q_1_idx` (`student_name` ASC);
+ALTER TABLE `jove_notes`.`rt_chap_prep_proc_req_q` 
+ADD CONSTRAINT `fk_rt_chap_prep_proc_req_q_1`
+  FOREIGN KEY (`student_name`)
+  REFERENCES `user`.`user` (`name`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
+ALTER TABLE `jove_notes`.`rt_chap_prep_proc_req_q` 
+ADD INDEX `fk_rt_chap_prep_proc_req_q_2_idx` (`chapter_id` ASC);
+ALTER TABLE `jove_notes`.`rt_chap_prep_proc_req_q` 
+ADD CONSTRAINT `fk_rt_chap_prep_proc_req_q_2`
+  FOREIGN KEY (`chapter_id`)
+  REFERENCES `jove_notes`.`chapter` (`chapter_id`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
+
+--------------------------------------------------------------------------------
 -- Data model chnagesin preparation of the 'preparedness' feature changes
 --
 -- Implemented in production on 6th April 2017 - 1:06 AM
