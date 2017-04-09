@@ -4,6 +4,7 @@ require_once( APP_ROOT      . "/php/dao/chapter_dao.php" ) ;
 require_once( APP_ROOT      . "/php/dao/card_learning_summary_dao.php" ) ;
 require_once( APP_ROOT      . "/php/dao/user_chapter_preferences_dao.php" ) ;
 require_once( DOCUMENT_ROOT . "/lib-app/php/services/user_preference_service.php" ) ;
+require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/chapter_preparedness_request_queue_dao.php" ) ;
 
 class ChapterProgressSnapshot {
 
@@ -121,6 +122,12 @@ class ProgressSnapshotAPI extends API {
 			$this->ucpDAO->updateInSyllabusPreference( ExecutionContext::getCurrentUserName(),
 												   $request->requestBody->chapterIds,
 				                                   $request->requestBody->selectionState ) ;
+			if( $request->requestBody->selectionState ) {
+				$dao = new ChapterPreparednessRequestQueueDAO() ;
+				$dao->insertRequests( ExecutionContext::getCurrentUserName(),
+					                  $request->requestBody->chapterIds ) ;
+			}
+
 			$response->responseCode = APIResponse::SC_OK ;
 			$response->responseBody = "Success" ;
 		}

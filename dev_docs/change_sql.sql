@@ -8,33 +8,48 @@ CREATE TABLE `jove_notes`.`run_stats` (
   `last_run_time` TIMESTAMP NOT NULL,
   PRIMARY KEY (`daemon_id`));
 
-CREATE TABLE `jove_notes`.`rt_chap_prep_proc_req_q` (
+CREATE TABLE `jove_notes`.`chapter_preparedness` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `student_name` VARCHAR(45) NOT NULL,
   `chapter_id` INT NOT NULL,
-  `submission_time` TIMESTAMP NOT NULL,
-  `processing_start_time` TIMESTAMP NULL,
-  `processing_end_time` TIMESTAMP NULL DEFAULT NULL,
+  `preparedness_score` DECIMAL NOT NULL DEFAULT 0,
+  `last_computed_time` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`));
 
-ALTER TABLE `jove_notes`.`rt_chap_prep_proc_req_q` 
-ADD INDEX `fk_rt_chap_prep_proc_req_q_1_idx` (`student_name` ASC);
-ALTER TABLE `jove_notes`.`rt_chap_prep_proc_req_q` 
-ADD CONSTRAINT `fk_rt_chap_prep_proc_req_q_1`
+ALTER TABLE `jove_notes`.`chapter_preparedness` 
+ADD INDEX `fk_chapter_preparedness_1_idx` (`student_name` ASC),
+ADD INDEX `fk_chapter_preparedness_2_idx` (`chapter_id` ASC);
+ALTER TABLE `jove_notes`.`chapter_preparedness` 
+ADD CONSTRAINT `fk_chapter_preparedness_1`
   FOREIGN KEY (`student_name`)
   REFERENCES `user`.`user` (`name`)
   ON DELETE CASCADE
-  ON UPDATE CASCADE;
-
-ALTER TABLE `jove_notes`.`rt_chap_prep_proc_req_q` 
-ADD INDEX `fk_rt_chap_prep_proc_req_q_2_idx` (`chapter_id` ASC);
-ALTER TABLE `jove_notes`.`rt_chap_prep_proc_req_q` 
-ADD CONSTRAINT `fk_rt_chap_prep_proc_req_q_2`
+  ON UPDATE CASCADE,
+ADD CONSTRAINT `fk_chapter_preparedness_2`
   FOREIGN KEY (`chapter_id`)
   REFERENCES `jove_notes`.`chapter` (`chapter_id`)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
 
+CREATE TABLE `chapter_preparedness_request_queue` (
+  `student_name` varchar(45) NOT NULL,
+  `chapter_id` int(11) NOT NULL,
+  `request_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`student_name`,`chapter_id`),
+  KEY `fk_chapter_preparedness_request_queue_1_idx` (`chapter_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `jove_notes`.`chapter_preparedness_request_queue` 
+ADD CONSTRAINT `fk_chapter_preparedness_request_queue_1`
+  FOREIGN KEY (`student_name`)
+  REFERENCES `user`.`user` (`name`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+ADD CONSTRAINT `fk_chapter_preparedness_request_queue_2`
+  FOREIGN KEY (`chapter_id`)
+  REFERENCES `jove_notes`.`chapter` (`chapter_id`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
 
 --------------------------------------------------------------------------------
 -- Data model chnagesin preparation of the 'preparedness' feature changes

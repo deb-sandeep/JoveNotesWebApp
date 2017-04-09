@@ -1,7 +1,7 @@
 <?php
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/abstract_jove_notes_api.php" ) ;
 require_once( APP_ROOT      . "/php/api/service/practice_card_service.php" ) ;
-require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/rt_chap_prep_proc_req_q_dao.php" ) ;
+require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/chapter_preparedness_request_queue_dao.php" ) ;
 
 class FlashCardAPI extends AbstractJoveNotesAPI {
 
@@ -38,7 +38,7 @@ class FlashCardAPI extends AbstractJoveNotesAPI {
 
 		if( $this->isUserEntitledForFlashCards( $this->chapterId ) ) {
 			if( $postAction == 'EndStudy' ) {
-				$dao = new RtChapPrepProcQueueDAO() ;
+				$dao = new ChapterPreparednessRequestQueueDAO() ;
 				$dao->insertRequest( ExecutionContext::getCurrentUserName(),
 					                 $this->chapterId ) ;
 				
