@@ -3,11 +3,6 @@
 --
 -- TODO: Yet to be put in production
 --
-CREATE TABLE `jove_notes`.`run_stats` (
-  `daemon_id` VARCHAR(45) NOT NULL,
-  `last_run_time` TIMESTAMP NOT NULL,
-  PRIMARY KEY (`daemon_id`));
-
 CREATE TABLE `jove_notes`.`chapter_preparedness` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `student_name` VARCHAR(45) NOT NULL,
