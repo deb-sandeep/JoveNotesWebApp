@@ -22,20 +22,11 @@ CREATE TABLE `chapter_preparedness_request_queue` (
   `chapter_id` int(11) NOT NULL,
   `request_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`student_name`,`chapter_id`),
-  KEY `fk_chapter_preparedness_request_queue_1_idx` (`chapter_id`)
+  KEY `fk_chapter_preparedness_request_queue_1_idx` (`chapter_id`),
+  CONSTRAINT `fk_chapter_preparedness_request_queue_1` FOREIGN KEY (`student_name`) REFERENCES `user`.`user` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_chapter_preparedness_request_queue_2` FOREIGN KEY (`chapter_id`) REFERENCES `chapter` (`chapter_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-ALTER TABLE `jove_notes`.`chapter_preparedness_request_queue` 
-ADD CONSTRAINT `fk_chapter_preparedness_request_queue_1`
-  FOREIGN KEY (`student_name`)
-  REFERENCES `user`.`user` (`name`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE,
-ADD CONSTRAINT `fk_chapter_preparedness_request_queue_2`
-  FOREIGN KEY (`chapter_id`)
-  REFERENCES `jove_notes`.`chapter` (`chapter_id`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE;
 
 ALTER TABLE `jove_notes`.`card_learning_summary` 
 ADD COLUMN `retention_value` DECIMAL NOT NULL DEFAULT 0 AFTER `temporal_ratings`,
