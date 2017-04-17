@@ -27,6 +27,8 @@ function RowData( rowType, name, rowId, parentRowId ) {
     this.l3Cards            = 0 ;
     this.masteredCards      = 0 ;
     this.numSSRMaturedCards = 0 ;
+    this.preparednessScore  = 0 ;
+    this.retentionScore     = 0 ;
 
     this.chapter    = null ;
     this.chapterId  = null ;
@@ -103,9 +105,14 @@ function RowData( rowType, name, rowId, parentRowId ) {
             }
         }
         else {
-            if( ( this.isHidden && $scope.showHiddenChapters ) ||
-                ( !this.isHidden ) ) {
+            if( selType == "SYLLABUS" ) {
                 affectedChapterIds.push( this.chapterId ) ;
+            }
+            else {
+                if( ( this.isHidden && $scope.showHiddenChapters ) ||
+                    ( !this.isHidden ) ) {
+                    affectedChapterIds.push( this.chapterId ) ;
+                }
             }
         }
         return affectedChapterIds ;
@@ -140,6 +147,8 @@ function RowData( rowType, name, rowId, parentRowId ) {
         this.l3Cards             = chapter.l3Cards ;
         this.masteredCards       = chapter.masteredCards ;
         this.numSSRMaturedCards  = chapter.numSSRMaturedCards ;
+        this.preparednessScore   = chapter.preparednessScore ;
+        this.retentionScore      = chapter.retentionScore ;
 
         this.isNotesAuthorized      = chapter.isNotesAuthorized ;
         this.isFlashcardAuthorized  = chapter.isFlashcardAuthorized ;

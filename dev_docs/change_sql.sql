@@ -3,28 +3,19 @@
 --
 -- TODO: Yet to be put in production
 --
-CREATE TABLE `jove_notes`.`chapter_preparedness` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `student_name` VARCHAR(45) NOT NULL,
-  `chapter_id` INT NOT NULL,
-  `preparedness_score` DECIMAL NOT NULL DEFAULT 0,
-  `last_computed_time` TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`id`));
+CREATE TABLE `chapter_preparedness` (
+  `student_name` varchar(45) NOT NULL,
+  `chapter_id` int(11) NOT NULL,
+  `preparedness_score` decimal(10,0) NOT NULL DEFAULT '0',
+  `retention_score` decimal(10,0) NOT NULL DEFAULT '0',
+  `last_computed_time` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`student_name`,`chapter_id`),
+  KEY `fk_chapter_preparedness_1_idx` (`student_name`),
+  KEY `fk_chapter_preparedness_2_idx` (`chapter_id`),
+  CONSTRAINT `fk_chapter_preparedness_1` FOREIGN KEY (`student_name`) REFERENCES `user`.`user` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_chapter_preparedness_2` FOREIGN KEY (`chapter_id`) REFERENCES `chapter` (`chapter_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-ALTER TABLE `jove_notes`.`chapter_preparedness` 
-ADD INDEX `fk_chapter_preparedness_1_idx` (`student_name` ASC),
-ADD INDEX `fk_chapter_preparedness_2_idx` (`chapter_id` ASC);
-ALTER TABLE `jove_notes`.`chapter_preparedness` 
-ADD CONSTRAINT `fk_chapter_preparedness_1`
-  FOREIGN KEY (`student_name`)
-  REFERENCES `user`.`user` (`name`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE,
-ADD CONSTRAINT `fk_chapter_preparedness_2`
-  FOREIGN KEY (`chapter_id`)
-  REFERENCES `jove_notes`.`chapter` (`chapter_id`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE;
 
 CREATE TABLE `chapter_preparedness_request_queue` (
   `student_name` varchar(45) NOT NULL,
@@ -45,6 +36,10 @@ ADD CONSTRAINT `fk_chapter_preparedness_request_queue_2`
   REFERENCES `jove_notes`.`chapter` (`chapter_id`)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
+
+ALTER TABLE `jove_notes`.`card_learning_summary` 
+ADD COLUMN `retention_value` DECIMAL NOT NULL DEFAULT 0 AFTER `temporal_ratings`,
+ADD COLUMN `exam_preparedness_value` DECIMAL NOT NULL DEFAULT 0 AFTER `retention_value`;
 
 --------------------------------------------------------------------------------
 -- Data model chnagesin preparation of the 'preparedness' feature changes

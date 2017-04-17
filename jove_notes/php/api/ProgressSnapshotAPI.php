@@ -5,6 +5,7 @@ require_once( APP_ROOT      . "/php/dao/card_learning_summary_dao.php" ) ;
 require_once( APP_ROOT      . "/php/dao/user_chapter_preferences_dao.php" ) ;
 require_once( DOCUMENT_ROOT . "/lib-app/php/services/user_preference_service.php" ) ;
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/chapter_preparedness_request_queue_dao.php" ) ;
+require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/chapter_preparedness_dao.php" ) ;
 
 class ChapterProgressSnapshot {
 
@@ -33,6 +34,8 @@ class ChapterProgressSnapshot {
 	public $isHidden ;
 	public $isDeselected ;
 	public $isInSyllabus ;
+	public $preparednessScore ;
+	public $retentionScore ;
 
 	function __construct( $meta ) {
 
@@ -60,6 +63,8 @@ class ChapterProgressSnapshot {
 		$this->isHidden           = false ;
 		$this->isDeselected       = false ;
 		$this->isInSyllabus       = false ;
+		$this->preparednessScore  = 0 ;
+		$this->retentionScore     = 0 ;
 	}
 
 	public function isUserEntitled() {
@@ -78,6 +83,7 @@ class ProgressSnapshotAPI extends API {
 	private $chapterDAO ;
 	private $clsDAO ;
 	private $ucpDAO ;
+	private $cpDAO ;
 	private $upSvc = NULL ;
 
 	function __construct() {
@@ -89,6 +95,7 @@ class ProgressSnapshotAPI extends API {
 		$this->clsDAO                = new CardLearningSummaryDAO() ;
 		$this->ucpDAO                = new UserChapterPrefsDAO() ;
 		$this->upSvc                 = new UserPreferenceService() ;
+		$this->cpDAO                 = new ChapterPreparednessDAO() ;
 	}
 
 	public function doPost( $request, &$response ) {
@@ -151,6 +158,7 @@ class ProgressSnapshotAPI extends API {
 			$this->associateProgressSnapshotWithChapters() ;
 			$this->associateNumSSRMaturedCardsWithChapters() ;
 			$this->associateUserChapterPreferences() ;
+			$this->associateChapterPreparedness() ;
 		}
 		
 		$responseObj = $this->constructResponseObj() ;
@@ -333,6 +341,25 @@ class ProgressSnapshotAPI extends API {
 		}
 	}
 
+	private function associateChapterPreparedness() {
+
+		$prepValues = $this->cpDAO->getPreparednessValuesForUser(
+			                          ExecutionContext::getCurrentUserName() ) ;
+
+		foreach( $prepValues as $preparedness ) {
+
+			$chapterId = $preparedness[ "chapter_id"         ] ;
+			$prepValue = $preparedness[ "preparedness_score" ] ;
+			$retention = $preparedness[ "retention_score" ] ;
+
+			if( array_key_exists( $chapterId, $this->chapters ) ) {
+				$chapter = &$this->chapters[ $chapterId ] ;
+				$chapter->preparednessScore = $prepValue ;
+				$chapter->retentionScore = $retention ;
+			}
+		}
+	}
+
 	private function &constructChapterResponseObj( $chapter ) {
 
 		$responseObj = array() ;
@@ -356,6 +383,8 @@ class ProgressSnapshotAPI extends API {
 		$responseObj[ "isHidden"               ] = $chapter->isHidden ;
 		$responseObj[ "isDeselected"           ] = $chapter->isDeselected ;
 		$responseObj[ "isInSyllabus"           ] = $chapter->isInSyllabus ;
+		$responseObj[ "preparednessScore"      ] = $chapter->preparednessScore ;
+		$responseObj[ "retentionScore"         ] = $chapter->retentionScore ;
 
 		return $responseObj ;
 	}

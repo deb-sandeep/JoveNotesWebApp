@@ -22,6 +22,12 @@
                     </button>
                 </th>
                 <th style="width:50px;text-align:center;">
+                   <span class="glyphicon glyphicon-thumbs-up"></span>
+                </th>
+                <th style="width:50px;text-align:center;">
+                   <span class="glyphicon glyphicon-adjust"></span>
+                </th>
+                <th style="width:50px;text-align:center;">
                    <span class="glyphicon glyphicon-th"></span>
                 </th>
                 <th style="width:50px">
@@ -61,6 +67,16 @@
                         </a>
                     </span>
                     <span ng-show="!rowData.isNotesAuthorized">{{rowData.name}}</span>
+                </td>
+                <td>
+                    <span ng-show="rowData.isChapterRow()"
+                          class="badge L1">{{rowData.retentionScore}}
+                    </span>
+                </td>
+                <td>
+                    <span ng-show="rowData.isChapterRow() && rowData.isRowInSyllabus"
+                          class="badge L0">{{rowData.preparednessScore}}
+                    </span>
                 </td>
                 <td>
                     <a type="button" class="btn btn-default btn-xs" 
