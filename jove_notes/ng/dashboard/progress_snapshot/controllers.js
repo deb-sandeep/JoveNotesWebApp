@@ -41,6 +41,10 @@ function RowData( rowType, name, rowId, parentRowId ) {
     this.isRowInSyllabus          = false ;
     this.isRowPartiallyInSyllabus = false ;
 
+    this.hasCardsAvailable = function() {
+        return (this.totalCards - this.masteredCards) > 0 ;
+    }
+
     this.isChapterRow = function() {
         return this.rowType == this.ROW_TYPE_CHAPTER ;
     }
@@ -369,7 +373,8 @@ $scope.launchChainedFlashcards = function( type ) {
     }
 
     if( chapters == null || chapters.length == 0 ) {
-        $scope.$parent.addErrorAlert( "No chapters selected." ) ;
+        $scope.$parent.addErrorAlert( "No chapters selected or the " + 
+                     "selected chapters don't have available cards." ) ;
         return ;
     }
 
@@ -720,7 +725,10 @@ function getSelectedChapterRows() {
 
         var rowData = $scope.progressSnapshot[i] ;
         if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
-            if( rowData.isTreeRowVisible() && rowData.isRowSelected ) {
+            if( rowData.isTreeRowVisible() && 
+                rowData.isRowSelected && 
+                rowData.hasCardsAvailable() ) {
+
                 selectedRows.push( rowData ) ;
             }
         }
@@ -735,7 +743,9 @@ function getInSyllabusChapterRows() {
 
         var rowData = $scope.progressSnapshot[i] ;
         if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
-            if( rowData.isRowInSyllabus ) {
+            if( rowData.isRowInSyllabus && 
+                rowData.hasCardsAvailable() ) {
+
                 inSyllabusRows.push( rowData ) ;
             }
         }

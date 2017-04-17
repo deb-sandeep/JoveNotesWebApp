@@ -126,6 +126,8 @@ $scope.studyStrategies = [
     new NuHard_StudyStrategy(),
     new NuEasy_StudyStrategy(),
     new Recency_StudyStrategy(),
+    new Retention_StudyStrategy(),
+    new Preparedness_StudyStrategy(),
     new BottomUpL0_StudyStrategy(),
     new BottomUpL1_StudyStrategy(),
     new BottomUpL2_StudyStrategy(),

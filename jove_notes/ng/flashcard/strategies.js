@@ -408,3 +408,43 @@ Recency_StudyStrategy.prototype.sortQuestions = function() {
                q1.learningStats.recencyInDays ;
     } ) ;
 }
+
+// -----------------------------------------------------------------------------
+Retention_StudyStrategy.prototype = new StudyStrategy() ;
+Retention_StudyStrategy.prototype.constructor = Retention_StudyStrategy ;
+
+function Retention_StudyStrategy() {
+    StudyStrategy.call( this, "RETENTION", "Retention" ) ;
+}
+
+Retention_StudyStrategy.prototype.sortQuestions = function() {
+    if( this.questions.length == 0 ) return ;
+    this.questions.sort( function( q1, q2 ){
+        return q1.learningStats.retentionValue - 
+               q2.learningStats.retentionValue ;
+    } ) ;
+}
+
+Retention_StudyStrategy.prototype.offer = function( question ) {
+    if( question.learningStats.retentionValue < 80 ) {
+        this.addQuestion( question ) ;
+    }
+}
+
+// -----------------------------------------------------------------------------
+Preparedness_StudyStrategy.prototype = new StudyStrategy() ;
+Preparedness_StudyStrategy.prototype.constructor = Preparedness_StudyStrategy ;
+
+function Preparedness_StudyStrategy() {
+    StudyStrategy.call( this, "PREPAREDNESS", "Preparedness" ) ;
+}
+
+Preparedness_StudyStrategy.prototype.sortQuestions = function() {
+    if( this.questions.length == 0 ) return ;
+    this.questions.sort( function( q1, q2 ){
+        return q1.learningStats.preparednessValue - 
+               q2.learningStats.preparednessValue ;
+    } ) ;
+}
+
+

@@ -81,7 +81,7 @@
                 <td>
                     <a type="button" class="btn btn-default btn-xs" 
                        href="/apps/jove_notes/ng/flashcard/index.php?chapterId={{rowData.chapterId}}"
-                       ng-show="rowData.isFlashcardAuthorized"
+                       ng-show="rowData.isFlashcardAuthorized && rowData.hasCardsAvailable()"
                        style="width:50px;text-align:right;">
                        <span class="badge L3">{{rowData.numSSRMaturedCards}}</span>
                     </a>
