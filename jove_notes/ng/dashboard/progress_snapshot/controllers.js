@@ -357,19 +357,46 @@ $scope.resetLevelOfAllCards = function( level ) {
 
 $scope.launchChainedFlashcards = function( type ) {
 
-    var selectedChapters = getSelectedChapterIds() ;
-    if( selectedChapters.length == 0 ) {
-        $scope.$parent.addErrorAlert( "No chapters selected." ) ;
-    }
-    else {
-        if( type == 'randomize' ) {
-            selectedChapters.shuffle() ;
-        }
-        var url = "/apps/jove_notes/ng/flashcard/index.php" ;
-        url += "?chapterId=" + selectedChapters.join() ;
+    var chapters = null ;
 
-        window.location.href = url ;
+    if( type == 'randomize' || 
+        type == 'ordered'   || 
+        type == 'retention' ) {
+        chapters = getSelectedChapterRows() ;
     }
+    else if( type == 'syllabus' ) {
+        chapters = getInSyllabusChapterRows() ;
+    }
+
+    if( chapters == null || chapters.length == 0 ) {
+        $scope.$parent.addErrorAlert( "No chapters selected." ) ;
+        return ;
+    }
+
+
+    if( type == 'randomize' ) {
+        chapters.shuffle() ;
+    }
+    else if( type == 'retention' ) {
+        chapters.sort( function( c1, c2 ){
+            return c1.retentionScore - c2.retentionScore ;
+        }) ;
+    }
+    else if( type == 'syllabus' ) {
+        chapters.sort( function( c1, c2 ){
+            return c1.preparednessScore - c2.preparednessScore ;
+        }) ;
+    }
+
+    var selectedChapters = [] ;
+    for( var i=0; i<chapters.length; i++ ) {
+        selectedChapters.push( chapters[i].chapterId ) ;
+    }
+
+    var url = "/apps/jove_notes/ng/flashcard/index.php" ;
+    url += "?chapterId=" + selectedChapters.join() ;
+
+    window.location.href = url ;
 }
 
 $scope.toggleVisibilityInBulk = function() {
@@ -699,6 +726,21 @@ function getSelectedChapterRows() {
         }
     }
     return selectedRows ;
+}
+
+function getInSyllabusChapterRows() {
+
+    var inSyllabusRows = [] ;
+    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+
+        var rowData = $scope.progressSnapshot[i] ;
+        if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+            if( rowData.isRowInSyllabus ) {
+                inSyllabusRows.push( rowData ) ;
+            }
+        }
+    }
+    return inSyllabusRows ;
 }
 
 // -----------------------------------------------------------------------------
