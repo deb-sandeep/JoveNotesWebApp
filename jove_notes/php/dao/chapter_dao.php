@@ -118,6 +118,10 @@ where
 	  ucp.is_hidden = 0 or 
 	  ucp.is_hidden is null or 
 	  ucp.is_in_syllabus = 1 
+	) and
+	(
+	  ucp.student_name = '$userName' or
+	  ucp.student_name is null
 	)
 order by 
 	c.syllabus_name asc,
