@@ -29,20 +29,13 @@ class BatchRobotAPI extends API {
         $this->logger->debug( "Executing doPost in " ) ;
         $this->checkAuthorization() ;
 
+        $action     = NULL ;
         $entityName = $request->getPathComponent( 0 ) ;
 
         $this->logger->debug( "POST Request is for entity '$entityName'" ) ;
         if( $entityName == 'UpdateLearningStats' ) {
             $action = new UpdateLearningStatsAction() ;
         }        
-
-        $action     = NULL ;
-        $entityName = $request->getPathComponent( 0 ) ;
-
-        $this->logger->debug( "POST Request is for entity '$entityName'" ) ;
-        if( $entityName == 'ExerciseBanks' ) {
-            $action = new GetExerciseBanksAction() ;
-        }
 
         $this->executeAction( $action, $request, $response ) ;        
     }
