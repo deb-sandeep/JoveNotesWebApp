@@ -1,8 +1,11 @@
 --------------------------------------------------------------------------------
 -- Data model chnages in preparation of the 'preparedness batch' feature changes
 --
--- TODO: Yet to be put in production
+-- Moved to production on 20th April 2017 @ 2341 Hrs
 --
+
+-- update /env/environment with DB_PASSSWORD
+
 CREATE TABLE `chapter_preparedness` (
   `student_name` varchar(45) NOT NULL,
   `chapter_id` int(11) NOT NULL,
