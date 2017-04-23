@@ -527,8 +527,15 @@ function updateProjectedTimeLeft() {
 
     var timeLeft = 0 ;
     for (var i = 0; i < $scope.questionsForSession.length; i++) {
-        timeLeft += $scope.questionsForSession[i].learningStats.averageTimeSpent ;
+        var question= $scope.questionsForSession[i] ;
+        var avgTime = question.learningStats.averageTimeSpent ;
+
+        if( avgTime <= 0 ) {
+            avgTime = 30 ;
+        }
+        timeLeft += avgTime ;
     }
+    
     $scope.projectedTimeLeft = timeLeft*1000 ;
 }
 
