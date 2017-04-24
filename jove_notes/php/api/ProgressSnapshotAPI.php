@@ -61,7 +61,7 @@ class ChapterProgressSnapshot {
 		$this->masteredCards      = 0 ;
 		$this->numSSRMaturedCards = 0 ;
 		$this->isHidden           = false ;
-		$this->isDeselected       = false ;
+		$this->isDeselected       = true ;
 		$this->isInSyllabus       = false ;
 		$this->preparednessScore  = 0 ;
 		$this->retentionScore     = 0 ;

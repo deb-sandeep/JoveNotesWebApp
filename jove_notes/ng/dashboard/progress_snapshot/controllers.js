@@ -35,7 +35,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
     this.subjectRD  = null ;
     this.syllabusRD = null ;
 
-    this.isRowSelected       = true ;
+    this.isRowSelected       = false ;
     this.isPartiallySelected = false ;
 
     this.isRowInSyllabus          = false ;
