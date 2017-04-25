@@ -496,9 +496,11 @@ function rearrangeQuestionsForFatigueBusting() {
 
         for( var i=1; i<$scope.questionsForSession.length; i++ ) {
             var q = $scope.questionsForSession[i] ;
-            if( q.learningStats.fatiguePotential < minFaitiguePotential ) {
-                minFaitiguePotential = q.learningStats.fatiguePotential ;
-                targetQIndex = i ;
+            if( q.learningStats.numAttemptsInSession == 0 ) {
+                if( q.learningStats.fatiguePotential < minFaitiguePotential ) {
+                    minFaitiguePotential = q.learningStats.fatiguePotential ;
+                    targetQIndex = i ;
+                }
             }
         }
     }
@@ -509,9 +511,11 @@ function rearrangeQuestionsForFatigueBusting() {
 
         for( var i=1; i<$scope.questionsForSession.length; i++ ) {
             var q = $scope.questionsForSession[i] ;
-            if( q.learningStats.fatiguePotential > maxFaitiguePotential ) {
-                maxFaitiguePotential = q.learningStats.fatiguePotential ;
-                targetQIndex = i ;
+            if( q.learningStats.numAttemptsInSession == 0 ) {
+                if( q.learningStats.fatiguePotential > maxFaitiguePotential ) {
+                    maxFaitiguePotential = q.learningStats.fatiguePotential ;
+                    targetQIndex = i ;
+                }
             }
         }
     }
