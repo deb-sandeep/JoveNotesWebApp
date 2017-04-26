@@ -43,15 +43,20 @@ QUERY;
 	}
 
 	function update( $userName, $event ) {
+
+		$subject = mysql_real_escape_string( $event->subject ) ;
+		$title   = mysql_real_escape_string( $event->title ) ;
+		$color   = mysql_real_escape_string( $event->color ) ;
+
 $query = <<< QUERY
 UPDATE jove_notes.calendar_event
 SET
 	student_name = '$userName',
 	type         = '$event->type',
-	subject      = '$event->subject',
-	title        = '$event->title',
+	subject      = '$subject',
+	title        = '$title',
 	date         = FROM_UNIXTIME( $event->startsAt, '%Y-%m-%d' ),
-	color        = '$event->color'
+	color        = '$color'
 WHERE 
 	id = $event->id;
 QUERY;
@@ -60,6 +65,11 @@ QUERY;
 	}
 
 	function insert( $userName, $event ) {
+
+		$subject = mysql_real_escape_string( $event->subject ) ;
+		$title   = mysql_real_escape_string( $event->title ) ;
+		$color   = mysql_real_escape_string( $event->color ) ;
+
 $query = <<< QUERY
 INSERT INTO jove_notes.calendar_event(
 	student_name,
@@ -72,10 +82,10 @@ INSERT INTO jove_notes.calendar_event(
 VALUES(
 	'$userName',
 	'$event->type',
-	'$event->subject',
-	'$event->title',
+	'$subject',
+	'$title',
 	FROM_UNIXTIME( $event->startsAt, '%Y-%m-%d' ),
-	'$event->color'
+	'$color'
 ) ;
 QUERY;
 		

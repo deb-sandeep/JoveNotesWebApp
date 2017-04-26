@@ -1,4 +1,45 @@
 --------------------------------------------------------------------------------
+-- Data model changes to resolve class-3 conflicts between ICSE-STM and CBSE-INS
+--
+-- Moved to production on 26th April 2017 @ 2310 Hrs
+--
+insert into user.roles
+( name, child_role ) 
+values 
+( "JN_CBSE_INS_CLASS_3_USER", "JN_USER" ),
+( "JN_CBSE_INS_CLASS_4_USER", "JN_USER" );
+
+insert into user.entitlement_selector_alias 
+( alias_name, selector_type, selector_value, description )
+values
+( 'JN_CBSE_INS_ALL_CHAPTERS_CLASS_3', 'PATH', '+:chapter:CBSE-INS-Class-3/**', 'Only CBSE INS Class-3 chapters' ),
+( 'JN_CBSE_INS_ALL_CHAPTERS_CLASS_4', 'PATH', '+:chapter:CBSE-INS-Class-4/**', 'Only CBSE INS Class-4 chapters' ) ;
+
+insert into user.entitlement_alias 
+( alias_name, entitlement_type, child_entitlement_alias, selector_alias, permissible_ops )
+values
+( 'JN_ENT_USE_CBSE_INS_CLASS_3_CHAPTERS', 'RAW', null, 'JN_CBSE_INS_ALL_CHAPTERS_CLASS_3', 'NOTES, FLASH_CARD, CHAPTER_STATS' ),
+( 'JN_ENT_USE_CBSE_INS_CLASS_4_CHAPTERS', 'RAW', null, 'JN_CBSE_INS_ALL_CHAPTERS_CLASS_4', 'NOTES, FLASH_CARD, CHAPTER_STATS' );
+
+insert into user.entity_entitlement
+( entity_type, entity_name, entitlement_type, entitlement_alias )
+values
+( 'ROLE', 'JN_CBSE_INS_CLASS_3_USER', 'ENT_ALIAS', 'JN_ENT_USE_CBSE_INS_CLASS_3_CHAPTERS' ),
+( 'ROLE', 'JN_CBSE_INS_CLASS_4_USER', 'ENT_ALIAS', 'JN_ENT_USE_CBSE_INS_CLASS_4_CHAPTERS' );
+
+insert into user.user_roles
+( user_name, role_name )
+values
+( 'Parth', 'JN_CBSE_INS_CLASS_3_USER' ),
+( 'Parth', 'JN_CBSE_INS_CLASS_4_USER' ) ;
+
+delete from user.user_roles where
+user_name = 'Parth' and
+role_name in ( 'JN_CLASS_3_USER', 'JN_CLASS_4_USER' ) ;
+
+delete from jove_notes.chapter where syllabus_name in ( 'Class-3', 'Class-4' ) ;
+
+--------------------------------------------------------------------------------
 -- Data model chnages in preparation of the 'preparedness batch' feature changes
 --
 -- Moved to production on 20th April 2017 @ 2341 Hrs
