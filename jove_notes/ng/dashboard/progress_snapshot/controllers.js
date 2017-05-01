@@ -395,7 +395,9 @@ $scope.launchChainedFlashcards = function( type ) {
 
     var selectedChapters = [] ;
     for( var i=0; i<chapters.length; i++ ) {
-        selectedChapters.push( chapters[i].chapterId ) ;
+        if( chapters[i].hasCardsAvailable() ) {
+            selectedChapters.push( chapters[i].chapterId ) ;
+        }
     }
 
     var url = "/apps/jove_notes/ng/flashcard/index.php" ;
@@ -726,9 +728,7 @@ function getSelectedChapterRows() {
         var rowData = $scope.progressSnapshot[i] ;
         if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
             if( rowData.isTreeRowVisible() && 
-                rowData.isRowSelected && 
-                rowData.hasCardsAvailable() ) {
-
+                rowData.isRowSelected ) {
                 selectedRows.push( rowData ) ;
             }
         }
