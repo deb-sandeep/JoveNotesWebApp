@@ -331,12 +331,10 @@ class ProgressSnapshotAPI extends API {
 				if( $isHidden == 1 ) {
 					$chapter->isHidden = true ;
 				}
-				if( $isDeselected == 1 ) {
-					$chapter->isDeselected = true ;
-				}
 				if( $isInSyllabus == 1 ) {
 					$chapter->isInSyllabus = true ;
 				}
+				$chapter->isDeselected = $isDeselected == 1 ? true : false ;
 			}
 		}
 	}
