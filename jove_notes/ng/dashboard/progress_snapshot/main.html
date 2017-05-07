@@ -21,13 +21,13 @@
                         <span class="glyphicon glyphicon-eye-close" ng-show="showHiddenChapters"></span>
                     </button>
                 </th>
-                <th style="width:50px;text-align:center;">
+                <th style="width:30px;text-align:center;">
                    <span class="glyphicon glyphicon-thumbs-up"></span>
                 </th>
-                <th style="width:50px;text-align:center;">
+                <th style="width:30px;text-align:center;">
                    <span class="glyphicon glyphicon-adjust"></span>
                 </th>
-                <th style="width:50px;text-align:center;">
+                <th style="width:30px;text-align:center;">
                    <span class="glyphicon glyphicon-th"></span>
                 </th>
                 <th style="width:50px">
@@ -49,7 +49,7 @@
                         </tr>
                     </table>
                 </th>
-                <th style="width:50px;text-align:center;">
+                <th style="width:30px;text-align:center;">
                     <span class="glyphicon glyphicon-fire"></span>
                 </th>
                 <th></th>
@@ -81,9 +81,9 @@
                 <td>
                     <a type="button" class="btn btn-default btn-xs" 
                        href="/apps/jove_notes/ng/flashcard/index.php?chapterId={{rowData.chapterId}}"
-                       ng-show="rowData.isFlashcardAuthorized && rowData.hasCardsAvailable()"
-                       style="width:50px;text-align:right;">
-                       <span class="badge L3">{{rowData.numSSRMaturedCards}}</span>
+                       ng-show="rowData.isFlashcardAuthorized && rowData.hasCardsAvailable()">
+                       <!--<span class="badge L3">{{rowData.numSSRMaturedCards}}</span>-->
+                       <span class="glyphicon glyphicon-th"></span>
                     </a>
                 </td>
                 <td style="width:50px" align="center">
@@ -92,7 +92,7 @@
                            ui-indeterminate="rowData.isPartiallySelected" />
                 </td>
                 <td class="text-center">
-                    <canvas width='200' height='20' id='canvas-{{rowData.rowId}}'>
+                    <canvas width='100' height='20' id='canvas-{{rowData.rowId}}'>
                     </canvas>
                 </td>
                 <td>
