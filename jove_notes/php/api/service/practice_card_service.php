@@ -114,7 +114,6 @@ class PracticeCardService {
 
     private function attachProgressSnapshots( &$deckDetailsObj ) {
 
-        $progressSnapshotObj = array() ;
         $learningCurveDataObj = array() ;
 
         $this->logger->debug( "Getting snapshots for " . 
@@ -129,39 +128,15 @@ class PracticeCardService {
 
         $numSnapshots = count( $snapshots ) ;
         if( $numSnapshots == 0 ) {
-
-            $progressSnapshotObj[ "numNS"  ] = $this->numCards ;
-            $progressSnapshotObj[ "numL0"  ] = 0 ;
-            $progressSnapshotObj[ "numL1"  ] = 0 ;
-            $progressSnapshotObj[ "numL2"  ] = 0 ;
-            $progressSnapshotObj[ "numL3"  ] = 0 ;
-            $progressSnapshotObj[ "numMAS" ] = 0 ;
-
             array_push( $learningCurveDataObj, 
                         array( $this->numCards, 0, 0, 0, 0, 0 ) ) ;
         }
         else {
             for( $i=0; $i<$numSnapshots; $i++ ) {
 
-                $pushSnapshot = false ;
                 $snapshot = $snapshots[ $i ] ;
-                if( $i == $numSnapshots-1 ) {
-                    $progressSnapshotObj[ "numNS"  ] = $snapshot[ "num_NS" ] ;
-                    $progressSnapshotObj[ "numL0"  ] = $snapshot[ "num_L0" ] ;
-                    $progressSnapshotObj[ "numL1"  ] = $snapshot[ "num_L1" ] ;
-                    $progressSnapshotObj[ "numL2"  ] = $snapshot[ "num_L2" ] ;
-                    $progressSnapshotObj[ "numL3"  ] = $snapshot[ "num_L3" ] ;
-                    $progressSnapshotObj[ "numMAS" ] = $snapshot[ "num_MAS" ] ;
+                if( $snapshot[ "time_spent" ] > 10 ) {
 
-                    $pushSnapshot = true ;
-                }
-                else {
-                    if( $snapshot[ "time_spent" ] > 10 ) {
-                        $pushSnapshot = true ;
-                    }
-                }
-
-                if( $pushSnapshot ) {
                     array_push( $learningCurveDataObj, 
                                 array( $snapshot["num_NS"],$snapshot["num_L0"], 
                                        $snapshot["num_L1"],$snapshot["num_L2"], 
@@ -170,8 +145,50 @@ class PracticeCardService {
             }
         }
 
-        $deckDetailsObj[ "progressSnapshot"  ] = $progressSnapshotObj ;
         $deckDetailsObj[ "learningCurveData" ] = $learningCurveDataObj ;
+
+        $this->attachLatestProgressSnapshot( $deckDetailsObj ) ;
+    }
+
+    private function attachLatestProgressSnapshot( &$deckDetailsObj ) {
+
+        $progressSnapshotObj = array() ;
+
+        $progressSnapshotObj[ "numNS"  ] = 0 ;
+        $progressSnapshotObj[ "numL0"  ] = 0 ;
+        $progressSnapshotObj[ "numL1"  ] = 0 ;
+        $progressSnapshotObj[ "numL2"  ] = 0 ;
+        $progressSnapshotObj[ "numL3"  ] = 0 ;
+        $progressSnapshotObj[ "numMAS" ] = 0 ;
+
+        $snapshots = $this->clsDAO->getChapterWiseLevelCounts( 
+                                            ExecutionContext::getCurrentUserName(),
+                                            array( $this->chapterId ) ) ;
+        $numSnapshots = count( $snapshots ) ;
+
+        if( $numSnapshots == 0 ) {
+            $progressSnapshotObj[ "numNS" ] = $this->numCards ;
+        }
+        else {
+            for( $i=0; $i<count($snapshots); $i++ ) {
+
+                $snapshot     = $snapshots[ $i ] ;
+                $count        = $snapshot[ "count" ] ;
+                $currentLevel = $snapshot[ "current_level" ] ;
+
+                $progressSnapshotObj[ "num" . $currentLevel ] = $count ;
+            }
+        }
+
+        $deckDetailsObj[ "progressSnapshot" ] = $progressSnapshotObj ;
+
+        array_push( $deckDetailsObj[ "learningCurveData" ], 
+                    array( $progressSnapshotObj[ "numNS"  ],
+                           $progressSnapshotObj[ "numL0"  ], 
+                           $progressSnapshotObj[ "numL1"  ],
+                           $progressSnapshotObj[ "numL2"  ], 
+                           $progressSnapshotObj[ "numL3"  ],
+                           $progressSnapshotObj[ "numMAS" ] ));
     }
 
     private function attachDifficultyTimeAverages( &$deckDetailsObj ) {
