@@ -426,7 +426,7 @@ Retention_StudyStrategy.prototype.sortQuestions = function() {
 }
 
 Retention_StudyStrategy.prototype.offer = function( question ) {
-    if( question.learningStats.retentionValue < 80 ) {
+    if( question.learningStats.retentionValue < 50 ) {
         this.addQuestion( question ) ;
     }
 }
