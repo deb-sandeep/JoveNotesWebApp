@@ -80,6 +80,7 @@ function MultiChoiceManager( questionObj, textFormatter, $scope ) {
 		}
 		if( doneBtn != null ) {
 			doneBtn.disabled = true ;
+			doneBtn.style.display = "none" ;
 		}
 	} ;
 	
