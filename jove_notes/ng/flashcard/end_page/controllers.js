@@ -21,6 +21,8 @@ $scope.learningEfficiency = "" ;
 	if( $scope.$parent.studyCriteria.push ) {
 		pushSessionEndMessage() ;
 	}
+
+	pushPreparednessComputeRequest() ;
 }
 
 // ---------------- Controller methods -----------------------------------------
@@ -54,6 +56,9 @@ function pushSessionEndMessage() {
 		log.error( "Server says - " + data ) ;
         $scope.addErrorAlert( message ) ;
 	}) ;
+}
+
+function pushPreparednessComputeRequest() {
 
 	$http.post( '/jove_notes/api/FlashCard/' + $scope.$parent.chapterId + "/EndStudy" )
 		 .error( function( data ){
