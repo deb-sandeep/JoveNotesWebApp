@@ -1,4 +1,40 @@
 --------------------------------------------------------------------------------
+-- Data model changes to set entitlements for IIT-Physics
+--
+
+insert into user.roles
+( name, child_role ) 
+values 
+( "JN_IIT_PHY_USER", "JN_USER" );
+
+insert into user.user_roles
+( user_name, role_name )
+values
+( 'Deba', 'JN_IIT_PHY_USER' ) ;
+
+insert into user.entitlement_selector_alias 
+( alias_name, selector_type, selector_value, description )
+values
+( 'JN_ALL_CHAPTERS_IIT_PHY', 'PATH', '+:chapter:IIT-Physics/**', 'Only IIT Physics chapters' ) ;
+
+insert into user.entitlement_alias 
+( alias_name, entitlement_type, child_entitlement_alias, selector_alias, permissible_ops )
+values
+( 'JN_ENT_USE_IIT_PHY_CHAPTERS',  'RAW', null, 'JN_ALL_CHAPTERS_IIT_PHY', 'NOTES, FLASH_CARD, CHAPTER_STATS' );
+
+insert into user.entity_entitlement
+( entity_type, entity_name, entitlement_type, entitlement_alias )
+values
+( 'ROLE', 'JN_IIT_PHY_USER',  'ENT_ALIAS', 'JN_ENT_USE_IIT_PHY_CHAPTERS' );
+
+delete from jove_notes.chapter where syllabus_name='IIT-Prep';
+delete from user.entitlement_selector_alias where alias_name='JN_ALL_CHAPTERS_IIT_PREP' ;
+delete from user.entitlement_alias where alias_name='JN_ENT_USE_IIT_PREP_CHAPTERS' ;
+delete from user.entity_entitlement where entity_name='JN_IIT_PREP_USER';
+delete from user.roles where name='JN_IIT_PREP_USER';
+delete from user.user_roles where role_name='JN_IIT_PREP_USER';
+  
+--------------------------------------------------------------------------------
 -- Data model changes to resolve class-3 conflicts between ICSE-STM and CBSE-INS
 --
 -- Moved to production on 26th April 2017 @ 2310 Hrs
