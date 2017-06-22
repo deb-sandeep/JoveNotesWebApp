@@ -101,12 +101,17 @@ $scope.attemptQuestion = function( question ) {
     $scope.currentQuestion = question ;
     $scope.timeSpentOnCurrentQuestion = question._sessionVars.timeSpent ;
 
+    // TODO: Make a parent scope level variable to track in question pause time
+    //       Reset it here and make use of it during the done attempt question
+
     currentQuestionAttemptStartTime = new Date().getTime() ;
     showAttemptScreen() ;
 }
 
 $scope.doneAttemptQuestion = function( question ) {
 
+    // TODO: Use the in question pause time to compute time spent and reset it 
+    //        after using. 
     question._sessionVars.numAttempts++ ;
     question._sessionVars.timeSpent += new Date().getTime() - currentQuestionAttemptStartTime ;
 
