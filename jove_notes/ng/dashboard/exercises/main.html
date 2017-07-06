@@ -43,6 +43,7 @@
                 </th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>   
         </thead>    
         <tbody>
@@ -88,6 +89,13 @@
                             <td class="text-right MAS">{{rowData.masteredCards   }}</td>
                             </tr>
                     </table>
+                </td>
+                <td style="width:50px" align="center">
+                    <a type="button" class="btn btn-default btn-xs"
+                       ng-show="(rowData.rowType == 2) && (rowData.totalCards != 0) && (rowData.totalCards == rowData.masteredCards)"
+                       ng-click="resetLevelOfChapterCards( rowData.chapterId, 'NS' )">
+                        <span class="glyphicon glyphicon-refresh" style="color:green"</span>
+                    </a>
                 </td>
                 <td>
                     <a type="button" class="btn btn-default btn-xs"

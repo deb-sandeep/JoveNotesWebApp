@@ -335,28 +335,17 @@ $scope.deleteChapter = function( chapterId ) {
         }) ;
 }
 
-$scope.resetLevelOfAllCards = function( level ) {
+$scope.resetLevelOfChapterCards = function( chapterId, level ) {
+
+    var selectedChapters = [] ;
+    selectedChapters.push( chapterId ) ;
+    callResetLevelServerAPI( selectedChapters, level ) ;
+}
+
+$scope.resetLevelOfAllCardsForSelectedChapters = function( level ) {
 
     var selectedChapters = getSelectedChapterIds() ;
-    if( selectedChapters.length == 0 ) {
-        $scope.$parent.addErrorAlert( "No chapters selected." ) ;
-    }
-    else {
-        log.debug( "Applying level " + level + " to all cards for " +
-                   "chapters " + selectedChapters.join() ) ;
-
-        $http.post( '/jove_notes/api/ResetLevel', { 
-            chapterIds : selectedChapters,
-            level      : level
-        })
-        .success( function( data ){
-            log.debug( "Level successfully applied to all cards" ) ;
-            refreshData() ;
-        })
-        .error( function( data ){
-            $scope.addErrorAlert( "API call failed. " + data ) ;
-        }) ;
-    }
+    callResetLevelServerAPI( selectedChapters, level ) ;
 }
 
 $scope.launchChainedFlashcards = function( type ) {
@@ -751,6 +740,29 @@ function getInSyllabusChapterRows() {
         }
     }
     return inSyllabusRows ;
+}
+
+function callResetLevelServerAPI( selectedChapters, level ) {
+
+    if( selectedChapters.length == 0 ) {
+        $scope.$parent.addErrorAlert( "No chapters selected." ) ;
+    }
+    else {
+        log.debug( "Applying level " + level + " to all cards for " +
+                   "chapters " + selectedChapters.join() ) ;
+
+        $http.post( '/jove_notes/api/ResetLevel', { 
+            chapterIds : selectedChapters,
+            level      : level
+        })
+        .success( function( data ){
+            log.debug( "Level successfully applied to all cards" ) ;
+            refreshData() ;
+        })
+        .error( function( data ){
+            $scope.addErrorAlert( "API call failed. " + data ) ;
+        }) ;
+    }
 }
 
 // -----------------------------------------------------------------------------
