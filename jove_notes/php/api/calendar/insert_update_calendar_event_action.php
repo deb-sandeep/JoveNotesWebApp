@@ -13,7 +13,7 @@ class InsertUpdateCalendarEventAction extends APIAction {
 
     public function execute( $request, &$response ) {
 
-        $this->logger->debug( "Executing GetCalendarDataAction" ) ;
+        $this->logger->debug( "Executing InsertUpdateCalendarEventAction" ) ;
 
         $userName   = ExecutionContext::getCurrentUserName() ;
         $requestObj = $request->requestBody ;

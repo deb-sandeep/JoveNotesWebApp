@@ -44,9 +44,11 @@ QUERY;
 
 	function update( $userName, $event ) {
 
-		$subject = mysql_real_escape_string( $event->subject ) ;
-		$title   = mysql_real_escape_string( $event->title ) ;
-		$color   = mysql_real_escape_string( $event->color ) ;
+        global $dbConn ;
+
+		$subject = $dbConn->real_escape_string( $event->subject ) ;
+		$title   = $dbConn->real_escape_string( $event->title ) ;
+		$color   = $dbConn->real_escape_string( $event->color ) ;
 
 $query = <<< QUERY
 UPDATE jove_notes.calendar_event
@@ -66,9 +68,11 @@ QUERY;
 
 	function insert( $userName, $event ) {
 
-		$subject = mysql_real_escape_string( $event->subject ) ;
-		$title   = mysql_real_escape_string( $event->title ) ;
-		$color   = mysql_real_escape_string( $event->color ) ;
+        global $dbConn ;
+        
+		$subject = $dbConn->real_escape_string( $event->subject ) ;
+		$title   = $dbConn->real_escape_string( $event->title ) ;
+		$color   = $dbConn->real_escape_string( $event->color ) ;
 
 $query = <<< QUERY
 INSERT INTO jove_notes.calendar_event(
@@ -88,7 +92,7 @@ VALUES(
 	'$color'
 ) ;
 QUERY;
-		
+
 		return parent::executeInsert( $query ) ;
 	}
 
