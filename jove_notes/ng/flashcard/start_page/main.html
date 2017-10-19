@@ -27,6 +27,7 @@
           <p style="padding-left:2px;">
           <a type="button" class="btn btn-default btn-block gi-2x"
              ng-click="shuffleChapter()"
+             ng-disabled="chapterIdsForNextSessions == null"
              style="height:50px;">
               <span class="glyphicon glyphicon-random"></span>
           </a>

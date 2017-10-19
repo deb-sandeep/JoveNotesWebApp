@@ -30,6 +30,13 @@ $scope.refreshPage = function() {
 	$window.location.reload() ;
 }
 
+$scope.shuffleChapter = function() {
+
+    window.location.href = "/apps/jove_notes/ng/flashcard/index.php?chapterId=" + 
+                           $scope.$parent.chapterIdsForNextSessions + 
+                           "," + $scope.$parent.chapterId ;
+}
+
 // ---------------- Private functions ------------------------------------------
 function pushSessionEndMessage() {
 
