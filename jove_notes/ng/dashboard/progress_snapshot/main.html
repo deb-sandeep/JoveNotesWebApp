@@ -20,6 +20,11 @@
                         <span class="glyphicon glyphicon-eye-open"  ng-hide="showHiddenChapters"></span>
                         <span class="glyphicon glyphicon-eye-close" ng-show="showHiddenChapters"></span>
                     </button>
+                    <button type="button" class="btn btn-default btn-xs"
+                            ng-click="toggleMergeSyllabus()">
+                        <span class="glyphicon glyphicon-indent-left"  ng-hide="syllabusMerged"></span>
+                        <span class="glyphicon glyphicon-indent-right" ng-show="syllabusMerged"></span>
+                    </button>
                 </th>
                 <th style="width:30px;text-align:center;">
                    <span class="glyphicon glyphicon-thumbs-up"></span>

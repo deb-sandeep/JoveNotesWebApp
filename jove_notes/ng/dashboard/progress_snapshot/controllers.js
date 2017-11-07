@@ -273,6 +273,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
 $scope.$parent.pageTitle         = "Progress Dashboard" ;
 $scope.$parent.currentReport     = 'ProgressSnapshot' ;
 $scope.showHiddenChapters        = false ;
+$scope.syllabusMerged            = false ;
 $scope.progressSnapshot          = null ;
 $scope.alreadyFetchedAllChapters = false ;
 
@@ -298,6 +299,25 @@ $scope.toggleHiddenChapters = function() {
     $scope.showHiddenChapters = !$scope.showHiddenChapters ;
     $http.put( "/__fw__/api/UserPreference", {
         'jove_notes.showHiddenChapters' : $scope.showHiddenChapters ? 'true' : 'false'
+    } )
+    .success( function( data ){
+        if( !$scope.alreadyFetchedAllChapters ) {
+            refreshData() ;
+        }
+        else {
+            recomputeStatistics() ;
+        }
+    } )
+    .error( function( data ){
+        log.error( "Could not set hidden chapter preferences for user." ) ;
+    });  
+}
+
+$scope.toggleMergeSyllabus = function() {
+
+    $scope.syllabusMerged = !$scope.syllabusMerged ;
+    $http.put( "/__fw__/api/UserPreference", {
+        'jove_notes.syllabusMerged' : $scope.syllabusMerged ? 'true' : 'false'
     } )
     .success( function( data ){
         if( !$scope.alreadyFetchedAllChapters ) {
@@ -467,9 +487,20 @@ function refreshData() {
 
 function digestPreferences( preferences ) {
     $scope.showHiddenChapters   = preferences[ "jove_notes.showHiddenChapters" ] ;
+    $scope.syllabusMerged       = preferences[ "jove_notes.syllabusMerged" ] ;
 }
 
 function prepareDataForDisplay( rawData ) {
+
+    if( $scope.syllabusMerged ) {
+        return prepareDataForDisplayGroupedBySubject( rawData ) ;
+    }
+    else {
+        return prepareDataForDisplayGroupedBySyllabus( rawData ) ;
+    }
+}
+
+function prepareDataForDisplayGroupedBySyllabus( rawData ) {
 
     var displayData = [] ;
     var rowNum = 0 ;
@@ -526,6 +557,86 @@ function prepareDataForDisplay( rawData ) {
 
         syllabusRD.isRowSelected = ( numSubjectsSelected > 0 ) ;
     }
+    return displayData ;
+}
+
+function prepareDataForDisplayGroupedBySubject( rawData ) {
+
+    var syllabusRD = new RowData( RowData.prototype.ROW_TYPE_SYLLABUS, 
+                                  "Unified Syllabus", "Unified", -1 ) ; 
+    var subjectMap = {} ;
+    var displayData = [] ;
+    var rowNum = 0 ;
+
+
+    displayData.push( syllabusRD ) ;
+
+    for( sylIndex=0; sylIndex<rawData.length; sylIndex++ ) {
+
+        rowNum++ ;
+        var syllabus = rawData[ sylIndex ] ;
+        var numSubjectsSelected = 0 ;
+
+        for( subIndex=0; subIndex<syllabus.subjects.length; subIndex++ ) {
+
+            rowNum++ ;
+            var subject = syllabus.subjects[ subIndex ] ;
+            var subjectRD = null ;
+
+            if( subjectMap[ subject.subjectName ] ) {
+                subjectRD = subjectMap[ subject.subjectName ] ;
+            }
+            else {
+                subjectRD = new RowData( RowData.prototype.ROW_TYPE_SUBJECT, 
+                                         subject.subjectName, 
+                                         syllabusRD.name + "-" + subject.subjectName, 
+                                         syllabusRD.rowId ) ;
+                subjectMap[ subject.subjectName ] = subjectRD ;
+            }
+
+            syllabusRD.addChild( subjectRD ) ;
+
+            var numChaptersSelected = 0 ;
+            for( chpIndex=0; chpIndex<subject.chapters.length; chpIndex++ ) {
+
+                rowNum++ ;
+                var chapter = subject.chapters[ chpIndex  ] ;
+                var displayName = chapter.chapterNum + "." + chapter.subChapterNum + 
+                                  " - " + chapter.chapterName ;
+                var chapterRD = new RowData( RowData.prototype.ROW_TYPE_CHAPTER, 
+                                             displayName, 
+                                             chapter.chapterId, 
+                                             subjectRD.rowId ) ;
+
+                chapterRD.setChapterAndParentRows( chapter, subjectRD, syllabusRD ) ;
+
+                subjectRD.addChild( chapterRD ) ;
+
+                if( !chapterRD.isHidden && chapterRD.isRowSelected ) {
+                    numChaptersSelected++ ;
+                }
+            }
+
+            subjectRD.isRowSelected = ( numChaptersSelected > 0 ) ;
+            if( subjectRD.isRowSelected ) numSubjectsSelected++ ;
+        }
+
+        syllabusRD.isRowSelected = ( numSubjectsSelected > 0 ) ;
+    }
+
+    for( var subName in subjectMap ) {
+        var subRD = subjectMap[ subName ] ;
+        displayData.push( subRD ) ;
+
+        subRD.children.sort( function( a, b ){
+            return a.chapterId - b.chapterId ;
+        }) ;
+
+        for( var i=0; i<subRD.children.length; i++ ) {
+            displayData.push( subRD.children[i] ) ;
+        }
+    }
+
     return displayData ;
 }
 

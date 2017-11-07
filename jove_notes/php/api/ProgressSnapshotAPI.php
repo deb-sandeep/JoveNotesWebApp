@@ -242,7 +242,8 @@ class ProgressSnapshotAPI extends API {
 
 		$preferenceKeys = [ "jove_notes.showHiddenChapters", 
 		                    "jove_notes.showOnlySelectedRows",
-		                    "jove_notes.showHiddenExercises" ] ;
+		                    "jove_notes.showHiddenExercises",
+		                    "jove_notes.syllabusMerged" ] ;
 
 		$preferences = array() ;
 		foreach( $preferenceKeys as $key ) {

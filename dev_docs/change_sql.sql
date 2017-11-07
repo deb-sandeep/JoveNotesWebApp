@@ -1,4 +1,11 @@
 --------------------------------------------------------------------------------
+-- Changes for syllabus merged functionality
+--
+
+INSERT INTO `user`.`user_preferences_master` (`key`, `default_value`, `description`) 
+VALUES ('jove_notes.syllabusMerged', 'false', 'Classify the chapters by their syllabus by default');
+
+--------------------------------------------------------------------------------
 -- Data model changes to set entitlements for IIT-Physics
 --
 
