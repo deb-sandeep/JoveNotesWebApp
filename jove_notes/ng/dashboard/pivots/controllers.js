@@ -132,7 +132,7 @@ function refreshTable( data ) {
     pivotTable.setPivotData( srcColNames, pivotData ) ;
 
     pivotTable.initializePivotTable( [ "Date", "Subject", "Chapter" ], "Subject", "Value" ) ;
-    pivotTable.renderPivotTable( "pivot_table_div", pivotTitle, renderHelperCallback ) ;
+    pivotTable.renderPivotTable( "pivot_table_div", pivotTitle, renderHelperCallback, false, false ) ;
     pivotTable.expandFirstRow() ;
 }
 
