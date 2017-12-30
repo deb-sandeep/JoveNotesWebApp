@@ -126,7 +126,25 @@ set
   current_level = '$level'
 where  
     student_name = '$userName' and  
-    chapter_id = $chapterId  
+    chapter_id = $chapterId
+QUERY;
+
+        parent::executeUpdate( $query ) ;
+    }
+
+    function tempPromote( $userName, $chapterId ) {
+
+$query = <<< QUERY
+update   
+  jove_notes.card_learning_summary
+set
+  current_level = 'L3'
+where  
+    student_name = '$userName' and  
+    chapter_id = $chapterId and
+    num_attempts >= 3 and
+    learning_efficiency >= 90 and
+    current_level = 'L2'
 QUERY;
 
         parent::executeUpdate( $query ) ;

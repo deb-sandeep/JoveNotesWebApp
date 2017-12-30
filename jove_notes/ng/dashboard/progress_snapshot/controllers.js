@@ -368,6 +368,12 @@ $scope.resetLevelOfAllCardsForSelectedChapters = function( level ) {
     callResetLevelServerAPI( selectedChapters, level ) ;
 }
 
+$scope.tempPromotionAction = function() {
+
+    var selectedChapters = getSelectedChapterIds() ;
+    callTempPromotionServerAPI( selectedChapters ) ;
+}
+
 $scope.launchChainedFlashcards = function( type ) {
 
     var chapters = null ;
@@ -865,6 +871,25 @@ function callResetLevelServerAPI( selectedChapters, level ) {
         $http.post( '/jove_notes/api/ResetLevel', { 
             chapterIds : selectedChapters,
             level      : level
+        })
+        .success( function( data ){
+            log.debug( "Level successfully applied to all cards" ) ;
+            refreshData() ;
+        })
+        .error( function( data ){
+            $scope.addErrorAlert( "API call failed. " + data ) ;
+        }) ;
+    }
+}
+
+function callTempPromotionServerAPI( selectedChapters ) {
+
+    if( selectedChapters.length == 0 ) {
+        $scope.$parent.addErrorAlert( "No chapters selected." ) ;
+    }
+    else {
+        $http.post( '/jove_notes/api/TempPromotion', { 
+            chapterIds : selectedChapters
         })
         .success( function( data ){
             log.debug( "Level successfully applied to all cards" ) ;
