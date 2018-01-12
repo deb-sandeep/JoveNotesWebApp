@@ -1,7 +1,5 @@
 <div class="full_screen" align="center">
 	<img src="/apps/jove_notes/media/images/jove_notes_logo.png" />
-	<h1>Remote Flash Card</h1> 
-	<h3>Please wait for your session to start.</h3>
     <p>
     <span ng-show="serverRequestInProgress">
         <img src="/apps/jove_notes/media/images/green_circle.png"/>
@@ -9,4 +7,12 @@
     <span ng-show="!serverRequestInProgress">
         <img src="/apps/jove_notes/media/images/transparent_circle.png"/>
     </span>
+    <h1>Remote Flash Card</h1> 
+    <h3>Please wait for your session to start.</h3>
+    <div class="form-group pad-10px">
+        <input id="skipUserAcceptance" 
+               type="checkbox" 
+               ng-model="remoteFlashConfig.skipUserAcceptance" />
+        <label for="skipUserAcceptance">&nbsp;&nbsp;Skip user acceptance screens</label>
+    </div>    
 </div>

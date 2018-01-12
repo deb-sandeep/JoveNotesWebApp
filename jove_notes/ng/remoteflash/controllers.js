@@ -19,6 +19,7 @@ var totalQuestionPauseTime = 0 ;
 
 var msgPumpDelay = 1000 ;
 var msgPumpEmptyCycles = 0 ;
+var expectingFirstQuestion = true ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.SCREEN_WAITING_TO_START = "waiting_to_start" ;
@@ -32,13 +33,17 @@ $scope.pageTitle = null ;
 
 $scope.currentScreen = $scope.SCREEN_WAITING_TO_START ;
 
-$scope.sessionId         = 0 ;
-$scope.chapterDetails    = null ;
-$scope.difficultyStats   = null ;
-$scope.progressSnapshot  = null ;
-$scope.learningCurveData = null ;
-$scope.studyCriteria     = null ;
-$scope.textFormatter     = null ;
+$scope.sessionId          = 0 ;
+$scope.chapterDetails     = null ;
+$scope.difficultyStats    = null ;
+$scope.progressSnapshot   = null ;
+$scope.learningCurveData  = null ;
+$scope.studyCriteria      = null ;
+$scope.textFormatter      = null ;
+
+$scope.remoteFlashConfig = {
+    skipUserAcceptance : false
+}
 
 $scope.sessionStats = {
     numCards         : 0,
@@ -71,22 +76,16 @@ runMessageProcessPump() ;
 // ---------------- Controller methods -----------------------------------------
 $scope.addErrorAlert = function( msgString ) {
     $scope.alerts.push( { type: 'danger', msg: msgString } ) ;
-};
+} ;
 
 $scope.closeAlert = function(index) {
     $scope.alerts.splice( index, 1 ) ;
-};
+} ;
 
 $scope.resetWaitingForUserAcceptanceFlag = function() {
     log.debug( "Setting waiting for user acceptance flag to false." ) ;
     waitingForUserAcceptance = false ;
-
-    if( $scope.currentScreen == $scope.SCREEN_SESSION_SETTINGS ) {
-        $scope.currentScreen = $scope.SCREEN_PRACTICE ;
-        sessionStartTime = new Date().getTime() ;
-        setTimeout( handleTimerEvent, 1000 ) ;
-    }
-};
+} ;
 
 $scope.cancelSessionEndScreen = function() {
 
@@ -254,37 +253,6 @@ function resumeSession() {
     resumeModalShowTime = 0 ;
 }
 
-function processEndSessionMessage( message ) {
-    
-    $scope.chapterDetails    = message.content.chapterDetails ;
-    $scope.messageForEndPage = message.content.messageForEndPage ;
-    $scope.learningCurveData = message.content.learningCurveData ;
-    $scope.progressSnapshot  = message.content.progressSnapshot ;
-    $scope.sessionStats      = message.content.sessionStats ;
-
-    jnUtil.renderLearningProgressPie( 'learningStatsPieGraphEnd',
-                                      $scope.progressSnapshot ) ;
-
-    jnUtil.renderLearningCurveGraph ( 'learningCurveGraphEnd',
-                                      $scope.learningCurveData ) ;
-
-    $scope.currentScreen = $scope.SCREEN_SESSION_END ;
-
-    $http.post( '/jove_notes/api/RemoteFlashMessage', { 
-        sessionId   : $scope.sessionId,
-        chapterId   : $scope.chapterDetails.chapterId,
-        msgType     : 'purge_session',
-        msgContent  : null
-    })
-    .error( function( data ){
-        var message = "Could not purge messages for this session." ;
-        log.error( message ) ;
-        log.error( "Server says - " + data ) ;
-        $scope.addErrorAlert( message ) ;
-    }) ;
-    waitingForUserAcceptance = true ;
-}
-
 function processDeltaScoreMessage( message ) {
 
     $scope.userScore += message.content.deltaScore ;
@@ -333,14 +301,60 @@ function processStartSessionMessage( message ) {
     jnUtil.renderLearningCurveGraph ( 'learningCurveGraph',
                                       $scope.learningCurveData ) ;
 
-    $scope.currentScreen = $scope.SCREEN_SESSION_SETTINGS ;
-
     totalSessionPauseTime  = 0 ;
     totalQuestionPauseTime = 0 ;
-    waitingForUserAcceptance = true ;
+
+    if( !$scope.remoteFlashConfig.skipUserAcceptance ) {
+        $scope.currentScreen = $scope.SCREEN_SESSION_SETTINGS ;
+        waitingForUserAcceptance = true ;
+    }
+}
+
+function processEndSessionMessage( message ) {
+    
+    $scope.chapterDetails    = message.content.chapterDetails ;
+    $scope.messageForEndPage = message.content.messageForEndPage ;
+    $scope.learningCurveData = message.content.learningCurveData ;
+    $scope.progressSnapshot  = message.content.progressSnapshot ;
+    $scope.sessionStats      = message.content.sessionStats ;
+
+    jnUtil.renderLearningProgressPie( 'learningStatsPieGraphEnd',
+                                      $scope.progressSnapshot ) ;
+
+    jnUtil.renderLearningCurveGraph ( 'learningCurveGraphEnd',
+                                      $scope.learningCurveData ) ;
+
+    $http.post( '/jove_notes/api/RemoteFlashMessage', { 
+        sessionId   : $scope.sessionId,
+        chapterId   : $scope.chapterDetails.chapterId,
+        msgType     : 'purge_session',
+        msgContent  : null
+    })
+    .error( function( data ){
+        var message = "Could not purge messages for this session." ;
+        log.error( message ) ;
+        log.error( "Server says - " + data ) ;
+        $scope.addErrorAlert( message ) ;
+    }) ;
+    expectingFirstQuestion = true ;
+
+    if( !$scope.remoteFlashConfig.skipUserAcceptance ) {
+        $scope.currentScreen = $scope.SCREEN_SESSION_END ;
+        waitingForUserAcceptance = true ;
+    }
+    else {
+        $scope.currentScreen = $scope.SCREEN_WAITING_TO_START ;
+    }
 }
 
 function processIncomingQuestion( message ) {
+
+    if( expectingFirstQuestion ) {
+        expectingFirstQuestion = false ;
+        $scope.currentScreen = $scope.SCREEN_PRACTICE ;
+        sessionStartTime = new Date().getTime() ;
+        setTimeout( handleTimerEvent, 1000 ) ;
+    }
 
     $scope.progressSnapshot = message.content.progressSnapshot ;
     $scope.sessionStats     = message.content.sessionStats ;
