@@ -138,23 +138,15 @@ $query = <<< QUERY
 update   
   jove_notes.card_learning_summary
 set
-  current_level = 'MAS'
+  current_level = 
+  CASE
+    when abs_learning_efficiency < 70 then 'L2'
+    when abs_learning_efficiency >= 70 and abs_learning_efficiency < 80 then 'L3'
+    when abs_learning_efficiency >= 80 then 'MAS'
+  END
 where  
     student_name = '$userName' and  
-    chapter_id = $chapterId and
-    current_level = 'L3' and
-    TIMESTAMPDIFF( SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 < 45 and
-    (
-      (
-        num_attempts > 4 and
-        learning_efficiency >= 75
-      )
-      or
-      (
-        num_attempts <= 4 and
-        abs_learning_efficiency > 90
-      )
-    )
+    chapter_id = $chapterId 
 QUERY;
 
         parent::executeUpdate( $query ) ;

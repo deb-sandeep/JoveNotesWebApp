@@ -75,13 +75,20 @@
                     <span ng-show="!rowData.isNotesAuthorized">{{rowData.name}}</span>
                 </td>
                 <td>
+                    <!--
                     <span ng-show="rowData.isChapterRow()"
                           class="badge L1">{{rowData.retentionScore}}
                     </span>
+                    -->
                 </td>
                 <td>
+                    <!--
                     <span ng-show="rowData.isChapterRow() && rowData.isRowInSyllabus"
                           class="badge L0">{{rowData.preparednessScore}}
+                    </span>
+                    -->
+                    <span class="badge L0">
+                        {{rowData.totalCards - rowData.masteredCards}}
                     </span>
                 </td>
                 <td>
