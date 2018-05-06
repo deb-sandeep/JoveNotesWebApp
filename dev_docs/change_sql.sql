@@ -1,4 +1,12 @@
 --------------------------------------------------------------------------------
+-- Changes for enabling Munni as a JN_CLASS_4_USER
+--
+-- Moved to production on 6th May 2018 - 7:34 PM
+
+update user.roles set child_role='JN_USER' where name='JN_CLASS_4_USER';
+insert into user.user_roles (user_name, role_name) values ( 'Munni', 'JN_CLASS_4_USER' );
+
+--------------------------------------------------------------------------------
 -- Changes for syllabus merged functionality
 --
 
