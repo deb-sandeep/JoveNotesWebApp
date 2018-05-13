@@ -26,12 +26,14 @@
                         <span class="glyphicon glyphicon-indent-right" ng-show="syllabusMerged"></span>
                     </button>
                 </th>
+                <!--
                 <th style="width:30px;text-align:center;">
                    <span class="glyphicon glyphicon-thumbs-up"></span>
                 </th>
                 <th style="width:30px;text-align:center;">
                    <span class="glyphicon glyphicon-adjust"></span>
                 </th>
+                -->
                 <th style="width:30px;text-align:center;">
                    <span class="glyphicon glyphicon-th"></span>
                 </th>
@@ -74,28 +76,28 @@
                     </span>
                     <span ng-show="!rowData.isNotesAuthorized">{{rowData.name}}</span>
                 </td>
+                <!--
                 <td>
-                    <!--
                     <span ng-show="rowData.isChapterRow()"
                           class="badge L1">{{rowData.retentionScore}}
                     </span>
-                    -->
                 </td>
                 <td>
-                    <!--
                     <span ng-show="rowData.isChapterRow() && rowData.isRowInSyllabus"
                           class="badge L0">{{rowData.preparednessScore}}
                     </span>
                     -->
+                    <!--
                     <span class="badge L0">
                         {{rowData.totalCards - rowData.masteredCards}}
                     </span>
                 </td>
+                -->
                 <td>
                     <a type="button" class="btn btn-default btn-xs" 
                        href="/apps/jove_notes/ng/flashcard/index.php?chapterId={{rowData.chapterId}}"
                        ng-show="rowData.isFlashcardAuthorized && rowData.hasCardsAvailable()">
-                       <!--<span class="badge L3">{{rowData.numSSRMaturedCards}}</span>-->
+                       <span class="badge L3">{{rowData.numSSRMaturedCards}}</span>
                        <span class="glyphicon glyphicon-th"></span>
                     </a>
                 </td>
