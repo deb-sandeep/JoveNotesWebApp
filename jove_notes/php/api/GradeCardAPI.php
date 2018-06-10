@@ -233,6 +233,10 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 		}
 
 		$this->score = round( $this->score ) ;
+
+		if( $this->requestObj->skipNegativeGrading == 1 ) {
+			$this->score = 0 ;
+		}
 	}
 
 	private function addOvershootRewardOrPenalty() {

@@ -882,26 +882,29 @@ function callGradeCardAPI( chapterId, sessionId, cardId, curLevel, nextLevel,
     var currentCallAttemptNumber = previousCallAttemptNumber + 1 ;
 
     log.debug( "Calling grade card API for card " + cardId + " with parameters." ) ;
-    log.debug( "\tchapterId    = " + chapterId   ) ;
-    log.debug( "\tsessionId    = " + sessionId   ) ;
-    log.debug( "\tcardId       = " + cardId      ) ;
-    log.debug( "\tcurrentLevel = " + curLevel    ) ;
-    log.debug( "\tnextLevel    = " + nextLevel   ) ;
-    log.debug( "\trating       = " + rating      ) ;
-    log.debug( "\ttimeTaken    = " + timeTaken   ) ;
-    log.debug( "\tnumAttempts  = " + numAttempts ) ;
-    log.debug( "\tovershootPct = " + overshootPct ) ;
+    log.debug( "\tchapterId           = " + chapterId   ) ;
+    log.debug( "\tsessionId           = " + sessionId   ) ;
+    log.debug( "\tcardId              = " + cardId      ) ;
+    log.debug( "\tcurrentLevel        = " + curLevel    ) ;
+    log.debug( "\tnextLevel           = " + nextLevel   ) ;
+    log.debug( "\trating              = " + rating      ) ;
+    log.debug( "\ttimeTaken           = " + timeTaken   ) ;
+    log.debug( "\tnumAttempts         = " + numAttempts ) ;
+    log.debug( "\tovershootPct        = " + overshootPct ) ;
+    log.debug( "\tskipNegativeGrading = " + $scope.$parent.studyCriteria.skipNegativeGrading ) ;
+
 
     $http.post( '/jove_notes/api/GradeCard', { 
-        "chapterId"    : chapterId,
-        "sessionId"    : sessionId,
-        "cardId"       : cardId,
-        "currentLevel" : curLevel,
-        "nextLevel"    : nextLevel,
-        "rating"       : rating,
-        "timeTaken"    : timeTaken,
-        "numAttempts"  : numAttempts,
-        "overshootPct" : overshootPct
+        "chapterId"           : chapterId,
+        "sessionId"           : sessionId,
+        "cardId"              : cardId,
+        "currentLevel"        : curLevel,
+        "nextLevel"           : nextLevel,
+        "rating"              : rating,
+        "timeTaken"           : timeTaken,
+        "numAttempts"         : numAttempts,
+        "overshootPct"        : overshootPct,
+        "skipNegativeGrading" : $scope.$parent.studyCriteria.skipNegativeGrading
     })
     .success( function( data ){
         if( typeof data === 'string' ) {

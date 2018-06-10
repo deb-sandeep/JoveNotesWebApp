@@ -63,16 +63,18 @@
                     Purge non attempted cards
                 </a>
             </li>
-            <li role="presentation">
-                <a role="menuitem" tabindex="-1" ng-click="purgeCard()">
-                    <span class="glyphicon glyphicon-share"></span>
-                    Purge card
-                </a>
-            </li>
           </ul>
         </div>
 
         <div class="pull-right">
+
+            <button type="button" 
+                    class="btn btn-info btn-lg"
+                    ng-click="purgeCard()"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Purge card">
+                <span class="glyphicon glyphicon-new-window"></span>
+            </button>
 
             <button type="button" 
                     class="btn btn-info btn-lg"
@@ -88,15 +90,6 @@
                     data-toggle="tooltip" data-placement="top" 
                     title="Decrease font size">
                 <span class="glyphicon glyphicon-minus-sign"></span>
-            </button>
-
-            <button type="button" 
-                    class="btn btn-info btn-lg"
-                    ng-click="purgeCard()"
-                    data-toggle="tooltip" data-placement="top" 
-                    title="Purge Card"
-                    ng-show="currentQuestion.markedForReview">
-                <span class="glyphicon glyphicon-export"></span>
             </button>
 
             <button type="button" 
@@ -280,15 +273,6 @@
 
             <button type="button" 
                     class="btn btn-info btn-lg"
-                    ng-click="purgeCard()"
-                    data-toggle="tooltip" data-placement="top" 
-                    title="Purge Card"
-                    ng-show="currentQuestion.markedForReview">
-                <span class="glyphicon glyphicon-export"></span>
-            </button>
-
-            <button type="button" 
-                    class="btn btn-info btn-lg"
                     ng-click="increaseFontSize()"
                     data-toggle="tooltip" data-placement="top" 
                     title="Increase font size">
@@ -302,6 +286,15 @@
                     title="Decrease font size">
                 <span class="glyphicon glyphicon-minus-sign"></span>
             </button>
+
+            <button type="button" 
+                    class="btn btn-info btn-lg"
+                    ng-click="purgeCard()"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Purge card">
+                <span class="glyphicon glyphicon-new-window"></span>
+            </button>
+
         </div>
 
         <!-- The toggle header popup -->
@@ -362,12 +355,6 @@
                 <a role="menuitem" tabindex="-1" ng-click="purgeNotAttemptedCards()">
                     <span class="glyphicon glyphicon-share"></span>
                     Purge non attempted cards
-                </a>
-            </li>
-            <li role="presentation">
-                <a role="menuitem" tabindex="-1" ng-click="purgeCard()">
-                    <span class="glyphicon glyphicon-share"></span>
-                    Purge card
                 </a>
             </li>
           </ul>
