@@ -234,9 +234,11 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 
 		$this->score = round( $this->score ) ;
 
-		if( $this->requestObj->skipNegativeGrading == 1 ) {
-			if( $this->score < 0 ) {
-				$this->score = 0 ;
+		if( property_exists( $this->requestObj, 'skipNegativeGrading' ) ) {
+			if( $this->requestObj->skipNegativeGrading == 1 ) {
+				if( $this->score < 0 ) {
+					$this->score = 0 ;
+				}
 			}
 		}
 	}

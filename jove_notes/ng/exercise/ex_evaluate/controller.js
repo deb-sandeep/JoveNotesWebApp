@@ -272,15 +272,16 @@ function callGradeCardAPI( question, chapterId, sessionId, cardId, curLevel, nex
     log.debug( "\tovershootPct = " + overshootPct ) ;
 
     $http.post( '/jove_notes/api/GradeCard', { 
-        "chapterId"    : chapterId,
-        "sessionId"    : sessionId,
-        "cardId"       : cardId,
-        "currentLevel" : curLevel,
-        "nextLevel"    : nextLevel,
-        "rating"       : rating,
-        "timeTaken"    : timeTaken,
-        "numAttempts"  : numAttempts,
-        "overshootPct" : overshootPct
+        "chapterId"           : chapterId,
+        "sessionId"           : sessionId,
+        "cardId"              : cardId,
+        "currentLevel"        : curLevel,
+        "nextLevel"           : nextLevel,
+        "rating"              : rating,
+        "timeTaken"           : timeTaken,
+        "numAttempts"         : numAttempts,
+        "overshootPct"        : overshootPct,
+        "skipNegativeGrading" : false
     })
     .success( function( data ){
         if( typeof data === 'string' ) {
