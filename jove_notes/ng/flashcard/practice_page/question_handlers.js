@@ -35,6 +35,12 @@ function FIBHandler( chapterDetails, question, textFormatter ) {
 			formattedQuestion = formattedQuestion.replace( strToReplace, " ______ " ) ;
 			answerLength     += ( "" + textFormatter.stripHTMLTags( replacedText ) ).length ;
 		}
+
+		if( formattedQuestion.length > 150 ) {
+			formattedQuestion = "<div style='text-align:left;'>" + 
+			                    formattedQuestion + 
+			                    "</div>" ;
+		}
 	}
 
 	this.getAnswerLength = function(){ return answerLength ;      } ;
