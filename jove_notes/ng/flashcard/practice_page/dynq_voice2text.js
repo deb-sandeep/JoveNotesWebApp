@@ -31,7 +31,7 @@ function VoiceToTextManager( questionObj, textFormatter, $scope ) {
 	//-------------------------------------------------------------------------
 	var prepareQuestionUI = function() {
 
-		var captionHTML = "<h3>Write the following sound clip:</h3><p>" ;
+		var captionHTML = "<h3>Translate the following sound clip:</h3><p>" ;
 		var btnHTML = "<span class='glyphicon glyphicon-play gi-2x'></span>" ;
 
 		var questionP = P( { innerHTML : captionHTML } ) ;
