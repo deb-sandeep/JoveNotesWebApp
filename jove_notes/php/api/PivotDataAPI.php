@@ -69,7 +69,8 @@ class PivotDataAPI extends AbstractJoveNotesAPI {
 		else{
 			$this->requestEntity = $request->requestPathComponents[0] ;
 			if( !( $this->requestEntity == 'Time'     || 
-				   $this->requestEntity == 'NumQuestions' ) ) {
+				   $this->requestEntity == 'NumQuestions' || 
+				   $this->requestEntity == 'Score' ) ) {
 
 				throw new Exception( "Invalid entity '$this->requestEntity' specified." ) ;
 			}
@@ -95,6 +96,9 @@ class PivotDataAPI extends AbstractJoveNotesAPI {
 		else if( $this->requestEntity == 'NumQuestions' ) {
 			return $this->getNumQuestionsResponse() ;
 		}
+		else if( $this->requestEntity == 'Score' ) {
+			return $this->getScoreResponse() ;
+		}
 	}
 
 	private function getTimeResponse() {
@@ -110,6 +114,16 @@ class PivotDataAPI extends AbstractJoveNotesAPI {
 	private function getNumQuestionsResponse() {
 
 		$pivotRS = $this->cardRatingDAO->getPivotDataForNumQuestions(
+			              				ExecutionContext::getCurrentUserName(), 
+			              				$this->startDate,
+			              				$this->endDate ) ;
+
+		return $this->constructResponse( $pivotRS ) ;
+	}
+
+	private function getScoreResponse() {
+
+		$pivotRS = $this->cardRatingDAO->getPivotDataForScore(
 			              				ExecutionContext::getCurrentUserName(), 
 			              				$this->startDate,
 			              				$this->endDate ) ;

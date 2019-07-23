@@ -123,11 +123,14 @@ function refreshTable( data ) {
     var pivotTitle = "" ;
 
 	if( $scope.preferences.entityType == 'Time' ) {
-		pivotTitle = "Time spent. (hh:mm:ss)" ;
+		pivotTitle = "Time spent" ;
 	}
-	else {
-		pivotTitle = "Number of questions attempted." ;
+	else if( $scope.preferences.entityType == 'NumQuestions' ) {
+		pivotTitle = "# questions" ;
 	}
+    else if( $scope.preferences.entityType == 'Score' ) {
+        pivotTitle = "Points earned" ;
+    }
 
     pivotTable.setPivotData( srcColNames, pivotData ) ;
 
