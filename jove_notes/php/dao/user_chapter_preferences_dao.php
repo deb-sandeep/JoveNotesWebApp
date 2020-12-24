@@ -84,7 +84,7 @@ QUERY;
 	 */
 	function getChapterPreferencesForUser( $userName, $chapterIdList ) {
 
-      $idList = implode( $chapterIdList, "," ) ;
+      $idList = implode( ",", $chapterIdList ) ;
 
 $query = <<< QUERY
 select chapter_id, is_hidden, is_deselected, is_in_syllabus

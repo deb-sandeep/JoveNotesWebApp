@@ -150,7 +150,7 @@ QUERY;
 
     function getChapterWiseLevelCounts( $userName, $chapterIdList ) {
 
-        $idList = implode( $chapterIdList, "," ) ;
+        $idList = implode( ",", $chapterIdList ) ;
 
 $query = <<<QUERY
 select 
@@ -170,7 +170,7 @@ QUERY;
 
     function getChapterWiseSSRMaturedCards( $userName, $chapterIdList ) {
 
-      $idList = implode( $chapterIdList, "," ) ;
+      $idList = implode( ",", $chapterIdList ) ;
 
 $query = <<<QUERY
 select 
