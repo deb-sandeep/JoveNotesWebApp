@@ -213,7 +213,6 @@ WHERE
 GROUP BY
     c.card_type, c.difficulty_level
 ORDER BY
-    ch.subject_name asc, 
     c.card_type asc, 
     c.difficulty_level asc
 QUERY;
