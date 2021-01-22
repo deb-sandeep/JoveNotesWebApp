@@ -66,7 +66,9 @@ $scope.processRedeemItemSelection = function() {
 }
 
 $scope.applyRedemption = function() {
-    console.log( "Apply redemption." ) ;
+    postRedemptionRequest( $scope.redemptionInput.item.itemName,
+                           $scope.redemptionInput.numItems,
+                           $scope.redemptionInput.totalPoints ) ;
 }
 
 // ---------------- Private functions ------------------------------------------
@@ -210,6 +212,26 @@ function loadScoreLedger() {
     }) ;
 }
 
+function postRedemptionRequest( itemName, numUnits, points ) {
 
+    log.debug( "Posting redemption request." ) ;
+
+    $http.post( '/jove_notes/api/Points/Redeem', { 
+        itemName   : itemName,
+        numUnits   : numUnits,
+        points     : points
+    })
+    .success( function( data ){
+        $scope.showRedeemDialog = false ;
+        loadCatalog() ;
+        loadScoreLedger() ;
+    })
+    .error( function( data, status ){
+
+        var message = "Could not redeem points" ;
+        log.error( message ) ;
+        $scope.addErrorAlert( message ) ;
+    }) ;
+}
 // ---------------- End of controller ------------------------------------------
 } ) ;

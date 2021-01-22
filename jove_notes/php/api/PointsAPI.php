@@ -1,17 +1,13 @@
 <?php
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/abstract_jove_notes_api.php" ) ;
-require_once( APP_ROOT      . "/php/dao/student_score_dao.php" ) ;
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/points/get_redemption_catalog_action.php" ) ;
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/points/get_redemption_ledger_action.php" ) ;
+require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/points/redeem_points_action.php" ) ;
 
 class PointsAPI extends AbstractJoveNotesAPI {
 
-	private $requestObj = null ;
-	private $scoreDAO   = null ;
-
 	function __construct() {
 		parent::__construct() ;
-		$this->scoreDAO      = new StudentScoreDAO() ;
 	}
 
 	/** 
@@ -23,10 +19,10 @@ class PointsAPI extends AbstractJoveNotesAPI {
 	 *
 	 * /jove_notes/api/Points/RedemptionLedger?
 	 *     startDate=2021-01-10 00:00:00&
-	 *.    endDate=2021-01-22 00:00:00
+	 *     endDate=2021-01-22 00:00:00
 	 *
-	 *     Gets the redemption ledger items which are valid at this point
-	 *     in time.
+	 *     Gets the redemption ledger items for the current user limited to 
+	 *     the time period mentioned
 	 */
 	public function doGet( $request, &$response ) {
 
@@ -53,33 +49,33 @@ class PointsAPI extends AbstractJoveNotesAPI {
 		}
 	}	
 
+	/** 
+	 * API endpoints 
+	 *
+	 * /jove_notes/api/Points/Redeem
+	 *     itemName = Name of the redemption item
+	 *     numUnits = Number of units
+	 */
 	public function doPost( $request, &$response ) {
 
 		$this->logger->debug( "Executing doPost in PointsAPI" ) ;
 
-		$this->requestObj = $request->requestBody ;
-		$this->logger->debug( "Request parameters " . json_encode( $this->requestObj ) ) ;
+		$action     = NULL ;
+		$entityName = $request->getPathComponent( 0 ) ;
 
-		if( $this->isPassswordValid( $this->requestObj->password ) ) {
-
-			for( $i = 0; $i < $this->requestObj->numTimes; $i++ ) {
-				$this->scoreDAO->addPoints( ExecutionContext::getCurrentUserName(),
-											$this->requestObj->subject, 
-					                        $this->requestObj->points,
-					                        $this->requestObj->notes ) ;
-			}
-
-			$response->responseCode = APIResponse::SC_OK ;
+		$this->logger->debug( "POST Request is for entity '$entityName'" ) ;
+		if( $entityName == 'Redeem' ) {
+			$action = new RedeemPointsAction() ;
+		}
+		
+		if( $action == NULL ) {
+            $response->responseCode = APIResponse::SC_ERR_BAD_REQUEST ;
+            $response->responseBody = "Could not associate request to a " .
+                                      "server action. $entityName" ;
 		}
 		else {
-			$response->responseCode = APIResponse::SC_ERR_UNAUTHORIZED ;
-			$response->responseBody = "Incorrect password" ;
+			$action->execute( $request, $response ) ;
 		}
-	}
-
-	private function isPassswordValid( $password ) {
-		// TODO: Temporary. Needs to be made secure.
-		return $password == "2314" ;
 	}
 }
 

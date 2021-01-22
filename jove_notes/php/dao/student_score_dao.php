@@ -48,7 +48,7 @@ UNION
 
 SELECT 
   date_format( ss.last_update, '%Y-%m-%d (%a)' ) as date, 
-  "Earned" as comments,
+  "" as comments,
   sum( ss.score ) as points 
 FROM 
   jove_notes.student_score ss
@@ -58,8 +58,7 @@ WHERE
   ss.score_type = 'INC'
 GROUP BY 
   date
-ORDER BY
-  date desc
+
 )
   
 ORDER BY date desc 
@@ -89,15 +88,7 @@ QUERY;
         ) ;
 
         if( $incrementValue != 0 ) {
-            parent::executeUpdate( 
-                "update jove_notes.student_score " .
-                "set " .
-                " score = score + $incrementValue, " .
-                " last_update = CURRENT_TIMESTAMP " .
-                "where " .
-                " student_name = '$userName' and " .
-                " score_type = 'TOT'"
-            ) ;
+            updateTotalPoints( $userName, $incrementValue ) ;
         }
     }
 
@@ -121,10 +112,15 @@ QUERY;
             ")"
         ) ;
 
+        updateTotalPoints( $userName, $points ) ;
+    }
+
+    function updateTotalPoints( $userName, $incPoints ) {
+
         parent::executeUpdate( 
             "update jove_notes.student_score " .
             "set " .
-            " score = score + $points, " .
+            " score = score + $incPoints, " .
             " last_update = CURRENT_TIMESTAMP " .
             "where " .
             " student_name = '$userName' and " .

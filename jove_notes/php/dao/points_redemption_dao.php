@@ -8,7 +8,7 @@ class PointsRedemptionDAO extends AbstractDAO {
 		parent::__construct() ;
 	}
 
-    function getRedemptionCatalog( $userName ) {
+  function getRedemptionCatalog( $userName ) {
 
 $query = <<< QUERY
 SELECT 
@@ -43,6 +43,29 @@ QUERY;
         return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
     }
 
+    function saveRedemption( $userName, $points, $itemName, $numUnits ) {
+
+$query = <<< QUERY
+insert into jove_notes.points_redemption
+( 
+  student_name, 
+  points, 
+  redemption_item, 
+  redemption_qty, 
+  redemption_time
+)
+values
+( 
+  '$userName', 
+  $points,
+  '$itemName',
+  $numUnits,
+  NOW()
+)
+QUERY;
+
+      return parent::executeInsert( $query ) ;
+    }
 }
 ?>
 
