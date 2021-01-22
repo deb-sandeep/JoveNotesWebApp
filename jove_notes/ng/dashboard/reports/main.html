@@ -1,93 +1,106 @@
 <div class="row">
-    <div class="col-sm-2"
+    <div class="col-sm-1"
          style="padding-left:15px; padding-right:15px">
         <div style="height:10px"></div>
-        <div class="well"
-             style="padding: 5px 5px;margin:2px;">
-            <input type="radio" ng-model="preferences.entityType" value="Score" > Points earned <br>
-            <input type="radio" ng-model="preferences.entityType" value="Time"> Time spent <br>
-            <input type="radio" ng-model="preferences.entityType" value="NumQuestions"> #Questions
-        </div>
-        <div class="well"
-             style="padding: 5px 5px;margin:2px;">
-            <input type="radio" ng-model="preferences.dataFrequency" value="intraday" > Intraday <br>
-            <input type="radio" ng-model="preferences.dataFrequency" value="daily"    > Daily <br>
-            <input type="radio" ng-model="preferences.dataFrequency" value="weekly"   > Weekly <br>
-            <input type="radio" ng-model="preferences.dataFrequency" value="monthly"  > Monthly
-        </div>
-        <div class="well"
-             style="padding: 5px 5px;margin:2px;">
-            <select class="form-control" 
-                    ng-model="preferences.chosenSubjectName"
-                    ng-options="obj.id as obj.name for obj in subjectNames">
-            </select>
-        </div>
-        <hr style="margin:5px;"/>
-        <div class="well well-sm" style="padding:2px;margin:0px;">
-            <div align="center">
-                <b>Add points</b>
-            </div>
-            <select class="form-control"
-                    ng-model="subjectToAddPoints"
-                    ng-options="obj.id as obj.name for obj in subjectNamesForAddScore">
-            </select>
-            <div class="form-group" style="padding:0px;margin:0px;">
-                <label for="points">Points:</label>
-                <input type="number" class="form-control" id="points" ng-model="pointsToAdd">
-            </div>
-            <div class="form-group" style="padding:0px;margin:0px;">
-                <label for="times">Num times:</label>
-                <input type="number" class="form-control" id="times" ng-model="numTimes">
-            </div>
-            <div class="form-group" style="padding:0px;margin:0px;">
-                <label for="pwd">Password:</label>
-                <input type="password" class="form-control" id="pwd" 
-                       autocomplete="off"
-                       ng-model="pwdToAddPoints">
-            </div>
-            <div class="form-group" style="padding:0px;margin:0px;">
-                <label for="notes">Notes:</label>
-                <input type="text" class="form-control" id="notes"
-                       ng-model="notesToAddPoint">
-            </div>
-            <p>
-            <button type="submit" class="btn btn-default"
-                    ng-click="addScore()">
-                Submit
-            </button>
-        </div>
     </div>
     <div class="col-sm-10"
          style="padding-left:0px;padding-right:0px">
         <div style="height:10px"></div>
-        <div style="padding-left:5px">
-            Total {{reportTitle}} = <b>{{latestValue}}</b>, 
-            &nbsp;&nbsp;&nbsp;
-            &Delta; in period = <b>{{deltaInPeriod | number : 1 }}</b>
+        <div class="total-points">
+            {{totalPoints}} points
         </div>
         <div>
-            <div style="padding: 5px 5px; " class="pull-left">
-                {{reportTitle}} for date range 
-            </div>
             <div id="reportrange" 
                  style="cursor: pointer; padding: 5px 5px; float:left; border: 1px solid #ccc">
                 <span></span> <b class="caret"></b>
             </div>
-            <a type="button" class="btn btn-default btn-md" 
+            <a type="button" class="btn btn-success btn-md" 
                style="margin-left:10px"
-               ng-click="refresh()">
-                <span class="glyphicon glyphicon-refresh"></span>
-            </a>
-            <a type="button" class="btn btn-default btn-md" 
-               style="margin-left:10px"
-               ng-click="toggleRefreshFlag()"
-               ng-class="getRefreshBtnClass()">
-                <span class="glyphicon glyphicon-repeat"></span>
+               ng-click="toggleRedeemDialog()">
+                <span class="glyphicon glyphicon-gift"></span>
+                Redeem points
             </a>
         </div>
+        <div style="height:10px"></div>
+        <div ng-show="showRedeemDialog"
+             style="background-color: lightgrey;padding:5px;">
+            <div class="row">
+                <div class="col-sm-4">
+                    Redemption item
+                </div>
+                <div class="col-sm-1">
+                    Count
+                </div>
+                <div class="col-sm-2">
+                    Total points
+                </div>
+            </div>
+            <div class="row"> 
+                <div class="col-sm-4">
+                    <select class="form-control" 
+                            ng-model="redemptionInput.item"
+                            ng-change=processRedeemItemSelection()
+                            ng-options="obj as obj.itemName + ' [' + obj.pointsPerItem + ']' for obj in catalog">
+                    </select>
+                </div>
+                <div class="col-sm-1">
+                    <input class="form-control"
+                           type="number"
+                           min="1"
+                           ng-model="redemptionInput.numItems"
+                           ng-change="processRedeemItemSelection()"/>
+                </div>
+                <div class="col-sm-2">
+                    <span style="font-size: 20px;font-color:red;">
+                        {{redemptionInput.totalPoints}}
+                    </span>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-primary"
+                            ng-disabled="!redemptionInput.validEntry"
+                            ng-click="applyRedemption()">Redeem</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <span ng-show="redemptionInput.validEntry"
+                          style="color:red;">
+                        {{redemptionInput.message}}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div style="height:10px"></div>
         <div>
-            <canvas id="reportChart" width="900" height="350" style="width: 100%;">
-            </canvas>        
+            <table class="table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th style="width:150px">Date</th>
+                        <th style="width:100px">Points</th>
+                        <th>Comments</th>
+                    </tr>   
+                </thead>    
+                <tbody>
+                    <tr ng-repeat="rowData in pointsLedger"> 
+                        <td> {{rowData.date | date : "MMM d, y" }} </td>
+                        <td style="text-align:right;padding-right: 20px"> 
+                            <span ng-if="rowData.points > 0"
+                                  style="color: green;">
+                                {{rowData.points}} 
+                            </span>
+                            <span ng-if="rowData.points < 0"
+                                  style="color: red;">
+                                {{rowData.points}} 
+                            </span>
+                        </td>
+                        <td> 
+                            <span ng-if="rowData.points < 0">
+                                {{rowData.comments}} 
+                            </span>
+                        </td>
+                    </tr>   
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

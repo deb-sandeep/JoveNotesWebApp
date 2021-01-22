@@ -33,7 +33,7 @@ class StudentScoreDAO extends AbstractDAO {
 $query = <<< QUERY
 (
 SELECT 
-  date_format( pr.redemption_time, '%m-%d-%y' ) as date, 
+  date_format( pr.redemption_time, '%Y-%m-%d (%a)' ) as date, 
   redemption_item as comments,
   -1*sum( pr.points ) as points
 FROM 
@@ -47,7 +47,7 @@ GROUP BY
 UNION
 
 SELECT 
-  date_format( ss.last_update, '%m-%d-%y' ) as date, 
+  date_format( ss.last_update, '%Y-%m-%d (%a)' ) as date, 
   "Earned" as comments,
   sum( ss.score ) as points 
 FROM 

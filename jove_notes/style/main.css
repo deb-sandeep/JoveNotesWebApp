@@ -396,3 +396,9 @@ table.pure-table ol {
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
 }
+
+.total-points {
+    font-size: 20px ;
+    color: green ;
+    text-align:center ;
+}

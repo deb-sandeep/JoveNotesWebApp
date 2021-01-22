@@ -5,101 +5,71 @@ var LEFT_GUTTER = 75 ;
 var RIGHT_GUTTER = 75 ;
 
 // ---------------- Local variables --------------------------------------------
-var positiveBarChart = null ;
-var negativeBarChart = null ;
-var lineChart        = null ;
-
-var baseLineChartValue = 0 ;
-var dataValues = [] ;
-var chartXLabels = [] ;
-var barXAxisPosition = 'center' ;
-var numDecimals = 0 ;
-
-var barChartValues  = [] ;
-var lineChartValues = [] ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.$parent.pageTitle = "Report Page" ;
-$scope.$parent.currentReport = 'Reports' ;
-
-$scope.subjectNames = [] ;
 
 // preferences.entityType can take on the following values [Score, Time, NumQuestions]
 $scope.preferences = {
-
-	entityType : 'Score',
 	dateRange : {
-		startDate : moment().startOf('day').toDate(),
+		startDate : moment().subtract(29, 'days').toDate(),
 		endDate : moment().endOf('day').toDate()
-	},
-	chosenSubjectName : "All",
-	dataFrequency : 'intraday'
+	}
 } ;
 
-$scope.reportTitle = "Score earned " ;
-$scope.latestValue = 0 ;
-$scope.deltaInPeriod = 0 ;
+$scope.redemptionInput = {
+    item : null,
+    numItems : 1,
+    totalPoints : 0,
+    validEntry : true,
+    message : null
+} ;
 
-$scope.subjectNamesForAddScore = [] ;
-
-$scope.subjectToAddPoints = null ;
-$scope.pointsToAdd = 0 ;
-$scope.numTimes = 1 ;
-$scope.pwdToAddPoints = "" ;
-$scope.notesToAddPoint = "" ;
-
-$scope.refreshFlag = false ;
+$scope.totalPoints = 0 ;
+$scope.catalog = [] ;
+$scope.pointsLedger = {} ;
+$scope.showRedeemDialog = false ;
+$scope.redemptionItem = null ;
 
 // ---------------- Main logic for the controller ------------------------------
 
 initializeDateRange() ;
-callReportSubjectsAPI() ;
 
 $scope.$watch( 'preferences', function( oldValue, newValue ){
 	// NOTE: We don't call report plot data API directly. The watch fires it
 	// for us on the load of the controller.
-	callReportPlotDataAPI() ;
+    loadCatalog() ;
+    loadScoreLedger() ;
 }, true ) ;
 
 // ---------------- Controller methods -----------------------------------------
-$scope.refresh = function() {
-    callReportPlotDataAPI() ;
+
+$scope.toggleRedeemDialog = function() {
+    $scope.showRedeemDialog = !$scope.showRedeemDialog ;
 }
 
-$scope.addScore = function() {
-    callAddPointsAPI( function(){
-        callReportPlotDataAPI() ;
-        $scope.pwdToAddPoints = "" ;
-        $scope.pointsToAdd = "" ;
-        $scope.notesToAddPoint = "" ;
-        $scope.numTimes = 1 ;
-        setTimeout( function(){
-            $scope.$digest() ;
-        }, 100 ) ;
-    }) ;
-}
+$scope.processRedeemItemSelection = function() {
+    var entry = $scope.redemptionInput.item ;
+    var ri = $scope.redemptionInput ;
+    var maxItemsRedeemable = entry.numRedemptionsPerDay - entry.totalRedeemedQtyToday ;
 
-$scope.getRefreshBtnClass = function() {
-    return $scope.refreshFlag ? "active" : "" ;
-}
+    ri.numItems = ri.numItems > maxItemsRedeemable ? maxItemsRedeemable : ri.numItems ;
+    ri.totalPoints = entry.pointsPerItem * ri.numItems ;
 
-$scope.toggleRefreshFlag = function() {
-    $scope.refreshFlag = !$scope.refreshFlag ;
-
-    if( $scope.refreshFlag ) {
-        doPeriodicRefresh() ;
+    ri.validEntry = ri.totalPoints <= $scope.totalPoints ;
+    if( !ri.validEntry ) {
+        ri.message = "Not enough points." ;
     }
+    else {
+        ri.message = "" ;
+    }
+}
+
+$scope.applyRedemption = function() {
+    console.log( "Apply redemption." ) ;
 }
 
 // ---------------- Private functions ------------------------------------------
-function doPeriodicRefresh() {
-    callReportPlotDataAPI() ;
-    if( $scope.refreshFlag ) {
-        setTimeout( doPeriodicRefresh, 5000 ) ;
-    }
-}
-
-
 function initializeDateRange() {
 
     $('#reportrange span').html( 
@@ -181,125 +151,20 @@ function initializeDateRange() {
     });
 }
 
-function redrawChart() {
-
-    barChartValues.length = 0 ;
-    lineChartValues.length = 0 ;
-    $scope.deltaInPeriod = 0 ;
-    
-    for( var i=0; i<dataValues.length; i++ ) {
-    	var val = dataValues[i] ;
-
-        $scope.deltaInPeriod += val ;
-		barChartValues.push( val ) ;
-    	if( i == 0 ) {
-    		lineChartValues.push( baseLineChartValue + val ) ;
-    	}
-    	else {
-    		lineChartValues.push( lineChartValues[i-1] + val ) ;
-    	}
-    }
-
-    RGraph.ObjectRegistry.Clear() ;
-	RGraph.clear( document.getElementById( 'reportChart' ) ) ;
-
-	initializePositiveBarChart() ;
-	initializeLineChart() ;
-
-	positiveBarChart.draw() ;
-	lineChart.draw() ;
-}
-
-function initializePositiveBarChart() {
-
-    positiveBarChart = new RGraph.Bar({
-        id: 'reportChart',
-        data: barChartValues,
-        options: {
-            hmargin:0,
-	        labels: chartXLabels,
-        	gutter : {
-        		left  : LEFT_GUTTER,
-        		right : RIGHT_GUTTER
-        	},
-            colors                   : ['#D7FFD6'],
-            'background.grid.vlines' : false,
-            'scale.decimals'         : numDecimals,
-            strokestyle              : 'rgba(0,0,0,0)',
-            ylabels                  : true,
-            xaxispos                 : barXAxisPosition,
-            yaxispos                 : 'left',
-            noxaxis                  : true,
-            shadow                   : false
-        }
-    }) ;
-}
-
-function initializeLineChart() {
-
-    lineChart = new RGraph.Line({
-        id: 'reportChart',
-        data: lineChartValues,
-        options: {
-        	gutter : {
-        		left  : LEFT_GUTTER,
-        		right : RIGHT_GUTTER
-        	},
-        	axis : {
-        		color : 'blue'
-        	},
-            'background.grid.vlines' : false,
-        	colors    : ['blue'],
-            spline    : true,
-            shadow    : true,
-			tickmarks : 'endcircle',
-            yaxispos  : 'right',
-			noxaxis   : true
-		}
-    }) ;
-}
-
 // ---------------- Server calls -----------------------------------------------
-function callReportPlotDataAPI() {
+function loadCatalog() {
 
 	var startMoment = moment( $scope.preferences.dateRange.startDate ) ;
 	var endMoment   = moment( $scope.preferences.dateRange.endDate   ) ;
 
-    $http.get( '/jove_notes/api/ReportPlot/' + $scope.preferences.entityType, {
-    	params : {
-    		'startDate'     : startMoment.format( "YYYY-MM-DD HH:mm:ss" ), 
-    		'endDate'       : endMoment.format( "YYYY-MM-DD HH:mm:ss" ),
-    		'dataFrequency' : $scope.preferences.dataFrequency,
-    		'subject'       : $scope.preferences.chosenSubjectName
-    	}
-    })
+    $http.get( '/jove_notes/api/Points/RedemptionCatalog' )
     .success( function( data ){
-
-		dataValues.length   = 0 ;
-		chartXLabels.length = 0 ;
-
-		baseLineChartValue = data.priorValue ;
-		dataValues         = data.values ;
-		chartXLabels       = data.labels ;
-        $scope.latestValue = data.latestValue ;
-
-        if( $scope.preferences.entityType == 'Score' ) {
-            $scope.reportTitle = "Score earned " ;
-            barXAxisPosition = 'center' ;
-            numDecimals = 0;
-        }
-        else if( $scope.preferences.entityType == 'NumQuestions' ) {
-            $scope.reportTitle = "Number of questions attempted " ;
-            barXAxisPosition = 'bottom' ;
-            numDecimals = 0;
-        }
-        else {
-            $scope.reportTitle = "Time spent (hrs) " ;
-            barXAxisPosition = 'bottom' ;
-            numDecimals = 1;
-        }
-
-	    redrawChart() ;
+        console.log( "Redemption catalog received." ) ;
+        console.log( data ) ;
+        $scope.totalPoints = data.points ;
+        populateRedemptionCatalogWithValidEntries( data ) ;
+        $scope.redemptionInput.item = $scope.catalog[0] ;
+        $scope.redemptionInput.totalPoints = $scope.catalog[0].pointsPerItem ;
     })
     .error( function( data ){
         log.error( "API error " + data ) ;
@@ -307,31 +172,37 @@ function callReportPlotDataAPI() {
     }) ;
 }
 
-function callReportSubjectsAPI() {
+function populateRedemptionCatalogWithValidEntries( data ) {
 
-    $http.get( '/jove_notes/api/ReportPlot/Subjects' )
-    .success( function( data ){
+    var serverEntries = data.catalog ;
+    var totalPoints = data.points ;
 
-        $scope.subjectNames.length = 0 ;
-        $scope.subjectNamesForAddScore.length = 0 ;
-
-        $scope.subjectNames.push( { id : "All", name : "All subjects" } ) ;
-        if( data instanceof Array ) {
-            for( var i=0; i<data.length; i++ ) {
-                $scope.subjectNames.push( { 
-                    id : data[i],        
-                    name : data[i] 
-                });
-                $scope.subjectNamesForAddScore.push( { 
-                    id : data[i],        
-                    name : data[i] 
-                });
+    $scope.catalog = [] ;
+    for( var i=0; i<serverEntries.length; i++ ) {
+        var entry = serverEntries[i] ;
+        if( totalPoints >= entry.pointsPerItem ) {
+            if( entry.totalRedeemedQtyToday < entry.numRedemptionsPerDay ) {
+                $scope.catalog.push( entry ) ;
             }
-            $scope.subjectToAddPoints = "Mathematics" ;
         }
-        else {
-            $scope.addErrorAlert( "API error " + data ) ;
+    }
+}
+
+function loadScoreLedger() {
+
+    var startMoment = moment( $scope.preferences.dateRange.startDate ) ;
+    var endMoment   = moment( $scope.preferences.dateRange.endDate   ) ;
+
+    $http.get( '/jove_notes/api/Points/RedemptionLedger' , {
+        params : {
+            'startDate'     : startMoment.format( "YYYY-MM-DD HH:mm:ss" ), 
+            'endDate'       : endMoment.format( "YYYY-MM-DD HH:mm:ss" )
         }
+    })
+    .success( function( data ){
+        console.log( "Redemption ledger received." ) ;
+        console.log( data ) ;
+        $scope.pointsLedger = data.entries ;
     })
     .error( function( data ){
         log.error( "API error " + data ) ;
@@ -339,29 +210,6 @@ function callReportSubjectsAPI() {
     }) ;
 }
 
-function callAddPointsAPI( callback ) {
-
-    if( $scope.pointsToAdd == 0 || $scope.numTimes < 1 ) {
-        callback() ;
-        return ;
-    }
-
-    $http.post( '/jove_notes/api/Points', {
-
-        'subject' : $scope.subjectToAddPoints,
-        'points'  : $scope.pointsToAdd,
-        'numTimes': $scope.numTimes,
-        'password': $scope.pwdToAddPoints,
-        'notes'   : $scope.notesToAddPoint
-    })
-    .success( function( data ){
-        callback() ;
-    })
-    .error( function( data ){
-        log.error( "API error for adding points. " + data ) ;
-        $scope.addErrorAlert( "API error for adding points. " + data ) ;
-    }) ;
-}
 
 // ---------------- End of controller ------------------------------------------
 } ) ;
