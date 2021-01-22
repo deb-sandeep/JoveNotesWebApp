@@ -1,4 +1,4 @@
-dashboardApp.controller( 'ReportsController', function( $scope, $http ) {
+dashboardApp.controller( 'RedeemPointsController', function( $scope, $http ) {
 
 // ---------------- Constants and inner class definition -----------------------
 var LEFT_GUTTER = 75 ;
@@ -7,7 +7,7 @@ var RIGHT_GUTTER = 75 ;
 // ---------------- Local variables --------------------------------------------
 
 // ---------------- Controller variables ---------------------------------------
-$scope.$parent.pageTitle = "Report Page" ;
+$scope.$parent.pageTitle = "Points redemption" ;
 
 // preferences.entityType can take on the following values [Score, Time, NumQuestions]
 $scope.preferences = {
@@ -51,17 +51,23 @@ $scope.toggleRedeemDialog = function() {
 $scope.processRedeemItemSelection = function() {
     var entry = $scope.redemptionInput.item ;
     var ri = $scope.redemptionInput ;
-    var maxItemsRedeemable = entry.numRedemptionsPerDay - entry.totalRedeemedQtyToday ;
 
-    ri.numItems = ri.numItems > maxItemsRedeemable ? maxItemsRedeemable : ri.numItems ;
-    ri.totalPoints = entry.pointsPerItem * ri.numItems ;
+    if( entry != null ) {
+        var maxItemsRedeemable = entry.numRedemptionsPerDay - entry.totalRedeemedQtyToday ;
 
-    ri.validEntry = ri.totalPoints <= $scope.totalPoints ;
-    if( !ri.validEntry ) {
-        ri.message = "Not enough points." ;
+        ri.numItems = ri.numItems > maxItemsRedeemable ? maxItemsRedeemable : ri.numItems ;
+        ri.totalPoints = entry.pointsPerItem * ri.numItems ;
+
+        ri.validEntry = ri.totalPoints <= $scope.totalPoints ;
+        if( !ri.validEntry ) {
+            ri.message = "Not enough points." ;
+        }
+        else {
+            ri.message = "" ;
+        }
     }
     else {
-        ri.message = "" ;
+        ri.numItems = 0 ;
     }
 }
 
@@ -164,9 +170,17 @@ function loadCatalog() {
         console.log( "Redemption catalog received." ) ;
         console.log( data ) ;
         $scope.totalPoints = data.points ;
+
         populateRedemptionCatalogWithValidEntries( data ) ;
-        $scope.redemptionInput.item = $scope.catalog[0] ;
-        $scope.redemptionInput.totalPoints = $scope.catalog[0].pointsPerItem ;
+
+        if( $scope.catalog.length > 0 ) {
+            $scope.redemptionInput.item = $scope.catalog[0] ;
+            $scope.redemptionInput.totalPoints = $scope.catalog[0].pointsPerItem ;
+        }
+        else {
+            $scope.redemptionInput.validEntry = false ;
+            $scope.redemptionInput.message = "Not enough points" ;
+        }
     })
     .error( function( data ){
         log.error( "API error " + data ) ;

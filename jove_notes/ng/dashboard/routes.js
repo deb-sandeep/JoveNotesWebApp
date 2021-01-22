@@ -9,9 +9,9 @@ dashboardApp.config(['$routeProvider',
             templateUrl: '/apps/jove_notes/ng/dashboard/progress_snapshot/main.html',
             controller:  'ProgressSnapshotController'
         })
-        .when('/Reports', {
-            templateUrl: '/apps/jove_notes/ng/dashboard/reports/main.html',
-            controller: 'ReportsController'
+        .when('/Redeem', {
+            templateUrl: '/apps/jove_notes/ng/dashboard/redeem/main.html',
+            controller: 'RedeemPointsController'
         })
         .when('/Pivots', {
             templateUrl: '/apps/jove_notes/ng/dashboard/pivots/main.html',

@@ -72,7 +72,7 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
     <script src="/apps/jove_notes/ng/dashboard/directives.js"></script>   
 
     <script src="/apps/jove_notes/ng/dashboard/progress_snapshot/controllers.js"></script>    
-    <script src="/apps/jove_notes/ng/dashboard/reports/controllers.js"></script>    
+    <script src="/apps/jove_notes/ng/dashboard/redeem/controllers.js"></script>    
     <script src="/apps/jove_notes/ng/dashboard/pivots/controllers.js"></script>    
     <script src="/apps/jove_notes/ng/dashboard/chapter_progress_snapshot/controllers.js"></script>    
     <script src="/apps/jove_notes/ng/dashboard/notes_review/controllers.js"></script>    
@@ -95,10 +95,10 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
   	</a>
 
     <a type="button" class="btn btn-default btn-md" 
-       href="#Reports" 
+       href="#Redeem" 
        ng-class="getBtnActiveClass( 'Reports' )"
        ng-click="setActiveReport( 'Reports' )">
-  	Reports
+  	Redeem Points
   	</a>
 
     <a type="button" class="btn btn-default btn-md" 
