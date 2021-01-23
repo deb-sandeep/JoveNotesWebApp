@@ -36,13 +36,16 @@ $scope.redemptionItem = null ;
 initializeDateRange() ;
 
 $scope.$watch( 'preferences', function( oldValue, newValue ){
-	// NOTE: We don't call report plot data API directly. The watch fires it
-	// for us on the load of the controller.
-    loadCatalog() ;
-    loadScoreLedger() ;
+    $scope.refresh() ;
 }, true ) ;
 
 // ---------------- Controller methods -----------------------------------------
+
+$scope.refresh = function() {
+    console.log( "Refreshing the redemption catalog." ) ;
+    loadCatalog() ;
+    loadScoreLedger() ;
+}
 
 $scope.toggleRedeemDialog = function() {
     $scope.showRedeemDialog = !$scope.showRedeemDialog ;

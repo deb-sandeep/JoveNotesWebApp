@@ -88,7 +88,7 @@ QUERY;
         ) ;
 
         if( $incrementValue != 0 ) {
-            updateTotalPoints( $userName, $incrementValue ) ;
+            $this->updateTotalPoints( $userName, $incrementValue ) ;
         }
     }
 
@@ -112,7 +112,7 @@ QUERY;
             ")"
         ) ;
 
-        updateTotalPoints( $userName, $points ) ;
+        $this->updateTotalPoints( $userName, $points ) ;
     }
 
     function updateTotalPoints( $userName, $incPoints ) {
