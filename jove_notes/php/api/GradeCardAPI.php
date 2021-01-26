@@ -317,10 +317,10 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 
 		if( $this->requestObj->numAttempts == 1 ) {
 			$scoreMatrix = array(
-			   "E"=>array( "NS"=>  80, "L0"=>  50, "L1"=>  70, "L2"=>  60, "L3"=>  40 ),
-			   "A"=>array( "NS"=>  50, "L0"=>  20, "L1"=>  30, "L2"=>  10, "L3"=> -50 ),
-			   "P"=>array( "NS"=> -80, "L0"=> -90, "L1"=>-100, "L2"=>-125, "L3"=>-150 ),
-			   "H"=>array( "NS"=>-100, "L0"=>-150, "L1"=>-175, "L2"=>-200, "L3"=>-250 )
+			   "E"=>array( "NS"=>  80, "L0"=>  70, "L1"=>  55, "L2"=>  60, "L3"=>  40 ),
+			   "A"=>array( "NS"=>  50, "L0"=>  20, "L1"=>  30, "L2"=>  10, "L3"=> -10 ),
+			   "P"=>array( "NS"=> -50, "L0"=> -90, "L1"=>-100, "L2"=>-125, "L3"=>-150 ),
+			   "H"=>array( "NS"=> -60, "L0"=>-100, "L1"=>-175, "L2"=>-200, "L3"=>-250 )
 			) ;
 
 			$arr        = $scoreMatrix[ $this->requestObj->rating ] ;
@@ -349,6 +349,7 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 			// advantage. However, if the rating is not E, then there is an 
 			// associated penalty as a function of the difficulty level and 
 			// the number of attempts till now.
+			$this->score = 0 ;
 			if( $this->requestObj->rating != "E" ) {
 
 				$this->logger->debug( "Current rating not E, applying penalty" ) ;
@@ -363,16 +364,13 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 					$jump = $jump - 1 ;
 
 					$diffLevel         = $cardLearningSummary[ "difficulty_level" ] ;
-					$penaltyPercentage = $this->requestObj->numAttempts * 40 ;
+					$penaltyPercentage = $this->requestObj->numAttempts * 20 ;
 
 					$this->score = ceil( ($penaltyPercentage/100)*$diffLevel*$jump ) ;
 					
 					$this->logger->debug( "Penalty percentage = $penaltyPercentage" ) ;
 					$this->logger->debug( "Score = " . $this->score ) ;
 				}
-			}
-			else {
-				$this->score = 0 ;
 			}
 		}
 	}
