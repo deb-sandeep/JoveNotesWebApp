@@ -317,10 +317,10 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 
 		if( $this->requestObj->numAttempts == 1 ) {
 			$scoreMatrix = array(
-			   "E"=>array( "NS"=> 150, "L0"=>  80, "L1"=>  75, "L2"=>  60, "L3"=>  40 ),
-			   "A"=>array( "NS"=> 100, "L0"=>  50, "L1"=>  30, "L2"=>  10, "L3"=> -10 ),
+			   "E"=>array( "NS"=> 100, "L0"=>  80, "L1"=>  75, "L2"=>  60, "L3"=>  40 ),
+			   "A"=>array( "NS"=>  70, "L0"=>  50, "L1"=>  30, "L2"=>  10, "L3"=> -10 ),
 			   "P"=>array( "NS"=>  20, "L0"=> -80, "L1"=>-100, "L2"=>-125, "L3"=>-150 ),
-			   "H"=>array( "NS"=> -10, "L0"=>-100, "L1"=>-175, "L2"=>-200, "L3"=>-250 )
+			   "H"=>array( "NS"=> -15, "L0"=>-100, "L1"=>-175, "L2"=>-200, "L3"=>-250 )
 			) ;
 
 			$arr        = $scoreMatrix[ $this->requestObj->rating ] ;
