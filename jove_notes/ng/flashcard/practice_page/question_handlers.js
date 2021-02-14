@@ -84,8 +84,8 @@ function TFHandler( chapterDetails, questionObj, textFormatter ) {
 	var answeredCorrectly = null ;
 	var truthValueIcon    = ( question.truthValue ) ? "ok" : "remove" ;
 	var answerLength      = question.statement.length ;
-	var trueBtn           = BUTTON( { 'class' : 'btn btn-success btn-sm' }, "True" ) ;
-	var falseBtn          = BUTTON( { 'class' : 'btn btn-warning btn-sm' }, "False" ) ;
+	var trueBtn           = BUTTON( { 'class' : 'btn btn-success btn-lg' }, "True" ) ;
+	var falseBtn          = BUTTON( { 'class' : 'btn btn-warning btn-lg' }, "False" ) ;
 
 	this.initialize = function( $scope ) {
 
@@ -119,7 +119,9 @@ function TFHandler( chapterDetails, questionObj, textFormatter ) {
 		return DIV( P( { 'class' : 'text-primary' }, 
 			           STRONG( P( { innerHTML : fmtStatement } ) ),
 		               P(), 
-		               trueBtn, SPAN( " " ), falseBtn 
+		               trueBtn, 
+		               SPAN( { 'style' : 'width:100px;display:inline-block' }, " " ),
+		               falseBtn 
 		             ) 
 		          ) ;
 	} ;
