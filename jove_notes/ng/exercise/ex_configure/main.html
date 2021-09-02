@@ -20,7 +20,7 @@
     <table class="table tree table-hover table-condensed ex_dashboard_table">
         <thead>
             <tr>
-                <th colspan="6"></th>
+                <th colspan="7"></th>
                 <th class="border-left">
                     <table class="dashboard-stats">
                         <tr>
@@ -44,6 +44,7 @@
                 <th></th>
                 <th>Subject</th>
                 <th>Exercise</th>
+                <th></th>
                 <th style="width:50px;text-align:center;">
                    <span class="glyphicon glyphicon-th"></span>
                 </th>
@@ -87,6 +88,12 @@
                     {{rowData.chapterDetails.chapterNumber}}.
                     {{rowData.chapterDetails.subChapterNumber}} - 
                     {{rowData.chapterDetails.chapterName}}
+                </td>
+                <td>
+                    <a type="button" class="btn btn-default btn-xs"
+                       ng-click="addNSProblemIfAvailable(rowData.chapterDetails.chapterId)">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </a>
                 </td>
                 <td class="text-right">
                    <span class="badge L3">{{rowData.deckDetails.progressSnapshot._numSSRMaturedCards}}</span>

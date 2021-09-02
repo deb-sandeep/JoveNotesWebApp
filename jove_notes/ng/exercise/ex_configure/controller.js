@@ -30,6 +30,20 @@ $scope.getRowClass = function( chapterId ) {
     return "" ;
 }
 
+$scope.addNSProblemIfAvailable = function( chapterId ) {
+
+    log.debug( "Adding NS problem for chapterId = " + chapterId ) ;
+
+    $scope.selChId = chapterId ;
+    $scope.selCh   = $scope.$parent.exerciseBanksMap[ chapterId ] ;
+
+    if ( ( $scope.selCh.deckDetails.progressSnapshot._numSSR_NS - 
+           $scope.selCh._selCfg.ssr.numNSCards ) > 0 ) {
+        log.debug( "NS present and hence adding." ) ;
+        updateCardSelection( 'ssr', 'NS', 1 ) ;
+    }
+}
+
 $scope.configureExercise = function( chapterId ) {
     log.debug( "Configuring exercise - " + chapterId ) ;
 
