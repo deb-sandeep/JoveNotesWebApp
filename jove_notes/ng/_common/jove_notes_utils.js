@@ -24,6 +24,15 @@ function NotesFilterOptions() {
         { id : "H",  name : "Hard" },
         { id : "VH", name : "Very hard" }
     ] ;
+
+    this.levelOptions = [
+        { id : "NS",  name : "Not Started" },
+        { id : "L0",  name : "Level 0" },
+        { id : "L1",  name : "Level 1" },
+        { id : "L2",  name : "Level 2" },
+        { id : "L3",  name : "Level 3" },
+        { id : "MAS", name : "Mastered" }
+    ] ;
 }
 
 // =============================================================================

@@ -6,6 +6,7 @@ function FilterCriteria() {
 	this.useAbsoluteEfficiency     = false ;
 	this.learningEfficiencyFilters = [ "A1", "A2", "B1", "B2", "C1", "C2", "D" ] ;
 	this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH" ] ;
+	this.levelFilters              = [ "NS", "L0", "L1", "L2", "L3", "MAS" ] ;
 
     this.serialize = function() {
         $.cookie.json = true ;
@@ -20,12 +21,14 @@ function FilterCriteria() {
 	        this.useAbsoluteEfficiency     = crit.useAbsoluteEfficiency ;
 			this.learningEfficiencyFilters = crit.learningEfficiencyFilters ;
 			this.difficultyFilters         = crit.difficultyFilters ;
+			this.levelFilters              = crit.levelFilters ;
         } ;
     }
 
     this.setDefaultCriteria = function() {
 		this.learningEfficiencyFilters = [ "A1", "A2", "B1", "B2", "C1", "C2", "D" ] ;
 		this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH" ] ;
+		this.levelFilters              = [ "NS", "L0", "L1", "L2", "L3", "MAS" ] ;
     }
 }
 
@@ -258,6 +261,7 @@ function qualifiesFilter( element ) {
 
 	var lrnEffLabelFilters = $scope.filterCriteria.learningEfficiencyFilters ;
 	var diffLabelFilters   = $scope.filterCriteria.difficultyFilters ;
+	var levelFilters       = $scope.filterCriteria.levelFilters ;
 
 	var efficiencyLabel = element.learningStats.efficiencyLabel ;
 	if( $scope.filterCriteria.useAbsoluteEfficiency ) {
@@ -265,8 +269,11 @@ function qualifiesFilter( element ) {
 	}
 
 	if( lrnEffLabelFilters.indexOf( efficiencyLabel ) != -1 ) {
-		if( diffLabelFilters.indexOf( element.difficultyLabel ) != -1 ) {
-			return true ;
+		for( var index=0; index<element.currentLevels.length; index++ ) {
+			var curLevelOfACard = element.currentLevels[ index ] ;
+			if( levelFilters.indexOf( curLevelOfACard ) != -1 ) {
+				return true ;
+			}
 		}
 	}
 	return false ;
