@@ -6,7 +6,7 @@ function FilterCriteria() {
 	this.useAbsoluteEfficiency     = false ;
 	this.learningEfficiencyFilters = [ "A1", "A2", "B1", "B2", "C1", "C2", "D" ] ;
 	this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH" ] ;
-	this.levelFilters              = [ "NS", "L0", "L1", "L2", "L3", "MAS" ] ;
+	this.levelFilters              = [ "NS", "L0" ] ;
 
     this.serialize = function() {
         $.cookie.json = true ;

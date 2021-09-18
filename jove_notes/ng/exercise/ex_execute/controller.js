@@ -1,8 +1,8 @@
 testPaperApp.controller( 'ExerciseExecutionController', 
                          function( $scope, $http, $routeParams, $location, $window, $anchorScroll ) {
 // ---------------- Constants and inner class definition -----------------------
-var STUDY_Q_FADEOUT_TIME = 4000 ;
-var STUDY_Q_DEFAULT_SHOW_TIME = 26000 ;
+var STUDY_Q_FADEOUT_TIME = 2000 ;
+var STUDY_Q_DEFAULT_SHOW_TIME = 15000 ;
 
 // ---------------- Local variables --------------------------------------------
 var currentQuestionAttemptStartTime = 0 ;
