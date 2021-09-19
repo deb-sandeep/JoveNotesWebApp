@@ -660,6 +660,9 @@ function checkInvalidLoad() {
 function computeSessionCards() {
 
     $scope.questionsForSession = $scope.$parent.filteredCards ;
+    if( $scope.$parent.studyCriteria.shuffleQuestions ) {
+        $scope.questionsForSession.shuffleFrom( 0 ) ;
+    }
 
     $scope.$parent.sessionStats.numCards     = $scope.questionsForSession.length ;
     $scope.$parent.sessionStats.numCardsLeft = $scope.questionsForSession.length ;
