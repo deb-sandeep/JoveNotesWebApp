@@ -157,7 +157,11 @@
             <button type="button" class="btn btn-success btn-lg"
                     ng-click="rateCard( 'E' )"
                     data-toggle="tooltip" data-placement="top" 
-                    title="Correct">&nbsp;</button>
+                    title="Correct">
+                <span class="badge {{currentQuestion.learningStats.currentLevel}}">
+                    {{currentQuestion.learningStats.currentLevel}}
+                </span>
+            </button>
           </div>
         </div>
 
@@ -189,7 +193,12 @@
             <button type="button" class="btn btn-success btn-lg"
                     ng-click="rateCard( 'E' )"
                     data-toggle="tooltip" data-placement="top" 
-                    title="Correct">&nbsp;</button>
+                    title="Correct">
+                <span class="badge {{currentQuestion.learningStats.currentLevel}}">
+                    {{currentQuestion.learningStats.currentLevel}}
+                </span>
+            </button>
+
           </div>
           <div class="btn-group" role="group" ng-show="recommendPromoteToMastered">
             <button type="button" class="btn btn-success btn-lg"

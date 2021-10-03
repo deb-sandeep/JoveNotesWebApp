@@ -73,6 +73,8 @@ $scope.gradingButtonPlacement = "right" ;
 
 $scope.projectedTimeLeft = 0 ;
 $scope.currentFatigueLevel = 0 ;
+$scope.currentAnsTime = 0 ;
+
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -683,8 +685,12 @@ function handleTimerEvent() {
 
 function refreshClocks() {
 
+    timeForCurrentQuestion = Math.ceil(( new Date().getTime() - 
+                                         currentQuestionShowStartTime - 
+                                         totalQuestionPauseTime )) ;
     durationTillNowInMillis = new Date().getTime() - sessionStartTime - totalSessionPauseTime ;
 
+    $scope.currentAnsTime = timeForCurrentQuestion ;
     $scope.$parent.timePerQuestion = durationTillNowInMillis / 
                              ( $scope.$parent.sessionStats.numCardsAnswered + 1 ) ;
 
@@ -757,7 +763,7 @@ function refreshCardTimeProgressBars() {
     var delta = Math.ceil(( new Date().getTime() - currentQuestionShowStartTime - totalQuestionPauseTime )/1000) ;
 
     if( delta > 0 ) {
-        
+
         var percent = (5/9)*delta ;
         if( percent <= 105 ) {
             $( "#curr_pb" ).css( "width", percent + "%" ) ;
