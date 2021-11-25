@@ -256,9 +256,15 @@ function ImageLabelManager( questionObj, textFormatter, $scope ) {
 			var clickX = e.clientX - rect.left ;
 			var clickY = e.clientY - rect.top ;
 
-			if( !this.isValidClick( clickX, clickY ) ) {
-				return ;
-			}
+			// Taking away the feature that a canvas click is considered valid only if it is
+			// within one of the hot zones. This is because the canavas can have honeypots - 
+			// which are decorative hospots to confuse the student :) We don't want the student
+			// to start clicking everywhere till they find the right answer and that too without
+			// any penalty.
+			
+			// if( !this.isValidClick( clickX, clickY ) ) {
+			// 	return ;
+			// }
 
 			var distance = getDistance( this.selectedHotspot.x, this.selectedHotspot.y,
 				                        clickX, clickY ) ;
