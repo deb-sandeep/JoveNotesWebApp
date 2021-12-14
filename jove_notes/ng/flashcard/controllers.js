@@ -79,8 +79,10 @@ $scope.alerts = [] ;
 $scope.userName  = userName ;
 $scope.chapterId = chapterId ;
 $scope.chapterIdsForNextSessions = null ;
+$scope.numPendingChapters = 0 ;
 
 if( chapterIdsForNextSessions != null ) {
+    $scope.numPendingChapters = chapterIdsForNextSessions.length ;
     $scope.chapterIdsForNextSessions = chapterIdsForNextSessions.join() ;
 }
 

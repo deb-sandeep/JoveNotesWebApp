@@ -7,7 +7,8 @@
         <span class="small">[ {{$parent.userName}} ]</span>
     </div>
     <div style="display:table-cell;text-align:center;">
-    	<span class="gi-1-15x">{{$parent.pageTitle}}</span>
+    	<span class="gi-1-15x">{{$parent.pageTitle}}</span>&nbsp;
+        <span class="badge muted">{{$parent.numPendingChapters}}</span>
     </div>
     <div style="display:table-cell;width:200px;text-align:right;">
         <span class="badge muted">{{$parent.timePerQuestion | duration}}</span>
