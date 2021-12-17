@@ -1,7 +1,11 @@
 <div ng-include="'/apps/jove_notes/ng/exercise/ex_list/header.html'">
 </div>
 
-<div class="screen_body" style="bottom:0;">
+<div ng-show="showFilterForm" 
+     ng-include="'/apps/jove_notes/ng/exercise/ex_list/filter_template.html'">
+</div>
+
+<div>
     <div ng-repeat="currentQuestion in $parent.exerciseBanks[0].questions" 
          class="panel panel-info">
         <a name="anchor_q_{{currentQuestion.questionId}}"></a>

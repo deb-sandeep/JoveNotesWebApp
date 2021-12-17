@@ -54,6 +54,7 @@ class GetExerciseBanksAction extends APIAction {
             else {
 
                 $pcSvc = new PracticeCardService() ;
+                $pcSvc->setForExercise() ;
 
                 $response->responseBody = $pcSvc->getPracticeCardDetails( $entitledChapters ) ;
                 $response->responseCode = APIResponse::SC_OK ;

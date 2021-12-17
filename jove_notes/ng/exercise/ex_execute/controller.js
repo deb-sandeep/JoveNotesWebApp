@@ -325,6 +325,7 @@ function filterQuestionsForSession() {
         }
     }
 
+    exQuestions.shuffle() ;
     return exQuestions ;
 }
 

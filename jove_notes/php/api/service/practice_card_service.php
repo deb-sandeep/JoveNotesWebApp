@@ -19,13 +19,19 @@ class PracticeCardService {
     private $num_E    = 0;
     private $num_M    = 0;
     private $num_H    = 0;
-    private $num_VH   = 0 ;
+    private $num_VH   = 0;
+
+    private $forExercise = false ;
 
     function __construct() {
         $this->logger     = Logger::getLogger( __CLASS__ ) ;
         $this->lsDAO      = new LearningSessionDAO() ;
         $this->clsDAO     = new CardLearningSummaryDAO() ;
         $this->chapterDAO = new ChapterDAO() ;
+    }
+
+    public function setForExercise() {
+        $this->forExercise = true ;
     }
 
     public function getPracticeCardDetails( $chapterIds ) {
@@ -218,8 +224,15 @@ class PracticeCardService {
     private function constructQuestions() {
 
         $questions = array() ;
-        $cards = $this->clsDAO->getCardsForUser( ExecutionContext::getCurrentUserName(), 
-                                                 $this->chapterId ) ;
+        if( $this->forExercise ) {
+            $cards = $this->clsDAO->getAllCardsForUser( ExecutionContext::getCurrentUserName(), 
+                                                        $this->chapterId ) ;
+        }
+        else {
+            $cards = $this->clsDAO->getCardsForUser( ExecutionContext::getCurrentUserName(), 
+                                                     $this->chapterId ) ;
+        }
+
         foreach( $cards as $card ){
             array_push( $questions, $this->constructQuestion( $card ) ) ;
         }
