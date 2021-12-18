@@ -35,6 +35,22 @@ function NotesFilterOptions() {
     ] ;
 }
 
+function ExerciseFilterOptions() {
+
+    this.levelOptions = [
+        { id : "NS",  name : "Not Started" },
+        { id : "L0",  name : "Level 0" },
+        { id : "MAS", name : "Mastered" }
+    ] ;
+
+    this.numAttemptsOptions = [
+        { id : "0", name : "0 or more attempts" },
+        { id : "1", name : "1 or more attempt" },
+        { id : "2", name : "2 or more attempts" },
+        { id : "3", name : "3 or more attempts" }
+    ] ;
+}
+
 // =============================================================================
 // =============================================================================
 function RatingMatrix() {

@@ -1,33 +1,25 @@
-<!--
-1. Show L0
-2. Show completed
-2. Show one or more times wrong
-3. Show ones with high time spent
--->
 <div class="container-fluid well">
   <div class="row">
 
     <div class="col-sm-3 form-group">
-        <input id="absEfficiency" type="checkbox" ng-model="filterCriteria.useAbsoluteEfficiency"/>
-        <label for="absEfficiency"> Use absolute efficiency</label>
     </div>
 
     <div class="col-sm-3 form-group">
-		<label for="learningEfficiencyFilter">Learning efficiency:</label>
-		<select id="learningEfficiencyFilter" 
-		        class="form-control" multiple="true" 
-		        ng-model="filterCriteria.learningEfficiencyFilters"
-		        ng-options="obj.id as obj.name for obj in filterOptions.learningEfficiencyOptions">
-		</select>
+    		<label for="levelFilter">Level filter:</label>
+    		<select id="levelFilter" 
+    		        class="form-control" multiple="true" 
+    		        ng-model="filterCriteria.levelFilters"
+    		        ng-options="obj.id as obj.name for obj in filterOptions.levelOptions">
+    		</select>
     </div>
 
     <div class="col-sm-3 form-group">
-		<label for="levelFilter">Level filter:</label>
-		<select id="levelFilter" 
-		        class="form-control" multiple="true" 
-		        ng-model="filterCriteria.levelFilters"
-		        ng-options="obj.id as obj.name for obj in filterOptions.levelOptions">
-		</select>
+  		<label for="numAttemptFilter">Num attempts:</label>
+  		<select id="numAttemptFilter" 
+  		        class="form-control" 
+  		        ng-model="filterCriteria.numAttemptFilter"
+  		        ng-options="obj.id as obj.name for obj in filterOptions.numAttemptsOptions">
+  		</select>
     </div>
 
     <div class="col-sm-3">

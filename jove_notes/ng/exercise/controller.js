@@ -93,6 +93,21 @@ $scope.fetchAndProcessDataFromServer = function() {
          });
 }
 
+$scope.fetchExerciseListingFromServer = function( callback ) {
+
+    log.debug( "Fetching flash card data from server. Chapter ids = " + $scope.chapterIds ) ;
+
+    $http.get( "/jove_notes/api/Exercise/ExerciseBanks/" + $scope.chapterIds )
+         .success( function( data ){
+            log.debug( "Received response from server." ) ;
+            processServerData( data ) ;
+            callback() ;
+         })
+         .error( function( data ){
+            $scope.addErrorAlert( "API call failed. " + data ) ;
+         });
+}
+
 $scope.getChapterIdsForExercise = function() {
     var ids = [] ;
     for( var i=0; i<$scope.exerciseBanks.length; i++ ) {
