@@ -70,9 +70,12 @@ $scope.serverRequestInProgress = false ;
 
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing RemoteFlashCardController." ) ;
-jnUtil.playSoundClip( "/lib-app/media/audio/remote-flash-load.mp3" ) ;
 runMesssageFetchPump() ;
 runMessageProcessPump() ;
+
+setTimeout( function(){
+    jnUtil.playSoundClip( "/lib-app/media/audio/remote-flash-load.mp3" ) ;
+}, 500 ) ;
 
 // ---------------- Controller methods -----------------------------------------
 $scope.addErrorAlert = function( msgString ) {
