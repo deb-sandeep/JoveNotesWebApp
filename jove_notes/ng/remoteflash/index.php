@@ -80,6 +80,9 @@ $pageConfig = array(
 <body ng-controller="RemoteFlashCardController">
     <?php include( ALERT_DIV_FILE ) ; ?>
     <audio id="audio"></audio>
+    <div ng-show="currentScreen == LAUNCH_PAGE" class="ng-hide"
+         ng-include="'/apps/jove_notes/ng/remoteflash/fragments/launch_page.html'">
+    </div>
     <div ng-show="currentScreen == SCREEN_WAITING_TO_START" class="ng-hide"
          ng-include="'/apps/jove_notes/ng/remoteflash/fragments/waiting_to_start.html'">
     </div>

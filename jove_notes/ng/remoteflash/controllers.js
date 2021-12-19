@@ -22,6 +22,7 @@ var msgPumpEmptyCycles = 0 ;
 var expectingFirstQuestion = true ;
 
 // ---------------- Controller variables ---------------------------------------
+$scope.LAUNCH_PAGE             = "launch_page" ;
 $scope.SCREEN_WAITING_TO_START = "waiting_to_start" ;
 $scope.SCREEN_SESSION_SETTINGS = "session_settings" ;
 $scope.SCREEN_PRACTICE         = "session_practice" ;
@@ -31,7 +32,7 @@ $scope.alerts    = [] ;
 $scope.userName  = userName ;
 $scope.pageTitle = null ;
 
-$scope.currentScreen = $scope.SCREEN_WAITING_TO_START ;
+$scope.currentScreen = $scope.LAUNCH_PAGE ;
 
 $scope.sessionId          = 0 ;
 $scope.chapterDetails     = null ;
@@ -69,15 +70,18 @@ $scope.messageForEndPage         = "" ;
 $scope.serverRequestInProgress = false ;
 
 // ---------------- Main logic for the controller ------------------------------
-log.debug( "Executing RemoteFlashCardController." ) ;
-runMesssageFetchPump() ;
-runMessageProcessPump() ;
-
-setTimeout( function(){
-    jnUtil.playSoundClip( "/lib-app/media/audio/remote-flash-load.mp3" ) ;
-}, 500 ) ;
 
 // ---------------- Controller methods -----------------------------------------
+$scope.start = function() {
+
+    log.debug( "Starting remote flash." ) ;
+    jnUtil.playSoundClip( "/lib-app/media/audio/remote-flash-load.mp3" ) ;
+    $scope.currentScreen = $scope.SCREEN_WAITING_TO_START ;
+
+    runMesssageFetchPump() ;
+    runMessageProcessPump() ;
+}
+
 $scope.addErrorAlert = function( msgString ) {
     $scope.alerts.push( { type: 'danger', msg: msgString } ) ;
 } ;
