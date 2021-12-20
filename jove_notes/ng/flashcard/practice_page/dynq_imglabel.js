@@ -268,7 +268,7 @@ function ImageLabelManager( questionObj, textFormatter, $scope ) {
 
 			var distance = getDistance( this.selectedHotspot.x, this.selectedHotspot.y,
 				                        clickX, clickY ) ;
-			if( distance <= 20 ) {
+			if( distance <= 25 ) {
 
 				this.selectedHotspot.renderResult() ;
 				this.selectedHotspot.setLabelMatched() ;
