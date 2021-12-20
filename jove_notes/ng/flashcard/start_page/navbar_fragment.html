@@ -3,6 +3,10 @@
         <img src="/apps/jove_notes/media/images/logo_for_navbar.png" 
              style="height: 20px" />
     </div>
+    <div style="display:table-cell;width:100px;">
+        &nbsp;
+        <span class="badge muted">{{$parent.todayStudyDuration | duration}}</span>
+    </div>
     <div style="display:table-cell;text-align:center;">
         <span class="gi-1-15x">{{$parent.pageTitle}}</span>
         <span class="badge muted">{{$parent.numPendingChapters}}</span>

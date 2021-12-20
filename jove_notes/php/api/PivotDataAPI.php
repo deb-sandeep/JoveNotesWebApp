@@ -69,14 +69,14 @@ class PivotDataAPI extends AbstractJoveNotesAPI {
 		else{
 			$this->requestEntity = $request->requestPathComponents[0] ;
 			if( !( $this->requestEntity == 'Time'     || 
+				   $this->requestEntity == 'TodayTime' ||
 				   $this->requestEntity == 'NumQuestions' || 
 				   $this->requestEntity == 'Score' ) ) {
 
 				throw new Exception( "Invalid entity '$this->requestEntity' specified." ) ;
 			}
 			else {
-				if( $this->requestEntity != 'Subjects' ) {
-
+				if( $this->requestEntity != 'TodayTime' ) {
 					$this->startDate = $request->parametersMap[ 'startDate' ] ;
 					$this->logger->info( "Parameter[ startDate ] = $this->startDate" ) ;
 
@@ -92,6 +92,9 @@ class PivotDataAPI extends AbstractJoveNotesAPI {
 		$this->logger->info( "Processing request for entity $this->requestEntity" ) ;
 		if( $this->requestEntity == 'Time' ) {
 			return $this->getTimeResponse() ;
+		}
+		else if( $this->requestEntity == 'TodayTime' ) {
+			return $this->getTodayTimeResponse() ;
 		}
 		else if( $this->requestEntity == 'NumQuestions' ) {
 			return $this->getNumQuestionsResponse() ;
@@ -109,6 +112,12 @@ class PivotDataAPI extends AbstractJoveNotesAPI {
 			              				$this->endDate ) ;
 
 		return $this->constructResponse( $pivotRS ) ;
+	}
+
+	private function getTodayTimeResponse() {
+
+		return $this->cardRatingDAO->getStudyTimeForToday(
+			              				ExecutionContext::getCurrentUserName() ) ;
 	}
 
 	private function getNumQuestionsResponse() {

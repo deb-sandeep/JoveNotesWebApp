@@ -70,6 +70,7 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
     <script src="/apps/jove_notes/ng/dashboard/routes.js"></script>    
     <script src="/apps/jove_notes/ng/dashboard/controllers.js"></script>    
     <script src="/apps/jove_notes/ng/dashboard/directives.js"></script>   
+    <script src="/apps/jove_notes/ng/dashboard/filters.js"></script>   
 
     <script src="/apps/jove_notes/ng/dashboard/progress_snapshot/controllers.js"></script>    
     <script src="/apps/jove_notes/ng/dashboard/redeem/controllers.js"></script>    

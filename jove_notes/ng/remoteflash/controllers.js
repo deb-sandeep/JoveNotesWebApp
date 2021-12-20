@@ -42,6 +42,8 @@ $scope.learningCurveData  = null ;
 $scope.studyCriteria      = null ;
 $scope.textFormatter      = null ;
 
+$scope.todayStudyDuration = 0 ;
+
 $scope.remoteFlashConfig = {
     skipUserAcceptance : false
 }
@@ -78,6 +80,7 @@ $scope.start = function() {
     jnUtil.playSoundClip( "/lib-app/media/audio/remote-flash-load.mp3" ) ;
     $scope.currentScreen = $scope.SCREEN_WAITING_TO_START ;
 
+    fetchTodayStudyDuration() ;
     runMesssageFetchPump() ;
     runMessageProcessPump() ;
 }
@@ -117,6 +120,24 @@ $scope.decreaseFont = function() {
 }
 
 // ---------------- Private functions ------------------------------------------
+function fetchTodayStudyDuration() {
+
+    console.log( "Fetching today study time." ) ;
+    $http.get( '/jove_notes/api/PivotData/TodayTime', {
+        params : {
+            'startDate' : null, 
+            'endDate'   : null
+        }
+    })
+    .success( function( data ){
+        $scope.todayStudyDuration = data * 1000 ;
+    })
+    .error( function( data ){
+        log.error( "API error " + data ) ;
+        $scope.addErrorAlert( "API error " + data ) ;
+    }) ;
+}
+
 function resizeFont( domElement, magnifier ) {
     var curSize = parseInt( $( domElement ).css( 'font-size' ) ) + magnifier ;
     $( domElement ).css( 'font-size', curSize ) ;

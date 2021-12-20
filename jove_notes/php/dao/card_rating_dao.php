@@ -107,5 +107,17 @@ QUERY;
     return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
   }
 
+  function getStudyTimeForToday( $userName )  {
+
+$query = <<< QUERY
+SELECT sum(time_spent) 
+FROM 
+  jove_notes.card_rating 
+WHERE
+  DATE(timestamp) = CURDATE()
+QUERY;
+
+    return parent::selectSingleValue( $query, 0 ) ;
+  }
 }
 ?>

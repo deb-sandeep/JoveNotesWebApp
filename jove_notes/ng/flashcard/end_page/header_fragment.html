@@ -2,17 +2,21 @@
 
     <div style="display:table;width:100%;padding-bottom:5px">
 
-    	<div style="display:table-cell;width:150px;">
+    	<div style="display:table-cell;width:120px;">
         	<img src="/apps/jove_notes/media/images/logo_for_navbar.png" 
         	     style="height: 20px" />
             <span class="small">[ {{$parent.userName}} ]</span>
+        </div>
+        <div style="display:table-cell;width:100px;">
+            &nbsp;
+            <span class="badge muted">{{($parent.todayStudyDuration + $parent.sessionDuration) | duration}}</span>
         </div>
         <div style="display:table-cell;text-align:center;">
             <span class="gi-1-15x">{{$parent.pageTitle}}</span>
             <span class="badge muted">{{$parent.numPendingChapters}}</span>
         </div>
         <div style="display:table-cell;width:150px;text-align:right;">
-            <span class="badge muted">{{sessionDuration | duration}}</span>
+            <span class="badge muted">{{$parent.sessionDuration | duration}}</span>
         </div>
     </div>
 

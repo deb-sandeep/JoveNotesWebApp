@@ -116,6 +116,7 @@ $scope.sessionStats = {
 
 $scope.sessionDuration = 0 ;
 $scope.timePerQuestion = 0 ;
+$scope.todayStudyDuration = 0 ;
 
 $scope.messageForEndPage = "Session Ended." ;
 
@@ -150,6 +151,9 @@ $scope.studyCriteria.deserialize() ;
 
 // -------------Scope watch functions ------------------------------------------
 $scope.initialDigestProcess = true ;
+
+fetchTodayStudyDuration() ;
+
 $scope.$watch( 'studyCriteria.push', function( newValue, oldValue ){
     if( $scope.initialDigestProcess ) {
         $scope.initialDigestProcess = false ;
@@ -216,6 +220,24 @@ $scope.processServerData = function( serverData ) {
 }
 
 // ---------------- Private functions ------------------------------------------
+function fetchTodayStudyDuration() {
+
+    console.log( "Fetching today study time." ) ;
+    $http.get( '/jove_notes/api/PivotData/TodayTime', {
+        params : {
+            'startDate' : null, 
+            'endDate'   : null
+        }
+    })
+    .success( function( data ){
+        $scope.todayStudyDuration = data * 1000 ;
+    })
+    .error( function( data ){
+        log.error( "API error " + data ) ;
+        $scope.addErrorAlert( "API error " + data ) ;
+    }) ;
+}
+
 function preProcessFlashCardQuestions( questions ) {
 
     for( i=0; i<questions.length; i++ ) {
