@@ -382,6 +382,7 @@ function processIncomingQuestion( message ) {
         expectingFirstQuestion = false ;
         $scope.currentScreen = $scope.SCREEN_PRACTICE ;
         sessionStartTime = new Date().getTime() ;
+        fetchTodayStudyDuration() ;
         setTimeout( handleTimerEvent, 1000 ) ;
     }
 
