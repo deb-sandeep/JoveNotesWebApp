@@ -29,6 +29,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
     this.numSSRMaturedCards = 0 ;
     this.preparednessScore  = 0 ;
     this.retentionScore     = 0 ;
+    this.urgencyScore       = 0 ;
 
     this.chapter    = null ;
     this.chapterId  = null ;
@@ -161,7 +162,27 @@ function RowData( rowType, name, rowId, parentRowId ) {
         this.isHidden               = chapter.isHidden ;
         this.isRowSelected          = !chapter.isDeselected ;
         this.isRowInSyllabus        = chapter.isInSyllabus ;
+
+        this.urgencyScore = this.computeUrgencyScore() ;
     }
+
+    this.computeUrgencyScore = function() {
+        var score = 0 ;
+        if( this.isChapterRow() && this.hasCardsAvailable() ) {
+            var pctNS = this.notStartedCards / this.totalCards ;
+            var pctL0 = this.l0Cards / this.totalCards ;
+            var pctL1 = this.l1Cards / this.totalCards ;
+            var pctL2 = this.l2Cards / this.totalCards ;
+            var pctL3 = this.l3Cards / this.totalCards ;
+
+            score = ( pctNS * 10 ) + 
+                    ( pctL0 *  8 ) + 
+                    ( pctL1 *  5 ) + 
+                    ( pctL2 *  2 ) + 
+                    ( pctL3 *  1 ) ;          
+        }
+        return score ;
+    }    
 
     this.getTreeRowClass = function() {
 
@@ -380,7 +401,8 @@ $scope.launchChainedFlashcards = function( type ) {
 
     if( type == 'randomize' || 
         type == 'ordered'   || 
-        type == 'retention' ) {
+        type == 'retention' ||
+        type == 'urgency' ) {
         chapters = getSelectedChapterRows() ;
     }
     else if( type == 'syllabus' ) {
@@ -396,6 +418,11 @@ $scope.launchChainedFlashcards = function( type ) {
 
     if( type == 'randomize' ) {
         chapters.shuffle() ;
+    }
+    else if( type == 'urgency' ) {
+        chapters.sort( function( c1, c2 ){
+            return c2.urgencyScore - c1.urgencyScore ;
+        }) ;
     }
     else if( type == 'retention' ) {
         chapters.sort( function( c1, c2 ){
