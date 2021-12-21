@@ -163,6 +163,23 @@ QUERY;
         parent::executeUpdate( $query ) ;
     }
 
+    function activateDifficultExerciseCards( $userName, $chapterId ) {
+
+$query = <<< QUERY
+update   
+  jove_notes.card_learning_summary
+set
+  current_level = 'NS'
+where  
+    student_name = '$userName' and  
+    chapter_id = $chapterId and
+    current_level = 'MAS' and
+    ( num_attempts > 1 OR (total_time_spent/num_attempts) > 210 ) ;
+QUERY;
+
+        parent::executeUpdate( $query ) ;
+    }    
+
     function tempPromote( $userName, $chapterId ) {
 
 $query = <<< QUERY

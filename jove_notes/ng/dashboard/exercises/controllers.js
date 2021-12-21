@@ -302,17 +302,17 @@ $scope.launchExerciseWithSelectedChapters = function() {
     }
 }
 
-$scope.resetLevelOfChapterCards = function( chapterId, level ) {
+$scope.reactivateProblems = function( chapterId ) {
 
     var selectedChapters = [] ;
     selectedChapters.push( chapterId ) ;
-    callResetLevelServerAPI( selectedChapters, level ) ;
+    callReactivateProblemsServerAPI( selectedChapters ) ;
 }
 
-$scope.resetLevelOfAllCardsForSelectedChapters = function( level ) {
+$scope.reactivateProblemsForSelectedChapters = function() {
 
     var selectedChapters = getSelectedChapterIds() ;
-    callResetLevelServerAPI( selectedChapters, level ) ;
+    callReactivateProblemsServerAPI( selectedChapters ) ;
 }
 
 $scope.toggleVisibilityInBulk = function() {
@@ -644,18 +644,18 @@ function getSelectedChapterRows() {
     return selectedRows ;
 }
 
-function callResetLevelServerAPI( selectedChapters, level ) {
+function callReactivateProblemsServerAPI( selectedChapters ) {
 
     if( selectedChapters.length == 0 ) {
         $scope.$parent.addErrorAlert( "No chapters selected." ) ;
     }
     else {
-        log.debug( "Applying level " + level + " to all cards for " +
+        log.debug( "Reactivating mastered cards for " +
                    "chapters " + selectedChapters.join() ) ;
 
         $http.post( '/jove_notes/api/ResetLevel', { 
             chapterIds : selectedChapters,
-            level      : level
+            entityType : 'Exercise'
         })
         .success( function( data ){
             log.debug( "Level successfully applied to all cards" ) ;

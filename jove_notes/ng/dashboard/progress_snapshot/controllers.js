@@ -897,7 +897,8 @@ function callResetLevelServerAPI( selectedChapters, level ) {
 
         $http.post( '/jove_notes/api/ResetLevel', { 
             chapterIds : selectedChapters,
-            level      : level
+            level      : level,
+            entityType : 'Chapter'
         })
         .success( function( data ){
             log.debug( "Level successfully applied to all cards" ) ;

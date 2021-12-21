@@ -18,17 +18,30 @@ class ResetLevelAPI extends AbstractJoveNotesAPI {
 
 	public function doPost( $request, &$response ) {
 
-		$this->logger->debug( "Executing doPost in ResetLevelAPI" ) ;
+		$this->logger->info( "Executing doPost in ResetLevelAPI" ) ;
 
 		$this->requestObj = $request->requestBody ;
 
 		foreach( $this->requestObj->chapterIds as $chapterId ) {
 			if( $this->isUserEntitledForFlashCards( $chapterId ) ) {
 
-				$this->clsDAO->resetLevelOfAllCards(
+				if( $this->requestObj->entityType == 'Chapter' ) {
+					$this->clsDAO->resetLevelOfAllCards(
 										ExecutionContext::getCurrentUserName(), 
 										$chapterId,
 										$this->requestObj->level ) ;
+				}
+				else if( $this->requestObj->entityType == 'Exercise' ) {
+					$this->clsDAO->activateDifficultExerciseCards(
+										ExecutionContext::getCurrentUserName(), 
+										$chapterId ) ;
+				}
+				else {
+					$response->responseCode = APIResponse::SC_ERR_BAD_REQUEST ;
+					$response->responseBody = "Bad entity type " . 
+					                          $this->requestObj->entityType ;
+					return ;
+				}
 
 				$this->lsDAO->refreshProgressSnapshotOfLatestSession( 
 										ExecutionContext::getCurrentUserName(), 
