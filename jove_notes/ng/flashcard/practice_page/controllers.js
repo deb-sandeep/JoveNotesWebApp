@@ -10,8 +10,11 @@ var PROGRESS_STAGE_GREEN = 0 ;
 var PROGRESS_STAGE_AMBER = 1 ;
 var PROGRESS_STAGE_RED   = 2 ;
 
-var FATIGUE_UPPER_THRESHOLD = 30 ;
-var FATIGUE_LOWER_THRESHOLD = -30 ;
+var FATIGUE_UPPER_THRESHOLD = 50 ;
+var FATIGUE_LOWER_THRESHOLD = -50 ;
+var HYSTERIS_PCT = 0.25 ;
+var FATIGUE_UPPER_HYSTERISIS_THRESHOLD = FATIGUE_UPPER_THRESHOLD*( 1 - HYSTERIS_PCT ) ;
+var FATIGUE_LOWER_HYSTERISIS_THRESHOLD = FATIGUE_LOWER_THRESHOLD*( 1 - HYSTERIS_PCT ) ;
 
 // ---------------- Local variables --------------------------------------------
 var ratingMatrix = new RatingMatrix() ;
@@ -73,6 +76,9 @@ $scope.gradingButtonPlacement = "right" ;
 
 $scope.projectedTimeLeft = 0 ;
 $scope.currentFatigueLevel = 0 ;
+$scope.inUpperHysterisZone = false ;
+$scope.inLowerHysterisZone = false ;
+$scope.inNormalFatigueZone = false ;
 $scope.currentAnsTime = 0 ;
 
 
@@ -270,10 +276,7 @@ $scope.rateCard = function( rating ) {
     var fatiqueContribution = ratingMatrix.getFatigueContribution( 
                                                  curLevel, rating, timeSpent ) ;
 
-    log.debug( "Fatigue contribution = " + fatiqueContribution ) ;
     $scope.currentFatigueLevel += fatiqueContribution ;
-
-    log.debug( "Current Fatigue level = " + $scope.currentFatigueLevel ) ;
 
     showNextCard() ;
 }
@@ -492,7 +495,32 @@ function rearrangeQuestionsForFatigueBusting() {
 
     var targetQIndex = 0 ;
 
-    if( $scope.currentFatigueLevel >= FATIGUE_UPPER_THRESHOLD ) {
+    if( $scope.currentFatigueLevel < FATIGUE_UPPER_HYSTERISIS_THRESHOLD && 
+        $scope.currentFatigueLevel > FATIGUE_LOWER_HYSTERISIS_THRESHOLD ) {
+
+        $scope.inNormalFatigueZone = true ;
+        $scope.inUpperHysterisZone = false ;
+        $scope.inLowerHysterisZone = false ;
+    }
+    else if( $scope.currentFatigueLevel >= FATIGUE_UPPER_HYSTERISIS_THRESHOLD ) {
+
+        if( $scope.currentFatigueLevel >= FATIGUE_UPPER_THRESHOLD ) {
+            $scope.inUpperHysterisZone = true ;
+            $scope.inLowerHysterisZone = false ;
+            $scope.inNormalFatigueZone = false ;
+        }
+    }
+    else if( $scope.currentFatigueLevel <= FATIGUE_LOWER_HYSTERISIS_THRESHOLD ) {
+
+        if( $scope.currentFatigueLevel <= FATIGUE_LOWER_THRESHOLD ) {
+            $scope.inUpperHysterisZone = false ;
+            $scope.inLowerHysterisZone = true ;
+            $scope.inNormalFatigueZone = false ;
+        }
+    }
+
+    if( $scope.inUpperHysterisZone ) {
+
         // Present a question with minimum fatigue potential
         var minFaitiguePotential = $scope.questionsForSession[0].learningStats.fatiguePotential ;
 
@@ -506,7 +534,8 @@ function rearrangeQuestionsForFatigueBusting() {
             }
         }
     }
-    else if( $scope.currentFatigueLevel <= FATIGUE_LOWER_THRESHOLD ) {
+    else if( $scope.inLowerHysterisZone ) {
+
         // Present a quesiton with maximum fatigue potential
         var qIndexWithMaxFatiguePotential = 0 ;
         var maxFaitiguePotential = $scope.questionsForSession[0].learningStats.fatiguePotential ;
