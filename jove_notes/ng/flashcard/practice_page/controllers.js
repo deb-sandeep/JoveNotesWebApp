@@ -576,10 +576,16 @@ function updateProjectedTimeLeft() {
 
 function computeRecommendPromoteFlag() {
 
+    if( $scope.$parent.studyCriteria.forceAPMControls ) {
+        $scope.recommendPromoteToMastered = true ;
+        $scope.recommendPromoteToMasteredWithoutScore = true ;
+        return ;
+    }
+
     $scope.recommendPromoteToMastered = false ;
     $scope.recommendPromoteToMasteredWithoutScore = false ;
 
-    // We don't recommend promotion to mastered in non-assisted mode.
+    // Don't recommend promotion to mastered in non-assisted mode.
     if( !$scope.$parent.studyCriteria.assistedStudy ) return ;
 
     // If the question is already at L3 show the auto promote without score

@@ -18,6 +18,7 @@ function StudyCriteria() {
     this.engageFatigueBuster    = true ;
     this.skipNegativeGrading    = false ;
     this.shuffleQuestions       = false ;
+    this.forceAPMControls       = false ;
 
     this.serialize = function() {
         $.cookie.json = true ;
@@ -38,6 +39,7 @@ function StudyCriteria() {
             this.engageFatigueBuster    = crit.engageFatigueBuster ;
             this.skipNegativeGrading    = crit.skipNegativeGrading ;
             this.shuffleQuestions       = crit.shuffleQuestions ;
+            this.forceAPMControls       = crit.forceAPMControls ;
         } ;
     }
 

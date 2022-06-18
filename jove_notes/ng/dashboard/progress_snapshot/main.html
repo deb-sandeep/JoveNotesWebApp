@@ -25,6 +25,11 @@
                         <span class="glyphicon glyphicon-indent-left"  ng-hide="syllabusMerged"></span>
                         <span class="glyphicon glyphicon-indent-right" ng-show="syllabusMerged"></span>
                     </button>
+                    <button type="button" class="btn btn-default btn-xs"
+                            ng-click="toggleShowPercentage()">
+                        <span ng-hide="showPercentage">12%</span>
+                        <span ng-show="showPercentage">123</span>
+                    </button>
                 </th>
                 <!--
                 <th style="width:30px;text-align:center;">
@@ -45,7 +50,7 @@
                 <th></th>
                 <th>
                     <table class="dashboard-stats">
-                        <tr>
+                        <tr ng-if="!showPercentage">
                             <td class="text-right TOT">T  </td>
                             <td class="text-right NS" >NS </td>
                             <td class="text-right L0" >L0 </td>
@@ -54,6 +59,16 @@
                             <td class="text-right L3" >L3 </td>
                             <td class="text-right MAS">MAS</td>
                         </tr>
+                        <tr ng-if="showPercentage">
+                            <td class="text-right TOT">T  </td>
+                            <td class="text-right NS" >NS%</td>
+                            <td class="text-right L0" >L0%</td>
+                            <td class="text-right L1" >L1%</td>
+                            <td class="text-right L2" >L2%</td>
+                            <td class="text-right L3" >L3%</td>
+                            <td class="text-right MAS">MA%</td>
+                        </tr>
+
                     </table>
                 </th>
                 <th></th>
@@ -120,7 +135,7 @@
                 </td>
                 <td>
                     <table class="dashboard-stats">
-                        <tr>
+                        <tr ng-if="!showPercentage">
                             <td class="text-right TOT">{{rowData.totalCards      }}</td>
                             <td class="text-right NS" >{{rowData.notStartedCards }}</td>
                             <td class="text-right L0" >{{rowData.l0Cards         }}</td>
@@ -128,7 +143,16 @@
                             <td class="text-right L2" >{{rowData.l2Cards         }}</td>
                             <td class="text-right L3" >{{rowData.l3Cards         }}</td>
                             <td class="text-right MAS">{{rowData.masteredCards   }}</td>
-                            </tr>
+                        </tr>
+                        <tr ng-if="showPercentage">
+                            <td class="text-right TOT">{{rowData.totalCards}}</td>
+                            <td class="text-right NS" >{{rowData.pctNS*100  | number:0}}</td>
+                            <td class="text-right L0" >{{rowData.pctL0*100  | number:0}}</td>
+                            <td class="text-right L1" >{{rowData.pctL1*100  | number:0}}</td>
+                            <td class="text-right L2" >{{rowData.pctL2*100  | number:0}}</td>
+                            <td class="text-right L3" >{{rowData.pctL3*100  | number:0}}</td>
+                            <td class="text-right MAS">{{rowData.pctMAS*100 | number:0}}</td>
+                        </tr>
                     </table>
                 </td>
                 <td style="width:50px" align="center">

@@ -14,6 +14,21 @@
     <label for="push"> Enable remote flash</label>
 </div>
 
+
+<div class="form-group pad-10px">
+    <input id="shuffleQuestions" 
+           type="checkbox" 
+           ng-model="studyCriteria.shuffleQuestions" />
+    <label for="shuffleQuestions"> Shuffle questions</label>
+</div>
+
+<div class="form-group pad-10px">
+    <input id="engageFatigueBuster" 
+           type="checkbox" 
+           ng-model="studyCriteria.engageFatigueBuster" />
+    <label for="engageFatigueBuster"> Engage fatigue buster</label>
+</div>
+
 <div class="form-group pad-10px">
     <input id="assistedStudy" 
            type="checkbox" 
@@ -30,13 +45,6 @@
 </div>
 
 <div class="form-group pad-10px">
-    <input id="engageFatigueBuster" 
-           type="checkbox" 
-           ng-model="studyCriteria.engageFatigueBuster" />
-    <label for="engageFatigueBuster"> Engage fatigue buster</label>
-</div>
-
-<div class="form-group pad-10px">
     <input id="skipNegativeGrading" 
            type="checkbox" 
            ng-model="studyCriteria.skipNegativeGrading" />
@@ -44,8 +52,8 @@
 </div>
 
 <div class="form-group pad-10px">
-    <input id="shuffleQuestions" 
+    <input id="forceAPMControls" 
            type="checkbox" 
-           ng-model="studyCriteria.shuffleQuestions" />
-    <label for="shuffleQuestions"> Shuffle questions</label>
+           ng-model="studyCriteria.forceAPMControls" />
+    <label for="forceAPMControls"> Force APM controls</label>
 </div>
