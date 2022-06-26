@@ -576,14 +576,16 @@ function updateProjectedTimeLeft() {
 
 function computeRecommendPromoteFlag() {
 
-    if( $scope.$parent.studyCriteria.forceAPMControls ) {
-        $scope.recommendPromoteToMastered = true ;
-        $scope.recommendPromoteToMasteredWithoutScore = true ;
-        return ;
-    }
-
     $scope.recommendPromoteToMastered = false ;
     $scope.recommendPromoteToMasteredWithoutScore = false ;
+
+    if( $scope.$parent.studyCriteria.forceAPMControls ) {
+        if( $scope.currentQuestion.learningStats.currentLevel != 'L0' ) {
+            $scope.recommendPromoteToMastered = true ;
+            $scope.recommendPromoteToMasteredWithoutScore = true ;
+        }
+        return ;
+    }
 
     // Don't recommend promotion to mastered in non-assisted mode.
     if( !$scope.$parent.studyCriteria.assistedStudy ) return ;
