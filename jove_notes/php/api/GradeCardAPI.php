@@ -147,6 +147,19 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 										$this->score,
 										$timeSpent ) ;
 		}
+		else {
+			$rating = "E" ;
+			$timeSpent = 0 ;
+			$score = 0 ;
+
+			$this->cardRatingDAO->insertRating( 
+										$this->requestObj->cardId, 
+										ExecutionContext::getCurrentUserName(), 
+										$this->requestObj->sessionId,
+										$rating,
+										$score,
+										$timeSpent ) ;
+		}
 	}
 
 	private function updateSessionSummary() {
