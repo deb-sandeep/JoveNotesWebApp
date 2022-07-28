@@ -32,6 +32,8 @@ function RowData( rowType, name, rowId, parentRowId ) {
     this.pctL2              = 0 ;
     this.pctL3              = 0 ;
     this.pctMAS             = 0 ;
+    this.projectedMarks     = 0 ;
+
     this.numSSRMaturedCards = 0 ;
     this.preparednessScore  = 0 ;
     this.retentionScore     = 0 ;
@@ -163,9 +165,13 @@ function RowData( rowType, name, rowId, parentRowId ) {
         this.pctL2               = this.l2Cards         / this.totalCards ;
         this.pctL3               = this.l3Cards         / this.totalCards ;
         this.pctMAS              = this.masteredCards   / this.totalCards ;
-        this.numSSRMaturedCards  = chapter.numSSRMaturedCards ;
-        this.preparednessScore   = chapter.preparednessScore ;
-        this.retentionScore      = chapter.retentionScore ;
+        this.projectedMarks      = ( this.pctMAS + this.pctL3 + 
+                                     this.pctL2*0.75 + this.pctL1*0.5 + 
+                                     this.pctL0*0.25 )*100 ;
+
+        this.numSSRMaturedCards     = chapter.numSSRMaturedCards ;
+        this.preparednessScore      = chapter.preparednessScore ;
+        this.retentionScore         = chapter.retentionScore ;
 
         this.isNotesAuthorized      = chapter.isNotesAuthorized ;
         this.isFlashcardAuthorized  = chapter.isFlashcardAuthorized ;
@@ -819,6 +825,9 @@ function updateCardCounts( chapter, subjectRD, syllabusRD ) {
     subjectRD.pctL2                = subjectRD.l2Cards         / subjectRD.totalCards ;
     subjectRD.pctL3                = subjectRD.l3Cards         / subjectRD.totalCards ;
     subjectRD.pctMAS               = subjectRD.masteredCards   / subjectRD.totalCards ;
+    subjectRD.projectedMarks       = ( subjectRD.pctMAS + subjectRD.pctL3 + 
+                                       subjectRD.pctL2*0.75 + subjectRD.pctL1*0.5 + 
+                                       subjectRD.pctL0*0.25 )*100 ;
     
     syllabusRD.totalCards         += chapter.totalCards ;
     syllabusRD.notStartedCards    += chapter.notStartedCards ;
@@ -834,6 +843,9 @@ function updateCardCounts( chapter, subjectRD, syllabusRD ) {
     syllabusRD.pctL2               = syllabusRD.l2Cards         / syllabusRD.totalCards ;
     syllabusRD.pctL3               = syllabusRD.l3Cards         / syllabusRD.totalCards ;
     syllabusRD.pctMAS              = syllabusRD.masteredCards   / syllabusRD.totalCards ;
+    syllabusRD.projectedMarks      = ( syllabusRD.pctMAS + syllabusRD.pctL3 + 
+                                       syllabusRD.pctL2*0.75 + syllabusRD.pctL1*0.5 + 
+                                       syllabusRD.pctL0*0.25 )*100 ;
 }
 
 function drawProgressBar( canvasId, total, vN, v0, v1, v2, v3, v4 ) {

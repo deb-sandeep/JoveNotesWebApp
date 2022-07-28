@@ -46,6 +46,7 @@
                     <div ng-include="'/apps/jove_notes/ng/dashboard/progress_snapshot/bulk_action_menu.html'">
                     </div>
                 </th>
+                <th style="width:40px" class="text-center">P</th>
                 <th class="text-center">Meter</th>
                 <th></th>
                 <th>
@@ -120,6 +121,11 @@
                     <input id="push" type="checkbox" ng-change="rowData.selectionChanged()" 
                            ng-model="rowData.isRowSelected"
                            ui-indeterminate="rowData.isPartiallySelected" />
+                </td>
+                <td>
+                    <div class="projected-marks">
+                    {{rowData.projectedMarks | number:0}}
+                    </div>
                 </td>
                 <td class="text-center">
                     <canvas width='100' height='20' id='canvas-{{rowData.rowId}}'>

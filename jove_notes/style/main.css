@@ -115,6 +115,13 @@ p {
 	color: #757575 !important;
 }
 
+.projected-marks {
+	background-color: #E7E7E7 !important;
+	font-size: 11.5px;
+	padding: 5px;
+	text-align: right;
+}
+
 .dashboard-stats {
 	border-collapse:separate;
 	border-spacing: 0;
