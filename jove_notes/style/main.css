@@ -409,3 +409,59 @@ table.pure-table ol {
     color: green ;
     text-align:center ;
 }
+
+.compact-right-controls {
+
+  position: fixed;
+  right: 5px;
+  bottom: 60px;
+  width: 150px;
+  height: 150px;
+  margin-top: 0em;	
+}
+
+.compact-left-controls {
+
+  position: fixed;
+  left: 5px;
+  bottom: 60px;
+  width: 150px;
+  height: 150px;
+  margin-top: 0em;	
+}
+
+.floating-ctrl-11 {
+
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	width: 67px;
+	height: 67px;
+}
+
+.floating-ctrl-12 {
+
+	position: absolute;
+	top: 5px;
+	left: 77px;
+	width: 67px;
+	height: 67px;
+}
+
+.floating-ctrl-21 {
+
+	position: absolute;
+	top: 77px;
+	left: 5px;
+	width: 67px;
+	height: 67px;
+}
+
+.floating-ctrl-22 {
+
+	position: absolute;
+	top: 77px;
+	left: 77px;
+	width: 67px;
+	height: 67px;
+}

@@ -25,13 +25,24 @@
                 </a>
             </li>
             <li role="presentation">
-                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L0-Hdr')">Toggle Title Header</a>
+                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L0-Hdr')">
+                Toggle Title Header
+                </a>
             </li>
             <li role="presentation">
-                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L1-Hdr')">Toggle Session Header</a>
+                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L1-Hdr')">
+                Toggle Session Header
+                </a>
             </li>
             <li role="presentation">
-                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L2-Hdr')">Toggle Card Header</a>
+                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L2-Hdr')">
+                Toggle Card Header
+                </a>
+            </li>
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="toggleCompactControls()">
+                Toggle Compact Controls
+                </a>
             </li>
             <li role="presentation">
                 <a role="menuitem" tabindex="-1" ng-click="markForReview()">
@@ -328,13 +339,24 @@
                 </a>
             </li>
             <li role="presentation">
-                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L0-Hdr')">Toggle Title Header</a>
+                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L0-Hdr')">
+                Toggle Title Header
+                </a>
             </li>
             <li role="presentation">
-                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L1-Hdr')">Toggle Session Header</a>
+                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L1-Hdr')">
+                Toggle Session Header
+                </a>
             </li>
             <li role="presentation">
-                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L2-Hdr')">Toggle Card Header</a>
+                <a role="menuitem" tabindex="-1" ng-click="toggleDisplay('L2-Hdr')">
+                Toggle Card Header
+                </a>
+            </li>
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" ng-click="toggleCompactControls()">
+                Toggle Compact Controls
+                </a>
             </li>
             <li role="presentation">
                 <a role="menuitem" tabindex="-1" ng-click="markForReview()">
@@ -371,3 +393,50 @@
     </div>
 </div>
 
+<div ng-show="!questionMode && showCompactControl && gradingButtonPlacement == 'right'" 
+     class="compact-right-controls">
+
+    <button type="button" 
+            class="btn btn-success btn-lg floating-ctrl-11"
+            ng-click="pushAnswer()"
+            ng-show="studyCriteria.push">
+        <span class="glyphicon glyphicon-share-alt"></span>
+    </button>
+
+    <button type="button" 
+            class="btn btn-info btn-lg floating-ctrl-12"
+            ng-click="rateCard( 'A' )">&nbsp;</button> 
+
+    <button type="button" 
+            class="btn btn-warning btn-lg floating-ctrl-21"
+            ng-click="rateCard( 'P' )">&nbsp;</button>
+
+    <button type="button" 
+            class="btn btn-danger btn-lg floating-ctrl-22"
+            ng-click="rateCard( 'H' )">&nbsp;</button>
+
+</div>
+
+<div ng-show="!questionMode && showCompactControl && gradingButtonPlacement == 'left'" 
+     class="compact-left-controls">
+
+    <button type="button" 
+            class="btn btn-info btn-lg floating-ctrl-11"
+            ng-click="rateCard( 'A' )">&nbsp;</button> 
+
+    <button type="button" 
+            class="btn btn-success btn-lg floating-ctrl-12"
+            ng-click="pushAnswer()"
+            ng-show="studyCriteria.push">
+        <span class="glyphicon glyphicon-share-alt"></span>
+    </button>
+
+    <button type="button" 
+            class="btn btn-danger btn-lg floating-ctrl-21"
+            ng-click="rateCard( 'H' )">&nbsp;</button>
+
+    <button type="button" 
+            class="btn btn-warning btn-lg floating-ctrl-22"
+            ng-click="rateCard( 'P' )">&nbsp;</button>
+
+</div>

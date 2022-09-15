@@ -45,10 +45,11 @@ var initialQADivFontSize = -1 ;
 var currentFontZoomDelta = 0 ;
 
 // ---------------- Controller variables ---------------------------------------
-$scope.showL0Header     = true ;
-$scope.showL1Header     = true ;
-$scope.showL2Header     = true ;
-$scope.showFooterDropup = true ;
+$scope.showL0Header       = true ;
+$scope.showL1Header       = true ;
+$scope.showL2Header       = true ;
+$scope.showFooterDropup   = true ;
+$scope.showCompactControl = true ;
 
 $scope.bodyDivStyle = { top : 80, bottom : 60 } ;
 
@@ -185,6 +186,10 @@ $scope.toggleDisplay = function( displayId ) {
         $scope.showL2Header = !$scope.showL2Header ; 
     }
     setTimeout( resizeBody, 10 ) ;
+}
+
+$scope.toggleCompactControls = function() {
+    $scope.showCompactControl = !$scope.showCompactControl ;
 }
 
 $scope.randomizeCards = function() {
