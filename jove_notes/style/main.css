@@ -413,20 +413,20 @@ table.pure-table ol {
 .compact-right-controls {
 
   position: fixed;
-  right: 5px;
-  bottom: 60px;
-  width: 150px;
-  height: 150px;
+  right: 10px;
+  bottom: 70px;
+  width: 125px;
+  height: 125px;
   margin-top: 0em;	
 }
 
 .compact-left-controls {
 
   position: fixed;
-  left: 5px;
-  bottom: 60px;
-  width: 150px;
-  height: 150px;
+  left: 10px;
+  bottom: 70px;
+  width: 125px;
+  height: 125px;
   margin-top: 0em;	
 }
 
@@ -435,33 +435,33 @@ table.pure-table ol {
 	position: absolute;
 	top: 5px;
 	left: 5px;
-	width: 67px;
-	height: 67px;
+	width: 50px;
+	height: 50px;
 }
 
 .floating-ctrl-12 {
 
 	position: absolute;
 	top: 5px;
-	left: 77px;
-	width: 67px;
-	height: 67px;
+	left: 70px;
+	width: 50px;
+	height: 50px;
 }
 
 .floating-ctrl-21 {
 
 	position: absolute;
-	top: 77px;
+	top: 70px;
 	left: 5px;
-	width: 67px;
-	height: 67px;
+	width: 50px;
+	height: 50px;
 }
 
 .floating-ctrl-22 {
 
 	position: absolute;
-	top: 77px;
-	left: 77px;
-	width: 67px;
-	height: 67px;
+	top: 70px;
+	left: 70px;
+	width: 50px;
+	height: 50px;
 }
