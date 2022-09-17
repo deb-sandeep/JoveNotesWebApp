@@ -119,6 +119,7 @@ $scope.sessionStats = {
 $scope.sessionDuration = 0 ;
 $scope.timePerQuestion = 0 ;
 $scope.todayStudyDuration = 0 ;
+$scope.curSessionDuration = 0 ;
 
 $scope.messageForEndPage = "Session Ended." ;
 

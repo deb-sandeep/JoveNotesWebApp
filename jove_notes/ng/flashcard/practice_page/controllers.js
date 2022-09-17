@@ -754,6 +754,9 @@ function refreshClocks() {
     else {
         $scope.$parent.sessionDuration = durationTillNowInMillis ;
     }
+
+    $scope.$parent.curSessionDuration = durationTillNowInMillis ;
+
     $scope.$digest() ;
 }
 
