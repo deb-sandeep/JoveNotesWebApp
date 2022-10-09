@@ -189,7 +189,7 @@ function runMesssageFetchPump() {
             msgPumpEmptyCycles++ ;
 
             if( msgPumpEmptyCycles < 5 ) {
-                that.msgPumpDelay = 3000 ;
+                that.msgPumpDelay = 2000 ;
             }
             else if( msgPumpEmptyCycles >= 5 && msgPumpEmptyCycles < 10 ) {
                 that.msgPumpDelay = 5000 ;
@@ -203,13 +203,14 @@ function runMesssageFetchPump() {
         }
         else {
             log.debug( "Payload received at " + msgPumpEmptyCycles ) ;
-            that.msgPumpDelay = 3000 ;
+            that.msgPumpDelay = 1000 ;
         }
 
         log.debug( "Will invoke pump after " + (that.msgPumpDelay/1000) + " seconds." ) ;
         setTimeout( runMesssageFetchPump, that.msgPumpDelay ) ;
     })
     .error( function( data ){
+        that.msgPumpDelay = 5000 ;
         log.error( "Error getting remote flash messages." + data ) ;
         $scope.addErrorAlert( "Could not receive remote flash messages." + data ) ;
 
