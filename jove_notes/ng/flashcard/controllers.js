@@ -2,9 +2,10 @@ flashCardApp.controller( 'FlashCardController', function( $scope, $http, $locati
 // ---------------- Constants and inner class definition -----------------------
 function StudyCriteria() {
     
-    this.maxCards       = 10000 ;
-    this.maxTime        = -1 ;
-    this.maxNewCards    = 10000 ;
+    this.maxCards            = 10000 ;
+    this.maxTime             = -1 ;
+    this.maxResurrectedCards = 10000 ;
+    this.maxNewCards         = 10000 ;
 
     this.currentLevelFilters       = [] ;
     this.learningEfficiencyFilters = [] ;
@@ -31,6 +32,7 @@ function StudyCriteria() {
         if( typeof crit != 'undefined' ) {
             this.maxCards               = crit.maxCards ;
             this.maxTime                = crit.maxTime ;
+            this.maxResurrectedCards    = crit.maxResurrectedCards ;
             this.maxNewCards            = crit.maxNewCards ;
             this.strategy               = crit.strategy ;
             this.push                   = crit.push ;
@@ -176,6 +178,7 @@ $scope.$watchGroup( ['studyCriteria.currentLevelFilters',
                      'studyCriteria.difficultyFilters',
                      'studyCriteria.cardTypeFilters',
                      'studyCriteria.maxCards',
+                     'studyCriteria.maxResurrectedCards',
                      'studyCriteria.maxNewCards',
                      'studyCriteria.excludeMarkedForReview'], 
                     function( newVals, oldVals ) {

@@ -29,6 +29,16 @@
 	padding:5px;
 }
 
+#flashCardADiv {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#flashCardQDiv {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
 /* -------------------------------------------------------------------------- */
 /* Dynamic question - Matching                                                */
 /* -------------------------------------------------------------------------- */
