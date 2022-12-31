@@ -10,74 +10,78 @@
         <div class="panel-heading" style="padding: 2px 2px;">
             <table width="100%">
             <tr>
-            <td width="25%">
+            <td width="15%">
                 <span class="glyphicon glyphicon-question-sign"></span>
                 &nbsp;&nbsp;
                 <span class="panel-title">Question {{$index + 1}}</span>
                 &nbsp;&nbsp;
-               <span class="glyphicon glyphicon-star"
+                <span class="glyphicon glyphicon-star"
                       ng-show="currentQuestion._sessionVars.marked">
                 </span>
             </td>
             <td width="60%">
-                <div class="btn-group btn-group-justified" role="group">
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-default btn-sm" 
-                                disabled="true">
-                            <span class="badge NS gi-1-25x"
-                                  ng-show="showTimeDuration( currentQuestion )">
-                                {{currentQuestion._sessionVars.timeSpent | duration}}
-                            </span>                
-                            <span class="badge NS gi-1-25x"
-                                  ng-hide="showTimeDuration( currentQuestion )">
-                                Not Attempted
-                            </span>                
-                        </button>
-                    </div>
-                    <div class="btn-group" role="group" 
-                         ng-show="showRatingButton( currentQuestion )">
-                        <button type="button" class="btn btn-danger btn-sm"
-                                ng-click="rateSolution( 'H', currentQuestion )">
-                        &nbsp;
-                        </button>
-                    </div>
-                    <div class="btn-group" role="group"
-                         ng-show="showRatingButton( currentQuestion )">
-                        <button type="button" class="btn btn-warning btn-sm"
-                                ng-click="rateSolution( 'P', currentQuestion )">
-                        &nbsp;
-                        </button>
-                    </div>
-                    <div class="btn-group" role="group"
-                         ng-show="showRatingButton( currentQuestion )">
-                        <button type="button" class="btn btn-info btn-sm"
-                                ng-click="rateSolution( 'A', currentQuestion )">
-                        &nbsp;
-                        </button>
-                    </div>
-                    <div class="btn-group" role="group"
-                         ng-show="showRatingButton( currentQuestion )">
-                        <button type="button" class="btn btn-success btn-sm"
-                                ng-click="rateSolution( 'E', currentQuestion )">
-                        &nbsp;
-                        </button>
-                    </div>
-                    <div class="btn-group" role="group"
-                         ng-show="currentQuestion._sessionVars.rating != null">
-                        <button type="button" 
-                                ng-class="currentQuestion._sessionVars.ratingTextCls"
-                                disabled="true">
-                        {{currentQuestion._sessionVars.ratingText}}
-                        </button>
-                    </div>
-                    <div class="btn-group" role="group"
-                         ng-show="currentQuestion._sessionVars.rating != null">
-                        <button type="button" 
-                                ng-class="currentQuestion._sessionVars.ratingTextCls"
-                                disabled="true">
-                        {{currentQuestion._sessionVars.scoreEarned}}
-                        </button>
-                    </div>
+                <div>
+                    <span class="badge NS gi-1-1x"
+                          ng-show="showTimeDuration( currentQuestion )">
+                        {{currentQuestion._sessionVars.timeSpent | duration}}
+                    </span>
+                    &nbsp;
+                    <span class="badge NS gi-1-1x"
+                          ng-show="showTimeDuration( currentQuestion )">
+                        {{currentQuestion._sessionVars.attemptTime | duration}}
+                    </span>                
+                    &nbsp;
+                    <span class="badge NS gi-1-1x"
+                          ng-show="showTimeDuration( currentQuestion )">
+                        {{currentQuestion._sessionVars.reviewTime | duration}}
+                    </span>                
+                    &nbsp;
+                    <span class="badge NS gi-1-1x"
+                          ng-hide="showTimeDuration( currentQuestion )">
+                        Not Attempted
+                    </span>                
+                    <button ng-show="showRatingButton( currentQuestion )"
+                            type="button" 
+                            class="btn btn-danger btn-sm"
+                            ng-click="rateSolution( 'H', currentQuestion )"
+                            style="width:100px;">
+                    &nbsp;
+                    </button>
+                    <button ng-show="showRatingButton( currentQuestion )"
+                            type="button" 
+                            class="btn btn-warning btn-sm"
+                            ng-click="rateSolution( 'P', currentQuestion )"
+                            style="width:100px;">
+                    &nbsp;
+                    </button>
+                    <button ng-show="showRatingButton( currentQuestion )"
+                            type="button" 
+                            class="btn btn-info btn-sm"
+                            ng-click="rateSolution( 'A', currentQuestion )"
+                            style="width:100px;">
+                    &nbsp;
+                    </button>
+                    <button ng-show="showRatingButton( currentQuestion )"
+                            type="button" 
+                            class="btn btn-success btn-sm"
+                            ng-click="rateSolution( 'E', currentQuestion )"
+                            style="width:100px;">
+                    &nbsp;
+                    </button>
+                    <button ng-show="currentQuestion._sessionVars.rating != null"
+                            type="button" 
+                            ng-class="currentQuestion._sessionVars.ratingTextCls"
+                            disabled="true"
+                            style="width:125px;">
+                    {{currentQuestion._sessionVars.ratingText}}
+                    </button>
+                    <button ng-show="currentQuestion._sessionVars.rating != null"
+                            type="button" 
+                            ng-class="currentQuestion._sessionVars.ratingTextCls"
+                            disabled="true"
+                            style="width:40px;">
+                    {{currentQuestion._sessionVars.scoreEarned}}
+                    </button>
                 </div>
             </td>
             <td align="right">

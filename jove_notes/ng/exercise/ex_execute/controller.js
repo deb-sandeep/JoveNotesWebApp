@@ -96,14 +96,13 @@ $scope.getQuestionPanelClass = function( question ) {
     return cls ;
 }
 
-$scope.attemptQuestion = function( question ) {
+$scope.attemptQuestion = function( question, attemptType ) {
 
     $scope.currentQuestion = question ;
     $scope.timeSpentOnCurrentQuestion = question._sessionVars.timeSpent ;
 
     // TODO: Make a parent scope level variable to track in question pause time
     //       Reset it here and make use of it during the done attempt question
-
     currentQuestionAttemptStartTime = new Date().getTime() ;
     showAttemptScreen() ;
 }
@@ -112,15 +111,21 @@ $scope.doneAttemptQuestion = function( question ) {
 
     // TODO: Use the in question pause time to compute time spent and reset it 
     //        after using. 
+    var timeSpentInAttempt = new Date().getTime() - currentQuestionAttemptStartTime ;
+
     question._sessionVars.numAttempts++ ;
-    question._sessionVars.timeSpent += new Date().getTime() - currentQuestionAttemptStartTime ;
+    question._sessionVars.timeSpent += timeSpentInAttempt ;
 
     if( question._sessionVars.numAttempts == 1 ) {
         $scope.numQNotStarted-- ;
+        question._sessionVars.attemptTime = timeSpentInAttempt ;
     }
-    else if( question._sessionVars.numAttempts == 2 ) {
-        $scope.numQNotReviewed-- ;
-        $scope.numQDone++ ;
+    else {
+        if( question._sessionVars.numAttempts == 2 ) {
+            $scope.numQNotReviewed-- ;
+            $scope.numQDone++ ;
+        }
+        question._sessionVars.reviewTime += timeSpentInAttempt ;
     }
 
     currentQuestionAttemptStartTime = 0 ;
@@ -253,6 +258,8 @@ function associateSessionVariablesToQuestions( questions ) {
             numAttempts  : 0,
             marked       : false,
             timeSpent    : 0,
+            attemptTime  : 0,
+            reviewTime   : 0,
             rating       : null,
             ratingText   : "Not Rated",
             ratingTextCls: "btn btn-sm",
