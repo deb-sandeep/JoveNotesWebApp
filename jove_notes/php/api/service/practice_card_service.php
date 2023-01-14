@@ -49,7 +49,8 @@ class PracticeCardService {
 
     public function getPracticeCardDetailsForChapter( $chapterId ) {
 
-        $meta = $this->chapterDAO->getChapterMetaData( $chapterId ) ;
+        $meta     = $this->chapterDAO->getChapterMetaData( $chapterId ) ;
+        $sections = $this->chapterDAO->getChapterSections( $chapterId ) ;
         if( $meta == null ) {
             throw new Exception( "Chapter not found" ) ;
         }
@@ -57,7 +58,7 @@ class PracticeCardService {
         $this->parseChapterMeta( $meta ) ;
         $respObj = array() ;
 
-        $respObj[ "chapterDetails" ] = $this->constructChapterDetails( $meta ) ;
+        $respObj[ "chapterDetails" ] = $this->constructChapterDetails( $meta, $sections ) ;
         $respObj[ "deckDetails"    ] = $this->constructDeckDetails() ;
         $respObj[ "questions"      ] = $this->constructQuestions() ;
 
@@ -76,7 +77,7 @@ class PracticeCardService {
         $this->num_VH       = $meta[ "num_VH"     ] ;
     }
 
-    private function constructChapterDetails( $meta ) {
+    private function constructChapterDetails( $meta, $sections ) {
 
         $chapterDetail = array() ;
 
@@ -87,6 +88,7 @@ class PracticeCardService {
         $chapterDetail[ "subChapterNumber" ] = $meta[ "sub_chapter_num" ] ;
         $chapterDetail[ "chapterName"      ] = $meta[ "chapter_name"    ] ;
         $chapterDetail[ "scriptBody"       ] = base64_encode( $meta["script_body"] ) ;
+        $chapterDetail[ "sections"         ] = $sections ;
 
         return $chapterDetail ;
     }
@@ -246,6 +248,7 @@ class PracticeCardService {
         $learningStats = array() ;
 
         $question[ "questionId"      ] = $card[ "card_id" ] ;
+        $question[ "section"         ] = $card[ "section" ] ;
         $question[ "questionType"    ] = $card[ "card_type" ] ;
         $question[ "difficultyLevel" ] = $card[ "difficulty_level" ] ;
         $question[ "evalVars"        ] = $this->encodeEvalVars( $card[ "eval_vars" ] ) ;

@@ -8,6 +8,24 @@ class ChapterDAO extends AbstractDAO {
 		parent::__construct() ;
 	}
 
+	function getChapterSections( $chapterId ) {
+
+$query = <<< QUERY
+select 
+    section, selected
+from 
+    jove_notes.chapter_section
+where
+    chapter_id = $chapterId
+order by
+    section asc
+QUERY;
+
+		$colNames = [ "section", "selected" ] ;
+		
+		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
+	}	
+
 	function getChapterMetaData( $chapterId ) {
 
 $query = <<< QUERY
