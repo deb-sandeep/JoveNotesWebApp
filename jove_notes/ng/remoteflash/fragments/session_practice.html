@@ -19,6 +19,13 @@
 </div>
 <div ng-style="bodyDivStyle" class="container-fluid flashcardbody">
 	<div id="remoteFlashQDiv" align="center">
+        <div ng-show="currentQuestion.section != null"
+             style="padding-top: 3px;padding-bottom: 3px;">
+            <span class="badge muted"
+                  style="padding-top: 5px;padding-bottom: 5px;">
+              {{currentQuestion.section}}
+            </span>
+        </div>
 		<render-remote-flash-card-question></render-remote-flash-card-question>
 	</div>
 	<hr>

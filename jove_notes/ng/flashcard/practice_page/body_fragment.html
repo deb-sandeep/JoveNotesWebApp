@@ -1,4 +1,11 @@
 <div align="center" id="flashCardQDiv">
+	<div ng-show="currentQuestion.section != null"
+	     style="padding-top: 3px;padding-bottom: 3px;">
+		<span class="badge muted"
+		      style="padding-top: 5px;padding-bottom: 5px;">
+		  {{currentQuestion.section}}
+		</span>
+	</div>
 	<span class="glyphicon glyphicon-cloud-upload" 
 		  style="color: #6464FF"
 	      ng-show="pushQuestionSuccess"></span>
