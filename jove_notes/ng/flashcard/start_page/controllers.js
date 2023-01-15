@@ -41,7 +41,6 @@ function fetchAndProcessDataFromServer() {
 
     $http.get( "/jove_notes/api/FlashCard/" + $scope.$parent.chapterId )
          .success( function( data ){
-            log.debug( "Received response from server." ) ;
             $scope.processServerData( data ) ;
             renderGraphs() ;
          })

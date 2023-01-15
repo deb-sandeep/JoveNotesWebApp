@@ -35,4 +35,18 @@
 			</select>
 		</td>
 	</tr>
+	<tr>
+		<td class="form-group pad-5px" valign="top" colspan="2">
+			<label for="sectionFilter">Sections: &nbsp;&nbsp;
+				<span class="glyphicon glyphicon-check"
+				      ng-click="selectAllSections()"></span>
+			</label>
+			<select id="sectionFilter" 
+			        class="form-control" multiple="true" size="5" 
+			        ng-model="studyCriteria.sectionFilters"
+			        ng-options="item.section for item in chapterDetails.sections track by item.section"
+			        ng-change="sectionFilterChanged()">
+			</select>
+		</td>
+	</tr>
 </table>

@@ -26,6 +26,21 @@ QUERY;
 		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
 	}	
 
+	function updateChapterSection( $chapterId, $section, $selected ) {
+
+$query = <<< QUERY
+update 
+    jove_notes.chapter_section
+set
+	selected = $selected 
+where
+    chapter_id = $chapterId and
+    section = "$section"
+QUERY;
+
+		return parent::executeUpdate( $query ) ;
+	}	
+
 	function getChapterMetaData( $chapterId ) {
 
 $query = <<< QUERY

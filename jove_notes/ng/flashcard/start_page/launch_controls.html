@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-sm-2" style="height:70px;padding:2px">
+        <p style="padding-left:2px;">
+        <a type="button" class="btn btn-default btn-block gi-2x"
+           href="/apps/jove_notes/ng/dashboard/index.php"
+           style="height:50px;">
+            <span class="glyphicon glyphicon-eye-open"></span>
+        </a>
+        </p>
+    </div>
+    <div class="col-sm-2" style="height:70px;padding:2px">
+        <p style="padding-left:2px;">
+        <a type="button" class="btn btn-default btn-block gi-2x"
+           ng-click="skipChapter()"
+           style="height:50px;">
+            <span class="glyphicon glyphicon-step-forward"></span>
+        </a>
+        </p>
+    </div>
+    <div class="col-sm-2" style="height:70px;padding:2px">
+        <p style="padding-left:2px;">
+        <a type="button" class="btn btn-default btn-block gi-2x"
+           ng-click="shuffleChapter()"
+           ng-disabled="chapterIdsForNextSessions == null"
+           style="height:50px;">
+            <span class="glyphicon glyphicon-random"></span>
+        </a>
+        </p>
+    </div>
+    <div class="col-sm-6" style="height:70px;padding:2px">
+        <p style="padding-right:2px;">
+        <a type="button" class="btn btn-success btn-block gi-2x"
+           href="#PracticePage"
+           style="height:50px;">
+            Start &nbsp;
+            [{{totalCards}}] &nbsp;
+            ({{$parent.projectedDuration | duration}}) &nbsp;&nbsp;
+            <span class="glyphicon glyphicon-play"></span>
+        </a>
+        </p>
+    </div>
+</div>  

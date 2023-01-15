@@ -11,6 +11,7 @@ function StudyCriteria() {
     this.learningEfficiencyFilters = [] ;
     this.difficultyFilters         = [] ;
     this.cardTypeFilters           = [] ;
+    this.sectionFilters            = [] ;
 
     this.strategy               = "SSR" ;
     this.push                   = false ;
@@ -61,6 +62,25 @@ function StudyCriteria() {
         var diffLabelFilters    = this.difficultyFilters ;
         var cardTypeFilters     = this.cardTypeFilters ;
 
+        var filteredBySelectedSections = false ;
+
+        if( this.sectionFilters.length > 0 ) {
+            if( question.section != null ) {
+                filteredBySelectedSections = true ;
+                for( var i=0; i<this.sectionFilters.length; i++ ) {
+                    var selSec = this.sectionFilters[i] ;
+                    if( selSec.section == question.section ) {
+                        filteredBySelectedSections = false ;
+                        break ;
+                    }
+                }
+            }
+        }
+
+        if( filteredBySelectedSections ) {
+            return false ;
+        }
+
         if( cardTypeFilters.indexOf( elementType ) != -1 ) {
             if( currentLevelFilters.indexOf( currentLevel ) != -1 ) {
                 if( lrnEffLabelFilters.indexOf( lrnEffLabel ) != -1 ) {
@@ -70,6 +90,7 @@ function StudyCriteria() {
                 }
             }
         }
+
         return false ;
     }
 }
@@ -150,8 +171,6 @@ $scope.selectedStudyStrategy = null ;
 $scope.filteredCards = [] ;
 
 // ---------------- Main logic for the controller ------------------------------
-log.debug( "Executing FlashCardController." ) ;
-
 $scope.studyCriteria.deserialize() ;
 
 // -------------Scope watch functions ------------------------------------------
@@ -177,6 +196,7 @@ $scope.$watchGroup( ['studyCriteria.currentLevelFilters',
                      'studyCriteria.learningEfficiencyFilters',
                      'studyCriteria.difficultyFilters',
                      'studyCriteria.cardTypeFilters',
+                     'studyCriteria.sectionFilters',
                      'studyCriteria.maxCards',
                      'studyCriteria.maxResurrectedCards',
                      'studyCriteria.maxNewCards',
@@ -200,7 +220,6 @@ $scope.closeAlert = function(index) {
 };
 
 $scope.purgeAllAlerts = function() {
-    log.debug( "Purging all alerts" ) ;
     $scope.alerts.length = 0 ;
 }
 
@@ -223,6 +242,51 @@ $scope.processServerData = function( serverData ) {
 
     preProcessFlashCardQuestions( $scope.questions ) ;
     refreshStudyStrategy( $scope.studyCriteria.strategy, true ) ;
+}
+
+$scope.selectAllSections = function() {
+
+    if( $scope.chapterDetails != null && 
+        $scope.chapterDetails.sections.length>0 ) {
+
+        $scope.studyCriteria.sectionFilters.length = 0 ;
+        
+        for( var i=0; i<$scope.chapterDetails.sections.length; i++ ) {
+            var section = $scope.chapterDetails.sections[i] ;
+            section.selected = 1 ;
+            $scope.studyCriteria.sectionFilters.push( section ) ;
+        }
+
+        $scope.sectionFilterChanged() ;
+        handleFilterChange() ;
+    }
+}
+
+$scope.sectionFilterChanged = function() {
+
+    for( var i=0; i<$scope.chapterDetails.sections.length; i++ ) {
+
+        var masterSec = $scope.chapterDetails.sections[i] ;
+        var selected = false ;
+
+        for( var j=0; j<$scope.studyCriteria.sectionFilters.length; j++ ) {
+
+            var selSec = $scope.studyCriteria.sectionFilters[j] ;
+            if( masterSec.section == selSec.section ) {
+                selected = true ;
+            }
+        }
+        masterSec.selected = selected ? 1 : 0 ;
+    }
+
+    $http.post( '/jove_notes/api/ChapterSection/' + $scope.chapterDetails.chapterId, 
+                $scope.chapterDetails.sections ) 
+    .success( function( data ){
+    })
+    .error( function( data ){
+        log.error( "API error " + data ) ;
+        $scope.addErrorAlert( "API error " + data ) ;
+    }) ;
 }
 
 // ---------------- Private functions ------------------------------------------
@@ -383,6 +447,21 @@ function refreshCardFilterOptions() {
     
     refreshStudyCriteriaFilter( $scope.filterOptions.learningEfficiencyOptions,
                                 $scope.studyCriteria.learningEfficiencyFilters ) ;
+
+    refreshSectionFilters() ;
+}
+
+function refreshSectionFilters() {
+
+    if( $scope.chapterDetails != null ) {
+        $scope.studyCriteria.sectionFilters.length = 0 ;
+        for( var i=0; i<$scope.chapterDetails.sections.length; i++ ) {
+            var section = $scope.chapterDetails.sections[i] ;
+            if( section.selected == 1 ) {
+                $scope.studyCriteria.sectionFilters.push( section ) ;
+            }
+        }
+    }
 }
 
 function refreshStudyCriteriaFilter( filterOptions, filterCriteria ) {
