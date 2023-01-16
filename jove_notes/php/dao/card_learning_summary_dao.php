@@ -216,6 +216,28 @@ QUERY;
                         [ "chapter_id", "current_level", "count" ], false ) ;
     }
 
+    function getChapterWiseResurrectedCardsCounts( $userName, $chapterIdList ) {
+
+        $idList = implode( ",", $chapterIdList ) ;
+
+$query = <<<QUERY
+select 
+  chapter_id, count( card_id ) as nr_count
+from
+  jove_notes.card_learning_summary
+where
+  chapter_id in ( $idList ) and 
+  student_name = '$userName' and
+  current_level = 'NS' and
+  num_attempts > 0
+group by
+  chapter_id
+QUERY;
+        
+        return parent::getResultAsAssociativeArray( $query, 
+                        [ "chapter_id", "nr_count" ], false ) ;
+    }
+
     function getChapterWiseSSRMaturedCards( $userName, $chapterIdList ) {
 
       $idList = implode( ",", $chapterIdList ) ;

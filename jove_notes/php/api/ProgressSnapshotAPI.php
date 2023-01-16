@@ -25,6 +25,7 @@ class ChapterProgressSnapshot {
 	public $isDeleteAuthorized ;
 	
 	public $notStartedCards ;
+	public $nrCards ;
 	public $l0Cards ;
 	public $l1Cards ;
 	public $l2Cards ;
@@ -54,6 +55,7 @@ class ChapterProgressSnapshot {
 		$this->isDeleteAuthorized     = Authorizer::hasAccess( $this->guard, "DELETE_CHAPTER" ) ;
 
 		$this->notStartedCards    = 0 ;
+		$this->nrCards            = 0 ;
 		$this->l0Cards            = 0 ;
 		$this->l1Cards            = 0 ;
 		$this->l2Cards            = 0 ;
@@ -157,6 +159,7 @@ class ProgressSnapshotAPI extends API {
 		if( !empty( $this->chapters ) ) {
 			$this->associateProgressSnapshotWithChapters() ;
 			$this->associateNumSSRMaturedCardsWithChapters() ;
+			$this->associateNumResurrectedCardsWithChapters() ;
 			$this->associateUserChapterPreferences() ;
 			$this->associateChapterPreparedness() ;
 		}
@@ -295,6 +298,23 @@ class ProgressSnapshotAPI extends API {
 		}
 	}
 
+	private function associateNumResurrectedCardsWithChapters() {
+
+		$nrCounts = $this->clsDAO->getChapterWiseResurrectedCardsCounts( 
+										ExecutionContext::getCurrentUserName(), 
+										$this->selectedChapterIdList ) ;
+		foreach( $nrCounts as $nrRow ) {
+
+			$chapterId = $nrRow[ "chapter_id" ] ;
+			$nrCount   = $nrRow[ "nr_count" ] ;
+
+			$chapter = &$this->chapters[ $chapterId ] ;
+
+			$chapter->nrCards = $nrCount ;
+			$chapter->notStartedCards -= $nrCount ;
+		}
+	}
+
 	private function associateNumSSRMaturedCardsWithChapters() {
 
 		$chapterMaturedCardsMap = $this->clsDAO->getChapterWiseSSRMaturedCards( 
@@ -373,6 +393,7 @@ class ProgressSnapshotAPI extends API {
 		$responseObj[ "isDeleteAuthorized"     ] = $chapter->isDeleteAuthorized ;
 		$responseObj[ "totalCards"             ] = $chapter->numCards ;
 		$responseObj[ "notStartedCards"        ] = $chapter->notStartedCards ;
+		$responseObj[ "nrCards"                ] = $chapter->nrCards ;
 		$responseObj[ "l0Cards"                ] = $chapter->l0Cards ;
 		$responseObj[ "l1Cards"                ] = $chapter->l1Cards ;
 		$responseObj[ "l2Cards"                ] = $chapter->l2Cards ;

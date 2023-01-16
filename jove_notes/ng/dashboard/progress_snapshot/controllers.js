@@ -21,12 +21,14 @@ function RowData( rowType, name, rowId, parentRowId ) {
 
     this.totalCards         = 0 ;
     this.notStartedCards    = 0 ;
+    this.resurrectedCards   = 0 ;
     this.l0Cards            = 0 ;
     this.l1Cards            = 0 ;
     this.l2Cards            = 0 ;
     this.l3Cards            = 0 ;
     this.masteredCards      = 0 ;
     this.pctNS              = 0 ;
+    this.pctNR              = 0 ;
     this.pctL0              = 0 ;
     this.pctL1              = 0 ;
     this.pctL2              = 0 ;
@@ -154,20 +156,25 @@ function RowData( rowType, name, rowId, parentRowId ) {
 
         this.totalCards          = chapter.totalCards ;
         this.notStartedCards     = chapter.notStartedCards ;
+        this.resurrectedCards    = chapter.nrCards ;
         this.l0Cards             = chapter.l0Cards ;
         this.l1Cards             = chapter.l1Cards ;
         this.l2Cards             = chapter.l2Cards ;
         this.l3Cards             = chapter.l3Cards ;
         this.masteredCards       = chapter.masteredCards ;
         this.pctNS               = this.notStartedCards / this.totalCards ;
+        this.pctNR               = this.resurrectedCards/ this.totalCards ;
         this.pctL0               = this.l0Cards         / this.totalCards ;
         this.pctL1               = this.l1Cards         / this.totalCards ;
         this.pctL2               = this.l2Cards         / this.totalCards ;
         this.pctL3               = this.l3Cards         / this.totalCards ;
         this.pctMAS              = this.masteredCards   / this.totalCards ;
-        this.projectedMarks      = ( this.pctMAS + this.pctL3 + 
-                                     this.pctL2*0.75 + this.pctL1*0.5 + 
-                                     this.pctL0*0.25 )*100 ;
+        this.projectedMarks      = ( this.pctMAS + 
+                                     this.pctL3 + 
+                                     this.pctL2*0.75 + 
+                                     this.pctL1*0.5 + 
+                                     this.pctL0*0.25 +
+                                     this.pctNR*0.5 )*100 ;
 
         this.numSSRMaturedCards     = chapter.numSSRMaturedCards ;
         this.preparednessScore      = chapter.preparednessScore ;
@@ -188,10 +195,11 @@ function RowData( rowType, name, rowId, parentRowId ) {
         var score = 0 ;
         if( this.isChapterRow() && this.hasCardsAvailable() ) {
 
-            score = ( this.pctNS * 10 ) + 
+            score = ( this.pctNS * 12 ) + 
+                    ( this.pctNR *  2 ) +
                     ( this.pctL0 *  8 ) + 
-                    ( this.pctL1 *  5 ) + 
-                    ( this.pctL2 *  2 ) + 
+                    ( this.pctL1 *  6 ) + 
+                    ( this.pctL2 *  4 ) + 
                     ( this.pctL3 *  1 ) ;          
         }
         return score ;
@@ -706,6 +714,7 @@ function clearRowDataAttributes() {
 
             rowData.totalCards         = 0 ;
             rowData.notStartedCards    = 0 ;
+            rowData.resurrectedCards   = 0 ;
             rowData.l0Cards            = 0 ;
             rowData.l1Cards            = 0 ;
             rowData.l2Cards            = 0 ;
@@ -799,6 +808,7 @@ function refreshProgressBars() {
             drawProgressBar( "canvas-" + rowData.rowId, 
                              rowData.totalCards,
                              rowData.notStartedCards,
+                             rowData.resurrectedCards,
                              rowData.l0Cards,
                              rowData.l1Cards,
                              rowData.l2Cards,
@@ -813,6 +823,7 @@ function updateCardCounts( chapter, subjectRD, syllabusRD ) {
 
     subjectRD.totalCards          += chapter.totalCards ;
     subjectRD.notStartedCards     += chapter.notStartedCards ;
+    subjectRD.resurrectedCards    += chapter.nrCards ;
     subjectRD.l0Cards             += chapter.l0Cards ;
     subjectRD.l1Cards             += chapter.l1Cards ;
     subjectRD.l2Cards             += chapter.l2Cards ;
@@ -831,6 +842,7 @@ function updateCardCounts( chapter, subjectRD, syllabusRD ) {
     
     syllabusRD.totalCards         += chapter.totalCards ;
     syllabusRD.notStartedCards    += chapter.notStartedCards ;
+    syllabusRD.resurrectedCards   += chapter.nrCards ;
     syllabusRD.l0Cards            += chapter.l0Cards ;
     syllabusRD.l1Cards            += chapter.l1Cards ;
     syllabusRD.l2Cards            += chapter.l2Cards ;
@@ -848,7 +860,7 @@ function updateCardCounts( chapter, subjectRD, syllabusRD ) {
                                        syllabusRD.pctL0*0.25 )*100 ;
 }
 
-function drawProgressBar( canvasId, total, vN, v0, v1, v2, v3, v4 ) {
+function drawProgressBar( canvasId, total, vN, vR, v0, v1, v2, v3, v4 ) {
 
     var c = document.getElementById( canvasId ) ;
     var ctx = c.getContext( "2d" ) ;
@@ -856,17 +868,24 @@ function drawProgressBar( canvasId, total, vN, v0, v1, v2, v3, v4 ) {
     var widths = [] ;
 
     widths[0] = Math.round( ( vN/total )*c.width ) ;
-    widths[1] = Math.round( ( v0/total )*c.width ) ;
-    widths[2] = Math.round( ( v1/total )*c.width ) ;
-    widths[3] = Math.round( ( v2/total )*c.width ) ;
-    widths[4] = Math.round( ( v3/total )*c.width ) ;
-    widths[5] = Math.round( ( v4/total )*c.width ) ;
+    widths[1] = Math.round( ( vR/total )*c.width ) ;
+    widths[2] = Math.round( ( v0/total )*c.width ) ;
+    widths[3] = Math.round( ( v1/total )*c.width ) ;
+    widths[4] = Math.round( ( v2/total )*c.width ) ;
+    widths[5] = Math.round( ( v3/total )*c.width ) ;
+    widths[6] = Math.round( ( v4/total )*c.width ) ;
 
-    var colors = [ "#D0D0D0", "#FF0000", "#FF7F2A", 
-                   "#FFFF7F", "#AAFFAA", "#00FF00" ] ;
+    var colors = [ "#FF0000", //NS
+                   "#D0D0D0", //NR
+                   "#F78383", //L0
+                   "#FAC4A0", //L1
+                   "#FFFF7F", //L2
+                   "#AAFFAA", //L3
+                   "#00FF00"  //MAS
+                ] ;
 
     var curX = 0 ;
-    for( var i=0; i<6; i++ )  {
+    for( var i=0; i<7; i++ )  {
         ctx.fillStyle = colors[i] ;
         ctx.fillRect( curX, 0, widths[i], c.height ) ;
         curX += widths[i] ;

@@ -88,16 +88,21 @@ p {
 }
 
 .NS {
+	background-color: #FF0000 !important;
+	color: #424242 !important;
+}
+
+.NR {
 	background-color: #D0D0D0 !important;
 	color: #424242 !important;
 }
 
 .L0 {
-	background-color: #FF7272 !important;
+	background-color: #F78383 !important;
 }
 
 .L1 {
-	background-color: #FFB07B !important;
+	background-color: #fac4a0 !important;
 }
 
 .L2 {
