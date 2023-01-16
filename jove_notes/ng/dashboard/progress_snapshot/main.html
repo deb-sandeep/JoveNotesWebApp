@@ -147,7 +147,10 @@
                     <table class="dashboard-stats">
                         <tr ng-if="!showPercentage">
                             <td class="text-right TOT">{{rowData.totalCards      }}</td>
-                            <td class="text-right NR" style="color:red !important;">{{rowData.notStartedCards }}</td>
+                            <td class="text-right NR" 
+                                style="color:red !important;background-color:#dedede !important;">
+                                {{rowData.notStartedCards }}
+                            </td>
                             <td class="text-right NR" >{{rowData.resurrectedCards}}</td>
                             <td class="text-right L0" >{{rowData.l0Cards         }}</td>
                             <td class="text-right L1" >{{rowData.l1Cards         }}</td>
@@ -157,7 +160,10 @@
                         </tr>
                         <tr ng-if="showPercentage">
                             <td class="text-right TOT">{{rowData.totalCards}}</td>
-                            <td class="text-right NR" style="color:red !important;">{{rowData.pctNS*100  | number:0}}</td>
+                            <td class="text-right NR" 
+                                style="color:red !important;background-color:#dedede !important;">
+                                {{rowData.pctNS*100  | number:0}}
+                            </td>
                             <td class="text-right NR" >{{rowData.pctNR*100  | number:0}}</td>
                             <td class="text-right L0" >{{rowData.pctL0*100  | number:0}}</td>
                             <td class="text-right L1" >{{rowData.pctL1*100  | number:0}}</td>
