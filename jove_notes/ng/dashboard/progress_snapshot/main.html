@@ -2,7 +2,7 @@
     <table class="table tree table-hover table-condensed">
         <thead>
             <tr>
-                <th>Chapter
+                <th>&nbsp;&nbsp;
                     <button type="button" class="btn btn-default btn-xs"
                             ng-click="expandAll()">
                         <span class="glyphicon glyphicon-resize-full"></span>
@@ -29,6 +29,10 @@
                             ng-click="toggleShowPercentage()">
                         <span ng-hide="showPercentage">12%</span>
                         <span ng-show="showPercentage">123</span>
+                    </button>
+                    <button type="button" class="btn btn-info btn-xs"
+                            ng-click="launchChainedFlashcards('urgency')">
+                            Launch Flash Cards
                     </button>
                 </th>
                 <!--
