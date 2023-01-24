@@ -480,3 +480,8 @@ table.pure-table ol {
 	background-color: #ededed;
 	color: gray;
 }
+
+.fixed-font {
+
+	font-family: 'Courier New';
+}

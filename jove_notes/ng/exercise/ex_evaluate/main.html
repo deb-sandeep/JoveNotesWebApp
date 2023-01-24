@@ -21,22 +21,22 @@
             </td>
             <td width="75%">
                 <div>
-                    <span class="badge NS gi-1-1x"
+                    <span class="badge NR gi-1-1x fixed-font"
                           ng-show="showTimeDuration( currentQuestion )">
                         {{currentQuestion._sessionVars.timeSpent | duration}}
                     </span>
                     &nbsp;
-                    <span class="badge NS gi-1-1x"
+                    <span class="badge NR gi-1-1x fixed-font"
                           ng-show="showTimeDuration( currentQuestion )">
                         {{currentQuestion._sessionVars.attemptTime | duration}}
                     </span>                
                     &nbsp;
-                    <span class="badge NS gi-1-1x"
+                    <span class="badge NR gi-1-1x fixed-font"
                           ng-show="showTimeDuration( currentQuestion )">
                         {{currentQuestion._sessionVars.reviewTime | duration}}
                     </span>                
                     &nbsp;
-                    <span class="badge NS gi-1-1x"
+                    <span class="badge NR gi-1-1x"
                           ng-hide="showTimeDuration( currentQuestion )">
                         Not Attempted
                     </span>                

@@ -5,7 +5,7 @@
         <div class="panel-heading" style="padding: 2px 2px;">
             <table width="100%">
             <tr>
-            <td width="30%">
+            <td width="20%">
                 <span class="glyphicon glyphicon-question-sign"></span>
                 &nbsp;&nbsp;
                 <span class="panel-title">Question {{$index + 1}}</span>
@@ -20,22 +20,22 @@
                       ng-show="currentQuestion._sessionVars.marked">
                 </span>
             </td>
-            <td width="30%">
+            <td width="50%">
                 <button type="button" class="btn btn-default btn-sm" 
                         disabled="true">
-                    <span class="badge NS gi-1-25x">
+                    <span class="badge NR gi-1-25x fixed-font">
                         {{currentQuestion._sessionVars.timeSpent | duration}}
                     </span>                
                 </button>
                 <button type="button" class="btn btn-default btn-sm" 
                         disabled="true">
-                    <span class="badge NS gi-1-25x">
+                    <span class="badge NR gi-1-25x fixed-font">
                         {{currentQuestion._sessionVars.attemptTime | duration}}
                     </span>                
                 </button>
                 <button type="button" class="btn btn-default btn-sm" 
                         disabled="true">
-                    <span class="badge NS gi-1-25x">
+                    <span class="badge NR gi-1-25x fixed-font">
                         {{currentQuestion._sessionVars.reviewTime | duration}}
                     </span>                
                 </button>
