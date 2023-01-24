@@ -40,6 +40,8 @@
 			<label for="sectionFilter">Sections: &nbsp;&nbsp;
 				<span class="glyphicon glyphicon-check"
 				      ng-click="selectAllSections()"></span>
+				&nbsp;&nbsp;
+				<span ng-repeat="section in chapterDetails.sections"><span ng-if="section.selected == 1" style="color: green;font-size: 25px;">&#9632;</span><span ng-if="section.selected == 0" style="color: red;font-size: 25px;">&#9632;</span></span>
 			</label>
 			<select id="sectionFilter" 
 			        class="form-control" multiple="true" size="5" 
