@@ -63,7 +63,6 @@ $scope.pauseSession = function() {
 $scope.resumeSession = function() {
     $scope.totalPauseTime += new Date().getTime() - $scope.pauseStartTime ;
     $scope.pauseStartTime = 0 ;
-
     $( '#modalResume' ).modal( 'hide' ) ;
 }
 
@@ -79,36 +78,30 @@ $scope.abortSession = function() {
     ) ;    
 }
 
-$scope.fetchAndProcessDataFromServer = function() {
+$scope.fetchAndProcessSelectedExerciseBanksFromServer = function( callback ) {
 
-    log.debug( "Fetching flash card data from server. Chapter ids = " + $scope.chapterIds ) ;
-
-    $http.get( "/jove_notes/api/Exercise/ExerciseBanks/" + $scope.chapterIds )
-         .success( function( data ){
-            log.debug( "Received response from server." ) ;
-            processServerData( data ) ;
-         })
-         .error( function( data ){
-            $scope.addErrorAlert( "API call failed. " + data ) ;
-         });
-}
-
-$scope.fetchExerciseListingFromServer = function( callback ) {
-
-    log.debug( "Fetching flash card data from server. Chapter ids = " + $scope.chapterIds ) ;
+    console.log( "Fetching selected exercise banks from server." ) ;
+    console.log( "    Selected chapter ids = " + $scope.chapterIds ) ;
 
     $http.get( "/jove_notes/api/Exercise/ExerciseBanks/" + $scope.chapterIds )
          .success( function( data ){
-            log.debug( "Received response from server." ) ;
-            processServerData( data ) ;
-            callback() ;
+            console.log( "Received response from server." ) ;
+            console.log( data ) ;
+
+            processExerciseBanksReceivedFromServer( data ) ;
+
+            if( callback != null ) {
+                callback() ;
+            }
          })
          .error( function( data ){
             $scope.addErrorAlert( "API call failed. " + data ) ;
-         });
+         }
+    );
 }
 
 $scope.getChapterIdsForExercise = function() {
+
     var ids = [] ;
     for( var i=0; i<$scope.exerciseBanks.length; i++ ) {
         var ex = $scope.exerciseBanks[i] ;
@@ -120,6 +113,7 @@ $scope.getChapterIdsForExercise = function() {
 }
 
 $scope.getTotalSelCards = function( cardLevel ) {
+
     var totalCards = 0 ;
     for( var i=0; i<$scope.exerciseBanks.length; i++ ) {
         var ex = $scope.exerciseBanks[i] ;
@@ -186,6 +180,28 @@ $scope.makeHOMId = function( homName ) {
 }
 
 // ---------------- Private functions ------------------------------------------
+function handleTimerEvent() {
+    if( $scope.sessionActive ) {
+        if( $scope.pauseStartTime == 0 ) {
+            refreshClocks() ;
+            $scope.$broadcast( 'timerEvent' ) ;
+            setTimeout( handleTimerEvent, 1000 ) ;
+        }
+        else {
+            setTimeout( handleTimerEvent, 500 ) ;
+        }
+    }
+}
+
+function refreshClocks() {
+    $scope.durationTillNowInMillis = new Date().getTime() - 
+                                     $scope.sessionStartTime ;
+
+    $scope.sessionDuration = $scope.durationTillNowInMillis - 
+                             $scope.totalPauseTime ;
+    $scope.$digest() ;
+}
+
 function cleanHOMAttribute( attribute ) {
 
     var cleanedAttribute = attribute.replaceAll( "_", " " ) ;
@@ -193,7 +209,7 @@ function cleanHOMAttribute( attribute ) {
     return cleanedAttribute ;
 }
 
-function processServerData( serverData ) {
+function processExerciseBanksReceivedFromServer( serverData ) {
 
     if( typeof serverData === "string" ) {
         $scope.addErrorAlert( "Server returned invalid data. " + serverData ) ;
@@ -210,10 +226,40 @@ function processServerData( serverData ) {
     }
 }
 
+// Attaches the following additional [attributes] to each chapter data
+//
+// [_textFormatter]
+// [_selCfg]
+// chapterDetails:
+// deckDetails:
+//   progressSnapshot
+//      [ _numSSRMaturedCards ]
+//      [ _numSSR_NS          ]
+//      [ _numSSR_L0          ]
+//      [ _numSSR_L1          ]
+//      [ _numSSR_L2          ]
+//      [ _numSSR_L3          ]
+//      [ _numSSR_MAS         ]
+// questions:
+//   -
+//      [_chapterDetails]
+//      [_difficultyLabel]
+//      [handler]
+//      learningStats
+//          [_numSecondsInSession]
+//          [_homAttributes]
+//          [_efficiencyLabel]
+//          [_absoluteLearningEfficiency]
+//          [_averageTimeSpent]
+//          [_ssrQualified]
+//          [_ssrDelta]
+//   -
+// 
+
 function preProcessChapterData( chapterData ) {
 
     chapterData._textFormatter = new TextFormatter( chapterData.chapterDetails, 
-                                                   null ) ;
+                                                    null ) ;
     chapterData._selCfg = {
         ssr : {
             numNSCards : 0,
@@ -234,23 +280,25 @@ function preProcessChapterData( chapterData ) {
     var chapterDetails = chapterData.chapterDetails ;
     var textFormatter  = chapterData._textFormatter ;
     var questions      = chapterData.questions ;
+    var deckDetails    = chapterData.deckDetails ;
 
-    chapterData.deckDetails.progressSnapshot._numSSRMaturedCards = 0 ;
-    chapterData.deckDetails.progressSnapshot._numSSR_NS          = 0 ;
-    chapterData.deckDetails.progressSnapshot._numSSR_L0          = 0 ;
-    chapterData.deckDetails.progressSnapshot._numSSR_L1          = 0 ;
-    chapterData.deckDetails.progressSnapshot._numSSR_L2          = 0 ;
-    chapterData.deckDetails.progressSnapshot._numSSR_L3          = 0 ;
-    chapterData.deckDetails.progressSnapshot._numSSR_MAS         = 0 ;
+    deckDetails.progressSnapshot._numSSRMaturedCards = 0 ;
+    deckDetails.progressSnapshot._numSSR_NS          = 0 ;
+    deckDetails.progressSnapshot._numSSR_L0          = 0 ;
+    deckDetails.progressSnapshot._numSSR_L1          = 0 ;
+    deckDetails.progressSnapshot._numSSR_L2          = 0 ;
+    deckDetails.progressSnapshot._numSSR_L3          = 0 ;
+    deckDetails.progressSnapshot._numSSR_MAS         = 0 ;
 
     for( i=0; i<questions.length; i++ ) {
 
         var question = questions[i] ;
 
-        updateCardLevelCount( chapterData.deckDetails, question ) ;
+        question.learningStats._numSecondsInSession = 0 ;
+        question.learningStats._homAttributes       = [] ;
+        question.learningStats._ssrQualified        = false ;
+        question.learningStats._ssrDelta            = -1 ;
 
-        question.learningStats._numSecondsInSession  = 0 ;
-        question.learningStats._homAttributes = [] ;
         question._chapterDetails = chapterDetails ;
         
         question._difficultyLabel = 
@@ -263,6 +311,7 @@ function preProcessChapterData( chapterData ) {
             jnUtil.getAbsoluteLearningEfficiency( question.learningStats.temporalScores ) ;
 
         question.learningStats._averageTimeSpent = 0 ;
+
         if( question.learningStats.numAttempts != 0 ) {
             question.learningStats._averageTimeSpent = 
                             Math.ceil( question.learningStats.totalTimeSpent / 
@@ -273,6 +322,8 @@ function preProcessChapterData( chapterData ) {
                                     question.scriptBody,
                                     textFormatter.getChapterScript() ) ;
 
+        updateCardLevelCount( chapterData.deckDetails, question ) ;
+
         associateHandler( chapterDetails, textFormatter, question ) ;
     }
 }
@@ -280,8 +331,6 @@ function preProcessChapterData( chapterData ) {
 function updateCardLevelCount( deckDetails, question ) {
 
     var ssrThresholdDelta = jnUtil.getSSRThresholdDelta( question ) ;
-    question.learningStats._ssrQualified = false ;
-    question.learningStats._ssrDelta     = -1 ;
 
     if( ssrThresholdDelta >= 0 || 
         question.learningStats.currentLevel == 'NS') {
@@ -356,28 +405,6 @@ function associateHandler( chapterDetails, textFormatter, question ) {
     if( question.handler != null ) {
         question.handler.initialize() ;
     }
-}
-
-function handleTimerEvent() {
-    if( $scope.sessionActive ) {
-        if( $scope.pauseStartTime == 0 ) {
-            refreshClocks() ;
-            $scope.$broadcast( 'timerEvent' ) ;
-            setTimeout( handleTimerEvent, 1000 ) ;
-        }
-        else {
-            setTimeout( handleTimerEvent, 500 ) ;
-        }
-    }
-}
-
-function refreshClocks() {
-    $scope.durationTillNowInMillis = new Date().getTime() - 
-                                     $scope.sessionStartTime ;
-
-    $scope.sessionDuration = $scope.durationTillNowInMillis - 
-                             $scope.totalPauseTime ;
-    $scope.$digest() ;
 }
 
 // ---------------- End of controller ------------------------------------------

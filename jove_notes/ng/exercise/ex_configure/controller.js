@@ -14,7 +14,7 @@ $scope.selCh   = null ;
     $scope.$parent.pageTitle = "Configure Exercise" ;
     $scope.$parent.currentStage = $scope.$parent.SESSION_CONFIGURE_STAGE ;
 
-    $scope.$parent.fetchAndProcessDataFromServer() ;
+    $scope.$parent.fetchAndProcessSelectedExerciseBanksFromServer() ;
 }
 
 // -------------Scope watch and event functions --------------------------------

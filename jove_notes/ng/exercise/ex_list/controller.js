@@ -39,7 +39,7 @@ $scope.filteredQuestions = [] ;
 {
     log.debug( "Executing ExerciseListController." ) ;
     $scope.filterCriteria.deserialize() ;
-    $scope.$parent.fetchExerciseListingFromServer( filterCards ) ;
+    $scope.$parent.fetchAndProcessSelectedExerciseBanksFromServer( filterCards ) ;
 }
 
 // ---------------- Controller methods -----------------------------------------
