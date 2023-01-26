@@ -212,11 +212,17 @@
                     ng-click="rateCard( 'E' )"
                     data-toggle="tooltip" data-placement="top" 
                     title="Correct">
-                <span class="badge {{currentQuestion.learningStats.currentLevel}}">
+                <span class="badge {{currentQuestion.learningStats.currentLevel}}"
+                      ng-hide="currentQuestion.learningStats.numAttempts > 0 && 
+                               currentQuestion.learningStats.currentLevel == 'NS'">
                     {{currentQuestion.learningStats.currentLevel}}
                 </span>
+                <span class="badge muted"
+                      ng-show="currentQuestion.learningStats.numAttempts > 0 && 
+                               currentQuestion.learningStats.currentLevel == 'NS'">
+                    RS
+                </span>
             </button>
-
           </div>
           <div class="btn-group" role="group" ng-show="recommendPromoteToMastered">
             <button type="button" class="btn btn-success btn-lg"
