@@ -181,25 +181,25 @@ $scope.makeHOMId = function( homName ) {
 
 // ---------------- Private functions ------------------------------------------
 function handleTimerEvent() {
+
     if( $scope.sessionActive ) {
         if( $scope.pauseStartTime == 0 ) {
-            refreshClocks() ;
+
+            $scope.durationTillNowInMillis = new Date().getTime() - 
+                                             $scope.sessionStartTime ;
+
+            $scope.sessionDuration = $scope.durationTillNowInMillis - 
+                                     $scope.totalPauseTime ;
+            
+            $scope.$digest() ;
             $scope.$broadcast( 'timerEvent' ) ;
+
             setTimeout( handleTimerEvent, 1000 ) ;
         }
         else {
             setTimeout( handleTimerEvent, 500 ) ;
         }
     }
-}
-
-function refreshClocks() {
-    $scope.durationTillNowInMillis = new Date().getTime() - 
-                                     $scope.sessionStartTime ;
-
-    $scope.sessionDuration = $scope.durationTillNowInMillis - 
-                             $scope.totalPauseTime ;
-    $scope.$digest() ;
 }
 
 function cleanHOMAttribute( attribute ) {

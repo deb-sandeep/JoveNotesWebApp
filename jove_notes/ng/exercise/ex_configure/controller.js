@@ -10,7 +10,8 @@ $scope.selCh   = null ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
-    log.debug( "Executing ExerciseConfigController." ) ;
+    console.log( "Executing ExerciseConfigController." ) ;
+
     $scope.$parent.pageTitle = "Configure Exercise" ;
     $scope.$parent.currentStage = $scope.$parent.SESSION_CONFIGURE_STAGE ;
 
@@ -19,33 +20,33 @@ $scope.selCh   = null ;
 
 // -------------Scope watch and event functions --------------------------------
 $scope.$on( 'onRenderComplete', function( scope ){
-    log.debug( "onRenderComplete ex_configure." ) ;
     paintProgressBars() ;
 } ) ;
 
 // ---------------- Controller methods -----------------------------------------
 $scope.getRowClass = function( chapterId ) {
-    if( $scope.selChId == chapterId ) 
+    if( $scope.selChId == chapterId ) {
         return "selected-row" ;
+    }
     return "" ;
 }
 
 $scope.addNSProblemIfAvailable = function( chapterId ) {
 
-    log.debug( "Adding NS problem for chapterId = " + chapterId ) ;
+    console.log( "Adding NS problem for chapterId = " + chapterId ) ;
 
     $scope.selChId = chapterId ;
     $scope.selCh   = $scope.$parent.exerciseBanksMap[ chapterId ] ;
 
     if ( ( $scope.selCh.deckDetails.progressSnapshot._numSSR_NS - 
            $scope.selCh._selCfg.ssr.numNSCards ) > 0 ) {
-        log.debug( "NS present and hence adding." ) ;
         updateCardSelection( 'ssr', 'NS', 1 ) ;
     }
 }
 
 $scope.configureExercise = function( chapterId ) {
-    log.debug( "Configuring exercise - " + chapterId ) ;
+
+    console.log( "Configuring exercise - " + chapterId ) ;
 
     $scope.selChId = chapterId ;
     $scope.selCh   = $scope.$parent.exerciseBanksMap[ chapterId ] ;
@@ -72,6 +73,7 @@ $scope.fastTrack = function() {
 }
 
 // ---------------- Private functions ------------------------------------------
+
 function updateCardSelection( cardType, cardLevel, increment ) {
 
     var selConfig = ( cardType == 'ssr' ) ?
@@ -93,15 +95,16 @@ function paintProgressBars() {
 
     for( var i=0; i<$scope.$parent.exerciseBanks.length; i++ ) {
         var ex = $scope.exerciseBanks[i] ;
-        drawProgressBar( "canvas-" + ex.chapterDetails.chapterId, 
-                         ex.deckDetails.numCards,
-                         ex.deckDetails.progressSnapshot.numNS,
-                         ex.deckDetails.progressSnapshot.numL0,
-                         ex.deckDetails.progressSnapshot.numL1,
-                         ex.deckDetails.progressSnapshot.numL2,
-                         ex.deckDetails.progressSnapshot.numL3,
-                         ex.deckDetails.progressSnapshot.numMAS
-                        ) ;
+        drawProgressBar( 
+            "canvas-" + ex.chapterDetails.chapterId, 
+            ex.deckDetails.numCards,
+            ex.deckDetails.progressSnapshot.numNS,
+            ex.deckDetails.progressSnapshot.numL0,
+            ex.deckDetails.progressSnapshot.numL1,
+            ex.deckDetails.progressSnapshot.numL2,
+            ex.deckDetails.progressSnapshot.numL3,
+            ex.deckDetails.progressSnapshot.numMAS
+        ) ;
     }
 }
 

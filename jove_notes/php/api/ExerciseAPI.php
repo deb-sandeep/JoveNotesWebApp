@@ -7,6 +7,7 @@ class ExerciseAPI extends AbstractJoveNotesAPI {
 
 	function __construct() {
 		parent::__construct() ;
+		$this->logger = Logger::getLogger( __CLASS__ ) ;
 	}
 
 	public function doPost( $request, &$response ) {

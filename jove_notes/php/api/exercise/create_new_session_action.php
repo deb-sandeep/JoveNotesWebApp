@@ -29,6 +29,7 @@ class CreateNewSessionAction extends APIAction {
         $this->logger->debug( "Executing CreateNewSessionAction" ) ;
 
         $chapterIds = $request->requestBody->chapterIds ;
+        
         if( empty( $chapterIds ) ) {
             $response->responseBody = "No chapters specified. Can't create session" ;
             $response->responseCode = APIResponse::SC_ERR_BAD_REQUEST ;

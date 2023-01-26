@@ -2,7 +2,7 @@
     <table class="table tree table-hover table-condensed">
         <thead>
             <tr>
-                <th>Exercises
+                <th>&nbsp;&nbsp;
                     <button type="button" class="btn btn-default btn-xs"
                             ng-click="expandAll()">
                         <span class="glyphicon glyphicon-resize-full"></span>
@@ -19,6 +19,10 @@
                             ng-click="toggleHiddenChapters()">
                         <span class="glyphicon glyphicon-eye-open"  ng-hide="showHiddenExercises"></span>
                         <span class="glyphicon glyphicon-eye-close" ng-show="showHiddenExercises"></span>
+                    </button>
+                    <button type="button" class="btn btn-info btn-xs"
+                            ng-click="launchExerciseWithSelectedChapters()">
+                            Launch Exercise
                     </button>
                 </th>
                 <th style="width:50px;text-align:center;">

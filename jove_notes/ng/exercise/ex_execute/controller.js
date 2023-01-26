@@ -1,5 +1,6 @@
 testPaperApp.controller( 'ExerciseExecutionController', 
                          function( $scope, $http, $routeParams, $location, $window, $anchorScroll ) {
+
 // ---------------- Constants and inner class definition -----------------------
 var STUDY_Q_FADEOUT_TIME = 2000 ;
 var STUDY_Q_DEFAULT_SHOW_TIME = 15000 ;
@@ -32,9 +33,10 @@ $scope.numQDone        = 0 ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
-    log.debug( "Executing ExerciseExecutionController." ) ;
+    console.log( "Executing ExerciseExecutionController." ) ;
+
     if( checkInvalidLoad() ) {
-        log.debug( "Invalid refresh detected. Returning to start page." ) ;
+        console.log( "Invalid refresh detected. Returning to start page." ) ;
         return ;
     }
 
@@ -48,6 +50,7 @@ $scope.numQDone        = 0 ;
 }
 
 // -------------Scope watch and event functions --------------------------------
+
 $scope.$on( 'onRenderComplete', function( scope ){
     if( $scope.$parent.fastTrackRequested ) {
         showSolvePaperScreen() ;
@@ -58,16 +61,22 @@ $scope.$on( 'onRenderComplete', function( scope ){
 } ) ;
 
 $scope.$on( 'timerEvent', function( event, args ){
-    handleTimerEvent() ;
+    if( $scope.currentScreen == $scope.ATTEMPT_SCREEN ) {
+        $scope.timeSpentOnCurrentQuestion = 
+            $scope.currentQuestion._sessionVars.timeSpent + 
+            new Date().getTime() - 
+            currentQuestionAttemptStartTime ;
+    }
 } ) ;
 
-$scope.$on('$locationChangeStart', function( ev ) {
+$scope.$on( '$locationChangeStart', function( ev ) {
     if( !evaluateExerciseRouteChange ) {
         ev.preventDefault();
     }
 } ) ;
 
 // ---------------- Controller methods -----------------------------------------
+
 $scope.showEvaluateScreen = function() {
     callIfServerAlive( function(){
         evaluateExerciseRouteChange = true ;
@@ -148,14 +157,7 @@ $scope.fastForwardStudyQuestion = function() {
     curStudyQ.fastFwdFlag = true ;
 }
 
-// ---------------- Private functions ------------------------------------------
-function handleTimerEvent() {
-    if( $scope.currentScreen == $scope.ATTEMPT_SCREEN ) {
-        $scope.timeSpentOnCurrentQuestion = $scope.currentQuestion._sessionVars.timeSpent + 
-                                            new Date().getTime() - 
-                                            currentQuestionAttemptStartTime ;
-    }
-}
+// ---------------- Question navigation ----------------------------------------
 
 function transitionStudyQuestion() {
 
@@ -200,28 +202,6 @@ function showNextQuestionForStudy() {
     }
 }
 
-function postSessionCreation( newSessionData ) {
-    
-    pruneUnusedExerciseBanks() ;
-    var questions = filterQuestionsForSession() ;
-    associateSessionVariablesToQuestions( questions ) ;
-
-    $scope.$parent.exerciseSessionId = newSessionData.sessionId ;
-    for( var key in newSessionData.exChapterSessionIdMap ) {
-        $scope.$parent.exerciseBanksMap[ key ]._sessionId = 
-                                   newSessionData.exChapterSessionIdMap[ key ] ;
-    }
-
-    $scope.$parent.questions = questions ;
-    $scope.numQNotStarted    = questions.length ;
-    $scope.numQNotReviewed   = questions.length ;
-    $scope.numQDone          = 0 ;
-
-    showStudyQuestionsScreen() ;
-
-    $scope.$parent.startTimer() ;
-}
-
 function showStudyQuestionsScreen() {
 
     $scope.statusMessage = "[Study phase] Each question will show for 30 seconds. " + 
@@ -249,24 +229,92 @@ function showAttemptScreen() {
     $scope.currentScreen = $scope.ATTEMPT_SCREEN ;
 }
 
-function associateSessionVariablesToQuestions( questions ) {
-
-    for( var i=0; i<questions.length; i++ ) {
-        questions[i]._sessionVars = {
-            index        : i,
-            showForStudy : false,
-            numAttempts  : 0,
-            marked       : false,
-            timeSpent    : 0,
-            attemptTime  : 0,
-            reviewTime   : 0,
-            rating       : null,
-            ratingText   : "Not Rated",
-            ratingTextCls: "btn btn-sm",
-            scoreEarned  : 0,
-            newLevel     : questions[i].learningStats.currentLevel
-        }
+function checkInvalidLoad() {
+    if( $scope.$parent.currentStage != $scope.$parent.SESSION_EXECUTE_STAGE ) {
+        $location.path( "/ConfigureExercise" ) ;
+        return true ;
     }
+    return false ;
+}
+
+// ---------------- Session creation -------------------------------------------
+/**
+ * This function calls on the ExerciseAPI to create a new exercise session.
+ *
+ * NOTE: This call is recursive! Why? There are times when the API invocation
+ * is gracefully disconnected by the server (HTTP??) resulting in a return
+ * status code of 0 and data null. In such cases the server code doesn't even
+ * receive the request (verified through logs.)
+ * 
+ *   Under such cases, (only if status code is 0), this function calls upon 
+ * itself to retry the call. The retrial will continue for the configured max
+ * number of times. If all the retrial attempts fail, an alert will be 
+ * displayed to the user.
+ *
+ * @param chapterIds - An array of chapter ids which are included in this exercise
+ */
+function callExerciseAPIToCreateNewSession( chapterIds, 
+                                            previousCallAttemptNumber,
+                                            callback ) {
+
+    var currentCallAttemptNumber = previousCallAttemptNumber + 1 ;
+
+    console.log( "Calling Exercise API for creating new session." ) ;
+    console.log( "\tchapterIds   = " + chapterIds.join()   ) ;
+
+    $http.post( '/jove_notes/api/Exercise/NewSession', { 
+        "chapterIds"   : chapterIds
+    })
+    .success( function( data ){
+        if( typeof data === 'string' ) {
+            $scope.addErrorAlert( "Exercise::NewSession API call failed. " + 
+                                  "Server says - " + data ) ;
+        }
+        else {
+            console.log( "New Session created." ) ;
+            callback( data ) ;
+        }
+    })
+    .error( function( data, status ){
+
+        if( status == 0 ) {
+            console.log( "Faulty connection determined." ) ;
+            if( currentCallAttemptNumber < MAX_GRADE_CARD_API_CALL_RETRIES ) {
+                console.log( "Retrying the call again." ) ;
+                callExerciseAPIToCreateNewSession( 
+                    chapterIds, currentCallAttemptNumber 
+                ) ;
+                return ;
+            }
+            console.log( "Number of retries exceeded. Notifying the user." ) ;
+        }
+
+        $scope.addErrorAlert( "Exercise::NewSession API call failed. " + 
+                              "Status = " + status + ", " + 
+                              "Response = " + data ) ;
+    }) ;
+}
+
+function postSessionCreation( newSessionData ) {
+    
+    pruneUnusedExerciseBanks() ;
+    var questions = filterQuestionsForSession() ;
+    associateSessionVariablesToQuestions( questions ) ;
+
+    $scope.$parent.exerciseSessionId = newSessionData.sessionId ;
+    for( var key in newSessionData.exChapterSessionIdMap ) {
+        $scope.$parent.exerciseBanksMap[ key ]._sessionId = 
+                                   newSessionData.exChapterSessionIdMap[ key ] ;
+    }
+
+    $scope.$parent.questions = questions ;
+    $scope.numQNotStarted    = questions.length ;
+    $scope.numQNotReviewed   = questions.length ;
+    $scope.numQDone          = 0 ;
+
+    showStudyQuestionsScreen() ;
+
+    $scope.$parent.startTimer() ;
 }
 
 function pruneUnusedExerciseBanks() {
@@ -415,69 +463,24 @@ function filterQuestions( questions, numQuestions, strategy ) {
     return filteredQuestions ;
 }
 
-function checkInvalidLoad() {
-    if( $scope.$parent.currentStage != $scope.$parent.SESSION_EXECUTE_STAGE ) {
-        $location.path( "/ConfigureExercise" ) ;
-        return true ;
+function associateSessionVariablesToQuestions( questions ) {
+
+    for( var i=0; i<questions.length; i++ ) {
+        questions[i]._sessionVars = {
+            index        : i,
+            showForStudy : false,
+            numAttempts  : 0,
+            marked       : false,
+            timeSpent    : 0,
+            attemptTime  : 0,
+            reviewTime   : 0,
+            rating       : null,
+            ratingText   : "Not Rated",
+            ratingTextCls: "btn btn-sm",
+            scoreEarned  : 0,
+            newLevel     : questions[i].learningStats.currentLevel
+        }
     }
-    return false ;
-}
-
-// ---------------- Server calls -----------------------------------------------
-/**
- * This function calls on the ExerciseAPI to create a new exercise session.
- *
- * NOTE: This call is recursive! Why? There are times when the API invocation
- * is gracefully disconnected by the server (HTTP??) resulting in a return
- * status code of 0 and data null. In such cases the server code doesn't even
- * receive the request (verified through logs.)
- *   Under such cases, (only if status code is 0), this function calls upon 
- * itself to retry the call. The retrial will continue for the configured max
- * number of times. If all the retrial attempts fail, an alert will be 
- * displayed to the user.
- *
- * @param chapterIds - An array of chapter ids which are included in this exercise
- */
-function callExerciseAPIToCreateNewSession( chapterIds, 
-                                            previousCallAttemptNumber,
-                                            callback ) {
-
-    var currentCallAttemptNumber = previousCallAttemptNumber + 1 ;
-
-    log.debug( "Calling Exercise API for creating new session." ) ;
-    log.debug( "\tchapterIds   = " + chapterIds.join()   ) ;
-
-    $http.post( '/jove_notes/api/Exercise/NewSession', { 
-        "chapterIds"   : chapterIds
-    })
-    .success( function( data ){
-        if( typeof data === 'string' ) {
-            $scope.addErrorAlert( "Exercise::NewSession API call failed. " + 
-                                  "Server says - " + data ) ;
-        }
-        else {
-            log.debug( "New Session created." ) ;
-            callback( data ) ;
-        }
-    })
-    .error( function( data, status ){
-
-        if( status == 0 ) {
-            log.debug( "Faulty connection determined." ) ;
-            if( currentCallAttemptNumber < MAX_GRADE_CARD_API_CALL_RETRIES ) {
-                log.debug( "Retrying the call again." ) ;
-                callExerciseAPIToCreateNewSession( 
-                    chapterIds, currentCallAttemptNumber 
-                ) ;
-                return ;
-            }
-            log.debug( "Number of retries exceeded. Notifying the user." ) ;
-        }
-
-        $scope.addErrorAlert( "Exercise::NewSession API call failed. " + 
-                              "Status = " + status + ", " + 
-                              "Response = " + data ) ;
-    }) ;
 }
 
 // ---------------- End of controller ------------------------------------------
