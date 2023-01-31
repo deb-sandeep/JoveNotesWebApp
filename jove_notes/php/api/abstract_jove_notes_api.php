@@ -75,7 +75,7 @@ class AbstractJoveNotesAPI extends API {
 			$this->chapterDetail[ "chapterNumber"    ] = $meta[ "chapter_num"     ] ;
 			$this->chapterDetail[ "subChapterNumber" ] = $meta[ "sub_chapter_num" ] ;
 			$this->chapterDetail[ "chapterName"      ] = $meta[ "chapter_name"    ] ;
-			$this->chapterDetail[ "scriptBody"       ] = base64_encode( $meta["script_body"] ) ;
+			$this->chapterDetail[ "scriptBody"       ] = base64_encode( $meta["script_body"] ?? '') ;
 
 			$this->numCards = $meta[ "num_cards" ] ;
 			$this->num_VE   = $meta[ "num_VE"   ] ;

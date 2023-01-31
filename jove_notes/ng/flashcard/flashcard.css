@@ -235,3 +235,18 @@
     font: normal 13px 'Open Sans', sans-serif ;
     text-align: left;
 }
+
+.selected-section {
+    width:15px;
+    height:15px;
+    background-color:green;
+    border-right: 5px solid white;
+}
+
+.unselected-section {
+    width:15px;
+    height:15px;
+    background-color:red;
+    border-right: 5px solid white;
+}
+

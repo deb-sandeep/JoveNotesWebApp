@@ -40,9 +40,17 @@
 			<label for="sectionFilter">Sections: &nbsp;&nbsp;
 				<span class="glyphicon glyphicon-check"
 				      ng-click="selectAllSections()"></span>
-				&nbsp;&nbsp;
-				<span ng-repeat="section in chapterDetails.sections"><span ng-if="section.selected == 1" style="color: green;font-size: 20px;">&#9632;</span><span ng-if="section.selected == 0" style="color: red;font-size: 20px;">&#9632;</span></span>
+				&nbsp;
 			</label>
+			<div style="display:inline-block;margin-top: 10px;">
+				<table>
+					<tr>
+						<td>&nbsp;</td>
+						<td ng-repeat="section in chapterDetails.sections"
+						    ng-class="getSectionDisplayClass( section )"></td>
+					</tr>
+				</table>
+			</div>
 			<select id="sectionFilter" 
 			        class="form-control" multiple="true" size="5" 
 			        ng-model="studyCriteria.sectionFilters"

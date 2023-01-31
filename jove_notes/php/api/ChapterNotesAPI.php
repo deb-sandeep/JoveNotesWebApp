@@ -60,7 +60,7 @@ class ChapterNotesAPI extends AbstractJoveNotesAPI {
 		$element[ "elementType"     ] = $neData[ "element_type" ] ;
 		$element[ "difficultyLevel" ] = $neData[ "difficulty_level" ] ;
 		$element[ "evalVars"        ] = $this->encodeEvalVars( $neData[ "eval_vars" ] ) ;
-		$element[ "scriptBody"      ] = base64_encode( $neData[ "script_body" ] ) ;
+		$element[ "scriptBody"      ] = base64_encode( $neData[ "script_body" ] ?? '' ) ;
 		$element[ "currentLevels"   ] = explode( ",", $neData[ "current_levels" ] ) ;
 		$element[ "learningStats"   ] = array( 
 			"learningEfficiency"    => $neData[ "learning_efficiency" ],
@@ -78,7 +78,7 @@ class ChapterNotesAPI extends AbstractJoveNotesAPI {
 			$varsArray = array() ;
 			$varsMap = json_decode( $data ) ;
 			foreach( $varsMap as $key => $value ) {
-				$varsArray[ $key ] = base64_encode( $value ) ;
+				$varsArray[ $key ] = base64_encode( $value ?? '' ) ;
 			}
 		}
 		return $varsArray ;

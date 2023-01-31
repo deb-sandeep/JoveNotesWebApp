@@ -87,7 +87,7 @@ class PracticeCardService {
         $chapterDetail[ "chapterNumber"    ] = $meta[ "chapter_num"     ] ;
         $chapterDetail[ "subChapterNumber" ] = $meta[ "sub_chapter_num" ] ;
         $chapterDetail[ "chapterName"      ] = $meta[ "chapter_name"    ] ;
-        $chapterDetail[ "scriptBody"       ] = base64_encode( $meta["script_body"] ) ;
+        $chapterDetail[ "scriptBody"       ] = base64_encode( $meta["script_body"] ?? '' ) ;
         $chapterDetail[ "sections"         ] = $sections ;
 
         return $chapterDetail ;
@@ -252,7 +252,7 @@ class PracticeCardService {
         $question[ "questionType"    ] = $card[ "card_type" ] ;
         $question[ "difficultyLevel" ] = $card[ "difficulty_level" ] ;
         $question[ "evalVars"        ] = $this->encodeEvalVars( $card[ "eval_vars" ] ) ;
-        $question[ "scriptBody"      ] = base64_encode( $card[ "script_body" ] ) ;
+        $question[ "scriptBody"      ] = base64_encode( $card[ "script_body" ] ?? '' ) ;
         $question[ "markedForReview" ] = $card[ "marked_for_review" ] ;
         $question[ "elementType"     ] = $card[ "element_type" ] ;
 
@@ -286,7 +286,7 @@ class PracticeCardService {
         if( $data != null ) {
             $varsMap = json_decode( $data ) ;
             foreach( $varsMap as $key => $value ) {
-                $varsArray[ $key ] = base64_encode( $value ) ;
+                $varsArray[ $key ] = base64_encode( $value ?? '' ) ;
             }
         }
         return $varsArray ;
