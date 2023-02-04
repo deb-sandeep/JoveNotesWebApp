@@ -2,8 +2,26 @@
   <div class="row">
 
     <div class="col-sm-3 form-group">
-        <input id="absEfficiency" type="checkbox" ng-model="filterCriteria.useAbsoluteEfficiency"/>
-        <label for="absEfficiency"> Use absolute efficiency</label>
+      <label for="sectionFilter">Sections: &nbsp;
+        <span class="glyphicon glyphicon-check"
+              ng-click="selectAllSections()"></span>
+        &nbsp;
+      </label>
+      <div class="sec-visual">
+          <table>
+            <tr>
+              <td ng-repeat="section in chapterDetails.sections">
+                  <div ng-class="getSectionDisplayClass( section )"></div>
+              </td>
+            </tr>
+          </table>
+      </div>
+      <select id="sectionFilter" 
+              class="form-control" multiple="true"
+              ng-model="filterCriteria.sectionFilters"
+              ng-options="item.section for item in chapterDetails.sections track by item.section"
+              ng-change="sectionFilterChanged()">
+      </select>
     </div>
 
     <div class="col-sm-3 form-group">
@@ -25,6 +43,8 @@
     </div>
 
     <div class="col-sm-3">
+      <input id="absEfficiency" type="checkbox" ng-model="filterCriteria.useAbsoluteEfficiency"/>
+      <label for="absEfficiency"> Use absolute efficiency</label>
     	<button type="submit" class="btn btn-primary btn-block"
     	        ng-click="applyFilter()">
     		Apply

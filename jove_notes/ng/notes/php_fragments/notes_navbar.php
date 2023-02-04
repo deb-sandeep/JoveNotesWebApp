@@ -2,13 +2,23 @@
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm-8 nav_element">
+    <div class="col-sm-9 nav_element">
         <img src="<?php echo APP_LOGO_PATH ?>" 
              style="height: 30px"/>
         &nbsp;&nbsp;&nbsp;
         <b>{{pageTitle}}</b>
+        &nbsp;&nbsp;&nbsp;
+        <div class="sec-visual">
+            <table>
+              <tr>
+                <td ng-repeat="section in chapterDetails.sections">
+                    <div ng-class="getSectionDisplayClass( section )"></div>
+                </td>
+              </tr>
+            </table>
+        </div>
     </div>
-    <div class="col-sm-4 nav_element">
+    <div class="col-sm-3 nav_element">
         <span class="small">
         [ <?php echo ExecutionContext::getCurrentUserName(); ?> ]
         </span>

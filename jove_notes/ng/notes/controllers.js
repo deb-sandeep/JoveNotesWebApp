@@ -7,6 +7,7 @@ function FilterCriteria() {
 	this.learningEfficiencyFilters = [ "A1", "A2", "B1", "B2", "C1", "C2", "D" ] ;
 	this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH" ] ;
 	this.levelFilters              = [ "NS", "L0" ] ;
+	this.sectionFilters            = [] ;
 
     this.serialize = function() {
         $.cookie.json = true ;
@@ -22,6 +23,10 @@ function FilterCriteria() {
 			this.learningEfficiencyFilters = crit.learningEfficiencyFilters ;
 			this.difficultyFilters         = crit.difficultyFilters ;
 			this.levelFilters              = crit.levelFilters ;
+
+			// Set the section filters to an empty array because they are
+			// contextual per chapter and will be loaded afresh everytime
+			this.sectionFilters = [] ;
         } ;
     }
 
@@ -29,6 +34,7 @@ function FilterCriteria() {
 		this.learningEfficiencyFilters = [ "A1", "A2", "B1", "B2", "C1", "C2", "D" ] ;
 		this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH" ] ;
 		this.levelFilters              = [ "NS", "L0" ] ;
+		this.sectionFilters            = [] ;
     }
 }
 
@@ -124,6 +130,52 @@ $scope.playSoundClip = function( clipName ) {
 	jnUtil.playSoundClip( clipPath ) ;
 }
 
+$scope.sectionFilterChanged = function() {
+
+    for( var i=0; i<$scope.chapterDetails.sections.length; i++ ) {
+
+        var masterSec = $scope.chapterDetails.sections[i] ;
+        var selected = false ;
+
+        for( var j=0; j<$scope.filterCriteria.sectionFilters.length; j++ ) {
+
+            var selSec = $scope.filterCriteria.sectionFilters[j] ;
+            if( masterSec.section == selSec.section ) {
+                selected = true ;
+            }
+        }
+        masterSec.selected = selected ? 1 : 0 ;
+    }
+
+    $http.post( '/jove_notes/api/ChapterSection/' + $scope.chapterDetails.chapterId, 
+                $scope.chapterDetails.sections ) 
+    .success( function( data ){
+    })
+    .error( function( data ){
+        log.error( "API error " + data ) ;
+        $scope.addErrorAlert( "API error " + data ) ;
+    }) ;
+}
+
+$scope.getSectionDisplayClass = function( section ) {
+    return (section.selected == 1) ? "sel-section" : "unsel-section" ;
+}
+
+$scope.selectAllSections = function() {
+
+    if( $scope.chapterDetails != null && 
+        $scope.chapterDetails.sections.length>0 ) {
+
+        $scope.filterCriteria.sectionFilters.length = 0 ;
+        
+        for( var i=0; i<$scope.chapterDetails.sections.length; i++ ) {
+            var section = $scope.chapterDetails.sections[i] ;
+            section.selected = 1 ;
+            $scope.filterCriteria.sectionFilters.push( section ) ;
+        }
+    }
+}
+
 // ---------------- Private functions ------------------------------------------
 function refreshData() {
 
@@ -155,7 +207,21 @@ function processServerData( data ) {
 
 	neFormatter = new NotesElementFormatter( $scope.chapterDetails, $sce ) ;
 
+	refreshSectionFilters() ;
  	processNotesElements() ;
+}
+
+function refreshSectionFilters() {
+
+    if( $scope.chapterDetails != null ) {
+        $scope.filterCriteria.sectionFilters.length = 0 ;
+        for( var i=0; i<$scope.chapterDetails.sections.length; i++ ) {
+            var section = $scope.chapterDetails.sections[i] ;
+            if( section.selected == 1 ) {
+                $scope.filterCriteria.sectionFilters.push( section ) ;
+            }
+        }
+    }
 }
 
 function processNotesElements() {
@@ -263,6 +329,26 @@ function qualifiesFilter( element ) {
 	var lrnEffLabelFilters = $scope.filterCriteria.learningEfficiencyFilters ;
 	var diffLabelFilters   = $scope.filterCriteria.difficultyFilters ;
 	var levelFilters       = $scope.filterCriteria.levelFilters ;
+	var sectionFilters     = $scope.filterCriteria.sectionFilters ;
+
+    var filteredBySelectedSections = false ;
+
+    if( sectionFilters.length > 0 ) {
+        if( element.section != null ) {
+            filteredBySelectedSections = true ;
+            for( var i=0; i<sectionFilters.length; i++ ) {
+                var selSec = sectionFilters[i] ;
+                if( selSec.section == element.section ) {
+                    filteredBySelectedSections = false ;
+                    break ;
+                }
+            }
+        }
+    }
+
+    if( filteredBySelectedSections ) {
+        return false ;
+    }
 
 	var efficiencyLabel = element.learningStats.efficiencyLabel ;
 	if( $scope.filterCriteria.useAbsoluteEfficiency ) {

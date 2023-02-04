@@ -57,6 +57,7 @@ class ChapterNotesAPI extends AbstractJoveNotesAPI {
 		$element = array() ;
 
 		$element[ "noteElementId"   ] = $neData[ "notes_element_id" ] ;
+		$element[ "section"         ] = $neData[ "section" ] ;
 		$element[ "elementType"     ] = $neData[ "element_type" ] ;
 		$element[ "difficultyLevel" ] = $neData[ "difficulty_level" ] ;
 		$element[ "evalVars"        ] = $this->encodeEvalVars( $neData[ "eval_vars" ] ) ;

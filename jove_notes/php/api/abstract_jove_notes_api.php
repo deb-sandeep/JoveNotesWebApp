@@ -61,6 +61,8 @@ class AbstractJoveNotesAPI extends API {
 			$this->logger->debug( "Chapter id = $chapterId" ) ;
 
 			$meta = $this->chapterDAO->getChapterMetaData( $chapterId ) ;
+	        $sections = $this->chapterDAO->getChapterSections( $chapterId ) ;
+
 			if( $meta == null ) {
 				throw new Exception( "Chapter not found" ) ;
 			}
@@ -76,6 +78,7 @@ class AbstractJoveNotesAPI extends API {
 			$this->chapterDetail[ "subChapterNumber" ] = $meta[ "sub_chapter_num" ] ;
 			$this->chapterDetail[ "chapterName"      ] = $meta[ "chapter_name"    ] ;
 			$this->chapterDetail[ "scriptBody"       ] = base64_encode( $meta["script_body"] ?? '') ;
+	        $this->chapterDetail[ "sections"         ] = $sections ;
 
 			$this->numCards = $meta[ "num_cards" ] ;
 			$this->num_VE   = $meta[ "num_VE"   ] ;

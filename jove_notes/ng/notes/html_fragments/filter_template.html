@@ -1,9 +1,27 @@
 <div class="container-fluid well">
   <div class="row">
 
-    <div class="col-sm-3 form-group">
-        <input id="absEfficiency" type="checkbox" ng-model="filterCriteria.useAbsoluteEfficiency"/>
-        <label for="absEfficiency"> Use absolute efficiency</label>
+    <div class="col-sm-4 form-group">
+      <label for="sectionFilter">Sections: &nbsp;
+        <span class="glyphicon glyphicon-check"
+              ng-click="selectAllSections()"></span>
+        &nbsp;
+      </label>
+      <div class="sec-visual">
+          <table>
+            <tr>
+              <td ng-repeat="section in chapterDetails.sections">
+                  <div ng-class="getSectionDisplayClass( section )"></div>
+              </td>
+            </tr>
+          </table>
+      </div>
+      <select id="sectionFilter" 
+              class="form-control" multiple="true"
+              ng-model="filterCriteria.sectionFilters"
+              ng-options="item.section for item in chapterDetails.sections track by item.section"
+              ng-change="sectionFilterChanged()">
+      </select>
     </div>
 
     <div class="col-sm-3 form-group">
@@ -24,7 +42,9 @@
 		</select>
     </div>
 
-    <div class="col-sm-3">
+    <div class="col-sm-2">
+      <input id="absEfficiency" type="checkbox" ng-model="filterCriteria.useAbsoluteEfficiency"/>
+      <label for="absEfficiency"> | &#x03BD; |</label>
     	<button type="submit" class="btn btn-primary btn-block"
     	        ng-click="applyFilter()">
     		Apply

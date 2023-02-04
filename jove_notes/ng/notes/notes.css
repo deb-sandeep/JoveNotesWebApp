@@ -1,0 +1,20 @@
+.sec-visual {
+    display:inline-block;
+    line-height: 10px;
+}
+
+.sec-visual td {
+    padding-right: 2px;
+}
+
+.sel-section {
+    width:5px;
+    height:10px;
+    background-color:green;
+}
+
+.unsel-section {
+    width:5px;
+    height:10px;
+    background-color:#FB9D82;
+}
