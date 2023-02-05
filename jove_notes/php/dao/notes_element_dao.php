@@ -25,7 +25,7 @@ class NotesElementDAO extends AbstractDAO {
 $query = <<< QUERY
 select 
 	ne.notes_element_id, ne.section, ne.element_type, ne.difficulty_level, 
-	ne.content, ne.eval_vars, ne.script_body,
+	ne.content, ne.eval_vars, ne.script_body, ne.marked_for_review,
 	CEIL( AVG( cls.learning_efficiency ) ) as learning_efficiency,
 	CEIL( AVG( cls.abs_learning_efficiency ) ) as abs_learning_efficiency,
 	GROUP_CONCAT( DISTINCT cls.current_level
@@ -48,8 +48,9 @@ QUERY;
 
 		$colNames = [ "notes_element_id", "section", "element_type", 
 		              "difficulty_level", "content", "eval_vars", 
-		              "script_body", "learning_efficiency", 
-		              "abs_learning_efficiency", "current_levels" ] ;
+		              "script_body", "marked_for_review",
+		              "learning_efficiency", "abs_learning_efficiency", 
+		              "current_levels" ] ;
 
 		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
 	}

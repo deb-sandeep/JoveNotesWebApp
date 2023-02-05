@@ -1,11 +1,4 @@
-<div ng-if="element.inReview">
-    <a type="button" class="btn btn-info btn-sm" 
-       style="padding-top:0px;padding-bottom:0px"
-       ng-click="markReviewed( element )">
-  	Mark Reviewed
-  	</a>
-</div>
-<div ng-if="showUserStatistics">
+<div ng-if="showUserStatistics" style="width: 75px;">
 	<span class="badge" 
 	      ng-class="element.difficultyLabel">
 		{{element.difficultyLabel}}

@@ -38,6 +38,27 @@ function FilterCriteria() {
     }
 }
 
+function NEGroup() {
+
+	this.wordMeanings          = [] ;
+	this.questionAnswers       = [] ;
+	this.fibs                  = [] ;
+	this.definitions           = [] ;
+	this.characters            = [] ;
+	this.teacherNotes          = [] ;
+	this.matchings             = [] ;
+	this.events                = [] ;
+	this.trueFalseStatements   = [] ;
+	this.chemEquations         = [] ;
+	this.chemCompounds         = [] ;
+	this.spellbeeWords         = [] ;
+	this.imageLabels           = [] ;
+	this.equations             = [] ;
+	this.referenceToContexts   = [] ;
+	this.multiChoiceQuestions  = [] ;
+	this.voice2TextQuestions   = [] ;
+}
+
 // ---------------- Local variables --------------------------------------------
 var jnUtil      = new JoveNotesUtil() ;
 var neFormatter = null ;
@@ -61,23 +82,7 @@ $scope.notesElements  = null ;
 
 // These are the arrays that hold the questions which match the filter criteria
 $scope.filteredNotesElements = [] ;
-$scope.wordMeanings          = [] ;
-$scope.questionAnswers       = [] ;
-$scope.fibs                  = [] ;
-$scope.definitions           = [] ;
-$scope.characters            = [] ;
-$scope.teacherNotes          = [] ;
-$scope.matchings             = [] ;
-$scope.events                = [] ;
-$scope.trueFalseStatements   = [] ;
-$scope.chemEquations         = [] ;
-$scope.chemCompounds         = [] ;
-$scope.spellbeeWords         = [] ;
-$scope.imageLabels           = [] ;
-$scope.equations             = [] ;
-$scope.referenceToContexts   = [] ;
-$scope.multiChoiceQuestions  = [] ;
-$scope.voice2TextQuestions   = [] ;
+$scope.defaultNEGroup        = new NEGroup() ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -230,23 +235,24 @@ function processNotesElements() {
 
 	// Reset all the arrrays before we fill them with filtered contents
 	$scope.filteredNotesElements.length = 0 ;
-	$scope.wordMeanings.length          = 0 ;
-	$scope.questionAnswers.length       = 0 ;
-	$scope.fibs.length                  = 0 ;
-	$scope.definitions.length           = 0 ;
-	$scope.characters.length            = 0 ;
-	$scope.teacherNotes.length          = 0 ;
-	$scope.matchings.length             = 0 ;
-	$scope.events.length                = 0 ;
-	$scope.trueFalseStatements.length   = 0 ;
-	$scope.chemEquations.length         = 0 ;
-	$scope.chemCompounds.length         = 0 ;
-	$scope.spellbeeWords.length         = 0 ;
-	$scope.imageLabels.length           = 0 ;
-	$scope.equations.length             = 0 ;
-	$scope.referenceToContexts.length   = 0 ;
-	$scope.multiChoiceQuestions.length  = 0 ;
-	$scope.voice2TextQuestions.length   = 0 ;
+
+	$scope.defaultNEGroup.wordMeanings.length          = 0 ;
+	$scope.defaultNEGroup.questionAnswers.length       = 0 ;
+	$scope.defaultNEGroup.fibs.length                  = 0 ;
+	$scope.defaultNEGroup.definitions.length           = 0 ;
+	$scope.defaultNEGroup.characters.length            = 0 ;
+	$scope.defaultNEGroup.teacherNotes.length          = 0 ;
+	$scope.defaultNEGroup.matchings.length             = 0 ;
+	$scope.defaultNEGroup.events.length                = 0 ;
+	$scope.defaultNEGroup.trueFalseStatements.length   = 0 ;
+	$scope.defaultNEGroup.chemEquations.length         = 0 ;
+	$scope.defaultNEGroup.chemCompounds.length         = 0 ;
+	$scope.defaultNEGroup.spellbeeWords.length         = 0 ;
+	$scope.defaultNEGroup.imageLabels.length           = 0 ;
+	$scope.defaultNEGroup.equations.length             = 0 ;
+	$scope.defaultNEGroup.referenceToContexts.length   = 0 ;
+	$scope.defaultNEGroup.multiChoiceQuestions.length  = 0 ;
+	$scope.defaultNEGroup.voice2TextQuestions.length   = 0 ;
 
 	for( index=0; index<$scope.notesElements.length; index++ ) {
 
@@ -258,59 +264,59 @@ function processNotesElements() {
 
 		if( type == NotesElementsTypes.prototype.TEACHER_NOTE ) {
 			$scope.filteredNotesElements.push( element ) ;
-			$scope.teacherNotes.push( neFormatter.formatTeacherNote( element ) ) ;
+			$scope.defaultNEGroup.teacherNotes.push( neFormatter.formatTeacherNote( element ) ) ;
 		}
 		else if( qualifiesFilter( element ) ) {
 
 			$scope.filteredNotesElements.push( element ) ;
 
 			if( type == NotesElementsTypes.prototype.WM ) {
-				$scope.wordMeanings.push( neFormatter.formatWM( element ) ) ;
+				$scope.defaultNEGroup.wordMeanings.push( neFormatter.formatWM( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.QA ) {
-				$scope.questionAnswers.push( neFormatter.formatQA( element ) ) ;
+				$scope.defaultNEGroup.questionAnswers.push( neFormatter.formatQA( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.FIB ) {
-				$scope.fibs.push( neFormatter.formatFIB( element ) ) ;
+				$scope.defaultNEGroup.fibs.push( neFormatter.formatFIB( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.DEFINITION ) {
-				$scope.definitions.push( neFormatter.formatDefinition( element ) ) ;
+				$scope.defaultNEGroup.definitions.push( neFormatter.formatDefinition( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.CHARACTER ) {
-				$scope.characters.push( neFormatter.formatCharacter( element ) ) ;
+				$scope.defaultNEGroup.characters.push( neFormatter.formatCharacter( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.MATCHING ) {
-				$scope.matchings.push( neFormatter.formatMatching( element ) ) ;
+				$scope.defaultNEGroup.matchings.push( neFormatter.formatMatching( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.EVENT ) {
-				$scope.events.push( neFormatter.formatEvent( element ) ) ;
+				$scope.defaultNEGroup.events.push( neFormatter.formatEvent( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.TRUE_FALSE ) {
-				$scope.trueFalseStatements.push( neFormatter.formatTrueFalse( element ) ) ;
+				$scope.defaultNEGroup.trueFalseStatements.push( neFormatter.formatTrueFalse( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.CHEM_EQUATION ) {
-				$scope.chemEquations.push( neFormatter.formatChemEquation( element ) ) ;
+				$scope.defaultNEGroup.chemEquations.push( neFormatter.formatChemEquation( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.CHEM_COMPOUND ) {
-				$scope.chemCompounds.push( neFormatter.formatChemCompound( element ) ) ;
+				$scope.defaultNEGroup.chemCompounds.push( neFormatter.formatChemCompound( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.SPELLBEE ) {
-				$scope.spellbeeWords.push( neFormatter.formatSpellbeeWord( element ) ) ;
+				$scope.defaultNEGroup.spellbeeWords.push( neFormatter.formatSpellbeeWord( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.IMAGE_LABEL ) {
-				$scope.imageLabels.push( neFormatter.formatImageLabel( element ) ) ;
+				$scope.defaultNEGroup.imageLabels.push( neFormatter.formatImageLabel( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.EQUATION ) {
-				$scope.equations.push( neFormatter.formatEquation( element ) ) ;
+				$scope.defaultNEGroup.equations.push( neFormatter.formatEquation( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.REF_TO_CONTEXT ) {
-				$scope.referenceToContexts.push( neFormatter.formatRTC( element ) ) ;
+				$scope.defaultNEGroup.referenceToContexts.push( neFormatter.formatRTC( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.MULTI_CHOICE ) {
-				$scope.multiChoiceQuestions.push( neFormatter.formatMultiChoiceQuestion( element ) ) ;
+				$scope.defaultNEGroup.multiChoiceQuestions.push( neFormatter.formatMultiChoiceQuestion( element ) ) ;
 			}
 			else if( type == NotesElementsTypes.prototype.VOICE2TEXT ) {
-				$scope.voice2TextQuestions.push( neFormatter.formatVoice2TextQuestion( element ) ) ;
+				$scope.defaultNEGroup.voice2TextQuestions.push( neFormatter.formatVoice2TextQuestion( element ) ) ;
 			}
 		}
 		else {

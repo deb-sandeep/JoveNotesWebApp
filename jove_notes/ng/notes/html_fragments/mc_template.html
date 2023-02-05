@@ -1,15 +1,17 @@
 <div class="panel panel-default"
-     ng-repeat="element in multiChoiceQuestions">
+     ng-repeat="element in ng.multiChoiceQuestions">
+
+  <div ng-if="showUserStatistics" class="pull-right"
+       ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
+  </div>
+
   <div class="panel-heading">
     <span class="glyphicon glyphicon-question-sign"></span>&nbsp;&nbsp;
     <span class="text-primary" ng-bind-html="element.question"></span>
-
-    <div class="pull-right" 
-         ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
-    </div>
-
   </div>
+  
   <div class="panel-body">
-	<span ng-bind-html="element.answer"></span>
+	 <span ng-bind-html="element.answer"></span>
   </div>
+
 </div> 
