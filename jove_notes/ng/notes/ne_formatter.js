@@ -61,6 +61,7 @@ function NotesElementFormatter( chapterDetails, $sce ) {
 			}
 			formattedPracticeAnswer = formattedPracticeAnswer.replace( strToReplace, blank ) ; 
 		}
+		
 		fibElement.question = formattedAnswer ;
 		fibElement.practiceQuestion = formattedPracticeAnswer ;
 

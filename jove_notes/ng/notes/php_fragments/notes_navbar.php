@@ -2,10 +2,14 @@
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm-9 nav_element">
+    <div class="col-sm-8 nav_element">
         <img src="<?php echo APP_LOGO_PATH ?>" 
              style="height: 30px"/>
         &nbsp;&nbsp;&nbsp;
+        <span class="small">
+        [ <?php echo ExecutionContext::getCurrentUserName(); ?> ]
+        </span>
+        &nbsp;&nbsp;
         <b>{{pageTitle}}</b>
         &nbsp;&nbsp;&nbsp;
         <div class="sec-visual">
@@ -18,16 +22,14 @@
             </table>
         </div>
     </div>
-    <div class="col-sm-3 nav_element">
-        <span class="small">
-        [ <?php echo ExecutionContext::getCurrentUserName(); ?> ]
-        </span>
+    <div class="col-sm-4 nav_element">
         <div class="pull-right" style="margin-top: 3px">
-            <a target="_blank" href="/apps/jove_notes/ng/notes/practice.php?chapterId=<?php echo $_REQUEST[ 'chapterId' ] ?>">
-                <span class="glyphicon glyphicon-edit gi-1-5x"></span>
+            <a ng-click="toggleNotesLayout()">
+                <span class="glyphicon glyphicon-equalizer gi-1-5x"></span>
             </a>
             &nbsp;
-            <a target="_blank" href="/apps/jove_notes/ng/notes/print.php?chapterId=<?php echo $_REQUEST[ 'chapterId' ] ?>">
+            <a target="_blank" 
+               href="/apps/jove_notes/ng/notes/print.php?chapterId=<?php echo $_REQUEST['chapterId'] ?>">
                 <span class="glyphicon glyphicon-print gi-1-5x"></span>
             </a>
             &nbsp;

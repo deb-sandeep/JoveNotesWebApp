@@ -96,76 +96,21 @@ define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
     <div ng-show="showFilterForm" ng-include="'<?php echo FILTER_FRAGMENT_PATH ?>'">
     </div>
     <p>
-    <div ng-init="ng=defaultNEGroup">
-        <div ng-if="ng.teacherNotes.length">
-            <div ng-include="'<?php echo TN_FRAGMENT_PATH ?>'"></div>
-        </div>
 
-        <div ng-if="ng.wordMeanings.length">
-            <div ng-include="'<?php echo WM_FRAGMENT_PATH ?>'"></div>
-        </div>
-
-        <div ng-if="ng.spellbeeWords.length">
-            <div ng-include="'<?php echo SPELLBEE_FRAGMENT_PATH ?>'"></div>
-        </div>
-
-        <div ng-if="ng.voice2TextQuestions.length">
-            <div ng-include="'<?php echo V2C_FRAGMENT_PATH ?>'"></div>
-        </div>
-
-        <div ng-if="ng.chemCompounds.length">
-            <div ng-include="'<?php echo CHEM_CMP_FRAGMENT_PATH ?>'"></div>
-        </div>
-
-        <div ng-if="ng.equations.length">
-            <div ng-include="'<?php echo EQUATION_FRAGMENT_PATH ?>'"></div>
-        </div>
-
-        <div ng-if="ng.definitions.length">
-            <div ng-include="'<?php echo DEFN_FRAGMENT_PATH ?>'"></div>
-        </div>
-
-        <div ng-if="ng.fibs.length">
-            <div ng-include="'<?php echo FIB_FRAGMENT_PATH ?>'"></div>
-        </div>
-
-        <div ng-if="ng.trueFalseStatements.length">
-            <div ng-include="'<?php echo TF_FRAGMENT_PATH ?>'"></div>
-        </div>
-
-        <div ng-if="ng.characters.length">
-            <div ng-include="'<?php echo CHAR_FRAGMENT_PATH ?>'"></div>
-        </div>
-
-        <div ng-if="ng.matchings.length">
-            <div ng-include="'<?php echo MATCH_FRAGMENT_PATH ?>'"></div>
-        </div>
-
-        <div ng-if="ng.events.length">
-            <div ng-include="'<?php echo EVENT_FRAGMENT_PATH ?>'"></div>
-        </div>
-
-        <div ng-if="ng.imageLabels.length">
-            <div ng-include="'<?php echo IMGLABEL_FRAGMENT_PATH ?>'"></div>
-        </div>
-
-        <div ng-if="ng.questionAnswers.length">
-            <div ng-include="'<?php echo QA_FRAGMENT_PATH ?>'"></div>
-        </div>
-
-        <div ng-if="ng.multiChoiceQuestions.length">
-            <div ng-include="'<?php echo MC_FRAGMENT_PATH ?>'"></div>
-        </div>
-
-        <div ng-if="ng.referenceToContexts.length">
-            <div ng-include="'<?php echo RTC_FRAGMENT_PATH ?>'"></div>
-        </div>
-
-        <div ng-if="ng.chemEquations.length">
-            <div ng-include="'<?php echo CHEM_EQ_FRAGMENT_PATH ?>'"></div>
-        </div>
+    <div ng-show="notesLayoutMode == 'linear'"
+         ng-init="ng=linearNEGroup" 
+         ng-include="'html_fragments/layout/linear_layout.html'">
     </div>
 
+    <div ng-show="notesLayoutMode == 'sections'">
+         <div ng-repeat="ngGroup in sectionNEGroups">
+            <h1 class="section-header">{{ngGroup.sectionName}}</h1>
+            <div ng-init="ng=ngGroup.neGroup" 
+                 ng-include="'html_fragments/layout/linear_layout.html'"
+                 style="padding-left: 20px;">
+            </div>
+         </div>
+    </div>
 
     <a name="bottom"></a>
 </body>

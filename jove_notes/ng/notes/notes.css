@@ -18,3 +18,9 @@
     height:10px;
     background-color:#FB9D82;
 }
+
+.section-header {
+    font-size: 20px;
+    background-color:#D0F9FF;
+    padding: 7px;   
+}

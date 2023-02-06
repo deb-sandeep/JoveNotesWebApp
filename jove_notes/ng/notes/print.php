@@ -55,6 +55,7 @@ define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
 
     <link rel='stylesheet' href='/lib-ext/pure/tables.css'>
     <link rel='stylesheet' href='/apps/jove_notes/ng/flashcard/flashcard.css'>
+    <link rel='stylesheet' href='/apps/jove_notes/ng/notes/notes.css'>
 
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({ 
@@ -92,69 +93,22 @@ define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
     </div>
     <p>
     
-    <div ng-if="teacherNotes.length">
-        <div ng-include="'<?php echo TN_FRAGMENT_PATH ?>'"></div>
+    <div ng-show="notesLayoutMode == 'linear'"
+         ng-init="ng=linearNEGroup" 
+         ng-include="'html_fragments/layout/linear_layout.html'">
     </div>
 
-    <div ng-if="wordMeanings.length">
-        <div ng-include="'<?php echo WM_FRAGMENT_PATH ?>'"></div>
+    <div ng-show="notesLayoutMode == 'sections'">
+         <div ng-repeat="ngGroup in sectionNEGroups"
+              style="page-break-inside:avoid;">
+            <h1 class="section-header">{{ngGroup.sectionName}}</h1>
+            <div ng-init="ng=ngGroup.neGroup" 
+                 ng-include="'html_fragments/layout/linear_layout.html'"
+                 style="padding-left: 20px;">
+            </div>
+         </div>
     </div>
 
-    <div ng-if="spellbeeWords.length">
-        <div ng-include="'<?php echo SPELLBEE_FRAGMENT_PATH ?>'"></div>
-    </div>
-
-    <div ng-if="chemCompounds.length">
-        <div ng-include="'<?php echo CHEM_CMP_FRAGMENT_PATH ?>'"></div>
-    </div>
-
-    <div ng-if="equations.length">
-        <div ng-include="'<?php echo EQUATION_FRAGMENT_PATH ?>'"></div>
-    </div>
-
-    <div ng-if="definitions.length">
-        <div ng-include="'<?php echo DEFN_FRAGMENT_PATH ?>'"></div>
-    </div>
-
-    <div ng-if="fibs.length">
-        <div ng-include="'<?php echo FIB_FRAGMENT_PATH ?>'"></div>
-    </div>
-
-    <div ng-if="trueFalseStatements.length">
-        <div ng-include="'<?php echo TF_FRAGMENT_PATH ?>'"></div>
-    </div>
-
-    <div ng-if="characters.length">
-        <div ng-include="'<?php echo CHAR_FRAGMENT_PATH ?>'"></div>
-    </div>
-
-    <div ng-if="matchings.length">
-        <div ng-include="'<?php echo MATCH_FRAGMENT_PATH ?>'"></div>
-    </div>
-
-    <div ng-if="events.length">
-        <div ng-include="'<?php echo EVENT_FRAGMENT_PATH ?>'"></div>
-    </div>
-
-    <div ng-if="imageLabels.length">
-        <div ng-include="'<?php echo IMGLABEL_FRAGMENT_PATH ?>'"></div>
-    </div>
-
-    <div ng-if="questionAnswers.length">
-        <div ng-include="'<?php echo QA_FRAGMENT_PATH ?>'"></div>
-    </div>
-
-    <div ng-if="multiChoiceQuestions.length">
-        <div ng-include="'<?php echo MC_FRAGMENT_PATH ?>'"></div>
-    </div>
-
-    <div ng-if="referenceToContexts.length">
-        <div ng-include="'<?php echo RTC_FRAGMENT_PATH ?>'"></div>
-    </div>
-
-    <div ng-if="chemEquations.length">
-        <div ng-include="'<?php echo CHEM_EQ_FRAGMENT_PATH ?>'"></div>
-    </div>
 </body>
 
 </html>
