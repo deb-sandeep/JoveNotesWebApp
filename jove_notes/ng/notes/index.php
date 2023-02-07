@@ -22,32 +22,11 @@ if( !Authorizer::hasAccess( $guard, "NOTES" ) ) {
 
 // The user has access to notes of this chapter. Proceed with rendering of the page.
 $pageConfig = array(
-	"tab_title"  => "Chapter Notes"
+    "tab_title"  => "Chapter Notes"
 ) ;
 
-define( "FRAGMENT_PATH",          "/apps/jove_notes/ng/notes/html_fragments" ) ;
-
-define( "WM_FRAGMENT_PATH",       FRAGMENT_PATH . "/wm_template.html" ) ;
-define( "QA_FRAGMENT_PATH",       FRAGMENT_PATH . "/qa_template.html" ) ;
-define( "FIB_FRAGMENT_PATH",      FRAGMENT_PATH . "/fib_template.html" ) ;
-define( "FILTER_FRAGMENT_PATH",   FRAGMENT_PATH . "/filter_template.html" ) ;
-define( "DEFN_FRAGMENT_PATH",     FRAGMENT_PATH . "/definition_template.html" ) ;
-define( "CHAR_FRAGMENT_PATH",     FRAGMENT_PATH . "/character_template.html" ) ;
-define( "TN_FRAGMENT_PATH",       FRAGMENT_PATH . "/teacher_note_template.html" ) ;
-define( "MATCH_FRAGMENT_PATH",    FRAGMENT_PATH . "/matching_template.html" ) ;
-define( "EVENT_FRAGMENT_PATH",    FRAGMENT_PATH . "/event_template.html" ) ;
-define( "TF_FRAGMENT_PATH",       FRAGMENT_PATH . "/true_false_template.html" ) ;
-define( "CHEM_EQ_FRAGMENT_PATH",  FRAGMENT_PATH . "/chem_equation_template.html" ) ;
-define( "CHEM_CMP_FRAGMENT_PATH", FRAGMENT_PATH . "/chem_compound_template.html" ) ;
-define( "SPELLBEE_FRAGMENT_PATH", FRAGMENT_PATH . "/spellbee_template.html" ) ;
-define( "IMGLABEL_FRAGMENT_PATH", FRAGMENT_PATH . "/image_label_template.html" ) ;
-define( "EQUATION_FRAGMENT_PATH", FRAGMENT_PATH . "/equation_template.html" ) ;
-define( "RTC_FRAGMENT_PATH",      FRAGMENT_PATH . "/rtc_template.html" ) ;
-define( "MC_FRAGMENT_PATH",       FRAGMENT_PATH . "/mc_template.html" ) ;
-define( "V2C_FRAGMENT_PATH",      FRAGMENT_PATH . "/voice2text_template.html" ) ;
-
-define( "PHP_FRAGMENT_PATH",      DOCUMENT_ROOT . "/apps/jove_notes/ng/notes/php_fragments" ) ;
-define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
+define( "PHP_FRAGMENT_PATH",      DOCUMENT_ROOT . "php_fragments" ) ;
+define( "NAVBAR_FRAGMENT_PATH",   DOCUMENT_ROOT . "/apps/jove_notes/ng/notes/notes_navbar.php" ) ;
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +37,7 @@ define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
 
     <link rel='stylesheet' href='/lib-ext/pure/tables.css'>
     <link rel='stylesheet' href='/apps/jove_notes/ng/flashcard/flashcard.css'>
-    <link rel='stylesheet' href='/apps/jove_notes/ng/notes/notes.css'>
+    <link rel='stylesheet' href='/apps/jove_notes/ng/notes/css/notes.css'>
 
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({ 
@@ -75,11 +54,11 @@ define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
 
     <script src="/apps/jove_notes/ng/flashcard/practice_page/dynq_imglabel.js"></script>    
 
-    <script src="/apps/jove_notes/ng/notes/ne_formatter.js"></script>    
-
-    <script src="/apps/jove_notes/ng/notes/routes.js"></script>    
-    <script src="/apps/jove_notes/ng/notes/directives.js"></script>    
-    <script src="/apps/jove_notes/ng/notes/controllers.js"></script>    
+    <script src="/apps/jove_notes/ng/notes/js/ne_formatter.js"></script>    
+    <script src="/apps/jove_notes/ng/notes/js/ne_group.js"></script>    
+    <script src="/apps/jove_notes/ng/notes/js/routes.js"></script>    
+    <script src="/apps/jove_notes/ng/notes/js/directives.js"></script>    
+    <script src="/apps/jove_notes/ng/notes/js/controllers.js"></script>    
 
     <script>
     var userName = '<?php echo ExecutionContext::getCurrentUserName() ?>' ;
@@ -93,20 +72,19 @@ define( "NAVBAR_FRAGMENT_PATH",   PHP_FRAGMENT_PATH . "/notes_navbar.php" ) ;
     <?php include( ALERT_DIV_FILE ) ; ?>
     <audio id="audio"></audio>
 
-    <div ng-show="showFilterForm" ng-include="'<?php echo FILTER_FRAGMENT_PATH ?>'">
+    <div ng-show="showFilterForm" ng-include="'html_fragments/filter_template.html'">
     </div>
-    <p>
-
+    
     <div ng-show="notesLayoutMode == 'linear'"
          ng-init="ng=linearNEGroup" 
-         ng-include="'html_fragments/layout/linear_layout.html'">
+         ng-include="'html_fragments/linear_layout.html'">
     </div>
 
     <div ng-show="notesLayoutMode == 'sections'">
          <div ng-repeat="ngGroup in sectionNEGroups">
             <h1 class="section-header">{{ngGroup.sectionName}}</h1>
             <div ng-init="ng=ngGroup.neGroup" 
-                 ng-include="'html_fragments/layout/linear_layout.html'"
+                 ng-include="'html_fragments/linear_layout.html'"
                  style="padding-left: 20px;">
             </div>
          </div>
