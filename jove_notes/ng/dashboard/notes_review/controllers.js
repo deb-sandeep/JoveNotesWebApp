@@ -13,23 +13,7 @@ $scope.reportTitle           = 'Notes Review' ;
 $scope.chapters = [];
 
 $scope.notesElements = [] ;
-
-$scope.wordMeanings          = [] ;
-$scope.questionAnswers       = [] ;
-$scope.fibs                  = [] ;
-$scope.definitions           = [] ;
-$scope.characters            = [] ;
-$scope.teacherNotes          = [] ;
-$scope.matchings             = [] ;
-$scope.events                = [] ;
-$scope.trueFalseStatements   = [] ;
-$scope.chemEquations         = [] ;
-$scope.chemCompounds         = [] ;
-$scope.spellbeeWords         = [] ;
-$scope.imageLabels           = [] ;
-$scope.equations             = [] ;
-$scope.referenceToContexts   = [] ;
-$scope.multiChoiceQuestions  = [] ;
+$scope.ng = new NEGroup() ;
 
 // ---------------- Main logic for the controller ------------------------------
 // At the time of initialization, we ask the server to give us a list of chapters
@@ -55,11 +39,15 @@ $scope.accordionTabClicked = function( chapter ) {
 $scope.markReviewed = function( element ) {
     callNEReviewAPItoMarkReviewed( element.noteElementId, function(){
         var index = $scope.notesElements.indexOf( element ) ;
-        if( index > -1 ) {
-            $scope.notesElements.splice( index, 1 ) ;
-            currentOpenedChapter.numReviewItems-- ;
-            processNotesElements() ;
+        $scope.notesElements.splice( index, 1 ) ;
+        currentOpenedChapter.numReviewItems-- ;
+
+        if( currentOpenedChapter.numReviewItems == 0 ) {
+            index = $scope.chapters.indexOf( currentOpenedChapter ) ;
+            $scope.chapters.splice( index, 1 ) ;
         }
+
+        processNotesElements() ;
     } ) ;
 }
 
@@ -67,7 +55,6 @@ $scope.markReviewed = function( element ) {
 function processChapterList( chapterList ) {
 
     for( var index=0; index<chapterList.length; index++ ) {
-
         var chapter = chapterList[index] ;
         chapter.open = false ;
         $scope.chapters.push( chapter ) ;
@@ -84,88 +71,25 @@ function processServerData( data ) {
     
     neFormatter = new NotesElementFormatter( data.chapterDetails, $sce ) ;
     $scope.notesElements = data.notesElements ;
+
+    $scope.ng.setFormatter( neFormatter ) ;
+
     processNotesElements() ;
 }
 
 function processNotesElements() {
 
+    $scope.ng.reset() ;
     currentOpenedChapter.numReviewItems = $scope.notesElements.length ;
-
-    // Reset all the arrrays before we fill them with filtered contents
-    $scope.wordMeanings.length          = 0 ;
-    $scope.questionAnswers.length       = 0 ;
-    $scope.fibs.length                  = 0 ;
-    $scope.definitions.length           = 0 ;
-    $scope.characters.length            = 0 ;
-    $scope.teacherNotes.length          = 0 ;
-    $scope.matchings.length             = 0 ;
-    $scope.events.length                = 0 ;
-    $scope.trueFalseStatements.length   = 0 ;
-    $scope.chemEquations.length         = 0 ;
-    $scope.chemCompounds.length         = 0 ;
-    $scope.spellbeeWords.length         = 0 ;
-    $scope.imageLabels.length           = 0 ;
-    $scope.equations.length             = 0 ;
-    $scope.referenceToContexts.length   = 0 ;
-    $scope.multiChoiceQuestions.length  = 0 ;
 
     for( index=0; index<$scope.notesElements.length; index++ ) {
 
         var element = $scope.notesElements[ index ] ;
-        var type    = element.elementType ;
 
-        element.inReview = true ;
         neFormatter.preProcessElement( element ) ;
         neFormatter.initializeScriptSupport( element ) ;
 
-        if( type == NotesElementsTypes.prototype.WM ) {
-            $scope.wordMeanings.push( neFormatter.formatWM( element ) ) ;
-        }
-        else if( type == NotesElementsTypes.prototype.QA ) {
-            $scope.questionAnswers.push( neFormatter.formatQA( element ) ) ;
-        }
-        else if( type == NotesElementsTypes.prototype.FIB ) {
-            $scope.fibs.push( neFormatter.formatFIB( element ) ) ;
-        }
-        else if( type == NotesElementsTypes.prototype.DEFINITION ) {
-            $scope.definitions.push( neFormatter.formatDefinition( element ) ) ;
-        }
-        else if( type == NotesElementsTypes.prototype.CHARACTER ) {
-            $scope.characters.push( neFormatter.formatCharacter( element ) ) ;
-        }
-        else if( type == NotesElementsTypes.prototype.TEACHER_NOTE ) {
-            $scope.teacherNotes.push( neFormatter.formatTeacherNote( element ) ) ;
-        }
-        else if( type == NotesElementsTypes.prototype.MATCHING ) {
-            $scope.matchings.push( neFormatter.formatMatching( element ) ) ;
-        }
-        else if( type == NotesElementsTypes.prototype.EVENT ) {
-            $scope.events.push( neFormatter.formatEvent( element ) ) ;
-        }
-        else if( type == NotesElementsTypes.prototype.TRUE_FALSE ) {
-            $scope.trueFalseStatements.push( neFormatter.formatTrueFalse( element ) ) ;
-        }
-        else if( type == NotesElementsTypes.prototype.CHEM_EQUATION ) {
-            $scope.chemEquations.push( neFormatter.formatChemEquation( element ) ) ;
-        }
-        else if( type == NotesElementsTypes.prototype.CHEM_COMPOUND ) {
-            $scope.chemCompounds.push( neFormatter.formatChemCompound( element ) ) ;
-        }
-        else if( type == NotesElementsTypes.prototype.SPELLBEE ) {
-            $scope.spellbeeWords.push( neFormatter.formatSpellbeeWord( element ) ) ;
-        }
-        else if( type == NotesElementsTypes.prototype.IMAGE_LABEL ) {
-            $scope.imageLabels.push( neFormatter.formatImageLabel( element ) ) ;
-        }
-        else if( type == NotesElementsTypes.prototype.EQUATION ) {
-            $scope.equations.push( neFormatter.formatEquation( element ) ) ;
-        }
-        else if( type == NotesElementsTypes.prototype.REF_TO_CONTEXT ) {
-            $scope.referenceToContexts.push( neFormatter.formatRTC( element ) ) ;
-        }
-        else if( type == NotesElementsTypes.prototype.MULTI_CHOICE ) {
-            $scope.multiChoiceQuestions.push( neFormatter.formatMultiChoiceQuestion( element ) ) ;
-        }
+        $scope.ng.addNote( element ) ;
     }
 
     setTimeout( function(){

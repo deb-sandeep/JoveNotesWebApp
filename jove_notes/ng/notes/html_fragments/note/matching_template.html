@@ -15,6 +15,11 @@
               <div class="pull-right" 
                    ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
               </div>
+              <div ng-if="element.inReview" class="pull-right">
+                 <button type="button" 
+                         class="btn btn-xs btn-info" 
+                         ng-click="markReviewed( element )">Mark reviewed</button>
+              </div>
             </td>
         </tr>
       </table>

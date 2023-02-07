@@ -27,7 +27,9 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
     <link rel="stylesheet" type="text/css" href="/lib-ext/treetable/jquery.treetable.theme.css">
     <link rel="stylesheet" type="text/css" href="/lib-ext/bootstrap-3.3.4/angular/calendar/angular-bootstrap-calendar.min.css" >
     <link rel="stylesheet" type="text/css" href="/lib-ext/bootstrap-3.3.4/angular/colorpicker/colorpicker.min.css" >
+
     <link rel="stylesheet" type="text/css" href="/apps/jove_notes/ng/dashboard/calendar/settings.css" >
+    <link rel="stylesheet" type="text/css" href="/apps/jove_notes/ng/notes/css/notes.css" >
 
     <script src="/lib-ext/angular/angular-ui-indeterminate.min.js"></script>
 
@@ -65,7 +67,8 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
     <script src="/apps/jove_notes/ng/_common/jove_notes_utils.js"></script>    
     <script src="/apps/jove_notes/ng/_common/question_utils.js"></script>    
     <script src="/apps/jove_notes/ng/_common/script_utilities.js"></script>    
-    <script src="/apps/jove_notes/ng/notes/ne_formatter.js"></script>    
+    <script src="/apps/jove_notes/ng/notes/js/ne_group.js"></script>    
+    <script src="/apps/jove_notes/ng/notes/js/ne_formatter.js"></script>    
 
     <script src="/apps/jove_notes/ng/dashboard/routes.js"></script>    
     <script src="/apps/jove_notes/ng/dashboard/controllers.js"></script>    
