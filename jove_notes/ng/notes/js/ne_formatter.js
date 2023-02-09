@@ -44,8 +44,8 @@ function NotesElementFormatter( chapterDetails, $sce ) {
 
 	this.formatFIB = function( fibElement ){
 		
-		var formattedAnswer         = "&ctdot;&nbsp;" + fibElement.question ;
-		var formattedPracticeAnswer = "&ctdot;&nbsp;" + fibElement.question ;
+		var formattedAnswer         = "&ctdot;&nbsp;&nbsp;" + fibElement.question ;
+		var formattedPracticeAnswer = "&ctdot;&nbsp;&nbsp;" + fibElement.question ;
 		var numBlanks               = fibElement.answers.length ;
 
 		for( var i=0; i<numBlanks; i++ ) {
@@ -160,8 +160,31 @@ function NotesElementFormatter( chapterDetails, $sce ) {
 
 		chemEqElement.description = textFormatter.format( chemEqElement.description ) ;
 		chemEqElement.notes = textFormatter.format( chemEqElement.notes ) ;
+		chemEqElement.fib   = formatChemEquationToFIB( chemEqElement.equation ) ;
 
 		return chemEqElement ;
+	}
+
+	function formatChemEquationToFIB( eqStr ) {
+	  
+		var strippedEqStr = eqStr.replace( "}$$", "" ) ;
+		var rSideStartIndex = Math.max( strippedEqStr.lastIndexOf( '>' ), 
+		                                strippedEqStr.lastIndexOf( ']' ) ) ;
+		var rSide = strippedEqStr.substring( rSideStartIndex + 1 ).trim() ;
+		var rSideComponents = rSide.split( '+' ) ;
+
+		for( var i=0; i<rSideComponents.length; i++ ) {
+
+			var product = rSideComponents[i].trim() ;
+			var index = eqStr.lastIndexOf( product ) ;
+
+			var str = eqStr.substring( 0, index ) ;
+			str += '\\_\\_\\_\\_\\_\\_\\_\\_\\_' ;
+			str += eqStr.substring( index + product.length ) ;
+
+			eqStr = str ;
+		}
+		return eqStr ;
 	}
 
 	this.formatChemCompound = function( chemCompoundElement ) {
