@@ -15,7 +15,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="element in spellbeeWords">
+            <tr ng-repeat="element in ng.spellbeeWords">
                 <td width="60px">
                   <button type="button" class="btn btn-default" ng-click="playWordSound(element.word)">
                     <span class="glyphicon glyphicon-volume-up"></span>
@@ -23,11 +23,6 @@
                 </td>
                 <td class="text-primary" style="letter-spacing:3px"><b>{{element.word | uppercase}}</b></td>
                 <td>{{element.pronunciation}}</td>
-                <td>
-                  <div class="pull-right" 
-                       ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
-                  </div>
-                </td>
             </tr>
         </tbody>
       </table>

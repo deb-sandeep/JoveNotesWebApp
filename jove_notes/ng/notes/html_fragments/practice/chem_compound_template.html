@@ -15,18 +15,13 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="element in chemCompounds">
+            <tr ng-repeat="element in ng.chemCompounds">
                 <td><span ng-bind-html="element.symbol"></span></td>
                 <td style="vertical-align: middle;">
                   <span style="color:#BBBBBB" ng-bind-html="element.chemicalNamePrompt"></span>
                 </td>
                 <td style="vertical-align: middle;">
                   <span style="color:#BBBBBB" ng-bind-html="element.commonNamePrompt"></span>
-                </td>
-                <td>
-                  <div class="pull-right" 
-                       ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
-                  </div>
                 </td>
             </tr>
         </tbody>

@@ -1,21 +1,21 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <span class="glyphicon glyphicon-hourglass"></span>&nbsp;&nbsp;
-    <span class="panel-title">Events</span>
+    <span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;
+    <span class="panel-title">Word Meanings</span>
   </div>
   <div class="panel-body">
     <div class="table-responsive">
       <table class="table table-condensed table-striped table-hover">
         <thead>
             <tr class="default">
-                <th>Time</th>
-                <th>Event</th>
+                <th>Word</th>
+                <th>Meaning</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="element in events">
-                <td class="text-primary"><span ng-bind-html="element.time"></span></td>
+            <tr ng-repeat="element in ng.wordMeanings">
+                <td class="text-primary" ng-bind-html="element.word"></td>
                 <td style="color:#BBBBBB;">_______________________________________</td>
                 <td>
                   <div class="pull-right" 

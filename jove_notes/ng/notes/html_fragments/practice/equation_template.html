@@ -5,7 +5,7 @@
   </div>
   <div class="table-responsive">
     <table class="table table-condensed table-hover">
-      <tr ng-repeat="element in equations">
+      <tr ng-repeat="element in ng.equations">
           <td width="30">
             <span><span class="glyphicon glyphicon-pushpin"></span></span>
           </td>
@@ -18,11 +18,6 @@
                 <td style="color:#BBBBBB;">_______________________________________</td>
               </tr>
             </table>
-          </td>
-          <td>
-            <div class="pull-right" 
-                 ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
-            </div>
           </td>
       </tr>
     </table>

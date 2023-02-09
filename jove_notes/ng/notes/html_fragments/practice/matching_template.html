@@ -1,4 +1,4 @@
-<div class="panel panel-default" ng-repeat="element in matchings"
+<div class="panel panel-default" ng-repeat="element in ng.matchings"
      style="page-break-inside:avoid;">
   <div class="panel-heading">
     <span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;
@@ -9,13 +9,8 @@
       <table class="mcq_option_table">
         <tr ng-repeat="pair in element.practiceData">
             <td class="unselected"><span ng-bind-html="pair[0]"></span></td>
-            <td style="vertical-align:middle;width:50px"></td>
+            <td style="vertical-align:middle;width:150px"></td>
             <td class="unselected"><span ng-bind-html="pair[1]"></span></td>
-            <td>
-              <div class="pull-right" 
-                   ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
-              </div>
-            </td>
         </tr>
       </table>
     </div>

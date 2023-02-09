@@ -33,6 +33,11 @@
                 <span class="glyphicon glyphicon-print gi-1-5x"></span>
             </a>
             &nbsp;
+            <a target="_blank" 
+               href="/apps/jove_notes/ng/notes/practice.php?chapterId=<?php echo $_REQUEST['chapterId'] ?>">
+                <span class="glyphicon glyphicon-edit gi-1-5x"></span>
+            </a>
+            &nbsp;
             <a ng-click="toggleFilterForm()">
                 <span class="glyphicon glyphicon-filter gi-1-5x"></span>
             </a>

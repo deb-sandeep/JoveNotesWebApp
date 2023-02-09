@@ -5,18 +5,13 @@
   </div>
   <div class="table-responsive">
     <table class="table table-condensed table-hover">
-      <tr ng-repeat="element in chemEquations">
+      <tr ng-repeat="element in ng.chemEquations">
           <td>
             <span><span class="glyphicon glyphicon-hand-right"></span></span>
           </td>
           <td>
           <p ng-bind-html="element.equation"></p>
           <p class="text-muted" ng-bind-html="element.description"></p>
-          </td>
-          <td>
-            <div class="pull-right" 
-                 ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
-            </div>
           </td>
       </tr>
     </table>
