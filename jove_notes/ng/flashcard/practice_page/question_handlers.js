@@ -36,10 +36,13 @@ function FIBHandler( chapterDetails, question, textFormatter ) {
 			answerLength     += ( "" + textFormatter.stripHTMLTags( replacedText ) ).length ;
 		}
 
-		if( formattedQuestion.length > 150 ) {
+		if( formattedQuestion.length > 100 ) {
 			formattedQuestion = "<div style='text-align:left;'>" + 
 			                    formattedQuestion + 
 			                    "</div>" ;
+			formattedAnswer = "<div style='text-align:left;'>" + 
+			                  formattedAnswer + 
+			                  "</div>" ;
 		}
 	}
 
