@@ -73,7 +73,7 @@ define( "NAVBAR_FRAGMENT_PATH", DOCUMENT_ROOT . "/apps/jove_notes/ng/notes/notes
     </div>
     
     <div ng-repeat="ngGroup in sectionNEGroups"
-         style="page-break-inside:avoid;">
+         style="page-break-inside:auto;">
         <h1 class="section-header">{{ngGroup.sectionName}}</h1>
         <div ng-init="ng=ngGroup.neGroup" 
              ng-include="'html_fragments/linear_layout.html'"
