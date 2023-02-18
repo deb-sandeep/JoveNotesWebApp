@@ -62,8 +62,8 @@ $pageConfig = array(
     <script src="/apps/jove_notes/ng/exercise/ex_list/controller.js"></script>    
 
     <script>
-    var userName   = '<?php echo ExecutionContext::getCurrentUserName() ?>' ;
-    var chapterIds = '<?php echo $_REQUEST[ "chapterId" ] ?>' ;
+        const userName = '<?php echo ExecutionContext::getCurrentUserName() ?>';
+        const chapterIds = '<?php echo $_REQUEST["chapterId"] ?>';
     </script>
 </head>
 
