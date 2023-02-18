@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/JoveNotesWebApp.iml" filepath="$PROJECT_DIR$/.idea/JoveNotesWebApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../PHPAppFramework/.idea/PHPAppFramework.iml" filepath="$PROJECT_DIR$/../PHPAppFramework/.idea/PHPAppFramework.iml" />
     </modules>
   </component>
 </project>
