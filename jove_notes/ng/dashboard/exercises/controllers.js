@@ -21,6 +21,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
 
     this.totalCards         = 0 ;
     this.notStartedCards    = 0 ;
+    this.resurrectedCards   = 0 ;
     this.l0Cards            = 0 ;
     this.l1Cards            = 0 ;
     this.l2Cards            = 0 ;
@@ -37,15 +38,15 @@ function RowData( rowType, name, rowId, parentRowId ) {
     this.isPartiallySelected = false ;
 
     this.isChapterRow = function() {
-        return this.rowType == this.ROW_TYPE_CHAPTER ;
+        return this.rowType === this.ROW_TYPE_CHAPTER ;
     }
 
     this.isSubjectRow = function() {
-        return this.rowType == this.ROW_TYPE_SUBJECT ;
+        return this.rowType === this.ROW_TYPE_SUBJECT ;
     }
 
     this.isSyllabusRow = function() {
-        return this.rowType == this.ROW_TYPE_SYLLABUS ;
+        return this.rowType === this.ROW_TYPE_SYLLABUS ;
     }
 
     this.addChild = function( childRow ) {
@@ -53,12 +54,12 @@ function RowData( rowType, name, rowId, parentRowId ) {
     }
 
     this.selectionChanged = function() {
-        var affectedChapterIds = [] ;
+        let affectedChapterIds = [];
 
         if( !this.isChapterRow() ) {
-            for( var i=0; i<this.children.length; i++ ) {
+            for( let i=0; i<this.children.length; i++ ) {
                 this.children[i].isRowSelected = this.isRowSelected ;
-                var affectedIds = this.children[i].handleSelectionChangeCascade() ;
+                const affectedIds = this.children[i].handleSelectionChangeCascade();
 
                 affectedChapterIds = affectedChapterIds.concat( affectedIds ) ;
             }
@@ -82,13 +83,13 @@ function RowData( rowType, name, rowId, parentRowId ) {
 
     this.handleSelectionChangeCascade = function() {
 
-        var affectedChapterIds = [] ;
+        let affectedChapterIds = [];
 
         if( !this.isChapterRow() ) {
-            for( var i=0; i<this.children.length; i++ ) {
-                var child = this.children[i] ;
+            for( let i=0; i<this.children.length; i++ ) {
+                const child = this.children[i];
                 child.isRowSelected = this.isRowSelected ;
-                var affectedIds = child.handleSelectionChangeCascade() ;
+                const affectedIds = child.handleSelectionChangeCascade();
 
                 affectedChapterIds = affectedChapterIds.concat( affectedIds ) ;
             }
@@ -125,6 +126,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
 
         this.totalCards          = chapter.totalCards ;
         this.notStartedCards     = chapter.notStartedCards ;
+        this.resurrectedCards    = chapter.nrCards ;
         this.l0Cards             = chapter.l0Cards ;
         this.l1Cards             = chapter.l1Cards ;
         this.l2Cards             = chapter.l2Cards ;
@@ -142,8 +144,8 @@ function RowData( rowType, name, rowId, parentRowId ) {
 
     this.getTreeRowClass = function() {
 
-        var classStr = "treegrid-" + this.rowId ;
-        if( this.parentRowId != -1 ) {
+        let classStr = `treegrid-${this.rowId}`;
+        if( this.parentRowId !== -1 ) {
             classStr += " treegrid-parent-" + this.parentRowId ;
         }
 
@@ -165,7 +167,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
 
     this.isTreeRowVisible = function() {
 
-        if( this.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+        if( this.rowType === RowData.prototype.ROW_TYPE_CHAPTER ) {
             if( this.isHidden ) {
                 if( !$scope.showHiddenExercises ) {
                     return false ;
@@ -173,10 +175,10 @@ function RowData( rowType, name, rowId, parentRowId ) {
             }
             return true ;
         }
-        else if( ( this.rowType == RowData.prototype.ROW_TYPE_SUBJECT ) ||
-                 ( this.rowType == RowData.prototype.ROW_TYPE_SYLLABUS ) ) {
+        else if( ( this.rowType === RowData.prototype.ROW_TYPE_SUBJECT ) ||
+                 ( this.rowType === RowData.prototype.ROW_TYPE_SYLLABUS ) ) {
 
-            for( var i=0; i < this.children.length; i++ ) {
+            for( let i=0; i < this.children.length; i++ ) {
                 if( this.children[i].isTreeRowVisible() ) {
                     return true ;
                 }
@@ -186,17 +188,17 @@ function RowData( rowType, name, rowId, parentRowId ) {
     }
 
     this.computeSelectionState = function() {
-        if( ( this.rowType == RowData.prototype.ROW_TYPE_SUBJECT ) ||
-            ( this.rowType == RowData.prototype.ROW_TYPE_SYLLABUS ) ) {
+        if( ( this.rowType === RowData.prototype.ROW_TYPE_SUBJECT ) ||
+            ( this.rowType === RowData.prototype.ROW_TYPE_SYLLABUS ) ) {
 
             this.isRowSelected       = false ;
             this.isPartiallySelected = false ;
 
-            var numChildrenSelected          = 0 ;
-            var numChildrenPartiallySelected = 0 ;
+            let numChildrenSelected = 0;
+            let numChildrenPartiallySelected = 0;
 
-            for( var i=0; i < this.children.length; i++ ) {
-                var child = this.children[i] ;
+            for( let i=0; i < this.children.length; i++ ) {
+                const child = this.children[i];
                 if( child.isTreeRowVisible() ) {
                     if( child.isPartiallySelected ) {
                         numChildrenPartiallySelected++ ;
@@ -270,7 +272,7 @@ $scope.deleteChapter = function( chapterId ) {
             if( okSelected ) {
                 $http.delete( "/jove_notes/api/Chapter/" + chapterId )
                      .success( function( data ){
-                        if( data != null && data.trim() == "Success" ) {
+                        if( data != null && data.trim() === "Success" ) {
                             removeChapter( chapterId ) ;
                         }
                         else {
@@ -286,16 +288,16 @@ $scope.deleteChapter = function( chapterId ) {
 
 $scope.launchExerciseWithSelectedChapters = function() {
 
-    var selectedChapters = [] ;
-    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
-        var rowData = $scope.progressSnapshot[i] ;
+    const selectedChapters = [];
+    for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
+        const rowData = $scope.progressSnapshot[i];
         if( rowData.isChapterRow() && rowData.isRowSelected ) {
             selectedChapters.push( rowData.chapterId ) ;
         }
     }
 
     if( selectedChapters.length > 0 ) {
-        var url = "/apps/jove_notes/ng/exercise/index.php" ;
+        let url = "/apps/jove_notes/ng/exercise/index.php";
         url += "?chapterId=" + selectedChapters.join() ;
 
         window.location.href = url ;        
@@ -304,28 +306,28 @@ $scope.launchExerciseWithSelectedChapters = function() {
 
 $scope.reactivateProblems = function( chapterId ) {
 
-    var selectedChapters = [] ;
+    const selectedChapters = [];
     selectedChapters.push( chapterId ) ;
     callReactivateProblemsServerAPI( selectedChapters ) ;
 }
 
 $scope.reactivateProblemsForSelectedChapters = function() {
 
-    var selectedChapters = getSelectedChapterIds() ;
+    const selectedChapters = getSelectedChapterIds() ;
     callReactivateProblemsServerAPI( selectedChapters ) ;
 }
 
 $scope.toggleVisibilityInBulk = function() {
 
-    var selectedChapterRows = getSelectedChapterRows() ;
-    var visibilityData = [] ;
+    const selectedChapterRows = getSelectedChapterRows() ;
+    const visibilityData = [] ;
 
-    if( selectedChapterRows.length == 0 ) {
+    if( selectedChapterRows.length === 0 ) {
         $scope.$parent.addErrorAlert( "No chapters selected." ) ;
     }
     else {
-        for( var i=0; i<selectedChapterRows.length; i++ ) {
-            var row = selectedChapterRows[i] ;
+        for( let i=0; i<selectedChapterRows.length; i++ ) {
+            const row = selectedChapterRows[i];
             row.isHidden = !row.isHidden ;
             visibilityData.push( row.chapterId ) ;
             visibilityData.push( row.isHidden ? 1 : 0 ) ;
@@ -353,18 +355,18 @@ $scope.$on( 'onRenderComplete', function( scope ){
 
 function removeChapter( chapterId ) {
 
-    var chapterRowIndex = -1 ;
-    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
-        var rowData = $scope.progressSnapshot[i] ;
-        if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER &&
-            rowData.chapterId == chapterId ) {
+    let chapterRowIndex = -1;
+    for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
+        const rowData = $scope.progressSnapshot[i];
+        if( rowData.rowType === RowData.prototype.ROW_TYPE_CHAPTER &&
+            rowData.chapterId === chapterId ) {
 
             chapterRowIndex = i ;
             break ;
         }
     }
 
-    if( chapterRowIndex != -1 ) {
+    if( chapterRowIndex !== -1 ) {
         $scope.progressSnapshot.splice( chapterRowIndex, 1 ) ;
         recomputeStatistics() ;
     }
@@ -373,16 +375,17 @@ function removeChapter( chapterId ) {
 function refreshData() {
 
     $http.get( "/jove_notes/api/ProgressSnapshot?chapterType=exercises" )
-         .success( function( data ){
-            digestPreferences( data.preferences ) ;
-            $scope.progressSnapshot = prepareDataForDisplay( data.dashboardContent ) ;
-            if( $scope.showHiddenExercises ) {
-                $scope.alreadyFetchedAllChapters = true ;
-            }
-         })
-         .error( function( data ){
-            $scope.addErrorAlert( "API call failed. " + data ) ;
-         });
+     .success( function( data ){
+         console.log( data ) ;
+         digestPreferences( data.preferences ) ;
+         $scope.progressSnapshot = prepareDataForDisplay( data.dashboardContent ) ;
+         if( $scope.showHiddenExercises ) {
+             $scope.alreadyFetchedAllChapters = true ;
+         }
+     })
+     .error( function( data ){
+         $scope.addErrorAlert( "API call failed. " + data ) ;
+     });
 }
 
 function digestPreferences( preferences ) {
@@ -391,44 +394,44 @@ function digestPreferences( preferences ) {
 
 function prepareDataForDisplay( rawData ) {
 
-    var displayData = [] ;
-    var rowNum = 0 ;
+    const displayData = [];
+    let rowNum = 0;
 
     for( sylIndex=0; sylIndex<rawData.length; sylIndex++ ) {
 
         rowNum++ ;
-        var syllabus = rawData[ sylIndex ] ;
-        var syllabusRD = new RowData( RowData.prototype.ROW_TYPE_SYLLABUS, 
-                                      syllabus.syllabusName, 
-                                      syllabus.syllabusName, -1 ) ;
+        const syllabus = rawData[sylIndex];
+        const syllabusRD = new RowData( RowData.prototype.ROW_TYPE_SYLLABUS,
+                                        syllabus.syllabusName,
+                                        syllabus.syllabusName, -1 );
 
         displayData.push( syllabusRD ) ;
 
-        var numSubjectsSelected = 0 ;
+        let numSubjectsSelected = 0;
 
         for( subIndex=0; subIndex<syllabus.subjects.length; subIndex++ ) {
 
             rowNum++ ;
-            var subject = syllabus.subjects[ subIndex ] ;
-            var subjectRD = new RowData( RowData.prototype.ROW_TYPE_SUBJECT, 
-                                         subject.subjectName, 
-                                         syllabus.syllabusName + "-" + subject.subjectName, 
-                                         syllabusRD.rowId ) ;
+            const subject = syllabus.subjects[subIndex];
+            const subjectRD = new RowData( RowData.prototype.ROW_TYPE_SUBJECT,
+                                            subject.subjectName,
+                                            syllabus.syllabusName + "-" + subject.subjectName,
+                                            syllabusRD.rowId );
 
             syllabusRD.addChild( subjectRD ) ;
             displayData.push( subjectRD ) ;
 
-            var numChaptersSelected = 0 ;
+            let numChaptersSelected = 0;
             for( chpIndex=0; chpIndex<subject.chapters.length; chpIndex++ ) {
 
                 rowNum++ ;
-                var chapter = subject.chapters[ chpIndex  ] ;
-                var displayName = chapter.chapterNum + "." + chapter.subChapterNum + 
-                                  " - " + chapter.chapterName ;
-                var chapterRD = new RowData( RowData.prototype.ROW_TYPE_CHAPTER, 
-                                             displayName, 
-                                             chapter.chapterId, 
-                                             subjectRD.rowId ) ;
+                const chapter = subject.chapters[chpIndex] ;
+                const displayName = chapter.chapterNum + "." + chapter.subChapterNum +
+                                    " - " + chapter.chapterName ;
+                const chapterRD = new RowData( RowData.prototype.ROW_TYPE_CHAPTER,
+                                                displayName,
+                                                chapter.chapterId,
+                                                subjectRD.rowId ) ;
 
                 chapterRD.setChapterAndParentRows( chapter, subjectRD, syllabusRD ) ;
 
@@ -458,12 +461,13 @@ function recomputeStatistics() {
 
 function clearRowDataAttributes() {
 
-    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
-        var rowData = $scope.progressSnapshot[i] ;
-        if( rowData.rowType != RowData.prototype.ROW_TYPE_CHAPTER ) {
+    for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
+        const rowData = $scope.progressSnapshot[i] ;
+        if( rowData.rowType !== RowData.prototype.ROW_TYPE_CHAPTER ) {
 
             rowData.totalCards         = 0 ;
             rowData.notStartedCards    = 0 ;
+            rowData.resurrectedCards   = 0 ;
             rowData.l0Cards            = 0 ;
             rowData.l1Cards            = 0 ;
             rowData.l2Cards            = 0 ;
@@ -479,16 +483,16 @@ function clearRowDataAttributes() {
 
 function computeAggregateFlashCardChapterList() {
 
-    var curSyllabusRD = null ;
-    var curSubjectRD  = null ;
+    let curSyllabusRD = null;
+    let curSubjectRD = null;
 
-    var chaptersForSyllabus = null ;
-    var chaptersForSubject  = null ;
+    let chaptersForSyllabus = null;
+    let chaptersForSubject = null;
 
-    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
-        var rowData = $scope.progressSnapshot[i] ;
+    for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
+        const rowData = $scope.progressSnapshot[i];
 
-        if( rowData.rowType == RowData.prototype.ROW_TYPE_SYLLABUS ) {
+        if( rowData.rowType === RowData.prototype.ROW_TYPE_SYLLABUS ) {
             if( curSubjectRD != null ) {
                 curSubjectRD.computeSelectionState() ;
             }
@@ -505,7 +509,7 @@ function computeAggregateFlashCardChapterList() {
             curSyllabusRD = rowData ;
             chaptersForSyllabus = [] ;
         }
-        else if( rowData.rowType == RowData.prototype.ROW_TYPE_SUBJECT ) {
+        else if( rowData.rowType === RowData.prototype.ROW_TYPE_SUBJECT ) {
             if( curSubjectRD != null ) {
                 if( chaptersForSubject.length > 0 ) {
                     chaptersForSubject.shuffle() ;
@@ -518,10 +522,10 @@ function computeAggregateFlashCardChapterList() {
             curSubjectRD = rowData ;
             chaptersForSubject = [] ;
         }
-        else if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+        else if( rowData.rowType === RowData.prototype.ROW_TYPE_CHAPTER ) {
             if( rowData.isTreeRowVisible() ) {
 
-                var chapter = rowData.chapter ;
+                const chapter = rowData.chapter;
 
                 updateCardCounts( chapter, rowData.subjectRD, rowData.syllabusRD ) ;
 
@@ -551,12 +555,13 @@ function computeAggregateFlashCardChapterList() {
 
 function refreshProgressBars() {
 
-    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
-        var rowData = $scope.progressSnapshot[i] ;
+    for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
+        const rowData = $scope.progressSnapshot[i];
         if( rowData.isTreeRowVisible() ) {
             drawProgressBar( "canvas-" + rowData.rowId, 
                              rowData.totalCards,
                              rowData.notStartedCards,
+                             rowData.resurrectedCards,
                              rowData.l0Cards,
                              rowData.l1Cards,
                              rowData.l2Cards,
@@ -571,6 +576,7 @@ function updateCardCounts( chapter, subjectRD, syllabusRD ) {
 
     subjectRD.totalCards          += chapter.totalCards ;
     subjectRD.notStartedCards     += chapter.notStartedCards ;
+    subjectRD.resurrectedCards    += chapter.nrCards ;
     subjectRD.l0Cards             += chapter.l0Cards ;
     subjectRD.l1Cards             += chapter.l1Cards ;
     subjectRD.l2Cards             += chapter.l2Cards ;
@@ -580,6 +586,7 @@ function updateCardCounts( chapter, subjectRD, syllabusRD ) {
     
     syllabusRD.totalCards         += chapter.totalCards ;
     syllabusRD.notStartedCards    += chapter.notStartedCards ;
+    syllabusRD.resurrectedCards   += chapter.nrCards ;
     syllabusRD.l0Cards            += chapter.l0Cards ;
     syllabusRD.l1Cards            += chapter.l1Cards ;
     syllabusRD.l2Cards            += chapter.l2Cards ;
@@ -588,25 +595,33 @@ function updateCardCounts( chapter, subjectRD, syllabusRD ) {
     syllabusRD.numSSRMaturedCards += chapter.numSSRMaturedCards ;
 }
 
-function drawProgressBar( canvasId, total, vN, v0, v1, v2, v3, v4 ) {
+function drawProgressBar( canvasId, total, vN, vR, v0, v1, v2, v3, v4 ) {
 
-    var c = document.getElementById( canvasId ) ;
-    var ctx = c.getContext( "2d" ) ;
+    const c = document.getElementById( canvasId );
+    const ctx = c.getContext( "2d" );
 
-    var widths = [] ;
+    const widths = [];
 
     widths[0] = Math.round( ( vN/total )*c.width ) ;
-    widths[1] = Math.round( ( v0/total )*c.width ) ;
-    widths[2] = Math.round( ( v1/total )*c.width ) ;
-    widths[3] = Math.round( ( v2/total )*c.width ) ;
-    widths[4] = Math.round( ( v3/total )*c.width ) ;
-    widths[5] = Math.round( ( v4/total )*c.width ) ;
+    widths[1] = Math.round( ( vR/total )*c.width ) ;
+    widths[2] = Math.round( ( v0/total )*c.width ) ;
+    widths[3] = Math.round( ( v1/total )*c.width ) ;
+    widths[4] = Math.round( ( v2/total )*c.width ) ;
+    widths[5] = Math.round( ( v3/total )*c.width ) ;
+    widths[6] = Math.round( ( v4/total )*c.width ) ;
 
-    var colors = [ "#D0D0D0", "#FF0000", "#FF7F2A", 
-                   "#FFFF7F", "#AAFFAA", "#00FF00" ] ;
+    const colors = [
+        "#FF0000", //NS
+        "#D0D0D0", //NR
+        "#F78383", //L0
+        "#FAC4A0", //L1
+        "#FFFF7F", //L2
+        "#AAFFAA", //L3
+        "#00FF00"  //MAS
+    ];
 
-    var curX = 0 ;
-    for( var i=0; i<6; i++ )  {
+    let curX = 0;
+    for( let i=0; i<7; i++ )  {
         ctx.fillStyle = colors[i] ;
         ctx.fillRect( curX, 0, widths[i], c.height ) ;
         curX += widths[i] ;
@@ -615,11 +630,11 @@ function drawProgressBar( canvasId, total, vN, v0, v1, v2, v3, v4 ) {
 
 function getSelectedChapterIds() {
 
-    var chapterIds = [] ;
-    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+    const chapterIds = [];
+    for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
 
-        var rowData = $scope.progressSnapshot[i] ;
-        if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+        const rowData = $scope.progressSnapshot[i];
+        if( rowData.rowType === RowData.prototype.ROW_TYPE_CHAPTER ) {
 
             if( rowData.isTreeRowVisible() && rowData.isRowSelected ) {
                 chapterIds.push( rowData.chapterId ) ;
@@ -631,11 +646,11 @@ function getSelectedChapterIds() {
 
 function getSelectedChapterRows() {
 
-    var selectedRows = [] ;
-    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+    const selectedRows = [];
+    for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
 
-        var rowData = $scope.progressSnapshot[i] ;
-        if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+        const rowData = $scope.progressSnapshot[i];
+        if( rowData.rowType === RowData.prototype.ROW_TYPE_CHAPTER ) {
             if( rowData.isTreeRowVisible() && rowData.isRowSelected ) {
                 selectedRows.push( rowData ) ;
             }
@@ -646,7 +661,7 @@ function getSelectedChapterRows() {
 
 function callReactivateProblemsServerAPI( selectedChapters ) {
 
-    if( selectedChapters.length == 0 ) {
+    if( selectedChapters.length === 0 ) {
         $scope.$parent.addErrorAlert( "No chapters selected." ) ;
     }
     else {
