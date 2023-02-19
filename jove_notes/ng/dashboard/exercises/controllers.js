@@ -258,7 +258,7 @@ $scope.toggleHiddenChapters = function() {
             recomputeStatistics() ;
         }
     } )
-    .error( function( data ){
+    .error( function(){
         log.error( "Could not set hidden chapter preferences for user." ) ;
     });  
 }
@@ -343,7 +343,7 @@ $scope.toggleVisibilityInBulk = function() {
     }
 }
 
-$scope.$on( 'onRenderComplete', function( scope ){
+$scope.$on( 'onRenderComplete', function(){
     $('.tree').treegrid({
       'initialState': 'collapsed',
       'saveState': true,
@@ -397,7 +397,7 @@ function prepareDataForDisplay( rawData ) {
     const displayData = [];
     let rowNum = 0;
 
-    for( sylIndex=0; sylIndex<rawData.length; sylIndex++ ) {
+    for( let sylIndex=0; sylIndex<rawData.length; sylIndex++ ) {
 
         rowNum++ ;
         const syllabus = rawData[sylIndex];
@@ -409,7 +409,7 @@ function prepareDataForDisplay( rawData ) {
 
         let numSubjectsSelected = 0;
 
-        for( subIndex=0; subIndex<syllabus.subjects.length; subIndex++ ) {
+        for( let subIndex=0; subIndex<syllabus.subjects.length; subIndex++ ) {
 
             rowNum++ ;
             const subject = syllabus.subjects[subIndex];
@@ -422,7 +422,7 @@ function prepareDataForDisplay( rawData ) {
             displayData.push( subjectRD ) ;
 
             let numChaptersSelected = 0;
-            for( chpIndex=0; chpIndex<subject.chapters.length; chpIndex++ ) {
+            for( let chpIndex=0; chpIndex<subject.chapters.length; chpIndex++ ) {
 
                 rowNum++ ;
                 const chapter = subject.chapters[chpIndex] ;
@@ -672,7 +672,7 @@ function callReactivateProblemsServerAPI( selectedChapters ) {
             chapterIds : selectedChapters,
             entityType : 'Exercise'
         })
-        .success( function( data ){
+        .success( function(){
             log.debug( "Level successfully applied to all cards" ) ;
             refreshData() ;
         })
