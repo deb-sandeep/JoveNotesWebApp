@@ -1,4 +1,4 @@
-var testPaperApp = angular.module( 'exerciseApp', [ 'ngRoute', 'ui.bootstrap', 'ngSanitize' ] ) ;
+const testPaperApp = angular.module('exerciseApp', ['ngRoute', 'ui.bootstrap', 'ngSanitize']);
 
 testPaperApp.config( [ '$routeProvider',
 

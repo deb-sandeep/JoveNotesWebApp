@@ -2,18 +2,18 @@ testPaperApp.controller( 'ExerciseExecutionController',
                          function( $scope, $http, $routeParams, $location, $window, $anchorScroll ) {
 
 // ---------------- Constants and inner class definition -----------------------
-var STUDY_Q_FADEOUT_TIME = 2000 ;
-var STUDY_Q_DEFAULT_SHOW_TIME = 15000 ;
+const STUDY_Q_FADEOUT_TIME = 2000 ;
+const STUDY_Q_DEFAULT_SHOW_TIME = 15000 ;
 
 // ---------------- Local variables --------------------------------------------
-var currentQuestionAttemptStartTime = 0 ;
-var evaluateExerciseRouteChange     = false ;
+let currentQuestionAttemptStartTime = 0 ;
+let evaluateExerciseRouteChange = false ;
 
-var curStudyQ = {
-    index : 0,
-    displayStartTime : 0,
-    fastFwdFlag : false
-}
+const curStudyQ = {
+     index: 0,
+     displayStartTime: 0,
+     fastFwdFlag: false
+ } ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.CREATING_SESSION_SCREEN = "CreatingSessionScreen" ;
@@ -92,7 +92,7 @@ $scope.showEvaluateScreen = function() {
 }
 
 $scope.getQuestionPanelClass = function( question ) {
-    var cls = "panel " ;
+    let cls = "panel ";
     if( question._sessionVars.numAttempts == 0 ) {
         cls += "panel-danger" ;
     }
@@ -120,7 +120,7 @@ $scope.doneAttemptQuestion = function( question ) {
 
     // TODO: Use the in question pause time to compute time spent and reset it 
     //        after using. 
-    var timeSpentInAttempt = new Date().getTime() - currentQuestionAttemptStartTime ;
+    const timeSpentInAttempt = new Date().getTime() - currentQuestionAttemptStartTime;
 
     question._sessionVars.numAttempts++ ;
     question._sessionVars.timeSpent += timeSpentInAttempt ;
@@ -257,7 +257,7 @@ function callExerciseAPIToCreateNewSession( chapterIds,
                                             previousCallAttemptNumber,
                                             callback ) {
 
-    var currentCallAttemptNumber = previousCallAttemptNumber + 1 ;
+    const currentCallAttemptNumber = previousCallAttemptNumber + 1 ;
 
     console.log( "Calling Exercise API for creating new session." ) ;
     console.log( "\tchapterIds   = " + chapterIds.join()   ) ;
@@ -298,11 +298,11 @@ function callExerciseAPIToCreateNewSession( chapterIds,
 function postSessionCreation( newSessionData ) {
     
     pruneUnusedExerciseBanks() ;
-    var questions = filterQuestionsForSession() ;
+    const questions = filterQuestionsForSession() ;
     associateSessionVariablesToQuestions( questions ) ;
 
     $scope.$parent.exerciseSessionId = newSessionData.sessionId ;
-    for( var key in newSessionData.exChapterSessionIdMap ) {
+    for( const key in newSessionData.exChapterSessionIdMap ) {
         $scope.$parent.exerciseBanksMap[ key ]._sessionId = 
                                    newSessionData.exChapterSessionIdMap[ key ] ;
     }
@@ -319,11 +319,11 @@ function postSessionCreation( newSessionData ) {
 
 function pruneUnusedExerciseBanks() {
 
-    var prunedExBanks    = [] ;
-    var prunedExBanksMap = [] ;
+    const prunedExBanks = [];
+    const prunedExBanksMap = [];
 
-    for( var i=0; i<$scope.$parent.exerciseBanks.length; i++ ) {
-        var ex = $scope.exerciseBanks[i] ;
+    for( let i=0; i<$scope.$parent.exerciseBanks.length; i++ ) {
+        const ex = $scope.exerciseBanks[i];
         if( $scope.$parent.getSelectedCardsForExercise( ex ) > 0 ) {
             prunedExBanks.push( ex ) ;
             prunedExBanksMap[ ex.chapterDetails.chapterId ] = ex ;
@@ -336,13 +336,13 @@ function pruneUnusedExerciseBanks() {
 
 function filterQuestionsForSession() {
 
-    var exQuestions = [] ;
+    let exQuestions = [];
 
-    for( var i=0; i<$scope.$parent.exerciseBanks.length; i++ ) {
+    for( let i=0; i<$scope.$parent.exerciseBanks.length; i++ ) {
 
-        var ex                   = $scope.exerciseBanks[i] ;
-        var categorizedQuestions = categorizeQuestions( ex ) ;
-        var filteredQuestions    = [] ;
+        const ex = $scope.exerciseBanks[i];
+        const categorizedQuestions = categorizeQuestions( ex );
+        let   filteredQuestions = [];
 
         if( ex._selCfg.ssr.numNSCards > 0 ) {
             filteredQuestions = filterQuestions( categorizedQuestions.ssr.nsQuestions, 
@@ -386,20 +386,20 @@ function filterQuestionsForSession() {
 
 function categorizeQuestions( exercise ) {
 
-    var categorizedQuestions = {
-        ssr : {
-            nsQuestions : [],
-            l0Questions : [],
-            l1Questions : []
+    const categorizedQuestions = {
+        ssr: {
+            nsQuestions: [],
+            l0Questions: [],
+            l1Questions: []
         },
-        nonSSR : {
-            l0Questions : [],
-            l1Questions : []
+        nonSSR: {
+            l0Questions: [],
+            l1Questions: []
         }
     } ;
 
-    for( var i=0; i<exercise.questions.length; i++ ) {
-        var q = exercise.questions[i] ;
+    for( let i=0; i<exercise.questions.length; i++ ) {
+        const q = exercise.questions[i];
         if( q.learningStats._ssrQualified ) {
             if( q.learningStats.currentLevel == 'NS' ) {
                 categorizedQuestions.ssr.nsQuestions.push( q ) ;
@@ -426,7 +426,7 @@ function categorizeQuestions( exercise ) {
 
 function filterQuestions( questions, numQuestions, strategy ) {
 
-    var filteredQuestions = [] ;
+    const filteredQuestions = [];
 
     if( strategy == 'Hard' ) {
         questions.sort( function( q1, q2 ){
@@ -465,7 +465,7 @@ function filterQuestions( questions, numQuestions, strategy ) {
 
 function associateSessionVariablesToQuestions( questions ) {
 
-    for( var i=0; i<questions.length; i++ ) {
+    for( let i=0; i<questions.length; i++ ) {
         questions[i]._sessionVars = {
             index        : i,
             showForStudy : false,

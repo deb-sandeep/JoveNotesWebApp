@@ -2,7 +2,7 @@ testPaperApp.controller( 'ExerciseController', function( $scope, $http, $routePa
 // ---------------- Constants and inner class definition -----------------------
 
 // ---------------- Local variables --------------------------------------------
-var jnUtil = new JoveNotesUtil() ;
+const jnUtil = new JoveNotesUtil();
 
 // ---------------- Controller variables ---------------------------------------
 $scope.SESSION_CONFIGURE_STAGE = "SESSION_CONFIGURE_STAGE" ;
@@ -102,9 +102,9 @@ $scope.fetchAndProcessSelectedExerciseBanksFromServer = function( callback ) {
 
 $scope.getChapterIdsForExercise = function() {
 
-    var ids = [] ;
-    for( var i=0; i<$scope.exerciseBanks.length; i++ ) {
-        var ex = $scope.exerciseBanks[i] ;
+    const ids = [];
+    for( let i=0; i<$scope.exerciseBanks.length; i++ ) {
+        const ex = $scope.exerciseBanks[i];
         if( $scope.getSelectedCardsForExercise( ex ) > 0 ) {
             ids.push( ex.chapterDetails.chapterId ) ;
         }
@@ -114,9 +114,9 @@ $scope.getChapterIdsForExercise = function() {
 
 $scope.getTotalSelCards = function( cardLevel ) {
 
-    var totalCards = 0 ;
-    for( var i=0; i<$scope.exerciseBanks.length; i++ ) {
-        var ex = $scope.exerciseBanks[i] ;
+    let totalCards = 0;
+    for(let i=0; i<$scope.exerciseBanks.length; i++ ) {
+        const ex = $scope.exerciseBanks[i] ;
         totalCards += $scope.getSelectedCardsForExercise( ex, cardLevel ) ;
     }
     return totalCards ;
@@ -126,19 +126,19 @@ $scope.getSelectedCardsForExercise = function( questionBank, cardLevel ) {
 
     cardLevel = typeof cardLevel !== 'undefined' ? cardLevel : 'Total';
 
-    var totalSelCards = 0 ;
-    if( cardLevel == 'NS' ) {
+    let totalSelCards = 0;
+    if( cardLevel === 'NS' ) {
         totalSelCards += ( questionBank._selCfg.ssr.numNSCards ) ;
     }
-    else if( cardLevel == 'L0' ) {
+    else if( cardLevel === 'L0' ) {
         totalSelCards += ( questionBank._selCfg.ssr.numL0Cards + 
                            questionBank._selCfg.nonSSR.numL0Cards ) ;
     }
-    else if( cardLevel == 'L1' ) {
+    else if( cardLevel === 'L1' ) {
         totalSelCards += ( questionBank._selCfg.ssr.numL1Cards + 
                            questionBank._selCfg.nonSSR.numL1Cards ) ;
     }
-    else if( cardLevel == 'Total' ) {
+    else if( cardLevel === 'Total' ) {
         totalSelCards += ( questionBank._selCfg.ssr.numNSCards    + 
                            questionBank._selCfg.ssr.numL0Cards    + 
                            questionBank._selCfg.nonSSR.numL0Cards + 
@@ -161,8 +161,8 @@ $scope.stopTimer = function() {
 
 $scope.updateHOMHistogram = function( homAttributes ) {
 
-    for( var i=0; i<homAttributes.length; i++ ) {
-        var curAttribute = cleanHOMAttribute( homAttributes[i] ) ;
+    for( let i=0; i<homAttributes.length; i++ ) {
+        const curAttribute = cleanHOMAttribute(homAttributes[i]);
         if( $scope.homHistogram[ curAttribute ] === undefined ) {
             $scope.homHistogram[ curAttribute ] = 1 ;
         }
@@ -174,7 +174,7 @@ $scope.updateHOMHistogram = function( homAttributes ) {
 
 $scope.makeHOMId = function( homName ) {
 
-    var id = homName.replaceAll( " ", "_" ) ;
+    let id = homName.replaceAll(" ", "_");
     id = id.charAt( 0 ).toLowerCase() + id.slice( 1 ) ;
     return id ;
 }
@@ -183,7 +183,7 @@ $scope.makeHOMId = function( homName ) {
 function handleTimerEvent() {
 
     if( $scope.sessionActive ) {
-        if( $scope.pauseStartTime == 0 ) {
+        if( $scope.pauseStartTime === 0 ) {
 
             $scope.durationTillNowInMillis = new Date().getTime() - 
                                              $scope.sessionStartTime ;
@@ -204,7 +204,7 @@ function handleTimerEvent() {
 
 function cleanHOMAttribute( attribute ) {
 
-    var cleanedAttribute = attribute.replaceAll( "_", " " ) ;
+    let cleanedAttribute = attribute.replaceAll( "_", " " );
     cleanedAttribute = cleanedAttribute.charAt(0).toUpperCase() + cleanedAttribute.slice(1) ;
     return cleanedAttribute ;
 }
@@ -213,16 +213,15 @@ function processExerciseBanksReceivedFromServer( serverData ) {
 
     if( typeof serverData === "string" ) {
         $scope.addErrorAlert( "Server returned invalid data. " + serverData ) ;
-        return ;
     }
     else {
-        for( var i = 0; i < serverData.length; i++ ) {
-            var chapterData = serverData[i] ;
+        for( let i = 0; i < serverData.length; i++ ) {
+            const chapterData = serverData[i];
             preProcessChapterData( chapterData ) ;
 
             $scope.exerciseBanks.push( chapterData ) ;
             $scope.exerciseBanksMap[ chapterData.chapterDetails.chapterId ] = chapterData ;
-        } ;
+        }
     }
 }
 
@@ -242,11 +241,10 @@ function processExerciseBanksReceivedFromServer( serverData ) {
 //      [ _numSSR_MAS         ]
 // questions:
 //   -
-//      [_chapterDetails]
-//      [_difficultyLabel]
+//      [ _chapterDetails ]
+//      [ _difficultyLabel ]
 //      [handler]
 //      learningStats
-//          [_numSecondsInSession]
 //          [_homAttributes]
 //          [_efficiencyLabel]
 //          [_absoluteLearningEfficiency]
@@ -277,10 +275,10 @@ function preProcessChapterData( chapterData ) {
         },
     } ;
 
-    var chapterDetails = chapterData.chapterDetails ;
-    var textFormatter  = chapterData._textFormatter ;
-    var questions      = chapterData.questions ;
-    var deckDetails    = chapterData.deckDetails ;
+    const chapterDetails = chapterData.chapterDetails;
+    const textFormatter = chapterData._textFormatter;
+    const questions = chapterData.questions;
+    const deckDetails = chapterData.deckDetails;
 
     deckDetails.progressSnapshot._numSSRMaturedCards = 0 ;
     deckDetails.progressSnapshot._numSSR_NS          = 0 ;
@@ -290,72 +288,69 @@ function preProcessChapterData( chapterData ) {
     deckDetails.progressSnapshot._numSSR_L3          = 0 ;
     deckDetails.progressSnapshot._numSSR_MAS         = 0 ;
 
-    for( i=0; i<questions.length; i++ ) {
+    questions.forEach( q => {
 
-        var question = questions[i] ;
+        q.learningStats._homAttributes       = [] ;
+        q.learningStats._ssrQualified        = false ;
+        q.learningStats._ssrDelta            = -1 ;
 
-        question.learningStats._numSecondsInSession = 0 ;
-        question.learningStats._homAttributes       = [] ;
-        question.learningStats._ssrQualified        = false ;
-        question.learningStats._ssrDelta            = -1 ;
+        q._chapterDetails = chapterDetails ;
 
-        question._chapterDetails = chapterDetails ;
-        
-        question._difficultyLabel = 
-            jnUtil.getDifficultyLevelLabel( question.difficultyLevel ) ;
+        q._difficultyLabel =
+            jnUtil.getDifficultyLevelLabel( q.difficultyLevel ) ;
 
-        question.learningStats._efficiencyLabel = 
-            jnUtil.getLearningEfficiencyLabel( question.learningStats.learningEfficiency ) ;
+        q.learningStats._efficiencyLabel =
+            jnUtil.getLearningEfficiencyLabel( q.learningStats.learningEfficiency ) ;
 
-        question.learningStats._absoluteLearningEfficiency = 
-            jnUtil.getAbsoluteLearningEfficiency( question.learningStats.temporalScores ) ;
+        q.learningStats._absoluteLearningEfficiency =
+            jnUtil.getAbsoluteLearningEfficiency( q.learningStats.temporalScores ) ;
 
-        question.learningStats._averageTimeSpent = 0 ;
+        q.learningStats._averageTimeSpent = 0 ;
 
-        if( question.learningStats.numAttempts != 0 ) {
-            question.learningStats._averageTimeSpent = 
-                            Math.ceil( question.learningStats.totalTimeSpent / 
-                                       question.learningStats.numAttempts ) ;
+        if( q.learningStats.numAttempts !== 0 ) {
+            q.learningStats._averageTimeSpent =
+                            Math.ceil( q.learningStats.totalTimeSpent /
+                                       q.learningStats.numAttempts ) ;
         }
 
-        question.scriptObj = jnUtil.makeObjectInstanceFromString( 
-                                    question.scriptBody,
+        q.scriptObj = jnUtil.makeObjectInstanceFromString(
+                                    q.scriptBody,
                                     textFormatter.getChapterScript() ) ;
 
-        updateCardLevelCount( chapterData.deckDetails, question ) ;
+        updateCardLevelCount( chapterData.deckDetails, q ) ;
 
-        associateHandler( chapterDetails, textFormatter, question ) ;
-    }
+        associateHandler( chapterDetails, textFormatter, q ) ;
+    });
 }
 
 function updateCardLevelCount( deckDetails, question ) {
 
-    var ssrThresholdDelta = jnUtil.getSSRThresholdDelta( question ) ;
+    const ssrThresholdDelta = jnUtil.getSSRThresholdDelta( question ) ;
 
     if( ssrThresholdDelta >= 0 || 
-        question.learningStats.currentLevel == 'NS') {
+        question.learningStats.currentLevel === 'NS') {
 
         question.learningStats._ssrQualified = true ;
         question.learningStats._ssrDelta     = ssrThresholdDelta ;
 
         deckDetails.progressSnapshot._numSSRMaturedCards++ ;
 
-        if( question.learningStats.currentLevel == 'NS' ) {
+        if( question.learningStats.currentLevel === 'NS' ) {
             deckDetails.progressSnapshot._numSSR_NS++ ;
         }
-        else if( question.learningStats.currentLevel == 'L0' ) {
+        else if( question.learningStats.currentLevel === 'L0' ) {
             deckDetails.progressSnapshot._numSSR_L0++ ;
         }
-        else if( question.learningStats.currentLevel == 'L1' ) {
+        else if( question.learningStats.currentLevel === 'L1' ) {
             deckDetails.progressSnapshot._numSSR_L1++ ;
         }
-        else if( question.learningStats.currentLevel == 'L2' ) {
+        else if( question.learningStats.currentLevel === 'L2' ) {
             deckDetails.progressSnapshot._numSSR_L2++ ;
         }
-        else if( question.learningStats.currentLevel == 'L3' ) {
+        else if( question.learningStats.currentLevel === 'L3' ) {
             deckDetails.progressSnapshot._numSSR_L3++ ;
         }
-        else if( question.learningStats.currentLevel == 'MAS' ) {
+        else if( question.learningStats.currentLevel === 'MAS' ) {
             deckDetails.progressSnapshot._numSSR_MAS++ ;
         }
     }
@@ -363,42 +358,42 @@ function updateCardLevelCount( deckDetails, question ) {
 
 function associateHandler( chapterDetails, textFormatter, question ) {
 
-    var questionType = question.questionType ;
+    const qType = question.questionType;
 
-    if( questionType == QuestionTypes.prototype.QT_FIB ) {
+    if( qType === QuestionTypes.prototype.QT_FIB ) {
         question.handler = new FIBHandler( chapterDetails, question, 
                                            textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.QT_QA ) {
+    else if( qType === QuestionTypes.prototype.QT_QA ) {
         question.handler = new QAHandler( chapterDetails, question, 
                                           textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.QT_TF ) {
+    else if( qType === QuestionTypes.prototype.QT_TF ) {
         question.handler = new TFHandler( chapterDetails, question,
                                           textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.QT_MATCHING ) {
+    else if( qType === QuestionTypes.prototype.QT_MATCHING ) {
         question.handler = new MatchingHandler( chapterDetails, question, 
                                                 textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.QT_IMGLABEL ) {
+    else if( qType === QuestionTypes.prototype.QT_IMGLABEL ) {
         question.handler = new ImageLabelHandler( chapterDetails, question, 
                                                   textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.QT_SPELLBEE ) {
+    else if( qType === QuestionTypes.prototype.QT_SPELLBEE ) {
         question.handler = new SpellBeeHandler( chapterDetails, question, 
                                                 textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.MULTI_CHOICE ) {
+    else if( qType === QuestionTypes.prototype.MULTI_CHOICE ) {
         question.handler = new MultiChoiceHandler( chapterDetails, question, 
                                                    textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.EXERCISE ) {
+    else if( qType === QuestionTypes.prototype.EXERCISE ) {
         question.handler = new ExerciseHandler( chapterDetails, question, 
                                                 textFormatter ) ;
     }
     else {
-        log.error( "Unrecognized question type = " + questionType ) ;
+        log.error( "Unrecognized question type = " + qType ) ;
         throw "Unrecognized question type. Can't associate formatter." ;
     }
 

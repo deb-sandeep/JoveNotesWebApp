@@ -2,7 +2,7 @@ testPaperApp.controller( 'ExerciseConfigController', function( $scope, $http, $r
 // ---------------- Constants and inner class definition -----------------------
 
 // ---------------- Local variables --------------------------------------------
-var jnUtil = new JoveNotesUtil() ;
+const jnUtil = new JoveNotesUtil();
 
 // ---------------- Controller variables ---------------------------------------
 $scope.selChId = 0 ;
@@ -68,17 +68,13 @@ $scope.executeExercise = function() {
     $location.path( "/ExecuteExercise" ) ;
 }
 
-$scope.fastTrack = function() {
-    $scope.$parent.fastTrackRequested = !$scope.$parent.fastTrackRequested ;
-}
-
 // ---------------- Private functions ------------------------------------------
 
 function updateCardSelection( cardType, cardLevel, increment ) {
 
-    var selConfig = ( cardType == 'ssr' ) ?
-                      $scope.selCh._selCfg.ssr : 
-                      $scope.selCh._selCfg.nonSSR ;
+    const selConfig = (cardType == 'ssr') ?
+                       $scope.selCh._selCfg.ssr :
+                       $scope.selCh._selCfg.nonSSR ;
 
     if( cardLevel == 'NS' ) {
         selConfig.numNSCards += increment ;
@@ -93,8 +89,8 @@ function updateCardSelection( cardType, cardLevel, increment ) {
 
 function paintProgressBars() {
 
-    for( var i=0; i<$scope.$parent.exerciseBanks.length; i++ ) {
-        var ex = $scope.exerciseBanks[i] ;
+    for( let i=0; i<$scope.$parent.exerciseBanks.length; i++ ) {
+        const ex = $scope.exerciseBanks[i] ;
         drawProgressBar( 
             "canvas-" + ex.chapterDetails.chapterId, 
             ex.deckDetails.numCards,
@@ -110,10 +106,10 @@ function paintProgressBars() {
 
 function drawProgressBar( canvasId, total, vN, v0, v1, v2, v3, v4 ) {
 
-    var c = document.getElementById( canvasId ) ;
-    var ctx = c.getContext( "2d" ) ;
+    const c = document.getElementById( canvasId );
+    const ctx = c.getContext( "2d" );
 
-    var widths = [] ;
+    const widths = [];
 
     widths[0] = Math.round( ( vN/total )*c.width ) ;
     widths[1] = Math.round( ( v0/total )*c.width ) ;
@@ -122,11 +118,11 @@ function drawProgressBar( canvasId, total, vN, v0, v1, v2, v3, v4 ) {
     widths[4] = Math.round( ( v3/total )*c.width ) ;
     widths[5] = Math.round( ( v4/total )*c.width ) ;
 
-    var colors = [ "#D0D0D0", "#FF0000", "#FF7F2A", 
-                   "#FFFF7F", "#AAFFAA", "#00FF00" ] ;
+    const colors = ["#D0D0D0", "#FF0000", "#FF7F2A",
+                    "#FFFF7F", "#AAFFAA", "#00FF00"];
 
-    var curX = 0 ;
-    for( var i=0; i<6; i++ )  {
+    let curX = 0;
+    for( let i=0; i<6; i++ )  {
         ctx.fillStyle = colors[i] ;
         ctx.fillRect( curX, 0, widths[i], c.height ) ;
         curX += widths[i] ;
