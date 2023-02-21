@@ -1,12 +1,12 @@
 testPaperApp.controller( 'ExerciseEvaluationController', function( $scope, $http, $routeParams, $location, $window ) {
 // ---------------- Constants and inner class definition -----------------------
-var MAX_GRADE_CARD_API_CALL_RETRIES = 3 ;
+const MAX_GRADE_CARD_API_CALL_RETRIES = 3;
 
 // ---------------- Local variables --------------------------------------------
-var homDescription = [] ;
+const homDescription = [];
 
-homDescription[ "gathering_data_through_all_senses" ] = 
-    "Gathering data through all senses" ;
+homDescription[ "gathering_data_through_all_senses" ] =
+"Gathering data through all senses" ;
     
 homDescription[ "persisting" ] = 
     "Persisting" ;
@@ -52,9 +52,9 @@ homDescription[ "thinking_and_communicating_with_clarity_and_precision" ] =
     
 homDescription[ "thinking_interdependently" ] = 
     "Thinking interdependently" ;
-    
-var selectedHOMsForCurrentQuestion = [] ;
-var currentQuestionBeingRated = null ;
+
+const selectedHOMsForCurrentQuestion = [];
+let curQBeingRated = null;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.statusMessage     = "Rate each question as per performance." ;
@@ -74,23 +74,23 @@ $scope.selectedHOMDescription = "" ;
 // ---------------- Controller methods -----------------------------------------
 $scope.rateSolution = function( rating, question ) {
 
-    log.debug( "Rating current card as " + rating )  ;
+    log.debug( "Rating current card as " + rating ) ;
     selectedHOMsForCurrentQuestion.length = 0 ;
-    currentQuestionBeingRated = question ;
+    curQBeingRated = question ;
 
-    var cardId       = question.questionId ;
-    var curLevel     = question.learningStats.currentLevel ;
-    var numAttempts  = 1 ;
-    var timeSpent    = Math.ceil( question._sessionVars.timeSpent/1000 ) ; 
-    var nextLevel    = getNextLevel( curLevel, rating ) ;
-    var overshootPct = 0 ;
-    var chSessionId  = $scope.$parent.exerciseBanksMap
-                       [ question._chapterDetails.chapterId ]._sessionId ;
+    const cardId = question.questionId;
+    const chapterId = question._chapterDetails.chapterId;
+    const curLevel = question.learningStats.currentLevel;
+    const numAttempts = 1;
+    const timeSpent = Math.ceil( question._sessionVars.timeSpent / 1000 );
+    const nextLevel = getNextLevel( curLevel, rating );
+    const overshootPct = 0;
+    const chSessionId = $scope.$parent.exerciseBanksMap[chapterId]._sessionId;
 
     log.debug( "Card id       = " + question.questionId ) ;
     log.debug( "Current level = " + curLevel ) ;
     log.debug( "Next level    = " + nextLevel ) ;
-    log.debug( "Num attmepts  = " + numAttempts ) ;
+    log.debug( "Num attempts  = " + numAttempts ) ;
     log.debug( "Time spent    = " + timeSpent ) ;
     log.debug( "Overshoot pct = " + overshootPct ) ;
 
@@ -100,7 +100,7 @@ $scope.rateSolution = function( rating, question ) {
     // in a time lagged fashion.. 
     callGradeCardAPI( 
         question,
-        question._chapterDetails.chapterId, 
+        chapterId,
         chSessionId, 
         cardId, 
         curLevel, 
@@ -119,17 +119,17 @@ $scope.showSummaryScreen = function() {
     $location.path( "/ExerciseSummary" ) ;
 }
 
-$scope.showTimeDuration = function( currentQuestion ) {
+$scope.showTimeDuration = function( q ) {
     if( !$scope.$parent.fastTrackRequested ) {
-         return currentQuestion._sessionVars.timeSpent > 0 ;
+         return q._sessionVars.timeSpent > 0 ;
     }
     return true ;
 }
 
-$scope.showRatingButton = function( currentQuestion ) {
+$scope.showRatingButton = function( q ) {
     if( !$scope.$parent.fastTrackRequested ) {
-        return ( currentQuestion._sessionVars.rating == null ) &&
-               ( currentQuestion._sessionVars.timeSpent > 0 ) ;
+        return ( q._sessionVars.rating == null ) &&
+               ( q._sessionVars.timeSpent > 0 ) ;
     }
     return true ;
 }
@@ -137,19 +137,18 @@ $scope.showRatingButton = function( currentQuestion ) {
 $scope.applySelectedHOMs = function() {
     $( "#HOMTraceDialog" ).modal( 'hide' ) ;
 
-    var cardId       = currentQuestionBeingRated.questionId ;
-    var chSessionId  = $scope.$parent.exerciseBanksMap
-                       [ currentQuestionBeingRated._chapterDetails.chapterId ]._sessionId ;
+    const cardId      = curQBeingRated.questionId;
+    const chapterId   = curQBeingRated._chapterDetails.chapterId ;
+    const chSessionId = $scope.$parent.exerciseBanksMap[ chapterId ]._sessionId;
+    let   homAttrs    = curQBeingRated.learningStats._homAttributes ;
 
-    currentQuestionBeingRated.learningStats._homAttributes = 
-                                          selectedHOMsForCurrentQuestion.slice()
+    homAttrs = selectedHOMsForCurrentQuestion.slice() ;
 
     $scope.$parent.updateHOMHistogram( selectedHOMsForCurrentQuestion ) ;
-    callApplyHOMAPI( cardId, chSessionId, 
-                     currentQuestionBeingRated.learningStats._homAttributes ) ;
+    callApplyHOMAPI( cardId, chSessionId, homAttrs ) ;
 
     selectedHOMsForCurrentQuestion.length = 0 ;
-    currentQuestionBeingRated = null ;
+    curQBeingRated = null ;
 }
 
 $scope.toggleApplyHOMAttribute = function( homName ) {
@@ -174,31 +173,30 @@ $scope.getNumHOMSelected = function() {
 // ---------------- Private functions ------------------------------------------
 function computeRatingCompletedFlag() {
 
-    var allRatedFlag = true ;
+    let allRatedFlag = true;
 
-    for( var i=0; i<$scope.$parent.questions.length; i++ ) {
-        var question = $scope.$parent.questions[i] ;
-        var vars     = question._sessionVars ;
+    for( let i=0; i<$scope.$parent.questions.length; i++ ) {
+        const question = $scope.$parent.questions[i];
+        const vars = question._sessionVars;
 
         if( vars.ratingText == null || vars.scoreEarned == 0 ) {
             allRatedFlag = false ;
             break ;
         }
     }
-
     $scope.allQuestionsRated = allRatedFlag ;
 }
 
 function getNextLevel( curLevel, rating ) {
 
-    var nextLevelMatrix = {
+    const nextLevelMatrix = {
         //       E      A     P     H
-        NS : [ 'MAS', 'L0', 'L0', 'L0' ],
-        L0 : [ 'MAS', 'L0', 'L0', 'L0' ],
-        L1 : [ 'MAS', 'L1', 'L0', 'L0' ],
-    } ;
+        NS: ['MAS', 'L0', 'L0', 'L0'],
+        L0: ['MAS', 'L0', 'L0', 'L0'],
+        L1: ['MAS', 'L1', 'L0', 'L0'],
+    };
 
-    var nextLevels = nextLevelMatrix[ curLevel ] ;
+    const nextLevels = nextLevelMatrix[curLevel];
     if      ( rating == 'E' ) { return nextLevels[0] ; }
     else if ( rating == 'A' ) { return nextLevels[1] ; }
     else if ( rating == 'P' ) { return nextLevels[2] ; }
@@ -207,7 +205,7 @@ function getNextLevel( curLevel, rating ) {
 
 function populateRatingTextAndCls( rating, question ) {
 
-    var vars = question._sessionVars ;
+    const vars = question._sessionVars;
 
     vars.rating = rating ;
     if ( rating == 'E' ) { 
@@ -258,7 +256,7 @@ function callGradeCardAPI( question, chapterId, sessionId, cardId, curLevel, nex
                            rating, timeTaken, numAttempts, overshootPct,
                            previousCallAttemptNumber, callback ) {
 
-    var currentCallAttemptNumber = previousCallAttemptNumber + 1 ;
+    const currentCallAttemptNumber = previousCallAttemptNumber + 1;
 
     log.debug( "Calling grade card API for card " + cardId + " with parameters." ) ;
     log.debug( "\tchapterId    = " + chapterId   ) ;
@@ -301,6 +299,7 @@ function callGradeCardAPI( question, chapterId, sessionId, cardId, curLevel, nex
 
         if( status == 0 ) {
             log.debug( "Faulty connection determined." ) ;
+
             if( currentCallAttemptNumber < MAX_GRADE_CARD_API_CALL_RETRIES ) {
                 log.debug( "Retrying the call again." ) ;
                 callGradeCardAPI( 
@@ -332,6 +331,5 @@ function callApplyHOMAPI( cardId, chSessionId, homAttributes ) {
                               "Response = " + data ) ;
     }) ;
 }
-
 // ---------------- End of controller ------------------------------------------
 } ) ;

@@ -120,7 +120,6 @@ function drawProgressBar( canvasId, total, vN, v0, v1, v2, v3, v4 ) {
 
     const colors = ["#D0D0D0", "#FF0000", "#FF7F2A",
                     "#FFFF7F", "#AAFFAA", "#00FF00"];
-
     let curX = 0;
     for( let i=0; i<6; i++ )  {
         ctx.fillStyle = colors[i] ;

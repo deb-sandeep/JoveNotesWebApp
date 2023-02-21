@@ -63,8 +63,8 @@ $scope.$on( 'onRenderComplete', function( scope ){
 $scope.$on( 'timerEvent', function( event, args ){
     if( $scope.currentScreen == $scope.ATTEMPT_SCREEN ) {
         $scope.timeSpentOnCurrentQuestion = 
-            $scope.currentQuestion._sessionVars.timeSpent + 
-            new Date().getTime() - 
+            $scope.currentQuestion._sessionVars.timeSpent +
+            new Date().getTime() -
             currentQuestionAttemptStartTime ;
     }
 } ) ;
@@ -76,7 +76,6 @@ $scope.$on( '$locationChangeStart', function( ev ) {
 } ) ;
 
 // ---------------- Controller methods -----------------------------------------
-
 $scope.showEvaluateScreen = function() {
     callIfServerAlive( function(){
         evaluateExerciseRouteChange = true ;
@@ -143,7 +142,7 @@ $scope.doneAttemptQuestion = function( question ) {
     showSolvePaperScreen() ;
 
     setTimeout( function(){
-        var anchorName = "anchor_q_" + question.questionId ;
+        const anchorName = "anchor_q_" + question.questionId;
         $location.hash( anchorName ) ; 
         $anchorScroll() ;
     }, 100 ) ;
@@ -161,14 +160,14 @@ $scope.fastForwardStudyQuestion = function() {
 
 function transitionStudyQuestion() {
 
-    var questions = $scope.$parent.questions ;
-    var displayTimeTilLNow = new Date().getTime() - curStudyQ.displayStartTime ;
+    const questions = $scope.$parent.questions;
+    const displayTimeTilLNow = new Date().getTime() - curStudyQ.displayStartTime;
 
     if( curStudyQ.fastFwdFlag == true || 
         displayTimeTilLNow >= STUDY_Q_DEFAULT_SHOW_TIME ) {
 
         if( curStudyQ.index > 0 ) {
-            var divId = "#study_q_" + questions[ curStudyQ.index - 1 ].questionId ;
+            const divId = "#study_q_" + questions[curStudyQ.index - 1].questionId;
             $( divId ).fadeOut( STUDY_Q_FADEOUT_TIME, showNextQuestionForStudy ) ;
         }
         else {
@@ -181,7 +180,7 @@ function transitionStudyQuestion() {
 
 function showNextQuestionForStudy() {
 
-    var questions = $scope.$parent.questions ;
+    const questions = $scope.$parent.questions;
 
     if( curStudyQ.index > 0 ) {
         questions[ curStudyQ.index - 1 ]._sessionVars.showForStudy = false ;
@@ -192,7 +191,7 @@ function showNextQuestionForStudy() {
         return ;
     }
     else {
-        var curQ = questions[ curStudyQ.index ] ;
+        const curQ = questions[curStudyQ.index];
         curQ._sessionVars.showForStudy = true ;
         curStudyQ.index++ ;
 
@@ -263,7 +262,7 @@ function callExerciseAPIToCreateNewSession( chapterIds,
     console.log( "\tchapterIds   = " + chapterIds.join()   ) ;
 
     $http.post( '/jove_notes/api/Exercise/NewSession', { 
-        "chapterIds"   : chapterIds
+        "chapterIds" : chapterIds
     })
     .success( function( data ){
         if( typeof data === 'string' ) {
@@ -341,42 +340,42 @@ function filterQuestionsForSession() {
     for( let i=0; i<$scope.$parent.exerciseBanks.length; i++ ) {
 
         const ex = $scope.exerciseBanks[i];
-        const categorizedQuestions = categorizeQuestions( ex );
-        let   filteredQuestions = [];
+        const categorizedQs = categorizeQuestions( ex );
+        let   filteredQs = [];
 
         if( ex._selCfg.ssr.numNSCards > 0 ) {
-            filteredQuestions = filterQuestions( categorizedQuestions.ssr.nsQuestions, 
-                                                 ex._selCfg.ssr.numNSCards,
-                                                 ex._selCfg.ssr.strategyNS ) ;
-            exQuestions = exQuestions.concat( filteredQuestions ) ;
+            filteredQs = filterQuestions( categorizedQs.ssr.nsQuestions,
+                                          ex._selCfg.ssr.numNSCards,
+                                          ex._selCfg.ssr.strategyNS ) ;
+            exQuestions = exQuestions.concat( filteredQs ) ;
         }
 
         if( ex._selCfg.ssr.numL0Cards > 0 ) {
-            filteredQuestions = filterQuestions( categorizedQuestions.ssr.l0Questions, 
-                                                 ex._selCfg.ssr.numL0Cards,
-                                                 ex._selCfg.ssr.strategyL0 ) ;
-            exQuestions = exQuestions.concat( filteredQuestions ) ;
+            filteredQs = filterQuestions( categorizedQs.ssr.l0Questions,
+                                          ex._selCfg.ssr.numL0Cards,
+                                          ex._selCfg.ssr.strategyL0 ) ;
+            exQuestions = exQuestions.concat( filteredQs ) ;
         }
 
         if( ex._selCfg.ssr.numL1Cards > 0 ) {
-            filteredQuestions = filterQuestions( categorizedQuestions.ssr.l1Questions, 
-                                                 ex._selCfg.ssr.numL1Cards,
-                                                 ex._selCfg.ssr.strategyL1 ) ;
-            exQuestions = exQuestions.concat( filteredQuestions ) ;
+            filteredQs = filterQuestions( categorizedQs.ssr.l1Questions,
+                                          ex._selCfg.ssr.numL1Cards,
+                                          ex._selCfg.ssr.strategyL1 ) ;
+            exQuestions = exQuestions.concat( filteredQs ) ;
         }
 
         if( ex._selCfg.nonSSR.numL0Cards > 0 ) {
-            filteredQuestions = filterQuestions( categorizedQuestions.nonSSR.l0Questions, 
-                                                 ex._selCfg.nonSSR.numL0Cards,
-                                                 ex._selCfg.nonSSR.strategyL0 ) ;
-            exQuestions = exQuestions.concat( filteredQuestions ) ;
+            filteredQs = filterQuestions( categorizedQs.nonSSR.l0Questions,
+                                          ex._selCfg.nonSSR.numL0Cards,
+                                          ex._selCfg.nonSSR.strategyL0 ) ;
+            exQuestions = exQuestions.concat( filteredQs ) ;
         }
 
         if( ex._selCfg.nonSSR.numL1Cards > 0 ) {
-            filteredQuestions = filterQuestions( categorizedQuestions.nonSSR.l1Questions, 
-                                                 ex._selCfg.nonSSR.numL1Cards,
-                                                 ex._selCfg.nonSSR.strategyL1 ) ;
-            exQuestions = exQuestions.concat( filteredQuestions ) ;
+            filteredQs = filterQuestions( categorizedQs.nonSSR.l1Questions,
+                                          ex._selCfg.nonSSR.numL1Cards,
+                                          ex._selCfg.nonSSR.strategyL1 ) ;
+            exQuestions = exQuestions.concat( filteredQs ) ;
         }
     }
 
@@ -420,7 +419,6 @@ function categorizeQuestions( exercise ) {
             }
         }
     }
-
     return categorizedQuestions ;
 }
 
@@ -456,10 +454,9 @@ function filterQuestions( questions, numQuestions, strategy ) {
         }) ;
     }
 
-    for( var i=0; i<numQuestions; i++ ) {
+    for( let i=0; i<numQuestions; i++ ) {
         filteredQuestions.push( questions[i] ) ;
     }
-
     return filteredQuestions ;
 }
 

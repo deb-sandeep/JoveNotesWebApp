@@ -12,7 +12,7 @@ function FilterCriteria() {
 
     this.deserialize = function() {
         $.cookie.json = true ;
-        var crit = $.cookie( 'exListCriteria' ) ;
+        const crit = $.cookie( 'exListCriteria' );
         if( typeof crit != 'undefined' ) {
             log.debug( "Deserialized exercise list filter criteria." ) ;
             this.levelFilters      = crit.levelFilters ;
@@ -47,7 +47,6 @@ $scope.toggleFilterForm = function() {
     $scope.showFilterForm = !$scope.showFilterForm ;
 }
 
-
 $scope.applyFilter = function() {
     $scope.filterCriteria.serialize() ;
     $scope.toggleFilterForm() ;
@@ -65,14 +64,14 @@ function filterCards() {
 
     $scope.filteredQuestions.length = 0 ;
 
-    for( i=0; i<$scope.$parent.exerciseBanks[0].questions.length; i++ ) {
+    for( let i=0; i<$scope.$parent.exerciseBanks[0].questions.length; i++ ) {
 
-        var question = $scope.$parent.exerciseBanks[0].questions[i] ;
+        const question = $scope.$parent.exerciseBanks[0].questions[i];
 
-        var curLevel    = question.learningStats.currentLevel ;
-        var numAttempts = question.learningStats.numAttempts ;
+        const curLevel = question.learningStats.currentLevel;
+        const numAttempts = question.learningStats.numAttempts;
 
-        for( j=0; j<$scope.filterCriteria.levelFilters.length; j++ ) {
+        for( let j=0; j<$scope.filterCriteria.levelFilters.length; j++ ) {
             if( $scope.filterCriteria.levelFilters[j] == curLevel ) {
                 if( numAttempts >= $scope.filterCriteria.numAttemptFilter ) {
                     $scope.filteredQuestions.push( question ) ;
@@ -81,9 +80,6 @@ function filterCards() {
         }
     }
 }
-
 // ---------------- Server calls -----------------------------------------------
-
-
 // ---------------- End of controller ------------------------------------------
 } ) ;

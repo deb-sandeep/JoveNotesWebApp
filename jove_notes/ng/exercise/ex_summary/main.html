@@ -11,6 +11,7 @@
                 <th align="center">Level (new)</th>
                 <th align="center">Difficulty</th>
                 <th align="center">Time spent</th>
+                <th align="center">Num visits</th>
                 <th align="center">Attempt time</th>
                 <th align="center">Review time</th>
                 <th align="center">Rating</th>
@@ -37,6 +38,9 @@
                 </td>
                 <td align="center" class="fixed-font">
                     {{currentQuestion._sessionVars.timeSpent | duration}}
+                </td>
+                <td align="center" class="fixed-font">
+                    {{currentQuestion._sessionVars.numVisits}}
                 </td>
                 <td align="center" class="fixed-font">
                     {{currentQuestion._sessionVars.attemptTime | duration}}

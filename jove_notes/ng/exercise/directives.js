@@ -70,13 +70,12 @@ testPaperApp.directive( 'renderExerciseAnswer', function() {
 	return {
 		restrict : 'E',
 		link : function( $scope, element, attributes ) {
-			
-			var handler = new HandlerProxy( $scope.currentQuestion.handler ) ;
 
+			const handler = new HandlerProxy( $scope.currentQuestion.handler );
 			handler.freezeQuestionUI() ;
-			
-			var answerUI = handler.getAnswerUI() ;
-			
+
+			const answerUI = handler.getAnswerUI();
+
 			element.empty() ;
 			element.append( answerUI ) ;
 
