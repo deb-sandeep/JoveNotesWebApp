@@ -3,9 +3,9 @@ testPaperApp.filter( 'duration', function(){
 	return function( millis ) {
 
 	    const numSecs = Math.floor( millis / 1000 ) ;
-	    const hours   = Math.floor( numSecs / 3600 ) ;
-	    const minutes = Math.floor( ( numSecs - (hours * 3600) ) / 60 ) ;
-	    const seconds = numSecs - ( hours * 3600 ) - ( minutes * 60 ) ;
+	    let hours   = Math.floor( numSecs / 3600 ) ;
+	    let minutes = Math.floor( ( numSecs - (hours * 3600) ) / 60 ) ;
+	    let seconds = numSecs - ( hours * 3600 ) - ( minutes * 60 ) ;
 
 	    if( hours   < 10 ){ hours   = "0" + hours   ; }
 	    if( minutes < 10 ){ minutes = "0" + minutes ; }
