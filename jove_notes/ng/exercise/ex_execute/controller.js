@@ -301,9 +301,9 @@ function postSessionCreation( newSessionData ) {
     associateSessionVariablesToQuestions( questions ) ;
 
     $scope.$parent.exerciseSessionId = newSessionData.sessionId ;
-    for( const key in newSessionData.exChapterSessionIdMap ) {
-        $scope.$parent.exerciseBanksMap[ key ]._sessionId = 
-                                   newSessionData.exChapterSessionIdMap[ key ] ;
+    for( const chapterId in newSessionData.exChapterSessionIdMap ) {
+        $scope.$parent.exerciseBanksMap[ chapterId ]._sessionId =
+                                   newSessionData.exChapterSessionIdMap[ chapterId ] ;
     }
 
     $scope.$parent.questions = questions ;
@@ -311,9 +311,45 @@ function postSessionCreation( newSessionData ) {
     $scope.numQNotReviewed   = questions.length ;
     $scope.numQDone          = 0 ;
 
-    showStudyQuestionsScreen() ;
+    // TODO: Create entries in exercise_question and save their primary keys
+    //       to ease future updations
+    createExeriseQuestionEntries( $scope.$parent.exerciseSessionId,
+                                  $scope.$parent.questions,
+                                  function() {
+        showStudyQuestionsScreen() ;
+        $scope.$parent.startTimer() ;
+    }) ;
+}
 
-    $scope.$parent.startTimer() ;
+function createExeriseQuestionEntries( sessionId, questions, callback ) {
+
+    console.log( "Creating exercise question entries on server." ) ;
+
+    const questionIds = [] ;
+    const questionLookupMap = {} ;
+
+    questions.forEach( q => {
+        questionIds.push( q.questionId ) ;
+        questionLookupMap[ q.questionId ] = q ;
+    } ) ;
+
+    $http.post( '/jove_notes/api/ExerciseQuestion', {
+        "sessionId" : sessionId,
+        "questionIds" : questionIds
+    })
+    .success( function( data ) {
+        console.log( data ) ;
+        // The server should send a map of questionId vs the primary key of
+        // exercise question entry in the database. We should preserve this
+        // as an extended attribute of question so as to update on the database
+        // later.
+        callback() ;
+    })
+    .error( function( data, status ){
+         $scope.addErrorAlert( "ExerciseQuestion mapping API call failed. " +
+             "Status = " + status + ", " +
+             "Response = " + data ) ;
+    }) ;
 }
 
 function pruneUnusedExerciseBanks() {

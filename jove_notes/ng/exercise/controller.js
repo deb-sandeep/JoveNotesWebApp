@@ -20,7 +20,7 @@ $scope.textFormatter   = null ;
 $scope.sessionDuration = 0 ;
 
 $scope.exerciseBanks    = [] ;
-$scope.exerciseBanksMap = [] ;
+$scope.exerciseBanksMap = {} ;
 $scope.questions        = [] ;
 
 $scope.exerciseSessionId = -1 ;
@@ -255,6 +255,11 @@ function processExerciseBanksReceivedFromServer( serverData ) {
 // 
 
 function preProcessChapterData( chapterData ) {
+
+    // _sessionId is chapter specific session id. This will be set in the
+    // ex_execute route after a successful exercise session has been created
+    // on the server.
+    chapterData._sessionId = -1 ;
 
     chapterData._textFormatter = new TextFormatter( chapterData.chapterDetails, 
                                                     null ) ;

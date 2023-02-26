@@ -1,4 +1,4 @@
---------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------
 -- Data model changes to set entitlements for IIT-Mathematics
 --
 -- Moved to production on 10th June 2018
@@ -28,7 +28,7 @@ insert into user.entity_entitlement
 values
 ( 'ROLE', 'JN_IIT_MATH_USER',  'ENT_ALIAS', 'JN_ENT_USE_IIT_MATH_CHAPTERS' );
  
---------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------
 -- Data model changes to set entitlements for IIT-Chemistry
 --
 -- Moved to production on 20th May 2018
@@ -58,7 +58,7 @@ insert into user.entity_entitlement
 values
 ( 'ROLE', 'JN_IIT_CHEM_USER',  'ENT_ALIAS', 'JN_ENT_USE_IIT_CHEM_CHAPTERS' );
  
---------------------------------------------------------------------------------
+--- -----------------------------------------------------------------------------
 -- Changes for enabling Munni as a JN_CLASS_4_USER
 --
 -- Moved to production on 6th May 2018 - 7:34 PM
@@ -66,14 +66,14 @@ values
 update user.roles set child_role='JN_USER' where name='JN_CLASS_4_USER';
 insert into user.user_roles (user_name, role_name) values ( 'Munni', 'JN_CLASS_4_USER' );
 
---------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------
 -- Changes for syllabus merged functionality
 --
 
 INSERT INTO `user`.`user_preferences_master` (`key`, `default_value`, `description`) 
 VALUES ('jove_notes.syllabusMerged', 'false', 'Classify the chapters by their syllabus by default');
 
---------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------
 -- Data model changes to set entitlements for IIT-Physics
 --
 
@@ -109,7 +109,7 @@ delete from user.entity_entitlement where entity_name='JN_IIT_PREP_USER';
 delete from user.roles where name='JN_IIT_PREP_USER';
 delete from user.user_roles where role_name='JN_IIT_PREP_USER';
   
---------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------
 -- Data model changes to resolve class-3 conflicts between ICSE-STM and CBSE-INS
 --
 -- Moved to production on 26th April 2017 @ 2310 Hrs
@@ -150,7 +150,7 @@ role_name in ( 'JN_CLASS_3_USER', 'JN_CLASS_4_USER' ) ;
 
 delete from jove_notes.chapter where syllabus_name in ( 'Class-3', 'Class-4' ) ;
 
---------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------
 -- Data model chnages in preparation of the 'preparedness batch' feature changes
 --
 -- Moved to production on 20th April 2017 @ 2341 Hrs
@@ -187,7 +187,7 @@ ALTER TABLE `jove_notes`.`card_learning_summary`
 ADD COLUMN `retention_value` DECIMAL NOT NULL DEFAULT 0 AFTER `temporal_ratings`,
 ADD COLUMN `exam_preparedness_value` DECIMAL NOT NULL DEFAULT 0 AFTER `retention_value`;
 
---------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------
 -- Data model chnagesin preparation of the 'preparedness' feature changes
 --
 -- Implemented in production on 6th April 2017 - 1:06 AM
@@ -231,7 +231,7 @@ CREATE TABLE `calendar_event` (
   CONSTRAINT `fk_calendar_event_1` FOREIGN KEY (`student_name`) REFERENCES `user`.`user` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------
 -- Altered the auth_token table for the ghostly latency problem
 --
 
@@ -240,7 +240,7 @@ CHANGE COLUMN `token` `token` VARCHAR(45) NOT NULL,
 ADD PRIMARY KEY (`token`),
 DROP INDEX `token_UNIQUE` ;
 
---------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------
 -- Change put to porduction on 13th June
 -- Entitlement for class 4 notes to Parth
 
@@ -269,7 +269,7 @@ insert into user.user_roles
 values
 ( 'Parth', 'JN_CLASS_4_USER' ) ;
 
---------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------
 -- Change put to porduction on 8th June
 -- Entitlement for class 2 notes to Munni
 
@@ -298,7 +298,7 @@ insert into user.user_roles
 values
 ( 'Munni', 'JN_CLASS_2_USER' ) ;
 
---------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------
 -- Change put to production on 7th April 2016
 -- Updated referencial integrity to cascade
 ALTER TABLE `jove_notes`.`exercise_hom` 
@@ -310,7 +310,7 @@ ADD CONSTRAINT `fk_eh_card_id`
   ON DELETE CASCADE
   ON UPDATE CASCADE;
 
---------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------
 -- Change moved to production on 28th June 2016
 
 insert into user.roles
@@ -338,7 +338,7 @@ insert into user.user_roles
 values
 ( 'Deba', 'JN_CLASS_10_USER' ) ;
 
---------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------
 -- Change put to production on 15th April 2016
 -- Adding table for capturing habits of mind attributes which have contributed
 -- to the wrong answer for an exercise
@@ -371,7 +371,7 @@ ADD CONSTRAINT `fk_eh_session_id`
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
---------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------
 -- Change put to production on 27th Mar 2016
 -- Adding roles of class 9 and iit prep user for Deba and adding the required 
 -- roles, entitlements, selectors, aliases etc.
@@ -406,7 +406,7 @@ values
 ( 'Deba', 'JN_CLASS_9_USER' ),
 ( 'Deba', 'JN_IIT_PREP_USER' ) ;
 
---------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------
 -- Change put to production on 11th Mar 2016
 
 INSERT INTO `user`.`user_preferences_master` 
@@ -414,4 +414,30 @@ INSERT INTO `user`.`user_preferences_master`
 VALUES 
 ('jove_notes.flashCardFontZoomDelta', '0', 'Default font zoom for flash card question and answers');
 
+-- ==============================================================================
+-- Make a entitlement for class 8
 
+insert into user.roles
+( name, child_role )
+values
+    ( "JN_CLASS_8_USER", null );
+
+insert into user.entitlement_selector_alias
+( alias_name, selector_type, selector_value, description )
+values
+    ( 'JN_ALL_CHAPTERS_CLASS_8', 'PATH', '+:chapter:Class-8/**', 'Only Class-8 chapters' ) ;
+
+insert into user.entitlement_alias
+( alias_name, entitlement_type, child_entitlement_alias, selector_alias, permissible_ops )
+values
+    ( 'JN_ENT_USE_CLASS_8_CHAPTERS', 'RAW', null, 'JN_ALL_CHAPTERS_CLASS_8', 'NOTES, FLASH_CARD, CHAPTER_STATS' );
+
+insert into user.entity_entitlement
+( entity_type, entity_name, entitlement_type, entitlement_alias )
+values
+    ( 'ROLE', 'JN_CLASS_8_USER', 'ENT_ALIAS', 'JN_ENT_USE_CLASS_8_CHAPTERS' );
+
+insert into user.user_roles
+( user_name, role_name )
+values
+    ( 'Munni', 'JN_CLASS_8_USER' ) ;
