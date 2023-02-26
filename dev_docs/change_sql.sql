@@ -441,3 +441,32 @@ insert into user.user_roles
 ( user_name, role_name )
 values
     ( 'Munni', 'JN_CLASS_8_USER' ) ;
+
+-- ==============================================================================
+-- Make a entitlement for class 9
+-- Applied on 26th Feb 2023 - 1337Hrs
+
+insert into user.roles
+( name, child_role )
+values
+( "JN_CLASS_9_USER", null );
+
+insert into user.entitlement_selector_alias
+( alias_name, selector_type, selector_value, description )
+values
+( 'JN_ALL_CHAPTERS_CLASS_9', 'PATH', '+:chapter:Class-9/**', 'Only Class-9 chapters' ) ;
+
+insert into user.entitlement_alias
+( alias_name, entitlement_type, child_entitlement_alias, selector_alias, permissible_ops )
+values
+( 'JN_ENT_USE_CLASS_9_CHAPTERS', 'RAW', null, 'JN_ALL_CHAPTERS_CLASS_9', 'NOTES, FLASH_CARD, CHAPTER_STATS' );
+
+insert into user.entity_entitlement
+( entity_type, entity_name, entitlement_type, entitlement_alias )
+values
+( 'ROLE', 'JN_CLASS_9_USER', 'ENT_ALIAS', 'JN_ENT_USE_CLASS_9_CHAPTERS' );
+
+insert into user.user_roles
+( user_name, role_name )
+values
+( 'Munni', 'JN_CLASS_9_USER' ) ;
