@@ -12,8 +12,10 @@
                 <th align="center">Difficulty</th>
                 <th align="center">Time spent</th>
                 <th align="center">Num visits</th>
+                <th align="center">Study time</th>
                 <th align="center">Attempt time</th>
                 <th align="center">Review time</th>
+                <th align="center">Pause time</th>
                 <th align="center">Rating</th>
                 <th align="center">Score</th>
             </tr>
@@ -43,10 +45,16 @@
                     {{currentQuestion._sessionVars.numAttempts}}
                 </td>
                 <td align="center" class="fixed-font">
+                    {{currentQuestion._sessionVars.studyTime | duration}}
+                </td>
+                <td align="center" class="fixed-font">
                     {{currentQuestion._sessionVars.attemptTime | duration}}
                 </td>
                 <td align="center" class="fixed-font">
                     {{currentQuestion._sessionVars.reviewTime | duration}}
+                </td>
+                <td align="center" class="fixed-font">
+                    {{currentQuestion._sessionVars.pauseTime | duration}}
                 </td>
                 <td>
                     <button type="button" 

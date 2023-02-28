@@ -20,9 +20,11 @@ class ExerciseQuestionAPI extends AbstractJoveNotesAPI {
 
         $action = NULL ;
         if( count($request->requestPathComponents) == 0 ) {
+            // /jove_notes/api/ExerciseQuestion
             $action = new CreateExerciseQuestionMapAction( $this->logger ) ;
         }
         elseif ( count($request->requestPathComponents) == 2 ) {
+            // /jove_notes/api/ExerciseQuestion/<sessionId>/<questionId>
             $action = new UpdateExerciseQuestionMapAction( $this->logger ) ;
         }
 

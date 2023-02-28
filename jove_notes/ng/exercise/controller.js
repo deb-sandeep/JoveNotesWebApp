@@ -2,7 +2,7 @@ testPaperApp.controller( 'ExerciseController', function( $scope, $http, $routePa
 // ---------------- Constants and inner class definition -----------------------
 
 // ---------------- Local variables --------------------------------------------
-const jnUtil = new JoveNotesUtil();
+const jnUtil = new JoveNotesUtil() ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.SESSION_CONFIGURE_STAGE = "SESSION_CONFIGURE_STAGE" ;
@@ -30,14 +30,16 @@ $scope.sessionStartTime         = null ;
 $scope.sessionEndTime           = null ;
 $scope.sessionActive            = false ;
 
-$scope.pauseStartTime = 0 ;
-$scope.totalPauseTime = 0 ;
+$scope.pauseStartTime  = 0 ;
+$scope.totalPauseTime  = 0 ;
+$scope.totalStudyTime  = 0 ;
+$scope.totalReviewTime = 0 ;
 
 $scope.currentStage = null ;
-
 $scope.fastTrackRequested = false ;
-
 $scope.homHistogram = {} ;
+
+$scope.telemetry = new ExerciseTelemetry( $scope, $http ) ;
 
 // ---------------- Main logic for the controller ------------------------------
 log.debug( "Executing ExerciseController." ) ;
@@ -57,11 +59,15 @@ $scope.purgeAllAlerts = function() {
 
 $scope.pauseSession = function() {
     $scope.pauseStartTime = new Date().getTime() ;
+    $scope.$broadcast( 'exercisePaused' ) ;
     $( '#modalResume' ).modal( 'show' ) ;
 }
 
 $scope.resumeSession = function() {
     $scope.totalPauseTime += new Date().getTime() - $scope.pauseStartTime ;
+    $scope.$broadcast( 'exerciseResumed' ) ;
+
+    $scope.telemetry.updateSessionTotalPauseTime() ;
     $scope.pauseStartTime = 0 ;
     $( '#modalResume' ).modal( 'hide' ) ;
 }
@@ -241,8 +247,9 @@ function processExerciseBanksReceivedFromServer( serverData ) {
 //      [ _numSSR_MAS         ]
 // questions:
 //   -
-//      [ _chapterDetails ]
-//      [ _difficultyLabel ]
+//      [ _chapterDetails     ]
+//      [ _difficultyLabel    ]
+//      [ _sessionQuestionId  ] // PK of session_question. Populated in execute
 //      [handler]
 //      learningStats
 //          [_homAttributes]
@@ -300,7 +307,7 @@ function preProcessChapterData( chapterData ) {
         q.learningStats._ssrDelta            = -1 ;
 
         q._chapterDetails = chapterDetails ;
-
+        q._sessionQuestionId = -1 ;
         q._difficultyLabel =
             jnUtil.getDifficultyLevelLabel( q.difficultyLevel ) ;
 

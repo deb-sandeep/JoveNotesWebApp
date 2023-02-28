@@ -54,6 +54,7 @@ $pageConfig = array(
     <script src="/apps/jove_notes/ng/exercise/filters.js"></script>    
     <script src="/apps/jove_notes/ng/exercise/directives.js"></script>    
     <script src="/apps/jove_notes/ng/exercise/controller.js"></script>    
+    <script src="/apps/jove_notes/ng/exercise/telemetry.js"></script>
 
     <script src="/apps/jove_notes/ng/exercise/ex_configure/controller.js"></script>    
     <script src="/apps/jove_notes/ng/exercise/ex_execute/controller.js"></script>    

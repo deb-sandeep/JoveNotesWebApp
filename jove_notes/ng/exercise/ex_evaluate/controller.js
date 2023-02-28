@@ -60,6 +60,8 @@ let curQBeingRated = null;
 $scope.statusMessage     = "Rate each question as per performance." ;
 $scope.allQuestionsRated = false ;
 $scope.selectedHOMDescription = "" ;
+$scope.numCorrect = 0 ;
+$scope.totalScore = 0 ;
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -94,7 +96,7 @@ $scope.rateSolution = function( rating, question ) {
     log.debug( "Time spent    = " + timeSpent ) ;
     log.debug( "Overshoot pct = " + overshootPct ) ;
 
-    // NOTE: GradeCard API call is asynchronous, that implies that the score 
+    // NOTE: GradeCard API call is asynchronous, that implies that the score
     // of the current question will come sometimes when the user is attempting
     // the next question. This is ok.. the score counter will anyway get updated
     // in a time lagged fashion.. 
@@ -115,7 +117,9 @@ $scope.rateSolution = function( rating, question ) {
 }
 
 $scope.showSummaryScreen = function() {
+    $scope.$parent.telemetry.updateSessionCompleted() ;
     $scope.$parent.currentStage = $scope.$parent.SESSION_SUMMARY_STAGE ;
+    $scope.$parent.telemetry.printQueue() ;
     $location.path( "/ExerciseSummary" ) ;
 }
 
@@ -228,6 +232,17 @@ function populateRatingTextAndCls( rating, question ) {
     if( rating != 'E' ) {
         $( '#HOMTraceDialog' ).modal( 'show' ) ;
     }
+
+    if( rating === 'E' ) {
+        $scope.numCorrect++ ;
+        $scope.$parent.telemetry.updateSessionNumCorrect( $scope.numCorrect ) ;
+    }
+
+    $scope.$parent.telemetry.updateExQuestionResult( question ) ;
+
+    $scope.totalScore += question._sessionVars.scoreEarned ;
+    $scope.$parent.telemetry.updateExQuestionMarksObtained( question ) ;
+    $scope.$parent.telemetry.updateSessionTotalMarks( $scope.totalScore ) ;
 }
 
 function checkInvalidLoad() {

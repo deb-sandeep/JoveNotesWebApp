@@ -26,6 +26,8 @@ $scope.statusMessage = "" ;
 
 $scope.currentQuestion = null ;
 $scope.timeSpentOnCurrentQuestion = 0 ;
+$scope.pauseStartTime = 0 ;
+$scope.lastPauseDuration = 0 ;
 
 $scope.numQNotStarted  = 0 ;
 $scope.numQNotReviewed = 0 ;
@@ -69,6 +71,21 @@ $scope.$on( 'timerEvent', function( event, args ){
     }
 } ) ;
 
+$scope.$on( 'exercisePaused', function( event, args ){
+    $scope.pauseStartTime = new Date().getTime() ;
+} ) ;
+
+$scope.$on( 'exerciseResumed', function( event, args ){
+    const pauseDuration = new Date().getTime() - $scope.pauseStartTime ;
+    if( $scope.currentQuestion != null ) {
+        $scope.currentQuestion._sessionVars.pauseTime += pauseDuration ;
+
+        $scope.$parent.telemetry.updateExQuestionPauseTime( $scope.currentQuestion ) ;
+    }
+    $scope.pauseStartTime = 0 ;
+    $scope.lastPauseDuration += pauseDuration ;
+} ) ;
+
 $scope.$on( '$locationChangeStart', function( ev ) {
     if( !evaluateExerciseRouteChange ) {
         ev.preventDefault();
@@ -78,6 +95,13 @@ $scope.$on( '$locationChangeStart', function( ev ) {
 // ---------------- Controller methods -----------------------------------------
 $scope.showEvaluateScreen = function() {
     callIfServerAlive( function(){
+
+        // We have completed the exercise and now onto checking the
+        // results. Is the exercise complete? No - an exercise is complete
+        // only if the evaluation is complete. However, at this point attempt
+        // time, review, time etc. is frozen.
+        $scope.$parent.telemetry.updateSessionTotalSolveTime() ;
+
         evaluateExerciseRouteChange = true ;
         $scope.$parent.currentStage = $scope.$parent.SESSION_EVALUATE_STAGE ;
         $scope.$parent.stopTimer() ;
@@ -106,34 +130,42 @@ $scope.getQuestionPanelClass = function( question ) {
 
 $scope.attemptQuestion = function( question, attemptType ) {
 
+    $scope.lastPauseDuration = 0 ;
     $scope.currentQuestion = question ;
     $scope.timeSpentOnCurrentQuestion = question._sessionVars.timeSpent ;
 
-    // TODO: Make a parent scope level variable to track in question pause time
-    //       Reset it here and make use of it during the done attempt question
     currentQuestionAttemptStartTime = new Date().getTime() ;
     showAttemptScreen() ;
 }
 
 $scope.doneAttemptQuestion = function( question ) {
 
-    // TODO: Use the in question pause time to compute time spent and reset it 
-    //        after using. 
     const timeSpentInAttempt = new Date().getTime() - currentQuestionAttemptStartTime;
 
     question._sessionVars.numAttempts++ ;
+    $scope.$parent.telemetry.updateExQuestionNumAttempts( question ) ;
+
     question._sessionVars.timeSpent += timeSpentInAttempt ;
+    $scope.$parent.telemetry.updateExQuestionTotalTimeTaken( question ) ;
+
+    const timeSpentExcludingPauseDuration = timeSpentInAttempt - $scope.lastPauseDuration ;
 
     if( question._sessionVars.numAttempts == 1 ) {
         $scope.numQNotStarted-- ;
-        question._sessionVars.attemptTime = timeSpentInAttempt ;
+        question._sessionVars.attemptTime = timeSpentExcludingPauseDuration ;
+
+        $scope.$parent.telemetry.updateExQuestionAttemptTime( question ) ;
     }
     else {
         if( question._sessionVars.numAttempts == 2 ) {
             $scope.numQNotReviewed-- ;
             $scope.numQDone++ ;
         }
-        question._sessionVars.reviewTime += timeSpentInAttempt ;
+        question._sessionVars.reviewTime += timeSpentExcludingPauseDuration ;
+        $scope.$parent.totalReviewTime += timeSpentExcludingPauseDuration ;
+
+        $scope.$parent.telemetry.updateExQuestionReviewTime( question ) ;
+        $scope.$parent.telemetry.updateSessionTotalReviewTime() ;
     }
 
     currentQuestionAttemptStartTime = 0 ;
@@ -154,6 +186,7 @@ $scope.toggleMark = function( question ) {
 
 $scope.fastForwardStudyQuestion = function() {
     curStudyQ.fastFwdFlag = true ;
+    $scope.$parent.telemetry.logEvent( 'study_fast_forwarded', curStudyQ ) ;
 }
 
 // ---------------- Question navigation ----------------------------------------
@@ -173,30 +206,49 @@ function transitionStudyQuestion() {
         else {
             showNextQuestionForStudy() ;
         }
-        return ;
     }
-    setTimeout( transitionStudyQuestion, 500 ) ;
+    else {
+        setTimeout( transitionStudyQuestion, 500 ) ;
+    }
 }
 
 function showNextQuestionForStudy() {
 
     const questions = $scope.$parent.questions;
 
+    // If this is the second+ question being shown for study, set the
+    // showForStudy flag of the current question to false so that it is hidden
+    // in the UI. We also capture the study time here and telemetry it.
     if( curStudyQ.index > 0 ) {
-        questions[ curStudyQ.index - 1 ]._sessionVars.showForStudy = false ;
+        const lastQ = questions[ curStudyQ.index - 1 ] ;
+        lastQ._sessionVars.showForStudy = false ;
+        lastQ._sessionVars.studyTime = new Date().getTime() - curStudyQ.displayStartTime ;
+        lastQ._sessionVars.timeSpent += lastQ._sessionVars.studyTime ;
+
+        $scope.$parent.totalStudyTime += lastQ._sessionVars.studyTime ;
+
+        $scope.$parent.telemetry.updateSessionStudyTime() ;
+        $scope.$parent.telemetry.updateExQuestionStudyTime( lastQ ) ;
+        $scope.$parent.telemetry.updateExQuestionTotalTimeTaken( lastQ ) ;
+
+        $scope.$parent.telemetry.logEvent( 'study_ended', lastQ ) ;
     }
 
+    // If we have shown all the questions for study, let's show the full question paper
     if( curStudyQ.index >= questions.length ) {
         showSolvePaperScreen() ;
-        return ;
     }
     else {
+        // If there are more questions to study, enable the next question
+        // to be shown in the study screen.
         const curQ = questions[curStudyQ.index];
         curQ._sessionVars.showForStudy = true ;
         curStudyQ.index++ ;
 
         curStudyQ.displayStartTime = new Date().getTime() ;
         curStudyQ.fastFwdFlag = false ;
+
+        $scope.$parent.telemetry.logEvent( 'study_started', curQ ) ;
         setTimeout( transitionStudyQuestion, 500 ) ;
     }
 }
@@ -311,12 +363,14 @@ function postSessionCreation( newSessionData ) {
     $scope.numQNotReviewed   = questions.length ;
     $scope.numQDone          = 0 ;
 
-    // TODO: Create entries in exercise_question and save their primary keys
-    //       to ease future updations
+    // Create entries in exercise_question and save their primary key to ease
+    // future updations
     createExeriseQuestionEntries( $scope.$parent.exerciseSessionId,
                                   $scope.$parent.questions,
                                   function() {
         showStudyQuestionsScreen() ;
+        $scope.$parent.telemetry.logEvent( 'ex_launched' ) ;
+        $scope.$parent.telemetry.updateSessionTotalQuestions() ;
         $scope.$parent.startTimer() ;
     }) ;
 }
@@ -338,11 +392,15 @@ function createExeriseQuestionEntries( sessionId, questions, callback ) {
         "questionIds" : questionIds
     })
     .success( function( data ) {
+        console.log( "ExerciseQuestion map created on server." ) ;
         console.log( data ) ;
-        // The server should send a map of questionId vs the primary key of
-        // exercise question entry in the database. We should preserve this
-        // as an extended attribute of question so as to update on the database
-        // later.
+
+        // The server sends an array of object, each being a mapping of questionId
+        // and exQMapping PK.
+        data.forEach( mapping => {
+            let question = questionLookupMap[ mapping.questionId ] ;
+            question._sessionQuestionId = mapping.exMappingId ;
+        }) ;
         callback() ;
     })
     .error( function( data, status ){
@@ -505,8 +563,10 @@ function associateSessionVariablesToQuestions( questions ) {
             numAttempts  : 0,
             marked       : false,
             timeSpent    : 0,
+            studyTime    : 0,
             attemptTime  : 0,
             reviewTime   : 0,
+            pauseTime    : 0,
             rating       : null,
             ratingText   : "Not Rated",
             ratingTextCls: "btn btn-sm",

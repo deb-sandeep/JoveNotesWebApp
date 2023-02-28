@@ -24,8 +24,11 @@ SELECT
     exercise_id as exerciseId, 
     question_id as questionId, 
     total_time_taken as totalTimeTaken, 
-    study_time as studyTime, 
-    review_time as reviewTime, 
+    num_attempts as numAttempts,
+    study_time as studyTime,
+    attempt_time as attemptTime,
+    review_time as reviewTime,
+    pause_time as pauseTime,
     result as result, 
     marks_obtained as marksObtained 
 FROM 
@@ -38,8 +41,11 @@ QUERY;
 		$colNames = [ "exerciseId",
 			          "questionId",
 			          "totalTimeTaken",
+			          "numAttempts",
 			          "studyTime",
+			          "attemptTime",
 			          "reviewTime",
+			          "pauseTime",
 			          "result",
 			          "marksObtained" ] ;
 
@@ -72,17 +78,18 @@ QUERY;
 		return parent::getResultAsAssociativeArray( $selectQuery, $colNames, false ) ;
 	}
 
-	public function updateMapping( $sessionId, $questionId,
-	                               $totalTimeTaken, $studyTime, $reviewTime,
-	                               $result, $marksObtained ) {
+	public function updateMapping( $sessionId, $questionId, $existingMapping ) {
 		$updateQuery = <<< QUERY
 UPDATE jove_notes.exercise_question
 SET
-    total_time_taken = $totalTimeTaken, 
-    study_time       = $studyTime, 
-    review_time      = $reviewTime, 
-    result           = '$result', 
-    marks_obtained   = $marksObtained 
+    total_time_taken = $existingMapping->totalTimeTaken,
+    num_attempts     = $existingMapping->numAttempts,
+    study_time       = $existingMapping->studyTime,
+    attempt_time     = $existingMapping->attemptTime,
+    review_time      = $existingMapping->reviewTime, 
+    pause_time       = $existingMapping->pauseTime,
+    result           = '$$existingMapping->result', 
+    marks_obtained   = $existingMapping->marksObtained 
 WHERE
     exercise_id = $sessionId AND
     question_id = $questionId
