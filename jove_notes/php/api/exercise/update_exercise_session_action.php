@@ -35,7 +35,7 @@ class UpdateExerciseSessionAction extends APIAction {
 
     public function execute( $request, &$response ) {
 
-        $this->logger->debug( "Executing UpdateExerciseQuestionMapAction" ) ;
+        $this->logger->debug( "Executing UpdateExerciseSessionAction" ) ;
 
         $sessionId  = $request->requestPathComponents[1] ;
 
@@ -49,19 +49,19 @@ class UpdateExerciseSessionAction extends APIAction {
             $this->logger->debug( "  completed = $existingRecord->completed" ) ;
         }
         if( property_exists( $updateInfo, "totalSolveTime" ) ) {
-            $existingRecord->totalSolveTime = $updateInfo->totalSolveTime ;
+            $existingRecord->totalSolveTime = round($updateInfo->totalSolveTime) ;
             $this->logger->debug( "  totalSolveTime = $existingRecord->totalSolveTime" ) ;
         }
         if( property_exists( $updateInfo, "pauseTime" ) ) {
-            $existingRecord->pauseTime = $updateInfo->pauseTime ;
+            $existingRecord->pauseTime = round($updateInfo->pauseTime) ;
             $this->logger->debug( "  pauseTime = $existingRecord->pauseTime" ) ;
         }
         if( property_exists( $updateInfo, "reviewTime" ) ) {
-            $existingRecord->reviewTime = $updateInfo->reviewTime ;
+            $existingRecord->reviewTime = round($updateInfo->reviewTime) ;
             $this->logger->debug( "  reviewTime = $existingRecord->reviewTime" ) ;
         }
         if( property_exists( $updateInfo, "studyTime" ) ) {
-            $existingRecord->studyTime = $updateInfo->studyTime ;
+            $existingRecord->studyTime = round($updateInfo->studyTime) ;
             $this->logger->debug( "  studyTime = $existingRecord->studyTime" ) ;
         }
         if( property_exists( $updateInfo, "totalQuestions" ) ) {

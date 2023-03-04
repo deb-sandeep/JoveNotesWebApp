@@ -31,20 +31,11 @@
 </div>
 
 <div class="screen_footer">
-    <div class="col-sm-5"
-         style="padding-left:0px, padding-right:0px">
-        <button type="button" 
-                class="btn btn-warning btn-md"
-                ng-click="pauseSession()">
-            <span class="glyphicon glyphicon-pause"></span>
-        </button>
-        <button type="button" 
-                class="btn btn-danger btn-md"
-                ng-click="abortSession()">
-            <span class="glyphicon glyphicon-remove-sign"></span>
-        </button>
+    <div class="col-sm-3"
+         style="padding-left:0px, padding-right:0px"
+         ng-include="'/apps/jove_notes/ng/exercise/ex_execute/screens/_common_footer_controls.html'">
     </div>
-    <div class="col-sm-7 pull-right">
+    <div class="col-sm-9 pull-right">
         <button type="button" 
                 class="btn btn-danger btn-md"
                 ng-click="fastForwardStudyQuestion()">

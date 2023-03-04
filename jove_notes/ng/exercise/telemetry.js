@@ -5,12 +5,15 @@ function ExerciseTelemetry( $scope, $http ) {
     const UPDATE_QUESTION_API= "/jove_notes/api/ExerciseQuestion" ;
 
     const PRINT_LAST_ELEMENT = false ;
+    const MAX_FAILED_PUBLISH_ATTEMPTS = 2 ;
 
     const eventQueue = [] ;
+    const deadLetterQueue = [] ;
 
     function getUpdateSessionEvent() {
         let event = {
             'eventType' : 'UpdateSession',
+            'failedPublishAttempts' : 0,
             'endpoint' : `${UPDATE_SESSION_API}/${$scope.exerciseSessionId}`,
             'payload' : {}
         } ;
@@ -21,6 +24,7 @@ function ExerciseTelemetry( $scope, $http ) {
     function getUpdateExerciseQuestionEvent( question ) {
         let event = {
             'eventType' : 'UpdateExQuestion',
+            'failedPublishAttempts' : 0,
             'endpoint' : `${UPDATE_QUESTION_API}/${$scope.exerciseSessionId}/${question.questionId}`,
             'payload' : {}
         } ;
@@ -39,17 +43,20 @@ function ExerciseTelemetry( $scope, $http ) {
         eventQueue.forEach( e => console.log( e ) ) ;
     }
 
-    this.logEvent = function( eventName, question = null ) {
+    this.logEvent = function( phaseName, eventName, eventType, question = null ) {
 
-        const questionId = question == null ? null : question.questionId ;
+        const questionId = question == null ? -1 : question.questionId ;
         eventQueue.push( {
             'eventType' : 'MarkerEvent',
+            'failedPublishAttempts' : 0,
             'endpoint' : EXERCISE_EVENT_API,
             'payload' : {
                 'exerciseId' : $scope.exerciseSessionId,
                 'timestamp'  : Date.now(),
-                'questionId' : questionId,
-                'action'     : eventName
+                'phaseName'  : phaseName,
+                'eventName'  : eventName,
+                'eventType'  : eventType,
+                'questionId' : questionId
             }
         } ) ;
 
@@ -57,49 +64,45 @@ function ExerciseTelemetry( $scope, $http ) {
     }
 
     this.updateSessionCompleted = function() {
-        console.log( "updateSessionCompleted" ) ;
         getUpdateSessionEvent().payload[ 'completed' ] = 1 ;
         this.printLastElementInQueue() ;
     }
 
     this.updateSessionTotalSolveTime = function() {
-        console.log( "updateSessionTotalSolveTime" ) ;
-        getUpdateSessionEvent().payload[ 'totalSolveTime' ] = $scope.durationTillNowInMillis/1000 ;
+        getUpdateSessionEvent().payload[ 'totalSolveTime' ] =
+                            Math.round($scope.durationTillNowInMillis/1000 ) ;
         this.printLastElementInQueue() ;
     }
 
     this.updateSessionTotalPauseTime = function() {
-        console.log( "updateSessionTotalPauseTime" ) ;
-        getUpdateSessionEvent().payload[ 'pauseTime' ] = $scope.totalPauseTime/1000 ;
+        getUpdateSessionEvent().payload[ 'pauseTime' ] =
+                                    Math.round($scope.totalPauseTime/1000 ) ;
         this.printLastElementInQueue() ;
     }
 
     this.updateSessionTotalReviewTime = function() {
-        console.log( "updateSessionTotalReviewTime" ) ;
-        getUpdateSessionEvent().payload[ 'reviewTime' ] = $scope.totalReviewTime/1000 ;
+        getUpdateSessionEvent().payload[ 'reviewTime' ] =
+                                    Math.round($scope.totalReviewTime/1000 ) ;
         this.printLastElementInQueue() ;
     }
 
     this.updateSessionStudyTime = function() {
-        console.log( "updateSessionStudyTime" ) ;
-        getUpdateSessionEvent().payload[ 'studyTime' ] = $scope.totalStudyTime/1000 ;
+        getUpdateSessionEvent().payload[ 'studyTime' ] =
+                                    Math.round($scope.totalStudyTime/1000 ) ;
         this.printLastElementInQueue() ;
     }
 
     this.updateSessionTotalQuestions = function() {
-        console.log( "updateSessionTotalQuestions" ) ;
         getUpdateSessionEvent().payload[ 'totalQuestions' ] = $scope.questions.length ;
         this.printLastElementInQueue() ;
     }
 
     this.updateSessionNumCorrect = function( numCorrect ) {
-        console.log( "updateSessionNumCorrect" ) ;
         getUpdateSessionEvent().payload[ 'numCorrect' ] = numCorrect ;
         this.printLastElementInQueue() ;
     }
 
     this.updateSessionTotalMarks = function( totalMarks ) {
-        console.log( "updateSessionTotalMarks" ) ;
         getUpdateSessionEvent().payload[ 'totalMarks' ] = totalMarks ;
         this.printLastElementInQueue() ;
     }
@@ -108,7 +111,8 @@ function ExerciseTelemetry( $scope, $http ) {
 
     this.updateExQuestionTotalTimeTaken = function( question ) {
         const event = getUpdateExerciseQuestionEvent( question ) ;
-        event.payload[ 'totalTimeTaken' ] = question._sessionVars.timeSpent/1000 ;
+        event.payload[ 'totalTimeTaken' ] =
+                        Math.round(question._sessionVars.timeSpent/1000 ) ;
         this.printLastElementInQueue() ;
     }
 
@@ -120,25 +124,29 @@ function ExerciseTelemetry( $scope, $http ) {
 
     this.updateExQuestionStudyTime = function( question ) {
         const event = getUpdateExerciseQuestionEvent( question ) ;
-        event.payload[ 'studyTime' ] = question._sessionVars.studyTime/1000 ;
+        event.payload[ 'studyTime' ] =
+                        Math.round(question._sessionVars.studyTime/1000 ) ;
         this.printLastElementInQueue() ;
     }
 
     this.updateExQuestionAttemptTime = function( question ) {
         const event = getUpdateExerciseQuestionEvent( question ) ;
-        event.payload[ 'attemptTime' ] = question._sessionVars.attemptTime/1000 ;
+        event.payload[ 'attemptTime' ] =
+                        Math.round(question._sessionVars.attemptTime/1000 ) ;
         this.printLastElementInQueue() ;
     }
 
     this.updateExQuestionReviewTime = function( question ) {
         const event = getUpdateExerciseQuestionEvent( question ) ;
-        event.payload[ 'reviewTime' ] = question._sessionVars.reviewTime/1000 ;
+        event.payload[ 'reviewTime' ] =
+                        Math.round(question._sessionVars.reviewTime/1000 ) ;
         this.printLastElementInQueue() ;
     }
 
     this.updateExQuestionPauseTime = function( question ) {
         const event = getUpdateExerciseQuestionEvent( question ) ;
-        event.payload[ 'pauseTime' ] = question._sessionVars.pauseTime/1000 ;
+        event.payload[ 'pauseTime' ] =
+                        Math.round(question._sessionVars.pauseTime/1000 ) ;
         this.printLastElementInQueue() ;
     }
 
@@ -152,5 +160,47 @@ function ExerciseTelemetry( $scope, $http ) {
         const event = getUpdateExerciseQuestionEvent( question ) ;
         event.payload[ 'result' ] = question._sessionVars.rating ;
         this.printLastElementInQueue() ;
+    }
+
+    this.startServerPublishPump = function() {
+        runPump() ;
+    }
+
+    // Publishing pump
+    function runPump() {
+        console.log( '.' ) ;
+        if( eventQueue.length == 0 ) {
+            setTimeout( runPump, 500 ) ;
+        }
+        else {
+            const event = eventQueue.shift() ;
+
+            if( event.eventType === 'MarkerEvent' ) {
+                console.log( `Publishing event. Type = ${event.eventType}. Action ${event.action}` ) ;
+            }
+            else {
+                console.log( `Publishing event. Type = ${event.eventType}` ) ;
+                console.log( event ) ;
+            }
+
+            $http.post( event.endpoint, event.payload )
+            .success( function( data ) {
+                setTimeout( runPump, 500 ) ;
+            })
+            .error( function( data, status ){
+                 console.log( `ExerciseQuestion mapping API call failed. ` +
+                              `Status = ${status}, Response = ${data}` ) ;
+                 event.failedPublishAttempts++ ;
+                 if( event.failedPublishAttempts < MAX_FAILED_PUBLISH_ATTEMPTS ) {
+                     console.log( "Attempting to publish again." ) ;
+                     eventQueue.unshift( event ) ;
+                     setTimeout( runPump, 1000 ) ;
+                 }
+                 else {
+                     deadLetterQueue.push( event ) ;
+                     setTimeout( runPump, 0 ) ;
+                 }
+            }) ;
+        }
     }
 }

@@ -55,6 +55,7 @@ $scope.numQDone        = 0 ;
 
 $scope.$on( 'onRenderComplete', function( scope ){
     if( $scope.$parent.fastTrackRequested ) {
+        $scope.$parent.telemetry.logEvent( "Solve","phase_start", "boundary" ) ;
         showSolvePaperScreen() ;
     }
     else {
@@ -72,18 +73,47 @@ $scope.$on( 'timerEvent', function( event, args ){
 } ) ;
 
 $scope.$on( 'exercisePaused', function( event, args ){
+
     $scope.pauseStartTime = new Date().getTime() ;
+    let curQ = null ;
+    if( $scope.currentQuestion != null ) {
+        curQ = $scope.currentQuestion ;
+    }
+    else if( curStudyQ.index > 0 ) {
+        const questions = $scope.$parent.questions;
+        curQ = questions[curStudyQ.index - 1];
+    }
+    $scope.$parent.telemetry.logEvent(
+        "Solve",
+        "pause_start",
+        "boundary",
+        curQ
+    ) ;
 } ) ;
 
 $scope.$on( 'exerciseResumed', function( event, args ){
-    const pauseDuration = new Date().getTime() - $scope.pauseStartTime ;
-    if( $scope.currentQuestion != null ) {
-        $scope.currentQuestion._sessionVars.pauseTime += pauseDuration ;
 
+    const pauseDuration = new Date().getTime() - $scope.pauseStartTime;
+    let curQ = null ;
+
+    if( $scope.currentQuestion != null ) {
+        curQ = $scope.currentQuestion ;
+        $scope.currentQuestion._sessionVars.pauseTime += pauseDuration ;
         $scope.$parent.telemetry.updateExQuestionPauseTime( $scope.currentQuestion ) ;
     }
+    else if( curStudyQ.index > 0 ) {
+        const questions = $scope.$parent.questions;
+        curQ = questions[curStudyQ.index - 1];
+    }
+
     $scope.pauseStartTime = 0 ;
     $scope.lastPauseDuration += pauseDuration ;
+    $scope.$parent.telemetry.logEvent(
+        "Solve",
+        "pause_end",
+        "boundary",
+         curQ
+    ) ;
 } ) ;
 
 $scope.$on( '$locationChangeStart', function( ev ) {
@@ -105,6 +135,9 @@ $scope.showEvaluateScreen = function() {
         evaluateExerciseRouteChange = true ;
         $scope.$parent.currentStage = $scope.$parent.SESSION_EVALUATE_STAGE ;
         $scope.$parent.stopTimer() ;
+
+        $scope.$parent.telemetry.logEvent( "Solve","phase_end", "boundary" ) ;
+
         $location.path( "/EvaluateExercise" ) ;
         $scope.$apply() ;
     },
@@ -135,6 +168,14 @@ $scope.attemptQuestion = function( question, attemptType ) {
     $scope.timeSpentOnCurrentQuestion = question._sessionVars.timeSpent ;
 
     currentQuestionAttemptStartTime = new Date().getTime() ;
+
+    if( question._sessionVars.numAttempts == 0 ) {
+        $scope.$parent.telemetry.logEvent( "Solve","attempt_start", "boundary", question ) ;
+    }
+    else {
+        $scope.$parent.telemetry.logEvent( "Solve","review_start", "boundary", question ) ;
+    }
+
     showAttemptScreen() ;
 }
 
@@ -155,6 +196,7 @@ $scope.doneAttemptQuestion = function( question ) {
         question._sessionVars.attemptTime = timeSpentExcludingPauseDuration ;
 
         $scope.$parent.telemetry.updateExQuestionAttemptTime( question ) ;
+        $scope.$parent.telemetry.logEvent( "Solve","attempt_end", "boundary", question ) ;
     }
     else {
         if( question._sessionVars.numAttempts == 2 ) {
@@ -166,6 +208,7 @@ $scope.doneAttemptQuestion = function( question ) {
 
         $scope.$parent.telemetry.updateExQuestionReviewTime( question ) ;
         $scope.$parent.telemetry.updateSessionTotalReviewTime() ;
+        $scope.$parent.telemetry.logEvent( "Solve","review_end", "boundary", question ) ;
     }
 
     currentQuestionAttemptStartTime = 0 ;
@@ -182,11 +225,19 @@ $scope.doneAttemptQuestion = function( question ) {
 
 $scope.toggleMark = function( question ) {
     question._sessionVars.marked = !question._sessionVars.marked ;
+    $scope.$parent.telemetry.logEvent(
+        "Solve",
+        question._sessionVars.marked ? "question_marked" : "question_unmarked",
+        "marker",
+        $scope.currentQuestion ) ;
 }
 
 $scope.fastForwardStudyQuestion = function() {
     curStudyQ.fastFwdFlag = true ;
-    $scope.$parent.telemetry.logEvent( 'study_fast_forwarded', curStudyQ ) ;
+
+    const questions = $scope.$parent.questions;
+    $scope.$parent.telemetry.logEvent( "Study","fast_forward", "marker",
+                                       questions[curStudyQ.index - 1] ) ;
 }
 
 // ---------------- Question navigation ----------------------------------------
@@ -194,12 +245,15 @@ $scope.fastForwardStudyQuestion = function() {
 function transitionStudyQuestion() {
 
     const questions = $scope.$parent.questions;
-    const displayTimeTilLNow = new Date().getTime() - curStudyQ.displayStartTime;
+    const displayTimeTilLNow = new Date().getTime() - curStudyQ.displayStartTime - $scope.lastPauseDuration ;
 
-    if( curStudyQ.fastFwdFlag == true || 
-        displayTimeTilLNow >= STUDY_Q_DEFAULT_SHOW_TIME ) {
+    if( curStudyQ.fastFwdFlag == true || displayTimeTilLNow >= STUDY_Q_DEFAULT_SHOW_TIME ) {
 
-        if( curStudyQ.index > 0 ) {
+        if( $scope.$parent.pauseStartTime > 0 ) {
+            // If we are in pause mode
+            setTimeout( transitionStudyQuestion, 500 ) ;
+        }
+        else if( curStudyQ.index > 0 ) {
             const divId = "#study_q_" + questions[curStudyQ.index - 1].questionId;
             $( divId ).fadeOut( STUDY_Q_FADEOUT_TIME, showNextQuestionForStudy ) ;
         }
@@ -227,15 +281,21 @@ function showNextQuestionForStudy() {
 
         $scope.$parent.totalStudyTime += lastQ._sessionVars.studyTime ;
 
+        $scope.$parent.telemetry.logEvent(
+                                    "Study",
+                                    "study_end",
+                                    "boundary",
+                                    lastQ ) ;
+
         $scope.$parent.telemetry.updateSessionStudyTime() ;
         $scope.$parent.telemetry.updateExQuestionStudyTime( lastQ ) ;
         $scope.$parent.telemetry.updateExQuestionTotalTimeTaken( lastQ ) ;
-
-        $scope.$parent.telemetry.logEvent( 'study_ended', lastQ ) ;
     }
 
     // If we have shown all the questions for study, let's show the full question paper
     if( curStudyQ.index >= questions.length ) {
+        $scope.$parent.telemetry.logEvent( "Study","phase_end", "boundary" ) ;
+        $scope.$parent.telemetry.logEvent( "Solve","phase_start", "boundary" ) ;
         showSolvePaperScreen() ;
     }
     else {
@@ -244,11 +304,17 @@ function showNextQuestionForStudy() {
         const curQ = questions[curStudyQ.index];
         curQ._sessionVars.showForStudy = true ;
         curStudyQ.index++ ;
+        $scope.lastPauseDuration = 0 ;
+
+        $scope.$parent.telemetry.logEvent(
+                                "Study",
+                                "study_start",
+                                "boundary",
+                                curQ ) ;
 
         curStudyQ.displayStartTime = new Date().getTime() ;
         curStudyQ.fastFwdFlag = false ;
 
-        $scope.$parent.telemetry.logEvent( 'study_started', curQ ) ;
         setTimeout( transitionStudyQuestion, 500 ) ;
     }
 }
@@ -260,6 +326,9 @@ function showStudyQuestionsScreen() {
     $scope.$parent.pageTitle = "Exercise (" + $scope.$parent.questions.length + 
                                " questions) - Study Phase" ;
     $scope.currentScreen = $scope.STUDY_QUESTIONS_SCREEN ;
+
+    $scope.$parent.telemetry.logEvent( "Exercise","phase_start", "boundary" ) ;
+    $scope.$parent.telemetry.logEvent( "Study","phase_start", "boundary" ) ;
 }
 
 function showSolvePaperScreen() {
@@ -268,6 +337,7 @@ function showSolvePaperScreen() {
                            "questions you want to work on." ;
     $scope.$parent.pageTitle = "Exercise (" + $scope.$parent.questions.length + 
                                " questions) - Solve Phase" ;
+
     $scope.currentScreen = $scope.SOLVE_PAPER_SCREEN ;
 }
 
@@ -369,9 +439,9 @@ function postSessionCreation( newSessionData ) {
                                   $scope.$parent.questions,
                                   function() {
         showStudyQuestionsScreen() ;
-        $scope.$parent.telemetry.logEvent( 'ex_launched' ) ;
-        $scope.$parent.telemetry.updateSessionTotalQuestions() ;
         $scope.$parent.startTimer() ;
+        $scope.$parent.telemetry.startServerPublishPump() ;
+        $scope.$parent.telemetry.updateSessionTotalQuestions() ;
     }) ;
 }
 

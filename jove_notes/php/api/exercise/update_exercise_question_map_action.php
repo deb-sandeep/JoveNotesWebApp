@@ -51,7 +51,7 @@ class UpdateExerciseQuestionMapAction extends APIAction {
         $updateInfo = $request->requestBody ;
 
         if( property_exists( $updateInfo, "totalTimeTaken" ) ) {
-            $existingMapping->totalTimeTaken = $updateInfo->totalTimeTaken ;
+            $existingMapping->totalTimeTaken = round($updateInfo->totalTimeTaken) ;
             $this->logger->debug( "  totalTimeTaken = $existingMapping->totalTimeTaken" ) ;
         }
         if( property_exists( $updateInfo, "numAttempts" ) ) {
@@ -59,19 +59,19 @@ class UpdateExerciseQuestionMapAction extends APIAction {
             $this->logger->debug( "  numAttempts = $existingMapping->numAttempts" ) ;
         }
         if( property_exists( $updateInfo, "studyTime" ) ) {
-            $existingMapping->studyTime = $updateInfo->studyTime ;
+            $existingMapping->studyTime = round($updateInfo->studyTime) ;
             $this->logger->debug( "  studyTime = $existingMapping->studyTime" ) ;
         }
         if( property_exists( $updateInfo, "attemptTime" ) ) {
-            $existingMapping->attemptTime = $updateInfo->attemptTime ;
+            $existingMapping->attemptTime = round($updateInfo->attemptTime) ;
             $this->logger->debug( "  attemptTime = $existingMapping->attemptTime" ) ;
         }
         if( property_exists( $updateInfo, "reviewTime" ) ) {
-            $existingMapping->reviewTime = $updateInfo->reviewTime ;
+            $existingMapping->reviewTime = round($updateInfo->reviewTime) ;
             $this->logger->debug( "  reviewTime = $existingMapping->reviewTime" ) ;
         }
         if( property_exists( $updateInfo, "pauseTime" ) ) {
-            $existingMapping->pauseTime = $updateInfo->pauseTime ;
+            $existingMapping->pauseTime = round($updateInfo->pauseTime) ;
             $this->logger->debug( "  pauseTime = $existingMapping->pauseTime" ) ;
         }
         if( property_exists( $updateInfo, "marksObtained" ) ) {

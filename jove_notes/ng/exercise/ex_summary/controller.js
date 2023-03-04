@@ -17,9 +17,9 @@ testPaperApp.controller( 'ExerciseSummaryController', function( $scope, $http, $
 
 // ---------------- Controller methods -----------------------------------------
 $scope.getTotalScore = function() {
-    var totalScore = 0 ;
-    for( var i=0; i < $scope.$parent.questions.length; i++ ) {
-        var q = $scope.$parent.questions[i] ;
+    let totalScore = 0;
+    for( let i=0; i < $scope.$parent.questions.length; i++ ) {
+        const q = $scope.$parent.questions[i];
         totalScore += q._sessionVars.scoreEarned ;
     }
     return totalScore ;

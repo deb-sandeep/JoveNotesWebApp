@@ -71,6 +71,7 @@ $scope.totalScore = 0 ;
         return ;
     }
     $scope.$parent.pageTitle = "Evaluate Exercise" ;
+    $scope.$parent.telemetry.logEvent( "Evaluate","phase_start", "boundary" ) ;
 }
 
 // ---------------- Controller methods -----------------------------------------
@@ -96,6 +97,13 @@ $scope.rateSolution = function( rating, question ) {
     log.debug( "Time spent    = " + timeSpent ) ;
     log.debug( "Overshoot pct = " + overshootPct ) ;
 
+    $scope.$parent.telemetry.logEvent(
+        "Evaluate",
+        "question_rated",
+        "marker",
+        question
+    ) ;
+
     // NOTE: GradeCard API call is asynchronous, that implies that the score
     // of the current question will come sometimes when the user is attempting
     // the next question. This is ok.. the score counter will anyway get updated
@@ -120,6 +128,8 @@ $scope.showSummaryScreen = function() {
     $scope.$parent.telemetry.updateSessionCompleted() ;
     $scope.$parent.currentStage = $scope.$parent.SESSION_SUMMARY_STAGE ;
     $scope.$parent.telemetry.printQueue() ;
+    $scope.$parent.telemetry.logEvent( "Evaluate","phase_end", "boundary" ) ;
+    $scope.$parent.telemetry.logEvent( "Exercise","phase_end", "boundary" ) ;
     $location.path( "/ExerciseSummary" ) ;
 }
 

@@ -88,7 +88,7 @@ SET
     attempt_time     = $existingMapping->attemptTime,
     review_time      = $existingMapping->reviewTime, 
     pause_time       = $existingMapping->pauseTime,
-    result           = '$$existingMapping->result', 
+    result           = '$existingMapping->result', 
     marks_obtained   = $existingMapping->marksObtained 
 WHERE
     exercise_id = $sessionId AND

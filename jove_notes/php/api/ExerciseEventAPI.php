@@ -17,10 +17,12 @@ class ExerciseEventAPI extends AbstractJoveNotesAPI {
 		$this->logger->debug( "Executing doPost in ". __CLASS__ ) ;
 
         // {
-        //    exerciseId : <int>,
-        //    timestamp : <int>,
-        //    questionId : <int>,
-        //    action : <string>
+        //     'exerciseId' : $scope.exerciseSessionId,
+        //     'timestamp'  : Date.now(),
+        //     'phaseName'  : phaseName,
+        //     'eventName'  : eventName,
+        //     'eventType'  : eventType,
+        //     'questionId' : questionId
         // }
         $event = $request->requestBody ;
 
