@@ -109,7 +109,24 @@ function RatingMatrix() {
         return value ;
     }
 
-    this.getNextLevel = function( numAttempts, currentLevel, currentRating ) {
+    this.getNextLevel = function( question, numAttempts, currentLevel, currentRating ) {
+
+        // If we are redoing a question within 24 hour period, don't change
+        // level of the card. Retention has not kicked in yet.
+        const lastAttemptTime = question.learningStats.lastAttemptTime ;
+        if( lastAttemptTime > 0 ) {
+            let millisSinceLastAttempt = new Date().getTime() - lastAttemptTime ;
+            if( millisSinceLastAttempt < 0 ) {
+                millisSinceLastAttempt += (5*60+30)*60*1000 ;
+            }
+            const hrsSinceLastAttempt = millisSinceLastAttempt/(1000*60*60) ;
+            if( hrsSinceLastAttempt < 24 ) {
+                if( currentRating === 'E' || currentRating === 'P' ) {
+                    return currentLevel;
+                }
+            }
+        }
+
         if( numAttempts > 1 ) {
             return currentLevel ;
         }

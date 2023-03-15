@@ -2,47 +2,47 @@ flashCardApp.controller( 'PracticePageController', function( $scope, $http, $rou
 // -----------------------------------------------------------------------------
 
 // ---------------- Constants and inner class definition -----------------------
-var MAX_GRADE_CARD_API_CALL_RETRIES    = 3 ;
-var MAX_PUSH_ANS_API_CALL_RETRIES      = 3 ;
-var MAX_PUSH_QUESTION_API_CALL_RETRIES = 3 ;
+    const MAX_GRADE_CARD_API_CALL_RETRIES = 3;
+    const MAX_PUSH_ANS_API_CALL_RETRIES = 3;
+    const MAX_PUSH_QUESTION_API_CALL_RETRIES = 3;
 
-var PROGRESS_STAGE_GREEN = 0 ;
-var PROGRESS_STAGE_AMBER = 1 ;
-var PROGRESS_STAGE_RED   = 2 ;
+    const PROGRESS_STAGE_GREEN = 0;
+    const PROGRESS_STAGE_AMBER = 1;
+    const PROGRESS_STAGE_RED = 2;
 
-var FATIGUE_UPPER_THRESHOLD = 50 ;
-var FATIGUE_LOWER_THRESHOLD = -50 ;
-var HYSTERIS_PCT = 0.25 ;
-var FATIGUE_UPPER_HYSTERISIS_THRESHOLD = FATIGUE_UPPER_THRESHOLD*( 1 - HYSTERIS_PCT ) ;
-var FATIGUE_LOWER_HYSTERISIS_THRESHOLD = FATIGUE_LOWER_THRESHOLD*( 1 - HYSTERIS_PCT ) ;
+    const FATIGUE_UPPER_THRESHOLD = 50;
+    const FATIGUE_LOWER_THRESHOLD = -50;
+    const HYSTERIS_PCT = 0.25;
+    const FATIGUE_UPPER_HYSTERISIS_THRESHOLD = FATIGUE_UPPER_THRESHOLD * (1 - HYSTERIS_PCT);
+    const FATIGUE_LOWER_HYSTERISIS_THRESHOLD = FATIGUE_LOWER_THRESHOLD * (1 - HYSTERIS_PCT);
 
 // ---------------- Local variables --------------------------------------------
-var ratingMatrix = new RatingMatrix() ;
-var jnUtils      = new JoveNotesUtil() ;
+    const ratingMatrix     = new RatingMatrix();
+    const jnUtils          = new JoveNotesUtil();
+    const sessionStartTime = new Date().getTime();
 
-var currentQuestionShowStartTime   = 0 ;
-var currentQuestionAvPredictedTime = 0 ;
-var currentQuestionAvSelfTime      = 0 ;
-var durationTillNowInMillis        = 0 ;
+    let currentQuestionShowStartTime   = 0;
+    let currentQuestionAvPredictedTime = 0;
+    let currentQuestionAvSelfTime      = 0;
+    let durationTillNowInMillis        = 0;
 
-var sessionStartTime = new Date().getTime() ;
-var sessionActive    = true ;
-var oldBodyTop       = 0 ;
-var oldBodyBottom    = 0 ;
-var scoreDelta       = 0 ;
+    let sessionActive = true;
+    let oldBodyTop    = 0;
+    let oldBodyBottom = 0;
+    let scoreDelta    = 0;
 
-var questionChangeTriggerIndex = 0 ;
+    let questionChangeTriggerIndex = 0;
 
-var diffAvgTimeManager = null ;
+    let diffAvgTimeManager = null;
 
-var resumeModalShowTime    = 0 ;
-var totalSessionPauseTime  = 0 ;
-var totalQuestionPauseTime = 0 ;
+    let resumeModalShowTime    = 0;
+    let totalSessionPauseTime  = 0;
+    let totalQuestionPauseTime = 0;
 
-var currentTimerStage = PROGRESS_STAGE_GREEN ;
+    let currentTimerStage = PROGRESS_STAGE_GREEN;
 
-var initialQADivFontSize = -1 ;
-var currentFontZoomDelta = 0 ;
+    let initialQADivFontSize = -1;
+    let currentFontZoomDelta = 0;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.showL0Header       = true ;
@@ -81,7 +81,6 @@ $scope.inUpperHysterisZone = false ;
 $scope.inLowerHysterisZone = false ;
 $scope.inNormalFatigueZone = false ;
 $scope.currentAnsTime = 0 ;
-
 
 // ---------------- Main logic for the controller ------------------------------
 {
@@ -160,7 +159,7 @@ $scope.$on( 'resumeSession.button.click', function( event, args ){
     $( '#modalResume' ).modal( 'hide' ) ;
 
     callRFMApiToPauseResumeSession( 'resume_session', 0, function(){
-        var pauseTime = new Date().getTime() - resumeModalShowTime ;
+        const pauseTime = new Date().getTime() - resumeModalShowTime;
         totalSessionPauseTime  += pauseTime ;
         totalQuestionPauseTime += pauseTime ;
 
@@ -214,8 +213,8 @@ $scope.purgeCard = function() {
 
 $scope.purgeNotAttemptedCards = function() {
 
-    for( var i = $scope.questionsForSession.length-1; i >= 0; i-- ) {
-        var q = $scope.questionsForSession[i] ;
+    for( let i = $scope.questionsForSession.length-1; i >= 0; i-- ) {
+        const q = $scope.questionsForSession[i];
         if( q.learningStats.numAttemptsInSession == 0 ) {
             $scope.questionsForSession.splice( i, 1 ) ;
             $scope.$parent.sessionStats.numCards-- ;
@@ -231,15 +230,15 @@ $scope.purgeNotAttemptedCards = function() {
 $scope.rateCard = function( rating ) {
     log.debug( "Rating current card as " + rating )  ;
 
-    var cardId      = $scope.currentQuestion.questionId ;
-    var curLevel    = $scope.currentQuestion.learningStats.currentLevel ;
-    var numAttempts = $scope.currentQuestion.learningStats.numAttemptsInSession+1 ;
-    var timeSpent   =  Math.ceil( ( new Date().getTime() - currentQuestionShowStartTime - totalQuestionPauseTime )/1000 ) ;   
+    const cardId = $scope.currentQuestion.questionId;
+    const curLevel = $scope.currentQuestion.learningStats.currentLevel;
+    const numAttempts = $scope.currentQuestion.learningStats.numAttemptsInSession + 1;
+    const timeSpent = Math.ceil( (new Date().getTime() - currentQuestionShowStartTime - totalQuestionPauseTime) / 1000 );
 
-    var nextLevel    = ratingMatrix.getNextLevel( numAttempts, curLevel, rating ) ;
-    var nextAction   = ratingMatrix.getNextAction( curLevel, rating ) ;
-    var overshootPct = ( timeSpent - currentQuestionAvSelfTime )/currentQuestionAvSelfTime ;
+    const nextLevel = ratingMatrix.getNextLevel( $scope.currentQuestion, numAttempts, curLevel, rating );
+    const nextAction = ratingMatrix.getNextAction( curLevel, rating );
 
+    let overshootPct = (timeSpent - currentQuestionAvSelfTime) / currentQuestionAvSelfTime;
     // Rounding off overshoot percentage to two decimal places.
     overshootPct = Math.round( overshootPct * 100 )/100 ;
 
@@ -277,10 +276,9 @@ $scope.rateCard = function( rating ) {
         overshootPct,
         0 
     ) ;
-    
-    var fatiqueContribution = ratingMatrix.getFatigueContribution( 
-                                                 curLevel, rating, timeSpent ) ;
 
+    const fatiqueContribution = ratingMatrix.getFatigueContribution(
+                                                 curLevel, rating, timeSpent ) ;
     $scope.currentFatigueLevel += fatiqueContribution ;
 
     showNextCard() ;

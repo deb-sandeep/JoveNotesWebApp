@@ -35,22 +35,25 @@ flashCardApp.filter( 'elapsedDuration', function(){
 
 		if( milestoneTime < 0 ) return "New card" ;
 
-		var str = "" ;
-		var numSecs = 0 ;
-		var millis = new Date().getTime() - milestoneTime ;
+		let str = "";
+		let numSecs = 0;
+		let millis = new Date().getTime() - milestoneTime;
+		if( millis < 0 ) {
+			millis += (5*60+30)*60*1000 ;
+		}
 
-	    numSecs = Math.floor( millis / 1000 ) ;
-	    var days = Math.floor( numSecs / ( 3600 * 24 ) ) ;
+		numSecs = Math.floor( millis / 1000 ) ;
+		const days = Math.floor( numSecs / (3600 * 24) );
 
-	    numSecs = numSecs - ( days * 3600 * 24 ) ;
-	    var hours = Math.floor( numSecs / 3600 ) ;
+		numSecs = numSecs - ( days * 3600 * 24 ) ;
+		const hours = Math.floor( numSecs / 3600 );
 
-	    numSecs = numSecs - ( hours * 3600 ) ; 
-	    var minutes = Math.floor( numSecs / 60 ) ;
+		numSecs = numSecs - ( hours * 3600 ) ;
+		const minutes = Math.floor( numSecs / 60 );
 
-	    var seconds = numSecs - ( minutes * 60 ) ;
+		const seconds = numSecs - (minutes * 60);
 
-	    if( days > 0 ) {
+		if( days > 0 ) {
 	    	str = days + " days ago" ;
 	    }
 	    else {
