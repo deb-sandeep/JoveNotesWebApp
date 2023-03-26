@@ -533,6 +533,7 @@ function refreshData() {
 
     $http.get( "/jove_notes/api/ProgressSnapshot" )
          .success( function( data ){
+            console.log( data ) ;
             digestPreferences( data.preferences ) ;
             $scope.progressSnapshot = prepareDataForDisplay( data.dashboardContent ) ;
             if( $scope.showHiddenChapters ) {

@@ -95,8 +95,14 @@
                 <td> 
                     <span ng-show="rowData.isNotesAuthorized">
                         <a href="/apps/jove_notes/ng/notes/index.php?chapterId={{rowData.chapterId}}">
-                        {{rowData.name}}
+                        {{rowData.name}}&nbsp;
                         </a>
+                        <span ng-if="rowData.chapter.notesCompleted"
+                              class="glyphicon glyphicon-ok-circle"
+                              style="color: green"/>
+                        <span ng-if="!rowData.chapter.notesCompleted"
+                              class="glyphicon glyphicon-remove-circle"
+                              style="color: red"/>
                     </span>
                     <span ng-show="!rowData.isNotesAuthorized">{{rowData.name}}</span>
                 </td>
@@ -118,11 +124,9 @@
                 </td>
                 -->
                 <td>
-                    <a type="button" class="btn btn-default btn-xs" 
-                       href="/apps/jove_notes/ng/flashcard/index.php?chapterId={{rowData.chapterId}}"
+                    <a href="/apps/jove_notes/ng/flashcard/index.php?chapterId={{rowData.chapterId}}"
                        ng-show="rowData.isFlashcardAuthorized && rowData.hasCardsAvailable()">
-                       <span class="badge L3">{{rowData.numSSRMaturedCards}}</span>
-                       <span class="glyphicon glyphicon-th"></span>
+                       <span class="badge L3" style="width:40px;text-align: right">{{rowData.numSSRMaturedCards}}</span>
                     </a>
                 </td>
                 <td style="width:50px" align="center">

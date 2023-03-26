@@ -17,6 +17,7 @@ class ChapterProgressSnapshot {
 	public $chapterNum ;
 	public $subChapterNum ;
 	public $chapterName ;
+    public $notesCompleted ;
 	public $numCards ;
 
 	public $isNotesAuthorized ;
@@ -47,6 +48,7 @@ class ChapterProgressSnapshot {
 		$this->chapterNum    = $meta[ "chapter_num"     ] ;
 		$this->subChapterNum = $meta[ "sub_chapter_num" ] ;
 		$this->chapterName   = $meta[ "chapter_name"    ] ;
+        $this->notesCompleted= $meta[ "notes_completed" ] ;
 		$this->numCards      = $meta[ "num_cards"       ] ;
 
 		$this->isNotesAuthorized      = Authorizer::hasAccess( $this->guard, "NOTES" ) ;
@@ -387,6 +389,7 @@ class ProgressSnapshotAPI extends API {
 		$responseObj[ "chapterNum"             ] = $chapter->chapterNum ;
 		$responseObj[ "subChapterNum"          ] = $chapter->subChapterNum ;
 		$responseObj[ "chapterName"            ] = $chapter->chapterName ;
+        $responseObj[ "notesCompleted"         ] = $chapter->notesCompleted ;
 		$responseObj[ "isNotesAuthorized"      ] = $chapter->isNotesAuthorized ;
 		$responseObj[ "isFlashcardAuthorized"  ] = $chapter->isFlashcardAuthorized ;
 		$responseObj[ "isStatisticsAuthorized" ] = $chapter->isStatisticsAuthorized ;

@@ -91,6 +91,7 @@ select
 	c.syllabus_name,
 	c.subject_name,
 	c.chapter_num,
+	c.notes_completed,
 	c.sub_chapter_num,
 	c.chapter_name,
 	c.num_cards,
@@ -111,8 +112,9 @@ order by
 QUERY;
 
 		$colNames = [ "guard", "chapter_id", "syllabus_name", "subject_name", 
-	                  "chapter_num", "sub_chapter_num", "chapter_name", "num_cards",
-	                  "num_VE", "num_E", "num_M", "num_H", "num_VH" ] ;
+	                  "chapter_num", "notes_completed", "sub_chapter_num",
+			          "chapter_name", "num_cards", "num_VE", "num_E", "num_M",
+			          "num_H", "num_VH" ] ;
 
 		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
 	}
@@ -132,6 +134,7 @@ select
 	c.syllabus_name,
 	c.subject_name,
 	c.chapter_num,
+	c.notes_completed,
 	c.sub_chapter_num,
 	c.chapter_name,
 	c.num_cards,
@@ -164,8 +167,9 @@ order by
 QUERY;
 
 		$colNames = [ "guard", "chapter_id", "syllabus_name", "subject_name", 
-	                  "chapter_num", "sub_chapter_num", "chapter_name", "num_cards",
-	                  "num_VE", "num_E", "num_M", "num_H", "num_VH" ] ;
+	                  "chapter_num", "notes_completed", "sub_chapter_num",
+			          "chapter_name", "num_cards",	"num_VE", "num_E", "num_M",
+			          "num_H", "num_VH" ] ;
 
 		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
 	}
