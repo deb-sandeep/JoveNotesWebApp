@@ -411,15 +411,27 @@
 
     <button type="button" 
             class="btn btn-danger btn-lg floating-ctrl-11"
-            ng-click="rateCard( 'H' )">&nbsp;</button>
+            ng-click="rateCard( 'H' )">
+        <span class="badge {{getNextLevel( 'H')}}">
+            {{getNextLevel( 'H' )}}
+        </span>
+    </button>
 
     <button type="button" 
             class="btn btn-info btn-lg floating-ctrl-12"
-            ng-click="rateCard( 'A' )">&nbsp;</button> 
+            ng-click="rateCard( 'A' )">
+        <span class="badge {{getNextLevel( 'A')}}">
+            {{getNextLevel( 'A' )}}
+        </span>
+    </button>
 
     <button type="button" 
             class="btn btn-warning btn-lg floating-ctrl-21"
-            ng-click="rateCard( 'P' )">&nbsp;</button>
+            ng-click="rateCard( 'P' )">
+        <span class="badge {{getNextLevel( 'P')}}">
+            {{getNextLevel( 'P' )}}
+        </span>
+    </button>
 
     <button type="button" 
             class="btn btn-success btn-lg floating-ctrl-22"
@@ -435,11 +447,19 @@
 
     <button type="button" 
             class="btn btn-info btn-lg floating-ctrl-11"
-            ng-click="rateCard( 'A' )">&nbsp;</button> 
+            ng-click="rateCard( 'A' )">
+        <span class="badge {{getNextLevel( 'A')}}">
+            {{getNextLevel( 'A' )}}
+        </span>
+    </button>
 
     <button type="button" 
             class="btn btn-danger btn-lg floating-ctrl-12"
-            ng-click="rateCard( 'H' )">&nbsp;</button>
+            ng-click="rateCard( 'H' )">
+        <span class="badge {{getNextLevel( 'H' )}}">
+            {{getNextLevel( 'H' )}}
+        </span>
+    </button>
 
     <button type="button" 
             class="btn btn-success btn-lg floating-ctrl-21"
@@ -450,6 +470,10 @@
 
     <button type="button" 
             class="btn btn-warning btn-lg floating-ctrl-22"
-            ng-click="rateCard( 'P' )">&nbsp;</button>
+            ng-click="rateCard( 'P' )">
+        <span class="badge {{getNextLevel( 'P')}}">
+            {{getNextLevel( 'P' )}}
+        </span>
+    </button>
 
 </div>

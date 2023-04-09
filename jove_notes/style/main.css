@@ -434,7 +434,7 @@ table.pure-table ol {
   bottom: 70px;
   width: 125px;
   height: 125px;
-  margin-top: 0em;	
+  margin-top: 0em;
 }
 
 .floating-ctrl-11 {
@@ -444,6 +444,7 @@ table.pure-table ol {
 	left: 5px;
 	width: 50px;
 	height: 50px;
+	padding-left: 12px;
 }
 
 .floating-ctrl-12 {
@@ -453,6 +454,7 @@ table.pure-table ol {
 	left: 70px;
 	width: 50px;
 	height: 50px;
+	padding-left: 12px;
 }
 
 .floating-ctrl-21 {
@@ -462,6 +464,7 @@ table.pure-table ol {
 	left: 5px;
 	width: 50px;
 	height: 50px;
+	padding-left: 12px;
 }
 
 .floating-ctrl-22 {
@@ -471,6 +474,7 @@ table.pure-table ol {
 	left: 70px;
 	width: 50px;
 	height: 50px;
+	padding-left: 12px;
 }
 
 .badge-msg {
@@ -479,6 +483,7 @@ table.pure-table ol {
 	padding-bottom: 5px;
 	background-color: #ededed;
 	color: gray;
+	padding-left: 12px;
 }
 
 .fixed-font {

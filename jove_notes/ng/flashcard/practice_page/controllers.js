@@ -227,6 +227,12 @@ $scope.purgeNotAttemptedCards = function() {
     }
 }
 
+$scope.getNextLevel = function( rating ) {
+    const numAttempts = $scope.currentQuestion.learningStats.numAttemptsInSession + 1;
+    const curLevel = $scope.currentQuestion.learningStats.currentLevel;
+    return ratingMatrix.getNextLevel( $scope.currentQuestion, numAttempts, curLevel, rating );
+}
+
 $scope.rateCard = function( rating ) {
     log.debug( "Rating current card as " + rating )  ;
 
