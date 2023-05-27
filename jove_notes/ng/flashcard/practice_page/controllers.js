@@ -215,12 +215,12 @@ $scope.purgeNotAttemptedCards = function() {
 
     for( let i = $scope.questionsForSession.length-1; i >= 0; i-- ) {
         const q = $scope.questionsForSession[i];
-        if( q.learningStats.numAttemptsInSession == 0 ) {
+        if( q.learningStats.numAttemptsInSession === 0 ) {
             $scope.questionsForSession.splice( i, 1 ) ;
             $scope.$parent.sessionStats.numCards-- ;
             $scope.$parent.sessionStats.numCardsLeft-- ;
 
-            if( i == 0 ) {
+            if( i === 0 ) {
                 showNextCard() ;
             }
         }
@@ -228,9 +228,12 @@ $scope.purgeNotAttemptedCards = function() {
 }
 
 $scope.getNextLevel = function( rating ) {
-    const numAttempts = $scope.currentQuestion.learningStats.numAttemptsInSession + 1;
-    const curLevel = $scope.currentQuestion.learningStats.currentLevel;
-    return ratingMatrix.getNextLevel( $scope.currentQuestion, numAttempts, curLevel, rating );
+    if( $scope.currentQuestion != null ) {
+        const numAttempts = $scope.currentQuestion.learningStats.numAttemptsInSession + 1;
+        const curLevel = $scope.currentQuestion.learningStats.currentLevel;
+        return ratingMatrix.getNextLevel( $scope.currentQuestion, numAttempts, curLevel, rating );
+    }
+    return "" ;
 }
 
 $scope.rateCard = function( rating ) {
@@ -708,13 +711,18 @@ function checkInvalidLoad() {
 function computeSessionCards() {
 
     $scope.questionsForSession = $scope.$parent.filteredCards ;
-    if( $scope.$parent.studyCriteria.shuffleQuestions ) {
-        $scope.questionsForSession.shuffleFrom( 0 ) ;
+
+    const sortType = $scope.$parent.studyCriteria.sortType ;
+    if( sortType !== "Default" ) {
+        const questionSorter = new QuestionSorter( $scope.questionsForSession ) ;
+        log.debug( "Sorting questions by " + sortType ) ;
+        questionSorter.sortByType( sortType ) ;
     }
 
     $scope.$parent.sessionStats.numCards     = $scope.questionsForSession.length ;
     $scope.$parent.sessionStats.numCardsLeft = $scope.questionsForSession.length ;
 }
+
 
 function handleTimerEvent() {
     if( sessionActive ) {

@@ -236,21 +236,9 @@ function StudyStrategy( id, displayName ) {
     this.sortQuestionsByLevel = function() {
 
         if( this.questions.length == 0 ) return ;
-        this.questions.sort( function( q1, q2 ){
-            var q1Level = q1.learningStats.currentLevel ;
-            var q2Level = q2.learningStats.currentLevel ;
 
-            if( q1Level == q2Level ) {
-                return 0 ;
-            }
-            else if( q1Level == CardLevels.prototype.NS ) {
-                return -1 ;
-            }
-            else if( q2Level == CardLevels.prototype.NS ) {
-                return 1 ;
-            }
-            return q1Level.localeCompare( q2Level ) ;
-        } ) ;
+        const sorter = new QuestionSorter( this.questions ) ;
+        sorter.sortByLevel( true ) ;
     }
 }
 
@@ -273,23 +261,10 @@ function SSR_StudyStrategy() {
 
 SSR_StudyStrategy.prototype.sortQuestions = function() {
 
-    var util = this.jnUtil ;
 
     if( this.questions.length == 0 ) return ;
-    this.questions.sort( function( q1, q2 ){
-
-        // tla => Time since Last Attempt
-        var tlaCard1 = util.getSSRThresholdDelta( q1 ) ;
-        var tlaCard2 = util.getSSRThresholdDelta( q2 ) ;
-
-        if( tlaCard1 == -1 && tlaCard2 > -1 ) {
-            return -1 ;
-        }
-        else if( tlaCard2 == -1 && tlaCard1 > -1 ) {
-            return 1 ;
-        }
-        return tlaCard2 - tlaCard1 ;
-    } ) ;
+    const sorter = new QuestionSorter( this.questions ) ;
+    sorter.sortByRecency() ;
 }
 
 SSR_StudyStrategy.prototype.offer = function( question ) {
@@ -298,38 +273,6 @@ SSR_StudyStrategy.prototype.offer = function( question ) {
     if( thresholdDelta < 0 && question.learningStats.currentLevel != 'NS' ) return ;
 
     this.addQuestion( question ) ;
-}
-
-// -----------------------------------------------------------------------------
-NuHard_StudyStrategy.prototype = new StudyStrategy() ;
-NuHard_StudyStrategy.prototype.constructor = NuHard_StudyStrategy ;
-
-function NuHard_StudyStrategy() {
-    StudyStrategy.call( this, "EFF_HARD", "Efficiency (Hard)" ) ;
-}
-
-NuHard_StudyStrategy.prototype.sortQuestions = function() {
-    if( this.questions.length == 0 ) return ;
-    this.questions.sort( function( q1, q2 ){
-        return q1.learningStats.absoluteLearningEfficiency - 
-               q2.learningStats.absoluteLearningEfficiency ;
-    } ) ;
-}
-
-// -----------------------------------------------------------------------------
-NuEasy_StudyStrategy.prototype = new StudyStrategy() ;
-NuEasy_StudyStrategy.prototype.constructor = NuEasy_StudyStrategy ;
-
-function NuEasy_StudyStrategy() {
-    StudyStrategy.call( this, "EFF_EASY", "Efficiency (Easy)" ) ;
-}
-
-NuEasy_StudyStrategy.prototype.sortQuestions = function() {
-    if( this.questions.length == 0 ) return ;
-    this.questions.sort( function( q1, q2 ){
-        return q2.learningStats.absoluteLearningEfficiency - 
-               q1.learningStats.absoluteLearningEfficiency ;
-    } ) ;
 }
 
 // -----------------------------------------------------------------------------
@@ -395,66 +338,4 @@ BottomUpL3_StudyStrategy.prototype.sortQuestions = function() {
 BottomUpL3_StudyStrategy.prototype.offer = function( question ) {
     this.addQuestionAtLevel( ['NS', 'L0', 'L1', 'L2', 'L3' ], question ) ; 
 }
-
-// -----------------------------------------------------------------------------
-Recency_StudyStrategy.prototype = new StudyStrategy() ;
-Recency_StudyStrategy.prototype.constructor = Recency_StudyStrategy ;
-
-function Recency_StudyStrategy() {
-    StudyStrategy.call( this, "RECENCY", "Recency" ) ;
-}
-
-Recency_StudyStrategy.prototype.sortQuestions = function() {
-    if( this.questions.length == 0 ) return ;
-    this.questions.sort( function( q1, q2 ){
-        if( q2.learningStats.recencyInDays == 0 && 
-            q1.learningStats.recencyInDays == 0 ) {
-
-            return q1.learningStats.lastAttemptTime -
-                   q2.learningStats.lastAttemptTime ;
-        }
-        
-        return q2.learningStats.recencyInDays - 
-               q1.learningStats.recencyInDays ;
-    } ) ;
-}
-
-// -----------------------------------------------------------------------------
-Retention_StudyStrategy.prototype = new StudyStrategy() ;
-Retention_StudyStrategy.prototype.constructor = Retention_StudyStrategy ;
-
-function Retention_StudyStrategy() {
-    StudyStrategy.call( this, "RETENTION", "Retention" ) ;
-}
-
-Retention_StudyStrategy.prototype.sortQuestions = function() {
-    if( this.questions.length == 0 ) return ;
-    this.questions.sort( function( q1, q2 ){
-        return q1.learningStats.retentionValue - 
-               q2.learningStats.retentionValue ;
-    } ) ;
-}
-
-Retention_StudyStrategy.prototype.offer = function( question ) {
-    if( question.learningStats.retentionValue < 50 ) {
-        this.addQuestion( question ) ;
-    }
-}
-
-// -----------------------------------------------------------------------------
-Preparedness_StudyStrategy.prototype = new StudyStrategy() ;
-Preparedness_StudyStrategy.prototype.constructor = Preparedness_StudyStrategy ;
-
-function Preparedness_StudyStrategy() {
-    StudyStrategy.call( this, "PREPAREDNESS", "Preparedness" ) ;
-}
-
-Preparedness_StudyStrategy.prototype.sortQuestions = function() {
-    if( this.questions.length == 0 ) return ;
-    this.questions.sort( function( q1, q2 ){
-        return q1.learningStats.preparednessValue - 
-               q2.learningStats.preparednessValue ;
-    } ) ;
-}
-
 

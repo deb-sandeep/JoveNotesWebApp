@@ -14,12 +14,12 @@ function StudyCriteria() {
     this.sectionFilters            = [] ;
 
     this.strategy               = "SSR" ;
+    this.sortType               = "Default" ;
     this.push                   = false ;
     this.assistedStudy          = false ;
     this.excludeMarkedForReview = true ;
     this.engageFatigueBuster    = true ;
     this.skipNegativeGrading    = false ;
-    this.shuffleQuestions       = false ;
     this.forceAPMControls       = false ;
 
     this.serialize = function() {
@@ -36,12 +36,12 @@ function StudyCriteria() {
             this.maxResurrectedCards    = crit.maxResurrectedCards ;
             this.maxNewCards            = crit.maxNewCards ;
             this.strategy               = crit.strategy ;
+            this.sortType               = crit.sortType ;
             this.push                   = crit.push ;
             this.assistedStudy          = crit.assistedStudy ;
             this.excludeMarkedForReview = crit.excludeMarkedForReview ;
             this.engageFatigueBuster    = crit.engageFatigueBuster ;
             this.skipNegativeGrading    = crit.skipNegativeGrading ;
-            this.shuffleQuestions       = crit.shuffleQuestions ;
             this.forceAPMControls       = crit.forceAPMControls ;
         } ;
     }
@@ -156,15 +156,22 @@ $scope.projectedDuration   = 0 ;
 
 $scope.studyStrategies = [
     new SSR_StudyStrategy(),
-    new NuHard_StudyStrategy(),
-    new NuEasy_StudyStrategy(),
-    new Recency_StudyStrategy(),
-    new Retention_StudyStrategy(),
-    new Preparedness_StudyStrategy(),
     new BottomUpL0_StudyStrategy(),
     new BottomUpL1_StudyStrategy(),
     new BottomUpL2_StudyStrategy(),
     new BottomUpL3_StudyStrategy(),
+] ;
+
+$scope.sortChoices = [
+   "Default",
+   "Random",
+   "Num Attempts (Asc)",
+   "Level (Asc)",
+   "Level (Desc)",
+   "Recency",
+   "Efficiency (Asc)",
+   "Efficiency (Desc)",
+   "Retention"
 ] ;
 
 $scope.selectedStudyStrategy = null ;

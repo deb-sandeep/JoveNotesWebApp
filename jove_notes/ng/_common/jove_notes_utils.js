@@ -100,8 +100,6 @@ function RatingMatrix() {
 
     function getMatrixValue( matrix, level, rating ) {
 
-        log.debug( "\tLevel ="   + level + " rating =" + rating ) ;
-
         var index  = getIndexIntoMatrix( rating ) ;
         var values = matrix[ level ] ;
         var value  = values[ index ] ;

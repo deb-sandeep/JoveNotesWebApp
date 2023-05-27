@@ -8,19 +8,21 @@
 </div>
 
 <div class="form-group pad-10px">
+    <label for="strategy">Sort:</label>
+    <select id="sort"
+            class="form-control"
+            ng-model="studyCriteria.sortType"
+            ng-options="choice for choice in sortChoices">
+    </select>
+</div>
+
+<div class="form-group pad-10px">
     <input id="push" 
            type="checkbox" 
            ng-model="studyCriteria.push"/>
     <label for="push"> Enable remote flash</label>
 </div>
 
-
-<div class="form-group pad-10px">
-    <input id="shuffleQuestions" 
-           type="checkbox" 
-           ng-model="studyCriteria.shuffleQuestions" />
-    <label for="shuffleQuestions"> Shuffle questions</label>
-</div>
 
 <div class="form-group pad-10px">
     <input id="engageFatigueBuster" 
