@@ -35,25 +35,55 @@ function QuestionSorter( questions ) {
     }
     this.sortByNumAttempts = function( ascending ) {
         questions.sort( function( q1, q2 ){
-            return ascending ? (q1.learningStats.numAttempts - q2.learningStats.numAttempts) :
-                               (q2.learningStats.numAttempts - q1.learningStats.numAttempts) ;
+
+            const q1LS = q1.learningStats ;
+            const q2LS = q2.learningStats ;
+
+            const q1Attempts = q1LS.numAttempts ;
+            const q2Attempts = q2LS.numAttempts ;
+
+            if( q1Attempts === q2Attempts ) {
+                return q1LS.absoluteLearningEfficiency - q2LS.absoluteLearningEfficiency
+            }
+
+            return ascending ? (q1LS.numAttempts - q2LS.numAttempts) :
+                               (q2LS.numAttempts - q1LS.numAttempts) ;
         } ) ;
     }
 
     this.sortByEfficiency = function( ascending ) {
+
         questions.sort( function( q1, q2 ){
-            return ascending ? (q1.learningStats.absoluteLearningEfficiency - q2.learningStats.absoluteLearningEfficiency) :
-                               (q2.learningStats.absoluteLearningEfficiency - q1.learningStats.absoluteLearningEfficiency) ;
+
+            const q1LS = q1.learningStats ;
+            const q2LS = q2.learningStats ;
+
+            const q1Attempts = q1LS.numAttempts ;
+            const q2Attempts = q2LS.numAttempts ;
+
+            const q1Eff = q1LS.absoluteLearningEfficiency ;
+            const q2Eff = q2LS.absoluteLearningEfficiency ;
+
+            if( q1Eff === q2Eff ) {
+                return q1Attempts - q2Attempts ;
+            }
+
+            return ascending ? (q1Eff - q2Eff) : (q2Eff - q1Eff) ;
         } ) ;
     }
 
     this.sortByLevel = function( ascending ) {
+
         questions.sort( function( q1, q2 ){
+
             const q1Level = q1.learningStats.currentLevel;
             const q2Level = q2.learningStats.currentLevel;
 
             if( q1Level === q2Level ) {
-                return 0 ;
+                const q1Attempts = q1.learningStats.numAttempts ;
+                const q2Attempts = q2.learningStats.numAttempts ;
+
+                return q1Attempts - q2Attempts ;
             }
             else if( q1Level === CardLevels.prototype.NS ) {
                 return -1 ;
@@ -61,7 +91,9 @@ function QuestionSorter( questions ) {
             else if( q2Level === CardLevels.prototype.NS ) {
                 return 1 ;
             }
-            return q1Level.localeCompare( q2Level ) ;
+
+            return ascending ? q1Level.localeCompare( q2Level ) :
+                               q2Level.localeCompare( q1Level ) ;
         } ) ;
     }
 

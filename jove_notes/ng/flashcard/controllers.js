@@ -43,12 +43,12 @@ function StudyCriteria() {
             this.engageFatigueBuster    = crit.engageFatigueBuster ;
             this.skipNegativeGrading    = crit.skipNegativeGrading ;
             this.forceAPMControls       = crit.forceAPMControls ;
-        } ;
+        }
     }
 
     this.matchesFilter = function( question ) {
 
-        if( this.excludeMarkedForReview && question.markedForReview==1 ) {
+        if( this.excludeMarkedForReview && question.markedForReview===1 ) {
             return false ;
         }
 
@@ -69,7 +69,7 @@ function StudyCriteria() {
                 filteredBySelectedSections = true ;
                 for( var i=0; i<this.sectionFilters.length; i++ ) {
                     var selSec = this.sectionFilters[i] ;
-                    if( selSec.section == question.section ) {
+                    if( selSec.section === question.section ) {
                         filteredBySelectedSections = false ;
                         break ;
                     }
@@ -81,10 +81,10 @@ function StudyCriteria() {
             return false ;
         }
 
-        if( cardTypeFilters.indexOf( elementType ) != -1 ) {
-            if( currentLevelFilters.indexOf( currentLevel ) != -1 ) {
-                if( lrnEffLabelFilters.indexOf( lrnEffLabel ) != -1 ) {
-                    if( diffLabelFilters.indexOf( diffLabel ) != -1 ) {
+        if( cardTypeFilters.indexOf( elementType ) !== -1 ) {
+            if( currentLevelFilters.indexOf( currentLevel ) !== -1 ) {
+                if( lrnEffLabelFilters.indexOf( lrnEffLabel ) !== -1 ) {
+                    if( diffLabelFilters.indexOf( diffLabel ) !== -1 ) {
                         return true ;
                     }
                 }
@@ -191,7 +191,7 @@ $scope.$watch( 'studyCriteria.push', function( newValue, oldValue ){
     }
     else {
         $scope.studyCriteria.assistedStudy = newValue ;
-        $scope.assistedStudyCBDisabled = ( newValue == true ) ;
+        $scope.assistedStudyCBDisabled = ( newValue === true ) ;
     }
 }) ;
 
@@ -205,6 +205,7 @@ $scope.$watchGroup( ['studyCriteria.currentLevelFilters',
                      'studyCriteria.cardTypeFilters',
                      'studyCriteria.sectionFilters',
                      'studyCriteria.maxCards',
+                     'studyCriteria.sortType',
                      'studyCriteria.maxResurrectedCards',
                      'studyCriteria.maxNewCards',
                      'studyCriteria.excludeMarkedForReview'], 
@@ -258,8 +259,8 @@ $scope.selectAllSections = function() {
 
         $scope.studyCriteria.sectionFilters.length = 0 ;
         
-        for( var i=0; i<$scope.chapterDetails.sections.length; i++ ) {
-            var section = $scope.chapterDetails.sections[i] ;
+        for( let i=0; i<$scope.chapterDetails.sections.length; i++ ) {
+            const section = $scope.chapterDetails.sections[i];
             section.selected = 1 ;
             $scope.studyCriteria.sectionFilters.push( section ) ;
         }
@@ -279,7 +280,7 @@ $scope.sectionFilterChanged = function() {
         for( var j=0; j<$scope.studyCriteria.sectionFilters.length; j++ ) {
 
             var selSec = $scope.studyCriteria.sectionFilters[j] ;
-            if( masterSec.section == selSec.section ) {
+            if( masterSec.section === selSec.section ) {
                 selected = true ;
             }
         }
@@ -319,7 +320,7 @@ function preProcessFlashCardQuestions( questions ) {
 
     for( i=0; i<questions.length; i++ ) {
 
-        var question = questions[i] ;
+        const question = questions[i];
 
         question.learningStats.numAttemptsInSession = 0 ;
         question.learningStats.numSecondsInSession  = 0 ;
@@ -336,7 +337,7 @@ function preProcessFlashCardQuestions( questions ) {
         question.learningStats.recencyInDays = jnUtil.getRecencyInDays( question ) ;
 
         question.learningStats.averageTimeSpent = 0 ;
-        if( question.learningStats.numAttempts != 0 ) {
+        if( question.learningStats.numAttempts !== 0 ) {
             question.learningStats.averageTimeSpent = Math.ceil( question.learningStats.totalTimeSpent / 
                                                                  question.learningStats.numAttempts ) ;
         }
@@ -350,7 +351,7 @@ function preProcessFlashCardQuestions( questions ) {
         associateHandler( question ) ;
         processTestDataHints( question ) ;
 
-        for( var j=0; j<$scope.studyStrategies.length; j++ ) {
+        for( let j=0; j<$scope.studyStrategies.length; j++ ) {
             $scope.studyStrategies[j].offer( question ) ;
         }
     }
@@ -360,35 +361,35 @@ function associateHandler( question ) {
 
     var questionType = question.questionType ;
 
-    if( questionType == QuestionTypes.prototype.QT_FIB ) {
+    if( questionType === QuestionTypes.prototype.QT_FIB ) {
         question.handler = new FIBHandler( $scope.chapterDetails, question, 
                                            $scope.textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.QT_QA ) {
+    else if( questionType === QuestionTypes.prototype.QT_QA ) {
         question.handler = new QAHandler( $scope.chapterDetails, question, 
                                           $scope.textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.QT_TF ) {
+    else if( questionType === QuestionTypes.prototype.QT_TF ) {
         question.handler = new TFHandler( $scope.chapterDetails, question,
                                           $scope.textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.QT_MATCHING ) {
+    else if( questionType === QuestionTypes.prototype.QT_MATCHING ) {
         question.handler = new MatchingHandler( $scope.chapterDetails, question, 
                                                 $scope.textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.QT_IMGLABEL ) {
+    else if( questionType === QuestionTypes.prototype.QT_IMGLABEL ) {
         question.handler = new ImageLabelHandler( $scope.chapterDetails, question, 
                                                   $scope.textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.QT_SPELLBEE ) {
+    else if( questionType === QuestionTypes.prototype.QT_SPELLBEE ) {
         question.handler = new SpellBeeHandler( $scope.chapterDetails, question, 
                                                 $scope.textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.MULTI_CHOICE ) {
+    else if( questionType === QuestionTypes.prototype.MULTI_CHOICE ) {
         question.handler = new MultiChoiceHandler( $scope.chapterDetails, question, 
                                                    $scope.textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.VOICE2TEXT ) {
+    else if( questionType === QuestionTypes.prototype.VOICE2TEXT ) {
         question.handler = new VoiceToTextHandler( $scope.chapterDetails, question, 
                                                    $scope.textFormatter ) ;
     }
@@ -429,7 +430,7 @@ function refreshStudyStrategy( strategyId, forceInitialize ) {
 function lookupStudyStrategy( strategyId ) {
     var strategy = null ;
     for( var i=0; i<$scope.studyStrategies.length; i++ ) {
-        if( $scope.studyStrategies[i].id == strategyId ) {
+        if( $scope.studyStrategies[i].id === strategyId ) {
             strategy = $scope.studyStrategies[i] ;
             break ;
         }
@@ -463,8 +464,8 @@ function refreshSectionFilters() {
     if( $scope.chapterDetails != null ) {
         $scope.studyCriteria.sectionFilters.length = 0 ;
         for( var i=0; i<$scope.chapterDetails.sections.length; i++ ) {
-            var section = $scope.chapterDetails.sections[i] ;
-            if( section.selected == 1 ) {
+            const section = $scope.chapterDetails.sections[i];
+            if( section.selected === 1 ) {
                 $scope.studyCriteria.sectionFilters.push( section ) ;
             }
         }
@@ -473,7 +474,7 @@ function refreshSectionFilters() {
 
 function refreshStudyCriteriaFilter( filterOptions, filterCriteria ) {
     filterCriteria.length = 0 ;
-    for( var i=0; i<filterOptions.length; i++ ) {
+    for( let i=0; i<filterOptions.length; i++ ) {
         filterCriteria.push( filterOptions[i].id ) ;
     }
 }
@@ -489,9 +490,9 @@ function handleFilterChange() {
 function computeProjectedDuration( questions ) {
 
     $scope.projectedDuration = 0 ;
-    for( var i = 0; i < questions.length; i++ ) {
-        var q = questions[i] ;
-        var avgTime = q.learningStats.averageTimeSpent ;
+    for( let i = 0; i < questions.length; i++ ) {
+        const q = questions[i];
+        let avgTime = q.learningStats.averageTimeSpent;
         if( avgTime <= 0 ) {
             avgTime = 30 ;
         }

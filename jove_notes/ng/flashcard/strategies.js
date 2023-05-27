@@ -197,21 +197,28 @@ function StudyStrategy( id, displayName ) {
 
     this.getFilteredCards = function( studyCriteria ) {
 
-        var resurrectedQuestionsAdded = 0 ;
-        var nsQuestionsAdded = 0 ;
-        var filteredCards = [] ;
+        let resurrectedQuestionsAdded = 0;
+        let nsQuestionsAdded = 0;
+        const filteredCards = [];
 
-        for( var i=0; i<this.questions.length; i++ ) {
+        const sortType = studyCriteria.sortType ;
+        if( sortType !== "Default" ) {
+            const questionSorter = new QuestionSorter( this.questions ) ;
+            log.debug( "Sorting questions by " + sortType ) ;
+            questionSorter.sortByType( sortType ) ;
+        }
 
-            var q = this.questions[i] ;
-            
+        for( let i=0; i<this.questions.length; i++ ) {
+
+            const q = this.questions[i];
+
             if( studyCriteria.matchesFilter( q ) ) {
-                if( q.learningStats.currentLevel != 'NS' ) {
+                if( q.learningStats.currentLevel !== 'NS' ) {
                     filteredCards.push( q ) ;
                 }
                 else {
                     // A NS card can be a virgin or resurrected
-                    if( q.learningStats.numAttempts == 0 ) { // Virgin NS card
+                    if( q.learningStats.numAttempts === 0 ) { // Virgin NS card
                         if( nsQuestionsAdded < studyCriteria.maxNewCards ) {
                             filteredCards.push( q ) ;
                             nsQuestionsAdded++ ;
@@ -235,7 +242,7 @@ function StudyStrategy( id, displayName ) {
 
     this.sortQuestionsByLevel = function() {
 
-        if( this.questions.length == 0 ) return ;
+        if( this.questions.length === 0 ) return ;
 
         const sorter = new QuestionSorter( this.questions ) ;
         sorter.sortByLevel( true ) ;
@@ -270,7 +277,7 @@ SSR_StudyStrategy.prototype.sortQuestions = function() {
 SSR_StudyStrategy.prototype.offer = function( question ) {
     
     var thresholdDelta = this.jnUtil.getSSRThresholdDelta( question ) ;
-    if( thresholdDelta < 0 && question.learningStats.currentLevel != 'NS' ) return ;
+    if( thresholdDelta < 0 && question.learningStats.currentLevel !== 'NS' ) return ;
 
     this.addQuestion( question ) ;
 }

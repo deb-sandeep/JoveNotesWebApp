@@ -35,7 +35,7 @@ $scope.shuffleChapter = function() {
 }
 
 $scope.getSectionDisplayClass = function( section ) {
-    return (section.selected == 1) ? "selected-section" : "unselected-section" ;
+    return (section.selected === 1) ? "selected-section" : "unselected-section" ;
 }
 
 // ---------------- Private functions ------------------------------------------

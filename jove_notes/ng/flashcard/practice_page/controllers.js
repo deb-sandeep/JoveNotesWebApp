@@ -17,8 +17,8 @@ flashCardApp.controller( 'PracticePageController', function( $scope, $http, $rou
     const FATIGUE_LOWER_HYSTERISIS_THRESHOLD = FATIGUE_LOWER_THRESHOLD * (1 - HYSTERIS_PCT);
 
 // ---------------- Local variables --------------------------------------------
-    const ratingMatrix     = new RatingMatrix();
-    const jnUtils          = new JoveNotesUtil();
+    const ratingMatrix = new RatingMatrix();
+    const jnUtils     = new JoveNotesUtil();
     const sessionStartTime = new Date().getTime();
 
     let currentQuestionShowStartTime   = 0;
@@ -102,7 +102,7 @@ $scope.currentAnsTime = 0 ;
     log.debug( "Computing session cards." ) ;
     computeSessionCards() ;
 
-    if( $scope.$parent.sessionStats.numCards == 0 ) {
+    if( $scope.$parent.sessionStats.numCards === 0 ) {
         $scope.$parent.messageForEndPage = "Filter criteria did not select any cards." ;
         endSession() ;
         return ;
@@ -168,20 +168,20 @@ $scope.$on( 'resumeSession.button.click', function( event, args ){
 } ) ;
 
 $scope.toggleFooterDirection = function() {
-    $scope.gradingButtonPlacement = ( $scope.gradingButtonPlacement == 'left' ) ?
+    $scope.gradingButtonPlacement = ( $scope.gradingButtonPlacement === 'left' ) ?
                                     'right' : 'left' ;
     $.cookie( 'flashCardFooterDir', $scope.gradingButtonPlacement, { expires: 30 } ) ;
 }
 
 $scope.toggleDisplay = function( displayId ) {
 
-    if( displayId == "L0-Hdr" ) { 
+    if( displayId === "L0-Hdr" ) {
         $scope.showL0Header = !$scope.showL0Header ;
     }
-    else if( displayId == "L1-Hdr" ) { 
+    else if( displayId === "L1-Hdr" ) {
         $scope.showL1Header = !$scope.showL1Header ; 
     }
-    else if( displayId == "L2-Hdr" ) { 
+    else if( displayId === "L2-Hdr" ) {
         $scope.showL2Header = !$scope.showL2Header ; 
     }
     setTimeout( resizeBody, 10 ) ;
@@ -320,7 +320,7 @@ $scope.markForReview = function() {
             var markedCardId = cardIds[i] ;
             for( var j=0; j<$scope.questionsForSession.length; j++ ) {
                 var question = $scope.questionsForSession[j] ;
-                if( question.questionId == markedCardId ) {
+                if( question.questionId === markedCardId ) {
                     question.markedForReview = true ;
                 }
             }
@@ -344,7 +344,7 @@ $scope.decreaseFontSize = function() {
 
 $scope.resetFontForQDiv = function() {
 
-    if( initialQADivFontSize == -1 ) {
+    if( initialQADivFontSize === -1 ) {
         initialQADivFontSize = parseInt( $( "#flashCardQDiv" ).css( 'font-size' ) ) ;
     }
     else {
@@ -354,7 +354,7 @@ $scope.resetFontForQDiv = function() {
 
 $scope.resetFontForADiv = function() {
 
-    if( initialQADivFontSize == -1 ) {
+    if( initialQADivFontSize === -1 ) {
         initialQADivFontSize = parseInt( $( "#flashCardQDiv" ).css( 'font-size' ) ) ;
     }
     else {
@@ -363,14 +363,14 @@ $scope.resetFontForADiv = function() {
 }
 
 $scope.applyZoomDeltaToQFont = function() {
-    if( currentFontZoomDelta != 0 ) {
+    if( currentFontZoomDelta !== 0 ) {
         var qDiv = document.getElementById( "flashCardQDiv" ) ;
         resizeFont( qDiv, currentFontZoomDelta ) ;
     }
 }
 
 $scope.applyZoomDeltaToAFont = function() {
-    if( currentFontZoomDelta != 0 ) {
+    if( currentFontZoomDelta !== 0 ) {
         var aDiv = document.getElementById( "flashCardADiv" ) ;
         resizeFont( aDiv, currentFontZoomDelta ) ;
     }
@@ -384,7 +384,7 @@ function resizeFont( domElement, magnifier ) {
 
 function loadLocalState() {
 
-    var crit = $.cookie( 'flashCardFooterDir' ) ;
+    const crit = $.cookie( 'flashCardFooterDir' );
     if( typeof crit != 'undefined' ) {
         $scope.gradingButtonPlacement = crit ;
     }
@@ -419,7 +419,7 @@ function updateSessionStats() {
 }
 
 function updateRatings( rating ) {
-    if( rating == 'APM' || rating == 'APMNS' ) {
+    if( rating === 'APM' || rating === 'APMNS' ) {
         $scope.ratings.push( 'E' ) ;
     }
     else {
@@ -429,7 +429,7 @@ function updateRatings( rating ) {
 
 function processNextAction( actionValue ) {
 
-    if( actionValue != -1 ) {
+    if( actionValue !== -1 ) {
         var newPos = $scope.questionsForSession.length * actionValue + 1 ;
         $scope.questionsForSession.splice( newPos, 0, $scope.currentQuestion ) ;
     }
@@ -538,7 +538,7 @@ function rearrangeQuestionsForFatigueBusting() {
 
         for( var i=1; i<$scope.questionsForSession.length; i++ ) {
             var q = $scope.questionsForSession[i] ;
-            if( q.learningStats.numAttemptsInSession == 0 ) {
+            if( q.learningStats.numAttemptsInSession === 0 ) {
                 if( q.learningStats.fatiguePotential < minFaitiguePotential ) {
                     minFaitiguePotential = q.learningStats.fatiguePotential ;
                     targetQIndex = i ;
@@ -554,7 +554,7 @@ function rearrangeQuestionsForFatigueBusting() {
 
         for( var i=1; i<$scope.questionsForSession.length; i++ ) {
             var q = $scope.questionsForSession[i] ;
-            if( q.learningStats.numAttemptsInSession == 0 ) {
+            if( q.learningStats.numAttemptsInSession === 0 ) {
                 if( q.learningStats.fatiguePotential > maxFaitiguePotential ) {
                     maxFaitiguePotential = q.learningStats.fatiguePotential ;
                     targetQIndex = i ;
@@ -563,8 +563,8 @@ function rearrangeQuestionsForFatigueBusting() {
         }
     }
 
-    if( targetQIndex != 0 ) {
-        var targetQ = $scope.questionsForSession[targetQIndex] ;
+    if( targetQIndex !== 0 ) {
+        const targetQ = $scope.questionsForSession[targetQIndex];
         $scope.questionsForSession[targetQIndex] = $scope.questionsForSession[0] ;
         $scope.questionsForSession[0] = targetQ ;
     }
@@ -712,13 +712,6 @@ function computeSessionCards() {
 
     $scope.questionsForSession = $scope.$parent.filteredCards ;
 
-    const sortType = $scope.$parent.studyCriteria.sortType ;
-    if( sortType !== "Default" ) {
-        const questionSorter = new QuestionSorter( $scope.questionsForSession ) ;
-        log.debug( "Sorting questions by " + sortType ) ;
-        questionSorter.sortByType( sortType ) ;
-    }
-
     $scope.$parent.sessionStats.numCards     = $scope.questionsForSession.length ;
     $scope.$parent.sessionStats.numCardsLeft = $scope.questionsForSession.length ;
 }
@@ -726,7 +719,7 @@ function computeSessionCards() {
 
 function handleTimerEvent() {
     if( sessionActive ) {
-        if( resumeModalShowTime == 0 ) {
+        if( resumeModalShowTime === 0 ) {
             refreshClocks() ;
             refreshCardTimeProgressBars() ;
             setTimeout( handleTimerEvent, 1000 ) ;
@@ -752,7 +745,7 @@ function refreshClocks() {
         $scope.projectedTimeLeft -= 1000 ;
     }
 
-    if( $scope.$parent.studyCriteria.maxTime != -1 ) {
+    if( $scope.$parent.studyCriteria.maxTime !== -1 ) {
 
         var timeLeftInMillis = $scope.$parent.studyCriteria.maxTime * 60 * 1000 -
                                durationTillNowInMillis ;
@@ -780,7 +773,7 @@ function renderTimeMarkersForCurrentQuestion() {
     var mark1 = 0 ; var mark1Class = "" ; var fill1Pct = 0 ;
     var mark2 = 0 ; var mark2Class = "" ; var fill2Pct = 0 ;
 
-    if( selfAvgTimePct == 0 ) { selfAvgTimePct = predictedTimePct ; }
+    if( selfAvgTimePct === 0 ) { selfAvgTimePct = predictedTimePct ; }
 
     if( selfAvgTimePct > predictedTimePct ) {
         mark1 = predictedTimePct ;
@@ -829,7 +822,7 @@ function refreshCardTimeProgressBars() {
         if( delta > currentQuestionAvSelfTime && 
             delta < (1.5 * currentQuestionAvSelfTime) ) {
 
-            if( currentTimerStage != PROGRESS_STAGE_AMBER ) {
+            if( currentTimerStage !== PROGRESS_STAGE_AMBER ) {
                 currentTimerStage = PROGRESS_STAGE_AMBER ;
                 $( "#curr_pb" ).removeClass( "progress-bar-success" ) ;
                 $( "#curr_pb" ).addClass( "progress-bar-warning" ) ;
@@ -837,7 +830,7 @@ function refreshCardTimeProgressBars() {
         }
         else if( delta > (1.5*currentQuestionAvSelfTime) ) {
 
-            if( currentTimerStage != PROGRESS_STAGE_RED ) {
+            if( currentTimerStage !== PROGRESS_STAGE_RED ) {
                 currentTimerStage = PROGRESS_STAGE_RED ;
                 $( "#curr_pb" ).removeClass( "progress-bar-warning" ) ;
                 $( "#curr_pb" ).addClass( "progress-bar-danger" ) ;
@@ -871,7 +864,7 @@ function resizeBody() {
     var curBodyTop    = getDivHeight( 'flashcard-hdr-div' ) ;
     var curBodyBottom = getDivHeight( 'flashcard-footer-div' ) ;
 
-    if( ( curBodyTop != oldBodyTop ) || ( curBodyBottom != oldBodyBottom ) ) {
+    if( ( curBodyTop !== oldBodyTop ) || ( curBodyBottom !== oldBodyBottom ) ) {
         oldBodyTop = curBodyTop ;
         oldBodyBottom = curBodyBottom ;
 
@@ -894,7 +887,7 @@ function getDivHeight( divName ) {
 
 function updateScore() {
 
-    if( scoreDelta !=0 ) {
+    if( scoreDelta !== 0 ) {
         var delta = ( scoreDelta > 0 ) ? 1 : -1 ;
         $scope.userScore += delta ;
         scoreDelta       -= delta ;
@@ -1008,7 +1001,7 @@ function callGradeCardAPI( chapterId, sessionId, cardId, curLevel, nextLevel,
     })
     .error( function( data, status ){
 
-        if( status == 0 ) {
+        if( status === 0 ) {
             log.debug( "Faulty connection determined." ) ;
             if( currentCallAttemptNumber < MAX_GRADE_CARD_API_CALL_RETRIES ) {
                 log.debug( "Retrying the call again." ) ;
@@ -1116,7 +1109,7 @@ function callRFMApiToPushAnswer( previousCallAttemptNumber ) {
         $scope.pushAnswerSuccess = true ;
     })
     .error( function( data, status ){
-        if( status == 0 ) {
+        if( status === 0 ) {
             log.debug( "Faulty connection determined." ) ;
             if( currentCallAttemptNumber < MAX_PUSH_ANS_API_CALL_RETRIES ) {
                 log.debug( "Retrying the push answer call again." ) ;
@@ -1159,7 +1152,7 @@ function callRFMApiToPushQuestion( previousCallAttemptNumber ) {
     })
     .error( function( data, status ){
 
-        if( status == 0 ) {
+        if( status === 0 ) {
             log.debug( "Faulty connection determined." ) ;
             if( currentCallAttemptNumber < MAX_PUSH_QUESTION_API_CALL_RETRIES ) {
                 log.debug( "Retrying the push question call again." ) ;
@@ -1200,7 +1193,7 @@ function callRFMApiToPauseResumeSession( action, previousCallAttemptNumber, call
     })
     .error( function( data, status ){
 
-        if( status == 0 ) {
+        if( status === 0 ) {
             log.debug( "Faulty connection determined." ) ;
             if( currentCallAttemptNumber < MAX_PUSH_QUESTION_API_CALL_RETRIES ) {
                 log.debug( "Retrying the push " + action + " session call again." ) ;
