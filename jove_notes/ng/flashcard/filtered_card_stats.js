@@ -39,8 +39,8 @@ function CardStatistics( questions ) {
 
     function updateNuStatistics( question, nuStatistics ) {
         var effLabel = question.learningStats.efficiencyLabel ;
-        if( effLabel == 'A1' ) {
-            if( question.learningStats.absoluteLearningEfficiency == 100 ) {
+        if( effLabel === 'A1' ) {
+            if( question.learningStats.absoluteLearningEfficiency === 100 ) {
                 nuStatistics[ 'XX' ][0]++ ;
             }
             else {

@@ -505,7 +505,7 @@ function computeProjectedDuration( questions ) {
 
 function updateSelectedCardStatistics( questions ) {
 
-    var statsGenerator = new CardStatistics( questions ) ;
+    const statsGenerator = new CardStatistics( questions );
     statsGenerator.computeStatistics() ;
 
     jnUtil.renderBarChart( "selCardEffStatsChart",     statsGenerator.nuStatistics ) ;

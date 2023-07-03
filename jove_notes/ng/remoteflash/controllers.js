@@ -2,24 +2,25 @@ remoteFlashCardApp.controller( 'RemoteFlashCardController', function( $scope, $h
 // ---------------- Constants and inner class definition -----------------------
 
 // ---------------- Local variables --------------------------------------------
-var jnUtil                       = new JoveNotesUtil() ;
-var lastMessageId                = -1 ;
-var messages                     = [] ;
-var waitingForUserAcceptance     = false ;
-var sessionStartTime             = 0 ;
-var currentQuestionShowStartTime = 0 ;
-var durationTillNowInMillis      = 0 ;
-var questionTriggerIndex         = 0 ;
-var predictedTime                = 0 ;
-var avgSelfTime                  = 0 ;
+const msgPumpDelay = 1000;
+const jnUtil = new JoveNotesUtil();
+const messages = [];
 
-var resumeModalShowTime    = 0 ;
-var totalSessionPauseTime  = 0 ;
-var totalQuestionPauseTime = 0 ;
+let lastMessageId = -1;
+let waitingForUserAcceptance = false;
+let sessionStartTime = 0;
+let currentQuestionShowStartTime = 0;
+let durationTillNowInMillis = 0;
+let questionTriggerIndex = 0;
+let predictedTime = 0;
+let avgSelfTime = 0;
 
-var msgPumpDelay = 1000 ;
-var msgPumpEmptyCycles = 0 ;
-var expectingFirstQuestion = true ;
+let resumeModalShowTime = 0;
+let totalSessionPauseTime = 0;
+let totalQuestionPauseTime = 0;
+
+let msgPumpEmptyCycles = 0;
+let expectingFirstQuestion = true;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.LAUNCH_PAGE             = "launch_page" ;
@@ -145,20 +146,20 @@ function resizeFont( domElement, magnifier ) {
 
 function runMesssageFetchPump() {
 
-    var that = this ;
+    const that = this;
 
     $scope.serverRequestInProgress = true ;
     $http.get( "/jove_notes/api/RemoteFlashMessage?lastMessageId=" + lastMessageId )
     .success( function( data ){
         $scope.serverRequestInProgress = false ;
-        var effectivelyEmptyPayload = true ;
+        let effectivelyEmptyPayload = true;
 
         if( Array.isArray( data ) && (data.length > 0) ) {
 
             effectivelyEmptyPayload = false ;
 
-            if( data.length == 1 ) {
-                if( data[0].msgType == "yet_to_start" ) {
+            if( data.length === 1 ) {
+                if( data[0].msgType === "yet_to_start" ) {
                     effectivelyEmptyPayload = true ;
                 }
             }
@@ -167,11 +168,11 @@ function runMesssageFetchPump() {
                 msgPumpEmptyCycles = 0 ;
             }
 
-            for( var i=0; i<data.length; i++ ) {
+            for( let i=0; i<data.length; i++ ) {
 
                 // If we recieve a start_session message, we purge out everything
                 // from the mesages queue
-                if( data[i].msgType == "start_session" ) {
+                if( data[i].msgType === "start_session" ) {
                     messages.length = 0 ;
                     waitingForUserAcceptance = false ;
                 } 
@@ -188,25 +189,25 @@ function runMesssageFetchPump() {
             log.debug( "Empty payload. " + msgPumpEmptyCycles ) ;
             msgPumpEmptyCycles++ ;
 
-            if( msgPumpEmptyCycles < 5 ) {
-                that.msgPumpDelay = 2000 ;
+            if( msgPumpEmptyCycles < 75 ) {
+                that.msgPumpDelay = 250 ;
             }
-            else if( msgPumpEmptyCycles >= 5 && msgPumpEmptyCycles < 10 ) {
-                that.msgPumpDelay = 5000 ;
+            else if( msgPumpEmptyCycles >= 75 && msgPumpEmptyCycles < 150 ) {
+                that.msgPumpDelay = 500 ;
             }
-            else if( msgPumpEmptyCycles >= 10 && msgPumpEmptyCycles < 50 ) {
-                that.msgPumpDelay = 4000 ;
+            else if( msgPumpEmptyCycles >= 150 && msgPumpEmptyCycles < 300 ) {
+                that.msgPumpDelay = 1000 ;
             }
             else {
-                that.msgPumpDelay = 7000 ;
+                that.msgPumpDelay = 5000 ;
             }
         }
         else {
             log.debug( "Payload received at " + msgPumpEmptyCycles ) ;
-            that.msgPumpDelay = 1000 ;
+            that.msgPumpDelay = 250 ;
         }
 
-        log.debug( "Will invoke pump after " + (that.msgPumpDelay/1000) + " seconds." ) ;
+        log.debug( "Will invoke pump after " + that.msgPumpDelay + " milliseconds." ) ;
         setTimeout( runMesssageFetchPump, that.msgPumpDelay ) ;
     })
     .error( function( data ){
@@ -223,34 +224,34 @@ function runMessageProcessPump() {
 
     while( messages.length > 0 && !waitingForUserAcceptance ) {
 
-        var message = messages.shift() ;
+        const message = messages.shift();
 
         try {
-            if( message.msgType == "yet_to_start" ) {
+            if( message.msgType === "yet_to_start" ) {
                 $scope.currentScreen = $scope.SCREEN_WAITING_TO_START ;
             }
-            else if( message.msgType == "start_session" ) {
+            else if( message.msgType === "start_session" ) {
                 processStartSessionMessage( message ) ;
             }
-            else if( message.msgType == "question" ) {
+            else if( message.msgType === "question" ) {
                 processIncomingQuestion( message ) ;
             }
-            else if( message.msgType == "answer" ) {
+            else if( message.msgType === "answer" ) {
                 $scope.showAnswer() ;
             }
-            else if( message.msgType == "delta_score" ) {
+            else if( message.msgType === "delta_score" ) {
                 processDeltaScoreMessage( message ) ;
             }
-            else if( message.msgType == "end_session" ) {
+            else if( message.msgType === "end_session" ) {
                 processEndSessionMessage( message ) ;
             }
-            else if( message.msgType == "pause_session" ) {
+            else if( message.msgType === "pause_session" ) {
                 pauseSession() ;
             }
-            else if( message.msgType == "resume_session" ) {
+            else if( message.msgType === "resume_session" ) {
                 resumeSession() ;
             }
-            else if( message.msgType == "alert" ) {
+            else if( message.msgType === "alert" ) {
                 processAlertMessage() ;
             }
             else {
@@ -261,7 +262,7 @@ function runMessageProcessPump() {
             log.error( "Error processing message." + exception ) ;
         }
     }
-    setTimeout( runMessageProcessPump, 300 ) ;
+    setTimeout( runMessageProcessPump, 100 ) ;
 }
 
 function pauseSession() {
@@ -274,8 +275,8 @@ function resumeSession() {
     $( 'body' ).removeClass('modal-open') ;
     $( '.modal-backdrop' ).remove() ;
 
-    if( resumeModalShowTime != 0 ) {
-        var pauseTime = new Date().getTime() - resumeModalShowTime ;
+    if( resumeModalShowTime !== 0 ) {
+        const pauseTime = new Date().getTime() - resumeModalShowTime;
         totalSessionPauseTime  += pauseTime ;
         totalQuestionPauseTime += pauseTime ;
     }
@@ -309,15 +310,15 @@ function processStartSessionMessage( message ) {
     $scope.pointsLostInThisSession   = 0 ;
     
     $scope.studyCriteria.maxCards = 
-        ( $scope.studyCriteria.maxCards == 10000 ) ? 
+        ( $scope.studyCriteria.maxCards === 10000 ) ?
         "Unlimited" : $scope.studyCriteria.maxCards ;
 
     $scope.studyCriteria.maxTime  = 
-        ( $scope.studyCriteria.maxTime == -1 ) ? 
+        ( $scope.studyCriteria.maxTime === -1 ) ?
         "Unlimited" : $scope.studyCriteria.maxTime + " minutes" ;
 
     $scope.studyCriteria.maxNewCards = 
-        ( $scope.studyCriteria.maxNewCards == 10000 ) ? 
+        ( $scope.studyCriteria.maxNewCards === 10000 ) ?
         "Unlimited" : $scope.studyCriteria.maxNewCards ;
 
     $scope.pageTitle = jnUtil.constructPageTitle( $scope.chapterDetails ) ;
@@ -398,35 +399,35 @@ function processIncomingQuestion( message ) {
 
     var questionType = message.content.currentQuestion.questionType ;
     var handler = null ;
-    if( questionType == QuestionTypes.prototype.QT_FIB ) {
+    if( questionType === QuestionTypes.prototype.QT_FIB ) {
         handler = new FIBHandler( $scope.chapterDetails, $scope.currentQuestion,
                                   $scope.textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.QT_QA ) {
+    else if( questionType === QuestionTypes.prototype.QT_QA ) {
         handler = new QAHandler( $scope.chapterDetails, $scope.currentQuestion,
                                  $scope.textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.QT_TF ) {
+    else if( questionType === QuestionTypes.prototype.QT_TF ) {
         handler = new TFHandler( $scope.chapterDetails, $scope.currentQuestion,
                                  $scope.textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.QT_MATCHING ) {
+    else if( questionType === QuestionTypes.prototype.QT_MATCHING ) {
         handler = new MatchingHandler( $scope.chapterDetails, $scope.currentQuestion,
                                        $scope.textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.QT_IMGLABEL ) {
+    else if( questionType === QuestionTypes.prototype.QT_IMGLABEL ) {
         handler = new ImageLabelHandler( $scope.chapterDetails, $scope.currentQuestion,
                                          $scope.textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.QT_SPELLBEE ) {
+    else if( questionType === QuestionTypes.prototype.QT_SPELLBEE ) {
         handler = new SpellBeeHandler( $scope.chapterDetails, $scope.currentQuestion,
                                        $scope.textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.MULTI_CHOICE ) {
+    else if( questionType === QuestionTypes.prototype.MULTI_CHOICE ) {
         handler = new MultiChoiceHandler( $scope.chapterDetails, $scope.currentQuestion,
                                           $scope.textFormatter ) ;
     }
-    else if( questionType == QuestionTypes.prototype.VOICE2TEXT ) {
+    else if( questionType === QuestionTypes.prototype.VOICE2TEXT ) {
         handler = new VoiceToTextHandler( $scope.chapterDetails, $scope.currentQuestion, 
                                           $scope.textFormatter ) ;
     }
@@ -454,8 +455,8 @@ function processAlertMessage() {
 }
 
 function handleTimerEvent() {
-    if( $scope.currentScreen == $scope.SCREEN_PRACTICE ) {
-        if( resumeModalShowTime == 0 ) {
+    if( $scope.currentScreen === $scope.SCREEN_PRACTICE ) {
+        if( resumeModalShowTime === 0 ) {
             refreshClocks() ;
             refreshCardTimeProgressBars() ;
         }
@@ -465,13 +466,17 @@ function handleTimerEvent() {
 
 function renderTimeMarkersForCurrentQuestion() {
 
-    var selfAvgTimePct   = (5/9)*avgSelfTime ;
-    var predictedTimePct = (5/9)*predictedTime ;
+    let selfAvgTimePct = (5 / 9) * avgSelfTime;
+    const predictedTimePct = (5 / 9) * predictedTime;
 
-    var mark1 = 0 ; var mark1Class = "" ; var fill1Pct = 0 ;
-    var mark2 = 0 ; var mark2Class = "" ; var fill2Pct = 0 ;
+    let mark1 = 0;
+    let mark1Class = "";
+    let fill1Pct = 0;
+    let mark2 = 0;
+    let mark2Class = "";
+    let fill2Pct = 0;
 
-    if( selfAvgTimePct == 0 ) { selfAvgTimePct = predictedTimePct ; }
+    if( selfAvgTimePct === 0 ) { selfAvgTimePct = predictedTimePct ; }
 
     if( selfAvgTimePct > predictedTimePct ) {
         mark1 = predictedTimePct ;
