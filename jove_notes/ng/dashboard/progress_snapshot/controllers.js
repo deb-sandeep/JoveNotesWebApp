@@ -102,25 +102,25 @@ function RowData( rowType, name, rowId, parentRowId ) {
 
     this.getAffectedChaptersDueToSelectionChangeCascade = function( selType ) {
 
-        var affectedChapterIds = [] ;
+        let affectedChapterIds = [];
 
         if( !this.isChapterRow() ) {
-            for( var i=0; i<this.children.length; i++ ) {
-                var child = this.children[i] ;
+            for( let i=0; i<this.children.length; i++ ) {
+                const child = this.children[i];
 
-                if( selType == "SEL" ) {
+                if( selType === "SEL" ) {
                     child.isRowSelected = this.isRowSelected ;
                 }
-                else if( selType == "SYLLABUS" ) {
+                else if( selType === "SYLLABUS" ) {
                     child.isRowInSyllabus = this.isRowInSyllabus ;
                 }
 
-                var ids = child.getAffectedChaptersDueToSelectionChangeCascade( selType ) ;
+                const ids = child.getAffectedChaptersDueToSelectionChangeCascade(selType);
                 affectedChapterIds = affectedChapterIds.concat( ids ) ;
             }
         }
         else {
-            if( selType == "SYLLABUS" ) {
+            if( selType === "SYLLABUS" ) {
                 affectedChapterIds.push( this.chapterId ) ;
             }
             else {
@@ -208,7 +208,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
     this.getTreeRowClass = function() {
 
         var classStr = "treegrid-" + this.rowId ;
-        if( this.parentRowId != -1 ) {
+        if( this.parentRowId !== -1 ) {
             classStr += " treegrid-parent-" + this.parentRowId ;
         }
 
@@ -832,6 +832,7 @@ function updateCardCounts( chapter, subjectRD, syllabusRD ) {
     subjectRD.masteredCards       += chapter.masteredCards ;
     subjectRD.numSSRMaturedCards  += chapter.numSSRMaturedCards ;
     subjectRD.pctNS                = subjectRD.notStartedCards / subjectRD.totalCards ;
+    subjectRD.pctNR                = subjectRD.resurrectedCards/ subjectRD.totalCards ;
     subjectRD.pctL0                = subjectRD.l0Cards         / subjectRD.totalCards ;
     subjectRD.pctL1                = subjectRD.l1Cards         / subjectRD.totalCards ;
     subjectRD.pctL2                = subjectRD.l2Cards         / subjectRD.totalCards ;
@@ -851,6 +852,7 @@ function updateCardCounts( chapter, subjectRD, syllabusRD ) {
     syllabusRD.masteredCards      += chapter.masteredCards ;
     syllabusRD.numSSRMaturedCards += chapter.numSSRMaturedCards ;
     syllabusRD.pctNS               = syllabusRD.notStartedCards / syllabusRD.totalCards ;
+    syllabusRD.pctNR               = syllabusRD.resurrectedCards / syllabusRD.totalCards ;
     syllabusRD.pctL0               = syllabusRD.l0Cards         / syllabusRD.totalCards ;
     syllabusRD.pctL1               = syllabusRD.l1Cards         / syllabusRD.totalCards ;
     syllabusRD.pctL2               = syllabusRD.l2Cards         / syllabusRD.totalCards ;
