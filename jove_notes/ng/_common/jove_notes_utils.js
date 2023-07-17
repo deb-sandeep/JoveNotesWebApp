@@ -62,14 +62,14 @@ function RatingMatrix() {
         NS : [ 'L1' , 'L1', 'L0', 'L0' ],
         L0 : [ 'L1' , 'L0', 'L0', 'L0' ],
         L1 : [ 'L2' , 'L1', 'L0', 'L0' ],
-        L2 : [ 'L3' , 'L1', 'L1', 'L0' ],
-        L3 : [ 'MAS', 'L0', 'L0', 'L0' ]
+        L2 : [ 'L3' , 'L2', 'L1', 'L0' ],
+        L3 : [ 'MAS', 'L3', 'L1', 'L0' ]
     } ;
 
     this.nextActionMatrix = {
         //       E     A      P     H
         NS : [  -1,   -1,   0.5,   0.25 ],
-        L0 : [  -1,    1,   0.5,   0.25 ],
+        L0 : [  -1,   -1,   0.5,   0.25 ],
         L1 : [  -1,    1,   0.5,   0.25 ],
         L2 : [  -1,    1,   0.5,   0.25 ],
         L3 : [  -1,    1,   0.5,   0.25 ]
@@ -176,12 +176,12 @@ function RatingMatrix() {
 function JoveNotesUtil() {
 // -----------------------------------------------------------------------------
 
-var SSR_DELTA_L0 = 24*60*60*1000 ;
-var SSR_DELTA_L1 = SSR_DELTA_L0 * 2 ;
-var SSR_DELTA_L2 = SSR_DELTA_L0 * 3 ;
-var SSR_DELTA_L3 = SSR_DELTA_L0 * 4  ;
+const SSR_DELTA_L0 = 24 * 60 * 60 * 1000;
+const SSR_DELTA_L1 = SSR_DELTA_L0 * 3;
+const SSR_DELTA_L2 = SSR_DELTA_L0 * 5;
+const SSR_DELTA_L3 = SSR_DELTA_L0 * 7;
 
-/**
+    /**
  * This function takes the code of the function body as a string and returns
  * an instance of the function. This function returns null in case the 
  * code could not be parsed. Approprirate error messages are logged to the 
@@ -251,36 +251,36 @@ this.renderLearningProgressPie = function( divName, progressStats ) {
 
     if( isDebug() )return ;
 
-    var vals   = [] ;
-    var labels = [] ;
-    var colors = [] ;
+    const vals = [];
+    const labels = [];
+    const colors = [];
 
-    if( progressStats.numNS != 0 ) {
+    if( progressStats.numNS !== 0 ) {
         vals.push( progressStats.numNS ) ;
         labels.push( "NS-" + progressStats.numNS ) ;
         colors.push( "#D0D0D0" ) ;
     } 
-    if( progressStats.numL0 != 0 ) {
+    if( progressStats.numL0 !== 0 ) {
         vals.push( progressStats.numL0 ) ;
         labels.push( "L0-" + progressStats.numL0 ) ;
         colors.push( "#FF0000" ) ;
     } 
-    if( progressStats.numL1 != 0 ) {
+    if( progressStats.numL1 !== 0 ) {
         vals.push( progressStats.numL1 ) ;
         labels.push( "L1-" + progressStats.numL1 ) ;
         colors.push( "#FF7F2A" ) ;
     }
-    if( progressStats.numL2 != 0 ) {
+    if( progressStats.numL2 !== 0 ) {
         vals.push( progressStats.numL2 ) ;
         labels.push( "L2-" + progressStats.numL2 ) ;
         colors.push( "#FFFF7F" ) ;
     } 
-    if( progressStats.numL3 != 0 ) {
+    if( progressStats.numL3 !== 0 ) {
         vals.push( progressStats.numL3 ) ;
         labels.push( "L3-" + progressStats.numL3 ) ;
         colors.push( "#AAFFAA" ) ;
     }
-    if( progressStats.numMAS != 0 ) {
+    if( progressStats.numMAS !== 0 ) {
         vals.push( progressStats.numMAS ) ;
         labels.push( "MAS-" + progressStats.numMAS ) ;
         colors.push( "#00FF00" ) ;
@@ -302,13 +302,13 @@ this.renderDifficultyStatsBar = function( divName, difficultyStats ) {
 
     if( isDebug() )return ;
 
-    var vals   = [ 
-        difficultyStats.numVE, 
-        difficultyStats.numE, 
-        difficultyStats.numM, 
-        difficultyStats.numH, 
+    const vals = [
+        difficultyStats.numVE,
+        difficultyStats.numE,
+        difficultyStats.numM,
+        difficultyStats.numH,
         difficultyStats.numVH
-    ] ;
+    ];
 
     clearCanvas( divName ) ;
     var bar = new RGraph.Bar( {
@@ -336,11 +336,11 @@ this.renderBarChart = function( divName, chartData ) {
 
     if( document.getElementById( divName ) == null ) return ;
 
-    var dataVals  = [] ;
-    var labelVals = [] ;
-    var colorVals = [] ;
+    const dataVals = [];
+    const labelVals = [];
+    const colorVals = [];
 
-    for( var seriesName in chartData ) {
+    for( const seriesName in chartData ) {
         if( chartData.hasOwnProperty( seriesName ) ) {
             labelVals.push( seriesName ) ;
             dataVals.push( chartData[ seriesName ][0] ) ;
@@ -349,34 +349,34 @@ this.renderBarChart = function( divName, chartData ) {
     }
 
     clearCanvas( divName ) ;
-    var bar = new RGraph.Bar( {
-        id     : divName,
-        data   : dataVals,
+    const bar = new RGraph.Bar({
+        id: divName,
+        data: dataVals,
         options: {
             labels: labelVals,
             colors: colorVals,
             gutter: {
-                left   : 30,
-                right  : 30,
-                top    : 30,
-                bottom : 30
+                left: 30,
+                right: 30,
+                top: 30,
+                bottom: 30
             },
             background: {
                 grid: true
             }
         }
     })
-    .set( 'colors.sequential', true )
-    .draw();
+        .set('colors.sequential', true)
+        .draw();
 }
 
 this.renderLearningCurveGraph = function( divName, learningCurveData ) {
 
     if( isDebug() )return ;
 
-    var graphData = [
+    const graphData = [
         [], [], [], [], [], []
-    ] ;
+    ];
 
     for( var i=0; i<learningCurveData.length; i++ ) {
         var snapShot = learningCurveData[i] ;
@@ -389,23 +389,22 @@ this.renderLearningCurveGraph = function( divName, learningCurveData ) {
     }
 
     clearCanvas( divName ) ;
-    var mline = new RGraph.Line( {
+    const mline = new RGraph.Line({
         id: divName,
         data: graphData,
         options: {
             Background: {
-              grid: false 
+                grid: false
             },
             ylabels: {
-              count: 4
+                count: 4
             },
-            colors: [ "#D0D0D0", "#FF0000", "#FF7F2A", "#FFFF7F", "#AAFFAA", "#00FF00" ],
-            filled: { self: true },
+            colors: ["#D0D0D0", "#FF0000", "#FF7F2A", "#FFFF7F", "#AAFFAA", "#00FF00"],
+            filled: {self: true},
             linewidth: 0.2,
             tickmarks: false,
         }
-    })
-    .draw() ;
+    }).draw();
 }
 
 this.getDifficultyLevelLabel = function( level ) {
@@ -430,16 +429,16 @@ this.getLearningEfficiencyLabel = function( score ) {
 
 this.getAbsoluteLearningEfficiency = function( temporalScores ) {
 
-    var totalRatingScores = 0 ;
-    var absLE = 0 ;
+    let totalRatingScores = 0;
+    let absLE = 0;
 
-    if( temporalScores.length != 0 ) {
-        for( var i=0; i<temporalScores.length; i++ ) {
+    if( temporalScores.length !== 0 ) {
+        for( let i=0; i<temporalScores.length; i++ ) {
             var rating = temporalScores[i] ;
-            if     ( rating == 'E' ) totalRatingScores += 100 ;
-            else if( rating == 'A' ) totalRatingScores +=  80 ;
-            else if( rating == 'P' ) totalRatingScores +=  50 ;
-            else if( rating == 'H' ) totalRatingScores +=   0 ;
+            if     ( rating === 'E' ) totalRatingScores += 100 ;
+            else if( rating === 'A' ) totalRatingScores +=  80 ;
+            else if( rating === 'P' ) totalRatingScores +=  50 ;
+            else if( rating === 'H' ) totalRatingScores +=   0 ;
         }
         absLE = Math.ceil( totalRatingScores / temporalScores.length ) ;
     }
@@ -448,20 +447,20 @@ this.getAbsoluteLearningEfficiency = function( temporalScores ) {
 
 this.computeFatiguePotential = function( question ) {
 
-    var nu       = question.learningStats.absoluteLearningEfficiency ;
-    var recency  = question.learningStats.recencyInDays ;
-    var attempts = question.learningStats.numAttempts ;
-    var avgTime  = question.learningStats.averageTimeSpent ;
-    var diffLevel= question.difficultyLevel ;
+    const nu = question.learningStats.absoluteLearningEfficiency;
+    const recency = question.learningStats.recencyInDays;
+    const attempts = question.learningStats.numAttempts;
+    const avgTime = question.learningStats.averageTimeSpent;
+    const diffLevel = question.difficultyLevel;
 
-    var nuNormal       = nu ;
-    var recencyNormal  = 0 ;
-    var attemptsNormal = 0 ;
-    var avgTimeNormal  = 0 ;
-    var diffLevelNormal= 100 - diffLevel ;
+    const nuNormal = nu;
+    let recencyNormal = 0;
+    let attemptsNormal = 0;
+    let avgTimeNormal = 0;
+    const diffLevelNormal = 100 - diffLevel;
 
     // Compute recency normal
-    if( recency == 0 ) {
+    if( recency === 0 ) {
         recencyNormal = 100 ;
     }
     else {
@@ -469,11 +468,11 @@ this.computeFatiguePotential = function( question ) {
     }
     recencyNormal = 100 - recencyNormal ;
 
-    // Compute attemps normal
+    // Compute attempts normal
     attemptsNormal = Math.round( 100 * ( 1 - Math.exp( -attempts/5 ) ) ) ;
 
     // Compute average time normal
-    if( avgTimeNormal == 0 ) {
+    if( avgTimeNormal === 0 ) {
         avgTimeNormal = 100 ;
     }
     else {
@@ -482,32 +481,30 @@ this.computeFatiguePotential = function( question ) {
     avgTimeNormal = 100 - avgTimeNormal ;
 
 
-    var NU_MULTIPLIER       = 10 ;
-    var RECENCY_MULTIPLIER  = 20 ;
-    var ATTEMPTS_MULTIPLIER = 8 ;
-    var AVGTIME_MULTIPLIER  = 5 ;
-    var DIFFLEVEL_MULTIPLIER= 10 ;
-    var TOTAL_MULTIPLIERS   = NU_MULTIPLIER + RECENCY_MULTIPLIER + 
-                              ATTEMPTS_MULTIPLIER + AVGTIME_MULTIPLIER + 
-                              DIFFLEVEL_MULTIPLIER ;
+    const NU_MULTIPLIER       = 10;
+    const RECENCY_MULTIPLIER  = 20;
+    const ATTEMPTS_MULTIPLIER = 8;
+    const AVGTIME_MULTIPLIER  = 5;
+    const DIFFLEVEL_MULTIPLIER= 10;
+    const TOTAL_MULTIPLIERS   = NU_MULTIPLIER + RECENCY_MULTIPLIER +
+                                         ATTEMPTS_MULTIPLIER + AVGTIME_MULTIPLIER +
+                                         DIFFLEVEL_MULTIPLIER;
 
-    var nuScore       = nuNormal       * NU_MULTIPLIER ;
-    var recencyScore  = recencyNormal  * RECENCY_MULTIPLIER ;
-    var attemptsScore = attemptsNormal * ATTEMPTS_MULTIPLIER ;
-    var avgTimeScore  = avgTimeNormal  * AVGTIME_MULTIPLIER ;
-    var diffLevelScore= diffLevelNormal* DIFFLEVEL_MULTIPLIER ;
+    const nuScore       = nuNormal * NU_MULTIPLIER;
+    const recencyScore  = recencyNormal * RECENCY_MULTIPLIER;
+    const attemptsScore = attemptsNormal * ATTEMPTS_MULTIPLIER;
+    const avgTimeScore  = avgTimeNormal * AVGTIME_MULTIPLIER;
+    const diffLevelScore= diffLevelNormal * DIFFLEVEL_MULTIPLIER;
 
-    var total = nuScore + recencyScore + attemptsScore + 
-                avgTimeScore + diffLevelScore ;
+    const total = nuScore + recencyScore + attemptsScore +
+                           avgTimeScore + diffLevelScore;
 
-    var fatiguePotential = 100 - (Math.round( total )/(TOTAL_MULTIPLIERS*100))*100 ;
-
-    return fatiguePotential ;
+    return 100 - (Math.round(total) / (TOTAL_MULTIPLIERS * 100)) * 100 ;
 }
 
 this.playSoundClip = function( clipPath ) {
-    
-    var audio = document.getElementById( "audio" ) ;
+
+    const audio = document.getElementById("audio");
     audio.src = clipPath ;
     audio.load() ;
     audio.play() ;
@@ -531,21 +528,21 @@ this.playWordSound = function( word ) {
 
 this.getSSRThresholdDelta = function( question ) {
 
-    var currentLevel = question.learningStats.currentLevel ;
-    var timeSinceLastAttempt = new Date().getTime() - 
-                               question.learningStats.lastAttemptTime ;
-    var delta = -1 ;
+    const currentLevel = question.learningStats.currentLevel;
+    const timeSinceLastAttempt = new Date().getTime() -
+                                          question.learningStats.lastAttemptTime;
+    let delta = -1;
 
-    if( CardLevels.prototype.L0 == currentLevel ) {
+    if( CardLevels.prototype.L0 === currentLevel ) {
         delta = timeSinceLastAttempt - SSR_DELTA_L0 ;
     }
-    else if( CardLevels.prototype.L1 == currentLevel ) {
+    else if( CardLevels.prototype.L1 === currentLevel ) {
         delta = timeSinceLastAttempt - SSR_DELTA_L1 ;
     }
-    else if( CardLevels.prototype.L2 == currentLevel ) {
+    else if( CardLevels.prototype.L2 === currentLevel ) {
         delta = timeSinceLastAttempt - SSR_DELTA_L2 ;
     }
-    else if( CardLevels.prototype.L3 == currentLevel ) {
+    else if( CardLevels.prototype.L3 === currentLevel ) {
         delta = timeSinceLastAttempt - SSR_DELTA_L3 ;
     }
     return delta ;
@@ -553,10 +550,10 @@ this.getSSRThresholdDelta = function( question ) {
 
 this.getRecencyInDays = function( question ) {
 
-    var millis = new Date().getTime() - question.learningStats.lastAttemptTime ;
+    const millis= new Date().getTime() - question.learningStats.lastAttemptTime;
 
-    var numSecs = Math.floor( millis / 1000 ) ;
-    var days    = Math.floor( numSecs / ( 3600 * 24 ) ) ;
+    const numSecs= Math.floor(millis / 1000);
+    const days = Math.floor(numSecs / (3600 * 24));
 
     return days ;
 }
@@ -564,15 +561,13 @@ this.getRecencyInDays = function( question ) {
 // ----------------------- Private functions for JoveNoteUtils -----------------
 
 function isDebug() {
-    if( typeof __debug__ != 'undefined' ) {
-        return true ;
-    }
-    return false ;
+    return typeof __debug__ != 'undefined';
+
 }
 
 function clearCanvas( canvasId ) {
-    var canvas = document.getElementById( canvasId ) ;
-    var context = canvas.getContext( "2d" ) ;
+    const canvas = document.getElementById(canvasId);
+    const context = canvas.getContext("2d");
     context.clearRect( 0, 0, canvas.width, canvas.height ) ;
 }
 
