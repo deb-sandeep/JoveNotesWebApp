@@ -247,6 +247,11 @@ function StudyStrategy( id, displayName ) {
         const sorter = new QuestionSorter( this.questions ) ;
         sorter.sortByLevel( true ) ;
     }
+
+    this.isSSRMatured = function( question ) {
+        var thresholdDelta = this.jnUtil.getSSRThresholdDelta( question ) ;
+        return thresholdDelta > 0 ;
+    }
 }
 
 StudyStrategy.prototype.offer = function( question ) {
@@ -396,15 +401,17 @@ NPT_StudyStrategy.prototype.sortQuestions = function() {
 }
 
 NPT_StudyStrategy.prototype.offer = function( question ) {
-    if( question.questionType === 'fib'           || 
-        question.questionType === 'true_false'    || 
-        question.questionType === 'matching'      || 
-        question.questionType === 'image_label'   || 
-        question.questionType === 'multi_choice'  || 
-        question.questionType === 'chem_equation' ||
-        question.questionType === 'chem_compound' ||
-        question.questionType === 'equation' ) {
+    if( this.isSSRMatured( question ) ) {
+        if( question.questionType === 'fib'           || 
+            question.questionType === 'true_false'    || 
+            question.questionType === 'matching'      || 
+            question.questionType === 'image_label'   || 
+            question.questionType === 'multi_choice'  || 
+            question.questionType === 'chem_equation' ||
+            question.questionType === 'chem_compound' ||
+            question.questionType === 'equation' ) {
 
-        this.addQuestion( question ) ;
-    } 
+            this.addQuestion( question ) ;
+        } 
+    }
 }
