@@ -14,7 +14,7 @@ fetchAndProcessDataFromServer() ;
 $scope.skipChapter = function() {
 
     if( $scope.$parent.chapterIdsForNextSessions != null ) {
-        window.location.href = "/apps/jove_notes/ng/flashcard/index.php?chapterId=" + 
+        window.location.href = "/apps/jove_notes/ng/flashcard/index.php?firstShow=0&chapterId=" + 
                                $scope.$parent.chapterIdsForNextSessions ;
     }
     else {
@@ -46,6 +46,9 @@ function fetchAndProcessDataFromServer() {
     $http.get( "/jove_notes/api/FlashCard/" + $scope.$parent.chapterId )
          .success( function( data ){
             $scope.processServerData( data ) ;
+            if( !firstShow && $scope.$parent.totalCards == 0 ) {
+                $scope.skipChapter() ;
+            }
             renderGraphs() ;
          })
          .error( function( data ){

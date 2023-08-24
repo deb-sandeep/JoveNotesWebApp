@@ -7,6 +7,11 @@ require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/student_score_dao.php" )
 
 global $log ;
 
+$firstShow = true ;
+if( isset( $_REQUEST['firstShow'] ) ) {
+    $firstShow = $_REQUEST[ 'firstShow' ] ;
+}
+
 if( !isset( $_REQUEST['chapterId'] ) ) {
     $log->warn( "chapterId not found as request paramter. Redirecting to home page." ) ;
     HTTPUtils::redirectTo( "/" ) ;
@@ -95,6 +100,7 @@ $score = $scoreDAO->getScore( ExecutionContext::getCurrentUserName() ) ;
 
     <script>
     var userName  = '<?php echo ExecutionContext::getCurrentUserName() ?>' ;
+    var firstShow = <?php echo $firstShow ?> ;
     var chapterId = <?php echo $chapterIdForThisSession ?> ;
     var sessionId = <?php echo $sessionId ?> ;
     var userScore = <?php echo $score ?> ;
