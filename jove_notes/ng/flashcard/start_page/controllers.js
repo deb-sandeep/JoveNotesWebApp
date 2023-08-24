@@ -25,7 +25,7 @@ $scope.skipChapter = function() {
 $scope.shuffleChapter = function() {
 
     if( $scope.$parent.chapterIdsForNextSessions != null ) {
-        window.location.href = "/apps/jove_notes/ng/flashcard/index.php?chapterId=" + 
+        window.location.href = "/apps/jove_notes/ng/flashcard/index.php?firstShow=0&chapterId=" + 
                                $scope.$parent.chapterIdsForNextSessions + 
                                "," + $scope.$parent.chapterId ;
     }
