@@ -354,7 +354,7 @@ function RNPT_StudyStrategy() {
     StudyStrategy.call( this, "RNPT", "NPT (Resurrected)" ) ;
 
     this.isResurrected = function( question ) {
-        return ( question.learningStats.currentLevel === 'L0' &&   
+        return ( question.learningStats.currentLevel === 'NS' &&   
                  question.learningStats.numAttempts > 0 ) ;
     }
 }
@@ -387,11 +387,6 @@ NPT_StudyStrategy.prototype.constructor = NPT_StudyStrategy ;
 
 function NPT_StudyStrategy() {
     StudyStrategy.call( this, "NPT", "NPT" ) ;
-
-    this.isResurrected = function( question ) {
-        return ( question.learningStats.currentLevel === 'L0' &&   
-                 question.learningStats.numAttempts > 0 ) ;
-    }
 }
 
 NPT_StudyStrategy.prototype.sortQuestions = function() {
