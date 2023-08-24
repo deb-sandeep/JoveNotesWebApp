@@ -252,6 +252,16 @@ function StudyStrategy( id, displayName ) {
         var thresholdDelta = this.jnUtil.getSSRThresholdDelta( question ) ;
         return thresholdDelta > 0 ;
     }
+
+    this.isResurrected = function( question ) {
+        return ( question.learningStats.currentLevel === 'NS' &&   
+                 question.learningStats.numAttempts > 0 ) ;
+    }
+
+    this.isNewCard = function( question ) {
+        return ( question.learningStats.currentLevel === 'NS' &&   
+                 question.learningStats.numAttempts == 0 ) ;
+    }
 }
 
 StudyStrategy.prototype.offer = function( question ) {
@@ -357,11 +367,6 @@ RNPT_StudyStrategy.prototype.constructor = RNPT_StudyStrategy ;
 
 function RNPT_StudyStrategy() {
     StudyStrategy.call( this, "RNPT", "NPT (Resurrected)" ) ;
-
-    this.isResurrected = function( question ) {
-        return ( question.learningStats.currentLevel === 'NS' &&   
-                 question.learningStats.numAttempts > 0 ) ;
-    }
 }
 
 RNPT_StudyStrategy.prototype.sortQuestions = function() {
@@ -380,6 +385,32 @@ RNPT_StudyStrategy.prototype.offer = function( question ) {
             question.questionType === 'chem_equation' ||
             question.questionType === 'chem_compound' ||
             question.questionType === 'equation' ) {
+
+            this.addQuestion( question ) ;
+        } 
+    }
+}
+
+// -----------------------------------------------------------------------------
+RNPTQA_StudyStrategy.prototype = new StudyStrategy() ;
+RNPTQA_StudyStrategy.prototype.constructor = RNPTQA_StudyStrategy ;
+
+function RNPTQA_StudyStrategy() {
+    StudyStrategy.call( this, "RNPTQA", "NPTQA (Resurrected)" ) ;
+}
+
+RNPTQA_StudyStrategy.prototype.sortQuestions = function() {
+    if( this.questions.length === 0 ) return ;
+    const sorter = new QuestionSorter( this.questions ) ;
+    sorter.sortByNumAttempts( true ) ;
+}
+
+RNPTQA_StudyStrategy.prototype.offer = function( question ) {
+    if( this.isResurrected( question ) ) {
+        if( question.questionType === 'question_answer' || 
+            question.questionType === 'definition'      || 
+            question.questionType === 'rtc'             || 
+            question.questionType === 'word_meaning' ) {
 
             this.addQuestion( question ) ;
         } 
@@ -415,3 +446,87 @@ NPT_StudyStrategy.prototype.offer = function( question ) {
         } 
     }
 }
+
+// -----------------------------------------------------------------------------
+NPTQA_StudyStrategy.prototype = new StudyStrategy() ;
+NPTQA_StudyStrategy.prototype.constructor = NPTQA_StudyStrategy ;
+
+function NPTQA_StudyStrategy() {
+    StudyStrategy.call( this, "NPTQA", "NPTQA" ) ;
+}
+
+NPTQA_StudyStrategy.prototype.sortQuestions = function() {
+    if( this.questions.length === 0 ) return ;
+    const sorter = new QuestionSorter( this.questions ) ;
+    sorter.sortByNumAttempts( true ) ;
+}
+
+NPTQA_StudyStrategy.prototype.offer = function( question ) {
+    if( this.isSSRMatured( question ) ) {
+        if( question.questionType === 'question_answer' || 
+            question.questionType === 'definition'      || 
+            question.questionType === 'rtc'             || 
+            question.questionType === 'word_meaning' ) {
+
+            this.addQuestion( question ) ;
+        } 
+    }
+}
+
+// -----------------------------------------------------------------------------
+PTObj_StudyStrategy.prototype = new StudyStrategy() ;
+PTObj_StudyStrategy.prototype.constructor = PTObj_StudyStrategy ;
+
+function PTObj_StudyStrategy() {
+    StudyStrategy.call( this, "PTObj", "Prime Time (Objective)" ) ;
+}
+
+PTObj_StudyStrategy.prototype.sortQuestions = function() {
+    if( this.questions.length === 0 ) return ;
+    const sorter = new QuestionSorter( this.questions ) ;
+    sorter.sortByNumAttempts( true ) ;
+}
+
+PTObj_StudyStrategy.prototype.offer = function( question ) {
+    if( this.isNewCard( question ) ) {
+        if( question.questionType === 'fib'           || 
+            question.questionType === 'true_false'    || 
+            question.questionType === 'matching'      || 
+            question.questionType === 'image_label'   || 
+            question.questionType === 'multi_choice'  || 
+            question.questionType === 'chem_equation' ||
+            question.questionType === 'chem_compound' ||
+            question.questionType === 'equation' ) {
+
+            this.addQuestion( question ) ;
+        } 
+    }
+}
+
+// -----------------------------------------------------------------------------
+PTSub_StudyStrategy.prototype = new StudyStrategy() ;
+PTSub_StudyStrategy.prototype.constructor = PTSub_StudyStrategy ;
+
+function PTSub_StudyStrategy() {
+    StudyStrategy.call( this, "PTSub", "Prime Time (Subjective)" ) ;
+}
+
+PTSub_StudyStrategy.prototype.sortQuestions = function() {
+    if( this.questions.length === 0 ) return ;
+    const sorter = new QuestionSorter( this.questions ) ;
+    sorter.sortByNumAttempts( true ) ;
+}
+
+PTSub_StudyStrategy.prototype.offer = function( question ) {
+    if( this.isNewCard( question ) ) {
+        if( question.questionType === 'question_answer' || 
+            question.questionType === 'definition'      || 
+            question.questionType === 'rtc'             || 
+            question.questionType === 'word_meaning' ) {
+
+            this.addQuestion( question ) ;
+        } 
+    }
+}
+
+

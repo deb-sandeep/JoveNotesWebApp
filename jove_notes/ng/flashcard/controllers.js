@@ -157,7 +157,11 @@ $scope.projectedDuration   = 0 ;
 $scope.studyStrategies = [
     new SSR_StudyStrategy(),
     new RNPT_StudyStrategy(),
+    new RNPTQA_StudyStrategy(),
     new NPT_StudyStrategy(),
+    new NPTQA_StudyStrategy(),
+    new PTObj_StudyStrategy(),
+    new PTSub_StudyStrategy(),
     new BottomUpL0_StudyStrategy(),
     new BottomUpL1_StudyStrategy(),
     new BottomUpL2_StudyStrategy(),
