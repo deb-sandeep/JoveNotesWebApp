@@ -33,6 +33,7 @@ function QuestionSorter( questions ) {
     this.shuffle = function() {
         questions.shuffleFrom( 0 ) ;
     }
+
     this.sortByNumAttempts = function( ascending ) {
         questions.sort( function( q1, q2 ){
 

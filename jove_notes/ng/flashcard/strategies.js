@@ -346,3 +346,70 @@ BottomUpL3_StudyStrategy.prototype.offer = function( question ) {
     this.addQuestionAtLevel( ['NS', 'L0', 'L1', 'L2', 'L3' ], question ) ; 
 }
 
+// -----------------------------------------------------------------------------
+RNPT_StudyStrategy.prototype = new StudyStrategy() ;
+RNPT_StudyStrategy.prototype.constructor = RNPT_StudyStrategy ;
+
+function RNPT_StudyStrategy() {
+    StudyStrategy.call( this, "RNPT", "NPT (Resurrected)" ) ;
+
+    this.isResurrected = function( question ) {
+        return ( question.learningStats.currentLevel === 'L0' &&   
+                 question.learningStats.numAttempts > 0 ) ;
+    }
+}
+
+RNPT_StudyStrategy.prototype.sortQuestions = function() {
+    if( this.questions.length === 0 ) return ;
+    const sorter = new QuestionSorter( this.questions ) ;
+    sorter.sortByNumAttempts( true ) ;
+}
+
+RNPT_StudyStrategy.prototype.offer = function( question ) {
+    if( this.isResurrected( question ) ) {
+        if( question.questionType === 'fib'           || 
+            question.questionType === 'true_false'    || 
+            question.questionType === 'matching'      || 
+            question.questionType === 'image_label'   || 
+            question.questionType === 'multi_choice'  || 
+            question.questionType === 'chem_equation' ||
+            question.questionType === 'chem_compound' ||
+            question.questionType === 'equation' ) {
+
+            this.addQuestion( question ) ;
+        } 
+    }
+}
+
+// -----------------------------------------------------------------------------
+NPT_StudyStrategy.prototype = new StudyStrategy() ;
+NPT_StudyStrategy.prototype.constructor = NPT_StudyStrategy ;
+
+function NPT_StudyStrategy() {
+    StudyStrategy.call( this, "NPT", "NPT" ) ;
+
+    this.isResurrected = function( question ) {
+        return ( question.learningStats.currentLevel === 'L0' &&   
+                 question.learningStats.numAttempts > 0 ) ;
+    }
+}
+
+NPT_StudyStrategy.prototype.sortQuestions = function() {
+    if( this.questions.length === 0 ) return ;
+    const sorter = new QuestionSorter( this.questions ) ;
+    sorter.sortByNumAttempts( true ) ;
+}
+
+NPT_StudyStrategy.prototype.offer = function( question ) {
+    if( question.questionType === 'fib'           || 
+        question.questionType === 'true_false'    || 
+        question.questionType === 'matching'      || 
+        question.questionType === 'image_label'   || 
+        question.questionType === 'multi_choice'  || 
+        question.questionType === 'chem_equation' ||
+        question.questionType === 'chem_compound' ||
+        question.questionType === 'equation' ) {
+
+        this.addQuestion( question ) ;
+    } 
+}
