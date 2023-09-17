@@ -422,8 +422,8 @@ table.pure-table ol {
   position: fixed;
   right: 10px;
   bottom: 70px;
-  width: 125px;
-  height: 125px;
+  width: 180px;
+  height: 180px;
   margin-top: 0em;	
 }
 
@@ -432,8 +432,8 @@ table.pure-table ol {
   position: fixed;
   left: 10px;
   bottom: 70px;
-  width: 125px;
-  height: 125px;
+  width: 180px;
+  height: 180px;
   margin-top: 0em;
 }
 
@@ -451,7 +451,17 @@ table.pure-table ol {
 
 	position: absolute;
 	top: 5px;
-	left: 70px;
+	left: 65px;
+	width: 50px;
+	height: 50px;
+	padding-left: 12px;
+}
+
+.floating-ctrl-13 {
+
+	position: absolute;
+	top: 5px;
+	left: 125px;
 	width: 50px;
 	height: 50px;
 	padding-left: 12px;
@@ -460,7 +470,7 @@ table.pure-table ol {
 .floating-ctrl-21 {
 
 	position: absolute;
-	top: 70px;
+	top: 65px;
 	left: 5px;
 	width: 50px;
 	height: 50px;
@@ -470,8 +480,48 @@ table.pure-table ol {
 .floating-ctrl-22 {
 
 	position: absolute;
-	top: 70px;
-	left: 70px;
+	top: 65px;
+	left: 65px;
+	width: 50px;
+	height: 50px;
+	padding-left: 12px;
+}
+
+.floating-ctrl-23 {
+
+	position: absolute;
+	top: 65px;
+	left: 125px;
+	width: 50px;
+	height: 50px;
+	padding-left: 12px;
+}
+
+.floating-ctrl-31 {
+
+	position: absolute;
+	top: 125px;
+	left: 5px;
+	width: 50px;
+	height: 50px;
+	padding-left: 12px;
+}
+
+.floating-ctrl-32 {
+
+	position: absolute;
+	top: 125px;
+	left: 65px;
+	width: 50px;
+	height: 50px;
+	padding-left: 12px;
+}
+
+.floating-ctrl-33 {
+
+	position: absolute;
+	top: 125px;
+	left: 125px;
 	width: 50px;
 	height: 50px;
 	padding-left: 12px;

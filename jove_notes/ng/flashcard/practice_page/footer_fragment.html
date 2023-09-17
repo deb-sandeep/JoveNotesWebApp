@@ -410,15 +410,22 @@
      class="compact-right-controls">
 
     <button type="button" 
-            class="btn btn-danger btn-lg floating-ctrl-11"
-            ng-click="rateCard( 'H' )">
-        <span class="badge {{getNextLevel( 'H')}}">
-            {{getNextLevel( 'H' )}}
-        </span>
+            class="btn btn-lg floating-ctrl-13"
+            style="background: transparent;"
+            ng-click="purgeCard()">
+        <span class="glyphicon glyphicon-new-window"></span>
     </button>
 
     <button type="button" 
-            class="btn btn-info btn-lg floating-ctrl-12"
+            class="btn btn-lg floating-ctrl-22"
+            style="background: transparent;"
+            ng-click="pushAnswer()"
+            ng-show="studyCriteria.push">
+        <span class="glyphicon glyphicon-share-alt"></span>
+    </button>
+
+    <button type="button" 
+            class="btn btn-info btn-lg floating-ctrl-23"
             ng-click="rateCard( 'A' )">
         <span class="badge {{getNextLevel( 'A')}}">
             {{getNextLevel( 'A' )}}
@@ -426,7 +433,14 @@
     </button>
 
     <button type="button" 
-            class="btn btn-warning btn-lg floating-ctrl-21"
+            class="btn btn-lg floating-ctrl-31"
+            style="background: transparent;"
+            ng-click="pauseSession()">
+        <span class="glyphicon glyphicon-pause"></span>
+    </button>
+
+    <button type="button" 
+            class="btn btn-warning btn-lg floating-ctrl-32"
             ng-click="rateCard( 'P' )">
         <span class="badge {{getNextLevel( 'P')}}">
             {{getNextLevel( 'P' )}}
@@ -434,10 +448,11 @@
     </button>
 
     <button type="button" 
-            class="btn btn-success btn-lg floating-ctrl-22"
-            ng-click="pushAnswer()"
-            ng-show="studyCriteria.push">
-        <span class="glyphicon glyphicon-share-alt"></span>
+            class="btn btn-danger btn-lg floating-ctrl-33"
+            ng-click="rateCard( 'H' )">
+        <span class="badge {{getNextLevel( 'H')}}">
+            {{getNextLevel( 'H' )}}
+        </span>
     </button>
 
 </div>
@@ -446,7 +461,14 @@
      class="compact-left-controls">
 
     <button type="button" 
-            class="btn btn-info btn-lg floating-ctrl-11"
+            class="btn btn-lg floating-ctrl-11"
+            style="background: transparent;"
+            ng-click="purgeCard()">
+        <span class="glyphicon glyphicon-new-window"></span>
+    </button>
+
+    <button type="button" 
+            class="btn btn-info btn-lg floating-ctrl-21"
             ng-click="rateCard( 'A' )">
         <span class="badge {{getNextLevel( 'A')}}">
             {{getNextLevel( 'A' )}}
@@ -454,26 +476,34 @@
     </button>
 
     <button type="button" 
-            class="btn btn-danger btn-lg floating-ctrl-12"
-            ng-click="rateCard( 'H' )">
-        <span class="badge {{getNextLevel( 'H' )}}">
-            {{getNextLevel( 'H' )}}
-        </span>
-    </button>
-
-    <button type="button" 
-            class="btn btn-success btn-lg floating-ctrl-21"
+            class="btn btn-lg floating-ctrl-22"
+            style="background: transparent;"
             ng-click="pushAnswer()"
             ng-show="studyCriteria.push">
         <span class="glyphicon glyphicon-share-alt"></span>
     </button>
 
     <button type="button" 
-            class="btn btn-warning btn-lg floating-ctrl-22"
+            class="btn btn-danger btn-lg floating-ctrl-31"
+            ng-click="rateCard( 'H' )">
+        <span class="badge {{getNextLevel( 'H')}}">
+            {{getNextLevel( 'H' )}}
+        </span>
+    </button>
+
+    <button type="button" 
+            class="btn btn-warning btn-lg floating-ctrl-32"
             ng-click="rateCard( 'P' )">
         <span class="badge {{getNextLevel( 'P')}}">
             {{getNextLevel( 'P' )}}
         </span>
+    </button>
+
+    <button type="button" 
+            class="btn btn-lg floating-ctrl-33"
+            style="background: transparent;"
+            ng-click="pauseSession()">
+        <span class="glyphicon glyphicon-pause"></span>
     </button>
 
 </div>
