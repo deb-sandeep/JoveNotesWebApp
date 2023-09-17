@@ -58,6 +58,14 @@ $scope.cancelFilter = function() {
     $scope.filterCriteria.deserialize() ;
 }
 
+$scope.questionNumber = function( question ) {
+    let index = question.answer.indexOf( "Chapter:" ) ;
+    if( index != -1 ) {
+        return question.answer.substring( index ) ;
+    }
+    return "" ;
+}
+
 // ---------------- Private functions ------------------------------------------
 function filterCards() {
     console.log( "Filtering cards." ) ;

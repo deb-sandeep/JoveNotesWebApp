@@ -17,6 +17,7 @@
                 &nbsp;&nbsp;
                 <span class="panel-title">Question {{$index + 1}}</span>
                 &nbsp;&nbsp;
+                [ <i>{{questionNumber( currentQuestion )}}</i> ]
             </td>
             <td width="30%">
             </td>
@@ -34,6 +35,8 @@
         <div class="panel-body">
             <render-exercise-question initialize freeze-question>
             </render-exercise-question>
+        </div>
+        <div class="panel-footer">
         </div>
     </div>
 </div>
