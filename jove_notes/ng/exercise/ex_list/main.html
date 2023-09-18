@@ -5,21 +5,27 @@
      ng-include="'/apps/jove_notes/ng/exercise/ex_list/filter_template.html'">
 </div>
 
-<div>
+<div ng-if="showMode == 'listing'">
     <div ng-repeat="currentQuestion in filteredQuestions" 
          class="panel panel-info">
         <a name="anchor_q_{{currentQuestion.questionId}}"></a>
         <div class="panel-heading" style="padding: 2px 2px;">
             <table width="100%">
             <tr>
-            <td width="30%">
+            <td width="60%">
                 <span class="glyphicon glyphicon-question-sign"></span>
                 &nbsp;&nbsp;
                 <span class="panel-title">Question {{$index + 1}}</span>
                 &nbsp;&nbsp;
-                [ <i>{{questionNumber( currentQuestion )}}</i> ]
+                [<i>{{questionNumber( currentQuestion )}}</i>]
+                &nbsp;&nbsp;
+                <button type="button"
+                        class="btn btn-xs btn-primary"
+                        ng-click="startExercise( currentQuestion )">
+                    <span class="glyphicon glyphicon-play"></span>
+                </button>
             </td>
-            <td width="30%">
+            <td width="10%">
             </td>
             <td align="right">
                 <span class="badge">
@@ -36,7 +42,80 @@
             <render-exercise-question initialize freeze-question>
             </render-exercise-question>
         </div>
+    </div>
+</div>
+
+<div ng-if="showMode == 'exercise'">
+    <div class="panel panel-info">
+        <div class="panel-heading" style="padding: 2px 2px;">
+            <table width="100%">
+                <tr>
+                    <td width="100%">
+                        <span class="glyphicon glyphicon-question-sign"></span>
+                        &nbsp;&nbsp;
+                        [<i>{{questionNumber( currentQuestion )}}</i>]
+                        &nbsp;&nbsp;
+                        <span class="badge fixed-font">
+                        {{exDetail.attemptDuration | duration}}
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="panel-body">
+            <render-exercise-question initialize freeze-question>
+            </render-exercise-question>
+        </div>
         <div class="panel-footer">
+            <table width="100%">
+                <tr>
+                    <td width="50%">
+                        <button type="button"
+                                class="btn btn-success btn-sm single-exercise-rating-btn"
+                                ng-click="endExercise( 'E' )">
+                        </button>
+                        <button type="button"
+                                class="btn btn-info btn-sm single-exercise-rating-btn"
+                                ng-click="endExercise( 'A' )">
+                        </button>
+                        <button type="button"
+                                class="btn btn-warning btn-sm single-exercise-rating-btn"
+                                ng-click="endExercise( 'P' )">
+                        </button>
+                        <button type="button"
+                                class="btn btn-danger btn-sm single-exercise-rating-btn"
+                                ng-click="endExercise( 'H' )">
+                        </button>
+                        <button type="button"
+                                class="btn btn-sm single-exercise-rating-btn"
+                                style="margin-right: 50px;"
+                                ng-click="pauseExercise()">
+                            <span class="glyphicon glyphicon-pause"></span>
+                        </button>
+                    </td>
+                    <td width="50%" align="right">
+                        <button type="button"
+                                class="btn btn-danger btn-sm single-exercise-rating-btn"
+                                ng-click="endExercise( 'abort' )">
+                            <span class="glyphicon glyphicon-log-out"></span>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="modalResume" class="modal fade" data-backdrop="static">
+    <div class="modal-dialog" style="width:100px;height:100px;top:200px;">
+        <div class="modal-content">
+            <div class="modal-body" style="padding:0px">
+                <button type="button" class="btn btn-info btn-lg"
+                        style="width:100px;height:100px;padding:3px"
+                        ng-click="resumeExercise()">
+                    <span class="glyphicon glyphicon-play-circle" style="font-size: 5em" ></span>
+                </button>
+            </div>
         </div>
     </div>
 </div>

@@ -79,9 +79,8 @@
                 <td>
                     <a type="button" class="btn btn-default btn-xs"
                        ng-show="rowData.rowType == 2"
-                       ng-click="rowData.toggleVisibility()">
-                        <span class="glyphicon glyphicon-eye-close" style="color:red"   ng-hide="rowData.isHidden"></span>
-                        <span class="glyphicon glyphicon-eye-open"  style="color:green" ng-show="rowData.isHidden"></span>
+                       href="/apps/jove_notes/ng/exercise/index.php?chapterId={{rowData.chapterId}}#/ExerciseList">
+                        <span class="glyphicon glyphicon-list" style="color:blue"></span>
                     </a>
                 </td>
                 <td>
@@ -113,11 +112,12 @@
                 <td>
                     <a type="button" class="btn btn-default btn-xs"
                        ng-show="rowData.rowType == 2"
-                       href="/apps/jove_notes/ng/exercise/index.php?chapterId={{rowData.chapterId}}#/ExerciseList">
-                        <span class="glyphicon glyphicon-list" style="color:blue"></span>
+                       ng-click="rowData.toggleVisibility()">
+                        <span class="glyphicon glyphicon-eye-close" style="color:red"   ng-hide="rowData.isHidden"></span>
+                        <span class="glyphicon glyphicon-eye-open"  style="color:green" ng-show="rowData.isHidden"></span>
                     </a>
                 </td>
-            </tr>   
+            </tr>
         </tbody>
     </table>
 </div>
