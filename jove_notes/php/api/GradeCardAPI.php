@@ -1,6 +1,7 @@
 <?php
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/abstract_jove_notes_api.php" ) ;
 require_once( APP_ROOT      . "/php/dao/card_rating_dao.php" ) ;
+require_once( APP_ROOT      . "/php/dao/card_rating_ex_dao.php" ) ;
 require_once( APP_ROOT      . "/php/dao/learning_session_dao.php" ) ;
 require_once( APP_ROOT      . "/php/dao/card_learning_summary_dao.php" ) ;
 require_once( APP_ROOT      . "/php/dao/student_score_dao.php" ) ;
@@ -12,17 +13,19 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 	private $learningEfficiency = 0 ;
 	private $absoluteLearningEfficiency = 0 ;
 
-	private $cardRatingDAO = null ;
-	private $lsDAO         = null ;
-	private $clsDAO        = null ;
-	private $scoreDAO      = null ;
+	private $cardRatingDAO   = null ;
+    private $cardRatingExDAO = null ;
+	private $lsDAO           = null ;
+	private $clsDAO          = null ;
+	private $scoreDAO        = null ;
 
 	function __construct() {
 		parent::__construct() ;
-		$this->cardRatingDAO = new CardRatingDAO() ;
-		$this->lsDAO         = new LearningSessionDAO() ;
-		$this->clsDAO        = new CardLearningSummaryDAO() ;
-		$this->scoreDAO      = new StudentScoreDAO() ;
+		$this->cardRatingDAO   = new CardRatingDAO() ;
+        $this->cardRatingExDAO = new CardRatingExDAO() ;
+		$this->lsDAO           = new LearningSessionDAO() ;
+		$this->clsDAO          = new CardLearningSummaryDAO() ;
+		$this->scoreDAO        = new StudentScoreDAO() ;
 	}
 
 	public function doPost( $request, &$response ) {
@@ -140,12 +143,23 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 			}
 
 			$this->cardRatingDAO->insertRating( 
-										$this->requestObj->cardId, 
-										ExecutionContext::getCurrentUserName(), 
-										$this->requestObj->sessionId,
-										$rating,
-										$this->score,
-										$timeSpent ) ;
+                $this->requestObj->cardId,
+                ExecutionContext::getCurrentUserName(),
+                $this->requestObj->sessionId,
+                $rating,
+                $this->score,
+                $timeSpent
+            ) ;
+
+            $this->cardRatingExDAO->insertRating(
+                $this->requestObj->sessionId,
+                $rating,
+                $this->score,
+                $timeSpent,
+                $this->requestObj->nextLevel,
+                ExecutionContext::getCurrentUserName(),
+                $this->requestObj->cardId
+            ) ;
 		}
 		else {
 			$rating = "E" ;
