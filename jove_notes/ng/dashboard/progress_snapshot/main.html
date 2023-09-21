@@ -79,6 +79,7 @@
                     </table>
                 </th>
                 <th></th>
+                <th style="width:50px;text-align:right;"></th>
                 <th style="width:30px;text-align:center;">
                     <span class="glyphicon glyphicon-fire"></span>
                 </th>
@@ -188,8 +189,15 @@
                         <span class="glyphicon glyphicon-refresh" style="color:green"</span>
                     </a>
                 </td>
+                <td>
+                    <a href="/apps/jove_notes/ng/flashcard/index.php?chapterId={{rowData.chapterId}}"
+                       ng-show="rowData.isFlashcardAuthorized && rowData.hasCardsAvailable() && rowData.isRowInSyllabus">
+                        <span class="badge L3" style="width:40px;text-align: right">{{rowData.numSSRInSyllabusMaturedCards}}</span>
+                    </a>
+                </td>
                 <td style="width:50px" align="center">
-                    <input id="push" type="checkbox" ng-change="rowData.inSyllabusSelectionChanged()" 
+                    <input id="push" type="checkbox"
+                           ng-change="rowData.inSyllabusSelectionChanged()"
                            ng-model="rowData.isRowInSyllabus"
                            ui-indeterminate="rowData.isRowPartiallyInSyllabus" />
                 </td>

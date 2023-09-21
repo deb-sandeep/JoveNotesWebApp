@@ -37,6 +37,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
     this.projectedMarks     = 0 ;
 
     this.numSSRMaturedCards = 0 ;
+    this.numSSRInSyllabusMaturedCards = 0 ;
     this.preparednessScore  = 0 ;
     this.retentionScore     = 0 ;
     this.urgencyScore       = 0 ;
@@ -176,7 +177,9 @@ function RowData( rowType, name, rowId, parentRowId ) {
                                      this.pctL0*0.25 +
                                      this.pctNR*0.5 )*100 ;
 
-        this.numSSRMaturedCards     = chapter.numSSRMaturedCards ;
+        this.numSSRMaturedCards           = chapter.numSSRMaturedCards ;
+        this.numSSRInSyllabusMaturedCards = chapter.isInSyllabus ? this.numSSRMaturedCards : 0 ;
+
         this.preparednessScore      = chapter.preparednessScore ;
         this.retentionScore         = chapter.retentionScore ;
 
@@ -721,7 +724,9 @@ function clearRowDataAttributes() {
             rowData.l2Cards            = 0 ;
             rowData.l3Cards            = 0 ;
             rowData.masteredCards      = 0 ;
-            rowData.numSSRMaturedCards = 0 ;
+
+            rowData.numSSRMaturedCards           = 0 ;
+            rowData.numSSRInSyllabusMaturedCards = 0 ;
 
             rowData.chapterId              = null ;
             rowData.isFlashcardAuthorized  = false ;
@@ -830,7 +835,7 @@ function updateCardCounts( chapter, subjectRD, syllabusRD ) {
     subjectRD.l2Cards             += chapter.l2Cards ;
     subjectRD.l3Cards             += chapter.l3Cards ;
     subjectRD.masteredCards       += chapter.masteredCards ;
-    subjectRD.numSSRMaturedCards  += chapter.numSSRMaturedCards ;
+
     subjectRD.pctNS                = subjectRD.notStartedCards / subjectRD.totalCards ;
     subjectRD.pctNR                = subjectRD.resurrectedCards/ subjectRD.totalCards ;
     subjectRD.pctL0                = subjectRD.l0Cards         / subjectRD.totalCards ;
@@ -841,7 +846,10 @@ function updateCardCounts( chapter, subjectRD, syllabusRD ) {
     subjectRD.projectedMarks       = ( subjectRD.pctMAS + subjectRD.pctL3 + 
                                        subjectRD.pctL2*0.75 + subjectRD.pctL1*0.5 + 
                                        subjectRD.pctL0*0.25 )*100 ;
-    
+
+    subjectRD.numSSRMaturedCards           += chapter.numSSRMaturedCards ;
+    subjectRD.numSSRInSyllabusMaturedCards += chapter.isInSyllabus ? chapter.numSSRMaturedCards : 0 ;
+
     syllabusRD.totalCards         += chapter.totalCards ;
     syllabusRD.notStartedCards    += chapter.notStartedCards ;
     syllabusRD.resurrectedCards   += chapter.nrCards ;
@@ -850,7 +858,7 @@ function updateCardCounts( chapter, subjectRD, syllabusRD ) {
     syllabusRD.l2Cards            += chapter.l2Cards ;
     syllabusRD.l3Cards            += chapter.l3Cards ;
     syllabusRD.masteredCards      += chapter.masteredCards ;
-    syllabusRD.numSSRMaturedCards += chapter.numSSRMaturedCards ;
+
     syllabusRD.pctNS               = syllabusRD.notStartedCards / syllabusRD.totalCards ;
     syllabusRD.pctNR               = syllabusRD.resurrectedCards / syllabusRD.totalCards ;
     syllabusRD.pctL0               = syllabusRD.l0Cards         / syllabusRD.totalCards ;
@@ -861,6 +869,9 @@ function updateCardCounts( chapter, subjectRD, syllabusRD ) {
     syllabusRD.projectedMarks      = ( syllabusRD.pctMAS + syllabusRD.pctL3 + 
                                        syllabusRD.pctL2*0.75 + syllabusRD.pctL1*0.5 + 
                                        syllabusRD.pctL0*0.25 )*100 ;
+
+    syllabusRD.numSSRMaturedCards += chapter.numSSRMaturedCards ;
+    syllabusRD.numSSRInSyllabusMaturedCards += chapter.isInSyllabus ? chapter.numSSRMaturedCards : 0 ;
 }
 
 function drawProgressBar( canvasId, total, vN, vR, v0, v1, v2, v3, v4 ) {
