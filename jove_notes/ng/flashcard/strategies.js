@@ -432,7 +432,7 @@ NPT_StudyStrategy.prototype.sortQuestions = function() {
 }
 
 NPT_StudyStrategy.prototype.offer = function( question ) {
-    if( this.isSSRMatured( question ) ) {
+    if( this.isSSRMatured( question ) || this.isResurrected( question ) ) {
         if( question.questionType === 'fib'           || 
             question.questionType === 'true_false'    || 
             question.questionType === 'matching'      || 
