@@ -75,12 +75,12 @@ define( "NAVBAR_FRAGMENT_PATH",   DOCUMENT_ROOT . "/apps/jove_notes/ng/notes/not
     <div ng-show="showFilterForm" ng-include="'html_fragments/filter_template.html'">
     </div>
     
-    <div ng-show="notesLayoutMode == 'linear'"
+    <div ng-if="notesLayoutMode == 'linear'"
          ng-init="ng=linearNEGroup" 
          ng-include="'html_fragments/linear_layout.html'">
     </div>
 
-    <div ng-show="notesLayoutMode == 'sections'">
+    <div ng-if="notesLayoutMode == 'sections'">
          <div ng-repeat="ngGroup in sectionNEGroups">
             <h1 class="section-header">{{ngGroup.sectionName}}</h1>
             <div ng-init="ng=ngGroup.neGroup" 

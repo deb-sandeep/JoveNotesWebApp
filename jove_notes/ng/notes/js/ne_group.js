@@ -56,6 +56,13 @@ function NEGroup() {
             }
             this.wordMeanings.push( element ) ;
         }
+        else if( type == NotesElementsTypes.prototype.TEACHER_NOTE ) {
+            if( !element.formatted ) {
+                element = this.neFormatter.formatTeacherNote( element ) ;
+                element.formatted = true ;
+            }
+            this.teacherNotes.push( element ) ;
+        }
         else if( type == NotesElementsTypes.prototype.QA ) {
             if( !element.formatted ) {
                 element = this.neFormatter.formatQA( element ) ;

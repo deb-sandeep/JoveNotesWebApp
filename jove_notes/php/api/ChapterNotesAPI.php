@@ -55,6 +55,8 @@ class ChapterNotesAPI extends AbstractJoveNotesAPI {
 	private function constructNotesElement( $neData ) {
 
 		$element = array() ;
+        $curLevels = $neData[ "current_levels" ] ;
+        if( $curLevels == null ) { $curLevels = "NS" ; }
 
 		$element[ "noteElementId"   ] = $neData[ "notes_element_id" ] ;
 		$element[ "section"         ] = $neData[ "section" ] ;
@@ -63,7 +65,7 @@ class ChapterNotesAPI extends AbstractJoveNotesAPI {
 		$element[ "evalVars"        ] = $this->encodeEvalVars( $neData[ "eval_vars" ] ) ;
 		$element[ "scriptBody"      ] = base64_encode( $neData[ "script_body" ] ?? '' ) ;
 		$element[ "inReview"        ] = $neData[ "marked_for_review" ] ;
-		$element[ "currentLevels"   ] = explode( ",", $neData[ "current_levels" ] ) ;
+		$element[ "currentLevels"   ] = explode( ",", $curLevels ) ;
 		$element[ "learningStats"   ] = array( 
 			"learningEfficiency"    => $neData[ "learning_efficiency" ],
 			"absLearningEfficiency" => $neData[ "abs_learning_efficiency" ] ) ;
