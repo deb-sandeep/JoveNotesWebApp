@@ -175,13 +175,7 @@ function RatingMatrix() {
 
 function JoveNotesUtil() {
 // -----------------------------------------------------------------------------
-
-const SSR_DELTA_L0 = 24 * 60 * 60 * 1000;
-const SSR_DELTA_L1 = SSR_DELTA_L0 * 3;
-const SSR_DELTA_L2 = SSR_DELTA_L0 * 5;
-const SSR_DELTA_L3 = SSR_DELTA_L0 * 7;
-
-    /**
+/**
  * This function takes the code of the function body as a string and returns
  * an instance of the function. This function returns null in case the 
  * code could not be parsed. Approprirate error messages are logged to the 
@@ -529,23 +523,40 @@ this.playWordSound = function( word ) {
 this.getSSRThresholdDelta = function( question ) {
 
     const currentLevel = question.learningStats.currentLevel;
+    if( currentLevel === CardLevels.prototype.NS ) {
+        return -1 ;
+    }
+
     const timeSinceLastAttempt = new Date().getTime() -
                                           question.learningStats.lastAttemptTime;
-    let delta = -1;
+    const THRESHOLD_MAP = {
+       //                   L0  L1  L2  L3
+       'true_false'      : [ 1,  7, 14, 21],
+       'multi_choice'    : [ 1,  7, 14, 21],
+       'voice2text'      : [ 1,  7, 14, 21],
+       'spellbee'        : [ 1,  7, 14, 21],
+       'fib'             : [ 1,  5,  7, 14],
+       'question_answer' : [ 1,  3,  5,  7],
+       'matching'        : [ 1,  3,  5,  7],
+       'image_label'     : [ 1,  3,  5,  7],
+       'exercise'        : [ 1,  3,  5,  7]
+    } ;
 
-    if( CardLevels.prototype.L0 === currentLevel ) {
-        delta = timeSinceLastAttempt - SSR_DELTA_L0 ;
+    const threshold = THRESHOLD_MAP[question.questionType] ;
+    let thresholdIdx = -1 ;
+
+    switch( currentLevel ) {
+        case CardLevels.prototype.L0: thresholdIdx = 0; break;
+        case CardLevels.prototype.L1: thresholdIdx = 1; break;
+        case CardLevels.prototype.L2: thresholdIdx = 2; break;
+        case CardLevels.prototype.L3: thresholdIdx = 3; break;
     }
-    else if( CardLevels.prototype.L1 === currentLevel ) {
-        delta = timeSinceLastAttempt - SSR_DELTA_L1 ;
+
+    const MILLIS_IN_DAY = 24 * 60 * 60 * 1000;
+    if( thresholdIdx != -1 ) {
+        return timeSinceLastAttempt - MILLIS_IN_DAY * threshold[thresholdIdx] ;
     }
-    else if( CardLevels.prototype.L2 === currentLevel ) {
-        delta = timeSinceLastAttempt - SSR_DELTA_L2 ;
-    }
-    else if( CardLevels.prototype.L3 === currentLevel ) {
-        delta = timeSinceLastAttempt - SSR_DELTA_L3 ;
-    }
-    return delta ;
+    return -1 ;
 }
 
 this.getRecencyInDays = function( question ) {

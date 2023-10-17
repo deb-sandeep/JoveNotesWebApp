@@ -244,20 +244,70 @@ QUERY;
 
 $query = <<<QUERY
 select 
-  chapter_id, count(card_id) as num_ssr_matured_cards
+  cls.chapter_id, count(cls.card_id) as num_ssr_matured_cards
 from 
-  jove_notes.card_learning_summary 
+  jove_notes.card_learning_summary cls
+  inner join jove_notes.card c
+  on cls.card_id = c.card_id
 where 
-  student_name = '$userName' and 
-  chapter_id in ( $idList )  and 
-    ( ( current_level = 'L0' and TIMESTAMPDIFF(SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 1 ) or 
-      ( current_level = 'L1' and TIMESTAMPDIFF(SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 3 ) or 
-      ( current_level = 'L2' and TIMESTAMPDIFF(SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 5 ) or 
-      ( current_level = 'L3' and TIMESTAMPDIFF(SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 7 ) or 
-      ( current_level = 'NS' ) )
+  cls.student_name = '$userName' and 
+  cls.chapter_id in ( $idList )  and 
+  (  
+    ( 
+	   c.card_type in ( 'true_false', 'multi_choice', 'voice2text', 'spellbee' ) and 
+       (
+         ( cls.current_level = 'L0' and TIMESTAMPDIFF( SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 1 ) or 
+         ( cls.current_level = 'L1' and TIMESTAMPDIFF( SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 7 ) or 
+         ( cls.current_level = 'L2' and TIMESTAMPDIFF( SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 14 ) or 
+         ( cls.current_level = 'L3' and TIMESTAMPDIFF( SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 21 ) or 
+         ( cls.current_level = 'NS' ) 
+	   )
+	) 
+	or
+    ( 
+	   c.card_type in ( 'fib' ) and 
+       (
+         ( cls.current_level = 'L0' and TIMESTAMPDIFF( SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 1 ) or 
+         ( cls.current_level = 'L1' and TIMESTAMPDIFF( SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 5 ) or 
+         ( cls.current_level = 'L2' and TIMESTAMPDIFF( SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 7 ) or 
+         ( cls.current_level = 'L3' and TIMESTAMPDIFF( SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 14 ) or 
+         ( cls.current_level = 'NS' ) 
+	   )
+	) 
+	or
+    ( 
+	   c.card_type in ( 'question_answer', 'matching', 'image_label', 'exercise' ) and 
+       (
+         ( cls.current_level = 'L0' and TIMESTAMPDIFF( SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 1 ) or 
+         ( cls.current_level = 'L1' and TIMESTAMPDIFF( SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 3 ) or 
+         ( cls.current_level = 'L2' and TIMESTAMPDIFF( SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 5 ) or 
+         ( cls.current_level = 'L3' and TIMESTAMPDIFF( SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 7 ) or 
+         ( cls.current_level = 'NS' ) 
+	   )
+	)   
+)
 group by
-  chapter_id
+  chapter_id 
+order by 
+  chapter_id asc
 QUERY;
+
+//$query = <<<QUERY
+//select
+//  chapter_id, count(card_id) as num_ssr_matured_cards
+//from
+//  jove_notes.card_learning_summary
+//where
+//  student_name = '$userName' and
+//  chapter_id in ( $idList )  and
+//    ( ( current_level = 'L0' and TIMESTAMPDIFF(SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 1 ) or
+//      ( current_level = 'L1' and TIMESTAMPDIFF(SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 3 ) or
+//      ( current_level = 'L2' and TIMESTAMPDIFF(SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 5 ) or
+//      ( current_level = 'L3' and TIMESTAMPDIFF(SECOND, last_attempt_time, CURRENT_TIMESTAMP )/86400 > 7 ) or
+//      ( current_level = 'NS' ) )
+//group by
+//  chapter_id
+//QUERY;
         
         return parent::getResultAsAssociativeArray( $query, 
                          [ "chapter_id", "num_ssr_matured_cards" ], false ) ;
