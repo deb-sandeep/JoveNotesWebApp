@@ -219,13 +219,13 @@ function StudyStrategy( id, displayName ) {
                 else {
                     // A NS card can be a virgin or resurrected
                     if( q.learningStats.numAttempts === 0 ) { // Virgin NS card
-                        if( nsQuestionsAdded < studyCriteria.maxNewCards ) {
+                        if( nsQuestionsAdded < studyCriteria.getMaxNewCards() ) {
                             filteredCards.push( q ) ;
                             nsQuestionsAdded++ ;
                         }
                     }
                     else { // Resurrected card
-                        if( resurrectedQuestionsAdded < studyCriteria.maxResurrectedCards ) {
+                        if( resurrectedQuestionsAdded < studyCriteria.getMaxResurrectedCards() ) {
                             filteredCards.push( q ) ;
                             resurrectedQuestionsAdded++ ;
                         }
@@ -233,7 +233,7 @@ function StudyStrategy( id, displayName ) {
                 }
             }
 
-            if( filteredCards.length >= studyCriteria.maxCards ) {
+            if( filteredCards.length >= studyCriteria.getMaxCards() ) {
                 break ;
             }
         }

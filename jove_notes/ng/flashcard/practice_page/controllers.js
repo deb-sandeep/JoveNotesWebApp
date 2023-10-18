@@ -2,47 +2,47 @@ flashCardApp.controller( 'PracticePageController', function( $scope, $http, $rou
 // -----------------------------------------------------------------------------
 
 // ---------------- Constants and inner class definition -----------------------
-    const MAX_GRADE_CARD_API_CALL_RETRIES = 3;
-    const MAX_PUSH_ANS_API_CALL_RETRIES = 3;
-    const MAX_PUSH_QUESTION_API_CALL_RETRIES = 3;
+const MAX_GRADE_CARD_API_CALL_RETRIES = 3;
+const MAX_PUSH_ANS_API_CALL_RETRIES = 3;
+const MAX_PUSH_QUESTION_API_CALL_RETRIES = 3;
 
-    const PROGRESS_STAGE_GREEN = 0;
-    const PROGRESS_STAGE_AMBER = 1;
-    const PROGRESS_STAGE_RED = 2;
+const PROGRESS_STAGE_GREEN = 0;
+const PROGRESS_STAGE_AMBER = 1;
+const PROGRESS_STAGE_RED = 2;
 
-    const FATIGUE_UPPER_THRESHOLD = 50;
-    const FATIGUE_LOWER_THRESHOLD = -50;
-    const HYSTERIS_PCT = 0.25;
-    const FATIGUE_UPPER_HYSTERISIS_THRESHOLD = FATIGUE_UPPER_THRESHOLD * (1 - HYSTERIS_PCT);
-    const FATIGUE_LOWER_HYSTERISIS_THRESHOLD = FATIGUE_LOWER_THRESHOLD * (1 - HYSTERIS_PCT);
+const FATIGUE_UPPER_THRESHOLD = 50;
+const FATIGUE_LOWER_THRESHOLD = -50;
+const HYSTERIS_PCT = 0.25;
+const FATIGUE_UPPER_HYSTERISIS_THRESHOLD = FATIGUE_UPPER_THRESHOLD * (1 - HYSTERIS_PCT);
+const FATIGUE_LOWER_HYSTERISIS_THRESHOLD = FATIGUE_LOWER_THRESHOLD * (1 - HYSTERIS_PCT);
 
 // ---------------- Local variables --------------------------------------------
-    const ratingMatrix = new RatingMatrix();
-    const jnUtils     = new JoveNotesUtil();
-    const sessionStartTime = new Date().getTime();
+const ratingMatrix = new RatingMatrix();
+const jnUtils     = new JoveNotesUtil();
+const sessionStartTime = new Date().getTime();
 
-    let currentQuestionShowStartTime   = 0;
-    let currentQuestionAvPredictedTime = 0;
-    let currentQuestionAvSelfTime      = 0;
-    let durationTillNowInMillis        = 0;
+let currentQuestionShowStartTime   = 0;
+let currentQuestionAvPredictedTime = 0;
+let currentQuestionAvSelfTime      = 0;
+let durationTillNowInMillis        = 0;
 
-    let sessionActive = true;
-    let oldBodyTop    = 0;
-    let oldBodyBottom = 0;
-    let scoreDelta    = 0;
+let sessionActive = true;
+let oldBodyTop    = 0;
+let oldBodyBottom = 0;
+let scoreDelta    = 0;
 
-    let questionChangeTriggerIndex = 0;
+let questionChangeTriggerIndex = 0;
 
-    let diffAvgTimeManager = null;
+let diffAvgTimeManager = null;
 
-    let resumeModalShowTime    = 0;
-    let totalSessionPauseTime  = 0;
-    let totalQuestionPauseTime = 0;
+let resumeModalShowTime    = 0;
+let totalSessionPauseTime  = 0;
+let totalQuestionPauseTime = 0;
 
-    let currentTimerStage = PROGRESS_STAGE_GREEN;
+let currentTimerStage = PROGRESS_STAGE_GREEN;
 
-    let initialQADivFontSize = -1;
-    let currentFontZoomDelta = 0;
+let initialQADivFontSize = -1;
+let currentFontZoomDelta = 0;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.showL0Header       = true ;
@@ -688,8 +688,8 @@ function endSession() {
 
 function hasSessionEnded() {
 
-    if( $scope.$parent.studyCriteria.maxTime != -1 ) {
-        if( durationTillNowInMillis >= $scope.$parent.studyCriteria.maxTime*60*1000 ) {
+    if( $scope.$parent.studyCriteria.getMaxTime() != -1 ) {
+        if( durationTillNowInMillis >= $scope.$parent.studyCriteria.getMaxTime()*60*1000 ) {
             return true ;
         }
     }
@@ -745,9 +745,9 @@ function refreshClocks() {
         $scope.projectedTimeLeft -= 1000 ;
     }
 
-    if( $scope.$parent.studyCriteria.maxTime !== -1 ) {
+    if( $scope.$parent.studyCriteria.getMaxTime() !== -1 ) {
 
-        var timeLeftInMillis = $scope.$parent.studyCriteria.maxTime * 60 * 1000 -
+        var timeLeftInMillis = $scope.$parent.studyCriteria.getMaxTime() * 60 * 1000 -
                                durationTillNowInMillis ;
         if( timeLeftInMillis <= 0 ) {
             sessionActive = false ;

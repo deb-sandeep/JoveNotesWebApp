@@ -46,6 +46,35 @@ function StudyCriteria() {
         }
     }
 
+    this.getMaxCards = function() {
+        return this.parseInt( this.maxCards, 10000 ) ;
+    }
+
+    this.getMaxTime = function() {
+        return this.parseInt( this.maxTime, -1 ) ;
+    }
+
+    this.getMaxResurrectedCards = function() {
+        return this.parseInt( this.maxResurrectedCards, 10000 ) ;
+    }
+
+    this.getMaxNewCards = function() {
+        return this.parseInt( this.maxNewCards, 10000 ) ;
+    }
+
+    this.parseInt = function( strVal, fallbackValue ) {
+
+        let retVal = strVal ;
+        if( typeof retVal === 'string' ) {
+            let intVal = parseInt( strVal ) ;
+            retVal = isNaN( intVal ) ? fallbackValue : intVal ;
+        }
+        else if( typeof retVal !== 'number' ) {
+            retVal = NaN ;
+        }
+        return retVal ;
+    }
+
     this.matchesFilter = function( question ) {
 
         if( this.excludeMarkedForReview && question.markedForReview===1 ) {
