@@ -407,13 +407,7 @@ RNPTQA_StudyStrategy.prototype.sortQuestions = function() {
 
 RNPTQA_StudyStrategy.prototype.offer = function( question ) {
     if( this.isResurrected( question ) ) {
-        if( question.questionType === 'question_answer' || 
-            question.questionType === 'definition'      || 
-            question.questionType === 'rtc'             || 
-            question.questionType === 'word_meaning' ) {
-
-            this.addQuestion( question ) ;
-        } 
+        this.addQuestion( question ) ;
     }
 }
 
@@ -462,14 +456,8 @@ NPTQA_StudyStrategy.prototype.sortQuestions = function() {
 }
 
 NPTQA_StudyStrategy.prototype.offer = function( question ) {
-    if( this.isSSRMatured( question ) ) {
-        if( question.questionType === 'question_answer' || 
-            question.questionType === 'definition'      || 
-            question.questionType === 'rtc'             || 
-            question.questionType === 'word_meaning' ) {
-
-            this.addQuestion( question ) ;
-        } 
+    if( this.isSSRMatured( question ) || this.isResurrected( question ) ) {
+        this.addQuestion( question ) ;
     }
 }
 
