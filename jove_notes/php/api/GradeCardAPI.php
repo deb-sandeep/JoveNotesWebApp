@@ -71,17 +71,6 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 
 	private function computeLearningEfficiency( $cardLearningSummary ) {
 
-		// If we have an auto-promote to mastered request, we set the learning
-		// efficiency to 100. This is consistent with the alternate case logic
-		// since an auto-promote request implies that for the remaining levels
-		// the rating is by default E
-		if( $this->requestObj->rating == "APM" || 
-			$this->requestObj->rating == "APMNS" ) {
-
-			$this->learningEfficiency = 100 ;
-			return ;
-		}
-		
 		$temporalRatings = $cardLearningSummary[ "temporal_ratings" ] ;
 		$ratings = str_split( $temporalRatings ) ;
 
@@ -92,7 +81,14 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 			array_shift( $ratings ) ;
 		}
 
-		array_push( $ratings, $this->requestObj->rating ) ;
+        if( $this->requestObj->rating == "APM" ||
+            $this->requestObj->rating == "APMNS" ) {
+
+            array_push( $ratings, "E" ) ;
+        }
+        else {
+            array_push( $ratings, $this->requestObj->rating ) ;
+        }
 
 		// Calculate the absolute learning efficiency taking into consideration
 		// all the temporal ratings.
