@@ -5,7 +5,8 @@
   </div>
   <div class="table-responsive">
     <table class="table table-condensed table-hover">
-      <tr ng-repeat="element in ng.chemEquations">
+      <tr ng-repeat="element in ng.chemEquations"
+          ng-class="getNotesHighlightClass( element )">
           <td>
             <span><span class="glyphicon glyphicon-hand-right"></span></span>
           </td>

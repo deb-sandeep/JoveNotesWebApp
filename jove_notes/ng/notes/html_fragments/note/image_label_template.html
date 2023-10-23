@@ -1,4 +1,5 @@
 <div class="panel panel-success" ng-repeat="element in ng.imageLabels"
+     ng-class="getNotesHighlightClass( element )"
      style="page-break-inside:avoid;">
 
   <div ng-if="showUserStatistics" class="pull-right"

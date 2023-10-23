@@ -28,6 +28,7 @@ select
 	ne.content, ne.eval_vars, ne.script_body, ne.marked_for_review,
 	CEIL( AVG( cls.learning_efficiency ) ) as learning_efficiency,
 	CEIL( AVG( cls.abs_learning_efficiency ) ) as abs_learning_efficiency,
+	SUM( cls.num_attempts ) as num_attempts,
 	GROUP_CONCAT( DISTINCT cls.current_level
                      ORDER BY cls.current_level DESC SEPARATOR ',' ) as current_levels
 from 
@@ -50,7 +51,7 @@ QUERY;
 		              "difficulty_level", "content", "eval_vars", 
 		              "script_body", "marked_for_review",
 		              "learning_efficiency", "abs_learning_efficiency", 
-		              "current_levels" ] ;
+		              "num_attempts", "current_levels" ] ;
 
 		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
 	}

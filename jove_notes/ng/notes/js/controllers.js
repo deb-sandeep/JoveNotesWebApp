@@ -11,6 +11,12 @@ function FilterCriteria() {
 	this.learningEfficiencyFilters = [ "A1", "A2", "B1", "B2", "C1", "C2", "D" ] ;
 	this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH" ] ;
 	this.levelFilters              = [ "NS", "L0" ] ;
+	this.typeFilters               = [
+		'chem_compound', 'chem_equation',   'definition',  'equation',
+		'exercise',      'fib',             'image_label', 'matching',
+		'multi_choice',  'question_answer', 'rtc',         'spellbee',
+		'teacher_note',  'true_false',      'voice2text',  'word_meaning'
+	] ;
 	this.sectionFilters            = [] ;
 
     this.serialize = function() {
@@ -39,6 +45,12 @@ function FilterCriteria() {
 		this.difficultyFilters         = [ "VE", "E",  "M",  "H",  "VH" ] ;
 		this.levelFilters              = [ "NS", "L0" ] ;
 		this.sectionFilters            = [] ;
+		this.typeFilters               = [
+			'chem_compound', 'chem_equation',   'definition',  'equation',
+			'exercise',      'fib',             'image_label', 'matching',
+			'multi_choice',  'question_answer', 'rtc',         'spellbee',
+			'teacher_note',  'true_false',      'voice2text',  'word_meaning'
+		] ;
     }
 }
 
@@ -160,6 +172,34 @@ $scope.toggleNotesLayout = function() {
 	                         'linear' : 'sections' ;
 }
 
+$scope.getNotesHighlightClass = function( element ) {
+
+	let le  = element.learningStats.learningEfficiency ;
+	let ale = element.learningStats.absLearningEfficiency ;
+	let ne  = element.learningStats.numAttempts ;
+
+	if( ne >= 15 ) {
+		if( ale < 80 ) {
+			return 'highlight-note-m' ;
+		}
+	}
+	else if( ne => 9 ) {
+		if( le < 90 ) {
+			return 'highlight-note-h' ;
+		}
+		else if( ale <= 75 ) {
+			return 'highlight-note-h' ;
+		}
+	}
+	else {
+		if( le <= 75 && ale <= 75 ) {
+			return 'highlight-note-m' ;
+		}
+	}
+
+	return "" ;
+}
+
 // ---------------- Private functions ------------------------------------------
 function saveSectionSelectionOnServer() {
 
@@ -244,8 +284,8 @@ function processNotesElements() {
 
 			$scope.linearNEGroup.addNote( element ) ;
 
-			var section = element.section == null ? '99 - Sectionless' : element.section ;
-			var sectionGroup = sectionMap.get( section ) ;
+			const section = element.section == null ? '99 - Sectionless' : element.section;
+			let sectionGroup = sectionMap.get(section);
 
 			if( sectionGroup === undefined ) {
 				sectionGroup = {
@@ -277,42 +317,44 @@ function processNotesElements() {
 
 function qualifiesFilter( element ) {
 
-	if( element.elementType == NotesElementsTypes.prototype.TEACHER_NOTE ) {
+	if( element.elementType === NotesElementsTypes.prototype.TEACHER_NOTE ) {
 		return true ;
 	}
 
-	var lrnEffLabelFilters = $scope.filterCriteria.learningEfficiencyFilters ;
-	var diffLabelFilters   = $scope.filterCriteria.difficultyFilters ;
-	var levelFilters       = $scope.filterCriteria.levelFilters ;
-	var sectionFilters     = $scope.filterCriteria.sectionFilters ;
+	const lrnEffLabelFilters = $scope.filterCriteria.learningEfficiencyFilters;
+	const levelFilters = $scope.filterCriteria.levelFilters;
+	const sectionFilters = $scope.filterCriteria.sectionFilters;
+	const typeFilters = $scope.filterCriteria.typeFilters;
 
-    var filteredBySelectedSections = false ;
+	if( !typeFilters.includes( element.elementType ) ) {
+		return false ;
+	}
 
-    if( sectionFilters.length > 0 ) {
+	let filteredBySelectedSections = false;
+	if( sectionFilters.length > 0 ) {
         if( element.section != null ) {
             filteredBySelectedSections = true ;
-            for( var i=0; i<sectionFilters.length; i++ ) {
-                var selSec = sectionFilters[i] ;
-                if( selSec.section == element.section ) {
+            for( let i=0; i<sectionFilters.length; i++ ) {
+				const selSec = sectionFilters[i];
+				if( selSec.section === element.section ) {
                     filteredBySelectedSections = false ;
                     break ;
                 }
             }
         }
     }
-
     if( filteredBySelectedSections ) {
         return false ;
     }
 
-	var efficiencyLabel = element.learningStats.efficiencyLabel ;
+	let efficiencyLabel = element.learningStats.efficiencyLabel;
 	if( $scope.filterCriteria.useAbsoluteEfficiency ) {
 		efficiencyLabel = element.learningStats.absEfficiencyLabel ;
 	}
 
 	if( lrnEffLabelFilters.indexOf( efficiencyLabel ) != -1 ) {
-		for( var index=0; index<element.currentLevels.length; index++ ) {
-			var curLevelOfACard = element.currentLevels[ index ] ;
+		for( let index=0; index<element.currentLevels.length; index++ ) {
+			const curLevelOfACard = element.currentLevels[index];
 			if( levelFilters.indexOf( curLevelOfACard ) != -1 ) {
 				return true ;
 			}

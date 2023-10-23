@@ -14,7 +14,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="element in ng.events">
+            <tr ng-repeat="element in ng.events"
+                ng-class="getNotesHighlightClass( element )">
                 <td class="text-primary"><span ng-bind-html="element.time"></span></td>
                 <td><span ng-bind-html="element.event"></span></td>
                 <td>

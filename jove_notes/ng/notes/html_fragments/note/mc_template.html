@@ -1,5 +1,6 @@
 <div class="panel panel-default"
-     ng-repeat="element in ng.multiChoiceQuestions">
+     ng-repeat="element in ng.multiChoiceQuestions"
+     ng-class="getNotesHighlightClass( element )">
 
   <div ng-if="showUserStatistics" class="pull-right"
        ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">

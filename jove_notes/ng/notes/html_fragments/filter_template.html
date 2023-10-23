@@ -1,59 +1,66 @@
 <div class="container-fluid well">
-  <div class="row">
+    <div class="row">
+        <div class="col-sm-4 form-group">
+          <label for="sectionFilter">Sections: &nbsp;
+            <span class="glyphicon glyphicon-check"
+                  ng-click="selectAllSections()"></span>
+            &nbsp;
+          </label>
+          <div class="sec-visual">
+              <table>
+                <tr>
+                  <td ng-repeat="section in chapterDetails.sections">
+                      <div ng-class="getSectionDisplayClass( section )"></div>
+                  </td>
+                </tr>
+              </table>
+          </div>
+          <select id="sectionFilter"
+                  class="form-control" multiple="true"
+                  ng-model="filterCriteria.sectionFilters"
+                  ng-options="item.section for item in chapterDetails.sections track by item.section"
+                  ng-change="sectionFilterChanged()">
+          </select>
+        </div>
 
-    <div class="col-sm-4 form-group">
-      <label for="sectionFilter">Sections: &nbsp;
-        <span class="glyphicon glyphicon-check"
-              ng-click="selectAllSections()"></span>
-        &nbsp;
-      </label>
-      <div class="sec-visual">
-          <table>
-            <tr>
-              <td ng-repeat="section in chapterDetails.sections">
-                  <div ng-class="getSectionDisplayClass( section )"></div>
-              </td>
-            </tr>
-          </table>
-      </div>
-      <select id="sectionFilter" 
-              class="form-control" multiple="true"
-              ng-model="filterCriteria.sectionFilters"
-              ng-options="item.section for item in chapterDetails.sections track by item.section"
-              ng-change="sectionFilterChanged()">
-      </select>
+        <div class="col-sm-2 form-group">
+            <label for="learningEfficiencyFilter">Learning efficiency:</label> (
+            <label for="absEfficiency"> |&#x03BD;|</label>
+            <input id="absEfficiency" type="checkbox" ng-model="filterCriteria.useAbsoluteEfficiency"/> )
+            <select id="learningEfficiencyFilter"
+                    class="form-control" multiple="true"
+                    ng-model="filterCriteria.learningEfficiencyFilters"
+                    ng-options="obj.id as obj.name for obj in filterOptions.learningEfficiencyOptions">
+            </select>
+        </div>
+
+        <div class="col-sm-2 form-group">
+            <label for="levelFilter">Level filter:</label>
+            <select id="levelFilter"
+                    class="form-control" multiple="true"
+                    ng-model="filterCriteria.levelFilters"
+                    ng-options="obj.id as obj.name for obj in filterOptions.levelOptions">
+            </select>
+        </div>
+
+        <div class="col-sm-3">
+            <label for="typeFilter">Type filter:</label>
+            <select id="typeFilter"
+                    class="form-control" multiple="true"
+                    ng-model="filterCriteria.typeFilters"
+                    ng-options="obj.id as obj.name for obj in filterOptions.typeOptions">
+            </select>
+        </div>
+
+        <div class="col-sm-1">
+            <button type="submit" class="btn btn-primary btn-block"
+                    ng-click="applyFilter()">
+                Apply
+            </button>
+            <button type="submit" class="btn btn-default btn-block"
+                    ng-click="cancelFilter()">
+                Cancel
+            </button>
+        </div>
     </div>
-
-    <div class="col-sm-3 form-group">
-		<label for="learningEfficiencyFilter">Learning efficiency:</label>
-		<select id="learningEfficiencyFilter" 
-		        class="form-control" multiple="true" 
-		        ng-model="filterCriteria.learningEfficiencyFilters"
-		        ng-options="obj.id as obj.name for obj in filterOptions.learningEfficiencyOptions">
-		</select>
-    </div>
-
-    <div class="col-sm-3 form-group">
-		<label for="levelFilter">Level filter:</label>
-		<select id="levelFilter" 
-		        class="form-control" multiple="true" 
-		        ng-model="filterCriteria.levelFilters"
-		        ng-options="obj.id as obj.name for obj in filterOptions.levelOptions">
-		</select>
-    </div>
-
-    <div class="col-sm-2">
-      <input id="absEfficiency" type="checkbox" ng-model="filterCriteria.useAbsoluteEfficiency"/>
-      <label for="absEfficiency"> | &#x03BD; |</label>
-    	<button type="submit" class="btn btn-primary btn-block"
-    	        ng-click="applyFilter()">
-    		Apply
-    	</button>
-    	<button type="submit" class="btn btn-default btn-block"
-    	        ng-click="cancelFilter()">
-    		Cancel
-    	</button>
-    </div>
-
-  </div>
 </div>

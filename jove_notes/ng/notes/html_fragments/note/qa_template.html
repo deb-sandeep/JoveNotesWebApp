@@ -1,5 +1,6 @@
 <div class="panel panel-default"
      ng-repeat="element in ng.questionAnswers track by $index"
+     ng-class="getNotesHighlightClass( element )"
      style="page-break-inside:avoid;">
 
   <div ng-if="showUserStatistics" class="pull-right"

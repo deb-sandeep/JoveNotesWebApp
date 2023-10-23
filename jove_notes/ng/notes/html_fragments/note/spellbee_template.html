@@ -15,7 +15,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="element in ng.spellbeeWords">
+            <tr ng-repeat="element in ng.spellbeeWords"
+                ng-class="getNotesHighlightClass( element )">
                 <td width="60px">
                   <button type="button" class="btn btn-default" ng-click="playWordSound(element.word)">
                     <span class="glyphicon glyphicon-volume-up"></span>

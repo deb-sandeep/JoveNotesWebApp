@@ -33,6 +33,25 @@ function NotesFilterOptions() {
         { id : "L3",  name : "Level 3" },
         { id : "MAS", name : "Mastered" }
     ] ;
+
+    this.typeOptions = [
+        { 'id' : 'chem_compound',   'name' : 'Chemical compound' },
+        { 'id' : 'chem_equation',   'name' : 'Chemical equation' },
+        { 'id' : 'definition',      'name' : 'Definition' },
+        { 'id' : 'equation',        'name' : 'Equation' },
+        { 'id' : 'exercise',        'name' : 'Exercise' },
+        { 'id' : 'fib',             'name' : 'Fill the blanks' },
+        { 'id' : 'image_label',     'name' : 'Image label' },
+        { 'id' : 'matching',        'name' : 'Matching' },
+        { 'id' : 'multi_choice',    'name' : 'Multiple choice' },
+        { 'id' : 'question_answer', 'name' : 'Question Answer' },
+        { 'id' : 'rtc',             'name' : 'Ref to context' },
+        { 'id' : 'spellbee',        'name' : 'Spellbee' },
+        { 'id' : 'teacher_note',    'name' : 'Teacher note' },
+        { 'id' : 'true_false',      'name' : 'True / False' },
+        { 'id' : 'voice2text',      'name' : 'Voice to text' },
+        { 'id' : 'word_meaning',    'name' : 'Word meaning' },
+    ] ;
 }
 
 function ExerciseFilterOptions() {

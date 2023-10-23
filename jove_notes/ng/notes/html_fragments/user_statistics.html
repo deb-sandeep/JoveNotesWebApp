@@ -1,10 +1,15 @@
-<div ng-if="showUserStatistics" style="width: 75px;">
-	<span class="badge" 
-	      ng-class="element.difficultyLabel">
-		{{element.difficultyLabel}}
-	</span>
-	<span class="badge"
-	      ng-class="element.learningStats.efficiencyLabel">
-		{{element.learningStats.efficiencyLabel}}
-	</span>
+<div ng-if="showUserStatistics" style="width: 150px;">
+	<div class="pull-right">
+		<span class="badge">
+			{{element.learningStats.numAttempts}}
+		</span>
+		<span class="badge"
+			  ng-class="element.learningStats.efficiencyLabel">
+			&#x03BD; {{element.learningStats.learningEfficiency}}
+		</span>
+		<span class="badge"
+			  ng-class="element.learningStats.absEfficiencyLabel">
+			|&#x03BD;| {{element.learningStats.absLearningEfficiency}}
+		</span>
+	</div>
 </div>

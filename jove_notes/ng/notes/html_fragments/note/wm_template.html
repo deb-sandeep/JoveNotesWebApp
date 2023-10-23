@@ -14,7 +14,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="element in ng.wordMeanings">
+            <tr ng-repeat="element in ng.wordMeanings"
+                ng-class="getNotesHighlightClass( element )">
                 <td class="text-primary" ng-bind-html="element.word"></td>
                 <td ng-bind-html="element.meaning"></td>
                 <td>

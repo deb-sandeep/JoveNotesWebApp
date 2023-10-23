@@ -15,7 +15,8 @@
   <div class="panel-body">
     <blockquote ng-bind-html="element.context"></blockquote>
     <table class="table table-condensed table-hover">
-      <tr ng-repeat="ne in element.notesElements">
+      <tr ng-repeat="ne in element.notesElements"
+          ng-class="getNotesHighlightClass( ne )">
         <td ng-if="ne.elementType == 'word_meaning'"> 
           <p>
             <span class="label label-default" style="background:#C4C4C4;">Meaning of</span> 

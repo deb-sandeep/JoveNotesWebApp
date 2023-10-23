@@ -15,7 +15,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="element in ng.chemCompounds">
+            <tr ng-repeat="element in ng.chemCompounds"
+                ng-class="getNotesHighlightClass( element )">
                 <td><span ng-bind-html="element.symbol"></span></td>
                 <td><span ng-bind-html="element.chemicalName"></span></td>
                 <td><span ng-bind-html="element.commonName"></span></td>

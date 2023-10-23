@@ -8,12 +8,13 @@
     <div class="table-responsive">
       <table class="table table-condensed table-hover"
              style="margin-bottom:0px;">
-        <tr ng-repeat="element in ng.fibs">
+        <tr ng-repeat="element in ng.fibs"
+            ng-class="getNotesHighlightClass( element )">
             <td>
               <p ng-bind-html="element.question"></p>
             </td>
             <td>
-              <div class="pull-right" 
+              <div class="pull-right"
                    ng-include="'/apps/jove_notes/ng/notes/html_fragments/user_statistics.html'">
               </div>
               <div ng-if="element.inReview" class="pull-right">

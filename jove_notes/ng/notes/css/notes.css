@@ -24,3 +24,16 @@
     background-color:#D0F9FF;
     padding: 7px;   
 }
+
+.highlight-note-h {
+    background-color: rgba(255, 0, 0, 0.3) ;
+    font-weight: bold;
+}
+
+.highlight-note-m {
+    background-color: rgba(255, 255, 0, 0.2);
+}
+
+.highlight-note-l {
+    background-color: rgba(255, 255, 0, 0.1);
+}
