@@ -1,4 +1,4 @@
-<div class="container-fluid well">
+<div class="container-fluid well" style="padding:5px;">
     <div class="row">
         <div class="col-sm-4 form-group">
           <label for="sectionFilter">Sections: &nbsp;
@@ -24,7 +24,7 @@
         </div>
 
         <div class="col-sm-2 form-group">
-            <label for="learningEfficiencyFilter">Learning efficiency:</label> (
+            <label for="learningEfficiencyFilter">Efficiency:</label> (
             <label for="absEfficiency"> |&#x03BD;|</label>
             <input id="absEfficiency" type="checkbox" ng-model="filterCriteria.useAbsoluteEfficiency"/> )
             <select id="learningEfficiencyFilter"
@@ -53,13 +53,15 @@
         </div>
 
         <div class="col-sm-1">
-            <button type="submit" class="btn btn-primary btn-block"
-                    ng-click="applyFilter()">
-                Apply
-            </button>
+<!--            <p/>-->
+<!--            <button type="submit" class="btn btn-primary btn-block"-->
+<!--                    ng-click="applyFilter()">-->
+<!--                Apply-->
+<!--            </button>-->
+            <p/>
             <button type="submit" class="btn btn-default btn-block"
                     ng-click="cancelFilter()">
-                Cancel
+                Hide
             </button>
         </div>
     </div>

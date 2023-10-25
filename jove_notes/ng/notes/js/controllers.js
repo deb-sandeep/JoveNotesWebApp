@@ -85,6 +85,19 @@ $scope.sectionNEGroups       = [] ;
 }
 
 // ---------------- Controller methods -----------------------------------------
+$scope.$watchGroup(
+	[
+		'filterCriteria.useAbsoluteEfficiency',
+		'filterCriteria.learningEfficiencyFilters',
+		'filterCriteria.difficultyFilters',
+		'filterCriteria.levelFilters',
+		'filterCriteria.typeFilters'
+	],
+	function( newVals, oldVals ) {
+		$scope.applyFilter() ;
+	}
+) ;
+
 $scope.scrollTo = function( id ) {
   $location.hash( id ) ; 
   $anchorScroll() ;
@@ -108,13 +121,20 @@ $scope.toggleFilterForm = function() {
 
 $scope.applyFilter = function() {
 	$scope.filterCriteria.serialize() ;
-	$scope.toggleFilterForm() ;
 	processNotesElements() ;
 }
 
 $scope.cancelFilter = function() {
 	$scope.showFilterForm = false ;
 	$scope.filterCriteria.deserialize() ;
+	// Note that when we deserialize the filter criteria, we empty out the section filters
+	// Here we repopulate them based on the state of selection in the current page.
+	for(let i=0; i<$scope.chapterDetails.sections.length; i++ ) {
+		const section = $scope.chapterDetails.sections[i];
+		if( section.selected == 1 ) {
+			$scope.filterCriteria.sectionFilters.push( section ) ;
+		}
+	}
 }
 
 $scope.playWordSound = function( word ) {
@@ -130,21 +150,22 @@ $scope.playSoundClip = function( clipName ) {
 
 $scope.sectionFilterChanged = function() {
 
-    for( var i=0; i<$scope.chapterDetails.sections.length; i++ ) {
+    for(let i=0; i<$scope.chapterDetails.sections.length; i++ ) {
 
-        var masterSec = $scope.chapterDetails.sections[i] ;
-        var selected = false ;
+		const masterSec = $scope.chapterDetails.sections[i];
+		let selected = false;
 
-        for( var j=0; j<$scope.filterCriteria.sectionFilters.length; j++ ) {
+		for(let j=0; j<$scope.filterCriteria.sectionFilters.length; j++ ) {
 
-            var selSec = $scope.filterCriteria.sectionFilters[j] ;
-            if( masterSec.section == selSec.section ) {
+			const selSec = $scope.filterCriteria.sectionFilters[j];
+			if( masterSec.section == selSec.section ) {
                 selected = true ;
             }
         }
         masterSec.selected = selected ? 1 : 0 ;
     }
     saveSectionSelectionOnServer() ;
+	$scope.applyFilter() ;
 }
 
 $scope.getSectionDisplayClass = function( section ) {
@@ -163,8 +184,8 @@ $scope.selectAllSections = function() {
             section.selected = 1 ;
             $scope.filterCriteria.sectionFilters.push( section ) ;
         }
-	    saveSectionSelectionOnServer() ;
-    }
+		$scope.sectionFilterChanged() ;
+	}
 }
 
 $scope.toggleNotesLayout = function() {
