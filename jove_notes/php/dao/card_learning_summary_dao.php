@@ -63,6 +63,20 @@ QUERY;
         parent::executeUpdate( $query ) ;
     }
 
+    function promoteCardToMAS( $userName, $cardId ) {
+
+$query = <<< QUERY
+update jove_notes.card_learning_summary
+set
+  current_level = 'MAS'
+where
+  student_name = '$userName' and
+  card_id = $cardId
+QUERY;
+
+        parent::executeUpdate( $query ) ;
+    }
+
     function getCardLearningSummary( $userName, $cardId ) {
 
 $query = <<< QUERY

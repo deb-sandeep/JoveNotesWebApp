@@ -34,7 +34,13 @@
                 </span>
                 <span class="badge {{currentQuestion.learningStats.currentLevel}}">
                 {{currentQuestion.learningStats.currentLevel}}
-                </span>                    
+                </span>
+                &nbsp;
+                <button type="button"
+                        class="btn btn-lg btn-success pull-right"
+                        ng-click="promoteQuestion( currentQuestion )">
+                    <span class="glyphicon glyphicon-education"></span>
+                </button>
             </td>
             </tr>
             </table>

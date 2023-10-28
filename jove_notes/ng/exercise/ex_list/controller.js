@@ -96,6 +96,10 @@ testPaperApp.controller( 'ExerciseListController', function( $scope, $http, $rou
         }) ;
     }
 
+    $scope.promoteQuestion = function( question ) {
+        promoteCard( question ) ;
+    }
+
     $scope.endExercise = function( rating ) {
         if( rating === 'abort' ) {
             console.log( "Aborting exerise" ) ;
@@ -228,6 +232,27 @@ testPaperApp.controller( 'ExerciseListController', function( $scope, $http, $rou
     }
 
     // ---------------- Server calls -----------------------------------------------
+    function promoteCard( question ) {
+
+        const cardId       = question.questionId;
+        const chapterId    = question._chapterDetails.chapterId;
+
+        console.log( "Calling Exercise API for promoting card." ) ;
+        $http.post( '/jove_notes/api/Exercise/PromoteCard', {
+            "chapterId" : chapterId,
+            "cardId" : cardId
+        })
+        .success( function( data ){
+            question._attemptedInThisListing = true ;
+            filterCards() ;
+        })
+        .error( function( data, status ){
+            $scope.addErrorAlert( "Exercise::PromoteCard API call failed. " +
+                "Status = " + status + ", " +
+                "Response = " + data ) ;
+        }) ;
+    }
+
     function callExerciseAPIToCreateNewSession( callback ) {
 
         console.log( "Calling Exercise API for creating new session." ) ;

@@ -4,8 +4,11 @@ require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/exercise/get_exercise_ba
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/exercise/get_exercise_session_action.php" ) ;
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/exercise/create_new_session_action.php" ) ;
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/exercise/update_exercise_session_action.php" ) ;
+require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/api/exercise/promote_exercise_question_action.php" ) ;
 
 class ExerciseAPI extends AbstractJoveNotesAPI {
+
+    protected $logger = null ;
 
 	function __construct() {
 		parent::__construct() ;
@@ -23,6 +26,9 @@ class ExerciseAPI extends AbstractJoveNotesAPI {
 		if( $entityName == 'NewSession' ) {
 			$action = new CreateNewSessionAction() ;
 		}
+        elseif( $entityName == 'PromoteCard' ) {
+            $action = new PromoteExerciseQuestionAction( $this->logger ) ;
+        }
         elseif( $entityName == 'UpdateSession' ) {
             $action = new UpdateExerciseSessionAction( $this->logger ) ;
         }
