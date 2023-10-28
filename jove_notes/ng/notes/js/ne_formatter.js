@@ -44,7 +44,7 @@ function NotesElementFormatter( chapterDetails, $sce ) {
 
 	this.formatFIB = function( fibElement ){
 		
-		var formattedAnswer         = "&ctdot;&nbsp;&nbsp;" + fibElement.question ;
+		var formattedAnswer         = "&ctdot;&nbsp;&nbsp;" + textFormatter.format( fibElement.question ) ;
 		var formattedPracticeAnswer = "&ctdot;&nbsp;&nbsp;" + fibElement.question ;
 		var numBlanks               = fibElement.answers.length ;
 
