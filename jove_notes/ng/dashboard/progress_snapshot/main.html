@@ -31,7 +31,7 @@
                         <span ng-show="showPercentage">123</span>
                     </button>
                     <button type="button" class="btn btn-info btn-xs"
-                            ng-click="launchChainedFlashcards('urgency')">
+                            ng-click="launchChainedFlashcards('current_focus')">
                             Launch Flash Cards
                     </button>
                 </th>
@@ -43,6 +43,13 @@
                    <span class="glyphicon glyphicon-adjust"></span>
                 </th>
                 -->
+                <th style="width:30px;text-align:center;">
+                    <button type="button" class="btn btn-default btn-xs"
+                            ng-click="toggleShowOnlyCurrentFocus()">
+                        <span class="glyphicon glyphicon-flag" style="color:lightgray" ng-hide="showOnlyCurrentFocus"></span>
+                        <span class="glyphicon glyphicon-flag" style="color:red" ng-show="showOnlyCurrentFocus"></span>
+                    </button>
+                </th>
                 <th style="width:30px;text-align:center;">
                    <span class="glyphicon glyphicon-th"></span>
                 </th>
@@ -105,7 +112,9 @@
                               class="glyphicon glyphicon-remove-circle"
                               style="color: red"/>
                     </span>
-                    <span ng-show="!rowData.isNotesAuthorized">{{rowData.name}}</span>
+                    <span ng-show="!rowData.isNotesAuthorized">
+                        {{rowData.name}}
+                    </span>
                 </td>
                 <!--
                 <td>
@@ -124,6 +133,14 @@
                     </span>
                 </td>
                 -->
+                <td>
+                    <a type="button" class="btn btn-default btn-xs"
+                       ng-show="rowData.rowType == 2"
+                       ng-click="rowData.toggleCurrentFocus()">
+                        <span class="glyphicon glyphicon-flag" style="color:lightgray"  ng-hide="rowData.isRowInCurrentFocus"></span>
+                        <span class="glyphicon glyphicon-flag" style="color:red" ng-show="rowData.isRowInCurrentFocus"></span>
+                    </a>
+                </td>
                 <td>
                     <a href="/apps/jove_notes/ng/flashcard/index.php?chapterId={{rowData.chapterId}}"
                        ng-show="rowData.isFlashcardAuthorized && rowData.hasCardsAvailable()">

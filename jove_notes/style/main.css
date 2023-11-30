@@ -85,6 +85,7 @@ p {
 
 .TOT {
 	background-color: #E7E7E7 !important;
+	width: 45px !important;
 }
 
 .NS {
@@ -120,6 +121,7 @@ p {
 .MAS {
 	background-color: #00FF00 !important;
 	color: #757575 !important;
+	width: 45px !important;
 }
 
 .projected-marks {

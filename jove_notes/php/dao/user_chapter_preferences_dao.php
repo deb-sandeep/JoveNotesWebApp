@@ -8,7 +8,23 @@ class UserChapterPrefsDAO extends AbstractDAO {
 		parent::__construct() ;
 	}
 
-	function updateHiddenPreference( $userName, $chapterId, $hidden ) {
+	function getChapterPreferencesForUser( $userName, $chapterIdList ) {
+
+		$idList = implode( ",", $chapterIdList ) ;
+
+		$query = <<< QUERY
+select chapter_id, is_hidden, is_deselected, is_in_syllabus, is_current_focus
+from jove_notes.user_chapter_preferences
+where
+	student_name = '$userName' and
+	chapter_id in ( $idList ) 
+QUERY;
+
+		$colNames = [ "chapter_id", "is_hidden", "is_deselected", "is_in_syllabus", "is_current_focus" ] ;
+		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
+	}
+
+	function updateHiddenPreference( $userName, $chapterId, $hidden ): void {
 
 		$hiddenBool = $hidden ? 1 : 0 ;
 
@@ -23,7 +39,22 @@ QUERY;
 		parent::executeUpdate( $query, 0 ) ;
 	}
 
-	function updateDeselectPreference( $userName, $chapterIds, $selectionState ) {
+	function updateCurrentFocusPreference($userName, $chapterId, $flag ): void {
+
+		$currentFocusBool = $flag ? 1 : 0 ;
+
+		$query = <<< QUERY
+insert into 
+	jove_notes.user_chapter_preferences( student_name, chapter_id, is_current_focus ) 
+values( '$userName', $chapterId, $currentFocusBool ) 
+on duplicate key update    
+	is_current_focus = values( is_current_focus )
+QUERY;
+
+		parent::executeUpdate( $query, 0 ) ;
+	}
+
+	function updateDeselectPreference( $userName, $chapterIds, $selectionState ): void {
 
 		$deselectBool = $selectionState ? 0 : 1 ;
 
@@ -50,7 +81,27 @@ QUERY;
 		parent::executeUpdate( $query, 0 ) ;
 	}
 
-	function updateInSyllabusPreference( $userName, $chapterIds, $selectionState ) {
+	function updateVisibilityInBatch( $userName, $visibilityData ): void {
+
+		$valuesStr = "( '$userName', $visibilityData[0], $visibilityData[1] )" ;
+		for( $i=2; $i<count( $visibilityData ); $i+=2 ) {
+			$valuesStr = $valuesStr . ",( '$userName', "
+				. $visibilityData[$i] . ", "
+				. $visibilityData[$i+1] . " )" ;
+		}
+
+		$query = <<< QUERY
+insert into 
+	jove_notes.user_chapter_preferences( student_name, chapter_id, is_hidden ) 
+values $valuesStr 
+on duplicate key update    
+	is_hidden = values( is_hidden )
+QUERY;
+
+		parent::executeUpdate( $query, 0 ) ;
+	}
+
+	function updateInSyllabusPreference( $userName, $chapterIds, $selectionState ): void {
 
 		$inSyllabusBool = $selectionState ? 1 : 0 ;
 
@@ -77,46 +128,6 @@ QUERY;
 		parent::executeUpdate( $query, 0 ) ;
 	}
 
-	/**
-	 * This function returns an associative array with key as the chapter ID and
-	 * value as either 0 or 1.. implying whether the chapter is visible or
-	 * hidden respectively.
-	 */
-	function getChapterPreferencesForUser( $userName, $chapterIdList ) {
-
-      $idList = implode( ",", $chapterIdList ) ;
-
-$query = <<< QUERY
-select chapter_id, is_hidden, is_deselected, is_in_syllabus
-from jove_notes.user_chapter_preferences
-where
-	student_name = '$userName' and
-	chapter_id in ( $idList ) 
-QUERY;
-
-		$colNames = [ "chapter_id", "is_hidden", "is_deselected", "is_in_syllabus" ] ;
-		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
-	}
-
-	function updateVisibilityInBatch( $userName, $visibilityData ) {
-		
-		$valuesStr = "( '$userName', $visibilityData[0], $visibilityData[1] )" ;
-		for( $i=2; $i<count( $visibilityData ); $i+=2 ) {
-			$valuesStr = $valuesStr . ",( '$userName', " 
-				                    . $visibilityData[$i] . ", " 
-				                    . $visibilityData[$i+1] . " )" ;
-		}
-
-$query = <<< QUERY
-insert into 
-	jove_notes.user_chapter_preferences( student_name, chapter_id, is_hidden ) 
-values $valuesStr 
-on duplicate key update    
-	is_hidden = values( is_hidden )
-QUERY;
-
-		parent::executeUpdate( $query, 0 ) ;
-	}
 }
 ?>
 

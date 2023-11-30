@@ -53,6 +53,8 @@ function RowData( rowType, name, rowId, parentRowId ) {
     this.isRowInSyllabus          = false ;
     this.isRowPartiallyInSyllabus = false ;
 
+    this.isRowInCurrentFocus = false ;
+
     this.hasCardsAvailable = function() {
         return (this.totalCards - this.masteredCards) > 0 ;
     }
@@ -134,6 +136,19 @@ function RowData( rowType, name, rowId, parentRowId ) {
         return affectedChapterIds ;
     }
 
+    this.toggleCurrentFocus = function() {
+        this.isRowInCurrentFocus = !this.isRowInCurrentFocus ;
+        $http.post( "/jove_notes/api/ProgressSnapshot", {
+            'action'         : 'update_current_focus',
+            'chapterId'      : this.chapterId,
+            'isCurrentFocus' : this.isRowInCurrentFocus,
+        } )
+            .error( function( data ){
+                $scope.addErrorAlert( "API call failed. " + data ) ;
+            });
+        recomputeStatistics() ;
+    }
+
     this.toggleVisibility = function() {
         this.isHidden = !this.isHidden ;
         $http.post( "/jove_notes/api/ProgressSnapshot", {
@@ -190,6 +205,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
         this.isHidden               = chapter.isHidden ;
         this.isRowSelected          = !chapter.isDeselected ;
         this.isRowInSyllabus        = chapter.isInSyllabus ;
+        this.isRowInCurrentFocus    = chapter.isCurrentFocus ;
 
         this.urgencyScore = this.computeUrgencyScore() ;
     }
@@ -238,15 +254,26 @@ function RowData( rowType, name, rowId, parentRowId ) {
     this.isTreeRowVisible = function() {
 
         if( this.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
-            if( this.isHidden ) {
-                if( this.isRowInSyllabus ) {
-                    return true ;
-                }
-                if( !$scope.showHiddenChapters ) {
-                    return false ;
-                }
+            // The base visibility of a chapter determined by whether its hidden
+            // flag is set.
+            //
+            // If a row is visible at this point, the showOnlyCurrentFocus preference
+            // is checked. If the showOnlyCurrentFocus flag is set and the row is
+            // not marked as current focus, it is hidden.
+            //
+            // Overriding cases
+            //   - If the showHiddenChapters preference is or
+            //   - If the chapter is in syllabus, it is shown always
+            let visible = !this.isHidden ;
+
+            if( visible && $scope.showOnlyCurrentFocus ) {
+                visible = this.isRowInCurrentFocus ;
             }
-            return true ;
+
+            if( $scope.showHiddenChapters || this.isRowInSyllabus ) {
+                visible = true ;
+            }
+            return visible ;
         }
         else if( ( this.rowType == RowData.prototype.ROW_TYPE_SUBJECT ) ||
                  ( this.rowType == RowData.prototype.ROW_TYPE_SYLLABUS ) ) {
@@ -319,6 +346,7 @@ $scope.$parent.pageTitle         = "Progress Dashboard" ;
 $scope.$parent.currentReport     = 'ProgressSnapshot' ;
 $scope.showHiddenChapters        = false ;
 $scope.syllabusMerged            = false ;
+$scope.showOnlyCurrentFocus      = false ;
 $scope.showPercentage            = false ;
 $scope.progressSnapshot          = null ;
 $scope.alreadyFetchedAllChapters = false ;
@@ -382,6 +410,25 @@ $scope.toggleMergeSyllabus = function() {
     });  
 }
 
+$scope.toggleShowOnlyCurrentFocus = function() {
+
+    $scope.showOnlyCurrentFocus = !$scope.showOnlyCurrentFocus ;
+    $http.put( "/__fw__/api/UserPreference", {
+        'jove_notes.showOnlyCurrentFocus' : $scope.showOnlyCurrentFocus ? 'true' : 'false'
+    } )
+    .success( function( data ){
+        if( !$scope.alreadyFetchedAllChapters ) {
+            refreshData() ;
+        }
+        else {
+            recomputeStatistics() ;
+        }
+    } )
+    .error( function( data ){
+        log.error( "Could not set hidden chapter preferences for user." ) ;
+    });
+}
+
 $scope.deleteChapter = function( chapterId ) {
 
     bootbox.confirm( "<h3>Are you sure you want to delete this chapter?</h3>" + 
@@ -434,6 +481,9 @@ $scope.launchChainedFlashcards = function( type ) {
         type == 'urgency' ) {
         chapters = getSelectedChapterRows() ;
     }
+    else if( type == 'current_focus' ) {
+        chapters = getCurrentFocusChapterRows() ;
+    }
     else if( type == 'syllabus' ) {
         chapters = getInSyllabusChapterRows() ;
     }
@@ -443,7 +493,6 @@ $scope.launchChainedFlashcards = function( type ) {
                      "selected chapters don't have available cards." ) ;
         return ;
     }
-
 
     if( type == 'randomize' ) {
         chapters.shuffle() ;
@@ -551,6 +600,7 @@ function refreshData() {
 function digestPreferences( preferences ) {
     $scope.showHiddenChapters   = preferences[ "jove_notes.showHiddenChapters" ] ;
     $scope.syllabusMerged       = preferences[ "jove_notes.syllabusMerged" ] ;
+    $scope.showOnlyCurrentFocus = preferences[ "jove_notes.showOnlyCurrentFocus" ] ;
 }
 
 function prepareDataForDisplay( rawData ) {
@@ -936,6 +986,24 @@ function getSelectedChapterRows() {
         }
     }
     return selectedRows ;
+}
+
+function getCurrentFocusChapterRows() {
+
+    let currentFocusRows = [] ;
+    for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
+
+        let rowData = $scope.progressSnapshot[i] ;
+        if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+            if( rowData.isTreeRowVisible() &&
+                rowData.isRowInCurrentFocus &&
+                rowData.hasCardsAvailable() ) {
+
+                currentFocusRows.push( rowData ) ;
+            }
+        }
+    }
+    return currentFocusRows ;
 }
 
 function getInSyllabusChapterRows() {

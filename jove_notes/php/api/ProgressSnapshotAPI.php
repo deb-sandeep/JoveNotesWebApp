@@ -34,6 +34,7 @@ class ChapterProgressSnapshot {
 	public $masteredCards ;
 	public $numSSRMaturedCards ;
 	public $isHidden ;
+    public $isCurrentFocus ;
 	public $isDeselected ;
 	public $isInSyllabus ;
 	public $preparednessScore ;
@@ -65,6 +66,7 @@ class ChapterProgressSnapshot {
 		$this->masteredCards      = 0 ;
 		$this->numSSRMaturedCards = 0 ;
 		$this->isHidden           = false ;
+        $this->isCurrentFocus     = false ;
 		$this->isDeselected       = true ;
 		$this->isInSyllabus       = false ;
 		$this->preparednessScore  = 0 ;
@@ -116,6 +118,13 @@ class ProgressSnapshotAPI extends API {
 			$response->responseCode = APIResponse::SC_OK ;
 			$response->responseBody = "Success" ;
 		}
+        else if( $action == "update_current_focus" ) {
+            $this->ucpDAO->updateCurrentFocusPreference( ExecutionContext::getCurrentUserName(),
+                                                         $request->requestBody->chapterId,
+                                                         $request->requestBody->isCurrentFocus ) ;
+            $response->responseCode = APIResponse::SC_OK ;
+            $response->responseBody = "Success" ;
+        }
 		else if( $action == "update_visibility_batch" ) {
 			$this->ucpDAO->updateVisibilityInBatch( ExecutionContext::getCurrentUserName(),
 				                                   $request->requestBody->visibilityData ) ;
@@ -148,7 +157,7 @@ class ProgressSnapshotAPI extends API {
 		}
 	}
 
-	public function doGet( $request, &$response ) {
+	public function doGet( $request, &$response ): void {
 
 		$this->logger->debug( "Executing doGet in ProgressSnapshotAPI" ) ;
 
@@ -170,7 +179,6 @@ class ProgressSnapshotAPI extends API {
 
 		$response->responseCode = APIResponse::SC_OK ;
 		$response->responseBody = $responseObj ;
-		//$response->responseBody = $this->getReferenceOutput() ;
 	}
 
 	// Set the responseBody to the output of this function if we want to send 
@@ -248,7 +256,8 @@ class ProgressSnapshotAPI extends API {
 		$preferenceKeys = [ "jove_notes.showHiddenChapters", 
 		                    "jove_notes.showOnlySelectedRows",
 		                    "jove_notes.showHiddenExercises",
-		                    "jove_notes.syllabusMerged" ] ;
+		                    "jove_notes.syllabusMerged",
+                            "jove_notes.showOnlyCurrentFocus" ] ;
 
 		$preferences = array() ;
 		foreach( $preferenceKeys as $key ) {
@@ -336,7 +345,7 @@ class ProgressSnapshotAPI extends API {
 		}
 	}
 
-	private function associateUserChapterPreferences() {
+	private function associateUserChapterPreferences(): void {
 
 		$preferences = $this->ucpDAO->getChapterPreferencesForUser( 
 									  ExecutionContext::getCurrentUserName(),
@@ -344,16 +353,20 @@ class ProgressSnapshotAPI extends API {
 
 		foreach( $preferences as $pref ) {
 
-			$chapterId    = $pref[ "chapter_id"    ] ;
-			$isHidden     = $pref[ "is_hidden"     ] ;
-			$isDeselected = $pref[ "is_deselected" ] ;
-			$isInSyllabus = $pref[ "is_in_syllabus"] ;
+			$chapterId      = $pref[ "chapter_id"       ] ;
+			$isHidden       = $pref[ "is_hidden"        ] ;
+            $isCurrentFocus = $pref[ "is_current_focus" ] ;
+			$isDeselected   = $pref[ "is_deselected"    ] ;
+			$isInSyllabus   = $pref[ "is_in_syllabus"   ] ;
 
 			if( array_key_exists( $chapterId, $this->chapters ) ) {
 				$chapter = &$this->chapters[ $chapterId ] ;
 				if( $isHidden == 1 ) {
 					$chapter->isHidden = true ;
 				}
+                if( $isCurrentFocus == 1 ) {
+                    $chapter->isCurrentFocus = true ;
+                }
 				if( $isInSyllabus == 1 ) {
 					$chapter->isInSyllabus = true ;
 				}
@@ -404,6 +417,7 @@ class ProgressSnapshotAPI extends API {
 		$responseObj[ "masteredCards"          ] = $chapter->masteredCards ;
 		$responseObj[ "numSSRMaturedCards"     ] = $chapter->numSSRMaturedCards ;
 		$responseObj[ "isHidden"               ] = $chapter->isHidden ;
+        $responseObj[ "isCurrentFocus"         ] = $chapter->isCurrentFocus ;
 		$responseObj[ "isDeselected"           ] = $chapter->isDeselected ;
 		$responseObj[ "isInSyllabus"           ] = $chapter->isInSyllabus ;
 		$responseObj[ "preparednessScore"      ] = $chapter->preparednessScore ;
