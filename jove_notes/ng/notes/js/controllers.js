@@ -1,8 +1,8 @@
 notesApp.controller( 'NotesController', function( $scope, $http, $sce, $location, $anchorScroll ) {
 
 // ---------------- Local variables --------------------------------------------
-var jnUtil      = new JoveNotesUtil() ;
-var neFormatter = null ;
+const jnUtil = new JoveNotesUtil();
+let neFormatter = null;
 
 // ---------------- Constants and inner class definition -----------------------
 function FilterCriteria() {
@@ -26,8 +26,8 @@ function FilterCriteria() {
 
     this.deserialize = function() {
         $.cookie.json = true ;
-        var crit = $.cookie( 'notesCriteria' ) ;
-        if( typeof crit != 'undefined' ) {
+		const crit = $.cookie('notesCriteria');
+		if( typeof crit != 'undefined' ) {
 	        log.debug( "Deserialized filter criteria." ) ;
 	        this.useAbsoluteEfficiency     = crit.useAbsoluteEfficiency ;
 			this.learningEfficiencyFilters = crit.learningEfficiencyFilters ;
@@ -37,7 +37,7 @@ function FilterCriteria() {
 			// Set the section filters to an empty array because they are
 			// contextual per chapter and will be loaded afresh everytime
 			this.sectionFilters = [] ;
-        } ;
+        }
     }
 
     this.setDefaultCriteria = function() {
@@ -131,7 +131,7 @@ $scope.cancelFilter = function() {
 	// Here we repopulate them based on the state of selection in the current page.
 	for(let i=0; i<$scope.chapterDetails.sections.length; i++ ) {
 		const section = $scope.chapterDetails.sections[i];
-		if( section.selected == 1 ) {
+		if( section.selected === 1 ) {
 			$scope.filterCriteria.sectionFilters.push( section ) ;
 		}
 	}
@@ -142,9 +142,9 @@ $scope.playWordSound = function( word ) {
 }
 
 $scope.playSoundClip = function( clipName ) {
-	
-	var audioFolder = jnUtil.getAudioResourcePath( $scope.chapterDetails ) ;
-	var clipPath = audioFolder + clipName ;
+
+	const audioFolder = jnUtil.getAudioResourcePath($scope.chapterDetails);
+	const clipPath = audioFolder + clipName;
 	jnUtil.playSoundClip( clipPath ) ;
 }
 
@@ -158,7 +158,7 @@ $scope.sectionFilterChanged = function() {
 		for(let j=0; j<$scope.filterCriteria.sectionFilters.length; j++ ) {
 
 			const selSec = $scope.filterCriteria.sectionFilters[j];
-			if( masterSec.section == selSec.section ) {
+			if( masterSec.section === selSec.section ) {
                 selected = true ;
             }
         }
@@ -169,7 +169,7 @@ $scope.sectionFilterChanged = function() {
 }
 
 $scope.getSectionDisplayClass = function( section ) {
-    return (section.selected == 1) ? "sel-section" : "unsel-section" ;
+    return (section.selected === 1) ? "sel-section" : "unsel-section" ;
 }
 
 $scope.selectAllSections = function() {
@@ -179,9 +179,9 @@ $scope.selectAllSections = function() {
 
         $scope.filterCriteria.sectionFilters.length = 0 ;
         
-        for( var i=0; i<$scope.chapterDetails.sections.length; i++ ) {
-            var section = $scope.chapterDetails.sections[i] ;
-            section.selected = 1 ;
+        for( let i=0; i<$scope.chapterDetails.sections.length; i++ ) {
+			const section = $scope.chapterDetails.sections[i];
+			section.selected = 1 ;
             $scope.filterCriteria.sectionFilters.push( section ) ;
         }
 		$scope.sectionFilterChanged() ;
@@ -189,7 +189,7 @@ $scope.selectAllSections = function() {
 }
 
 $scope.toggleNotesLayout = function() {
-	$scope.notesLayoutMode = ( $scope.notesLayoutMode == 'sections' ) ? 
+	$scope.notesLayoutMode = ( $scope.notesLayoutMode === 'sections' ) ?
 	                         'linear' : 'sections' ;
 }
 
@@ -197,14 +197,14 @@ $scope.getNotesHighlightClass = function( element ) {
 
 	let le  = element.learningStats.learningEfficiency ;
 	let ale = element.learningStats.absLearningEfficiency ;
-	let ne  = element.learningStats.numAttempts ;
+	let na  = element.learningStats.numAttempts ;
 
-	if( ne >= 15 ) {
+	if( na >= 15 ) {
 		if( ale < 80 ) {
 			return 'highlight-note-m' ;
 		}
 	}
-	else if( ne => 9 ) {
+	else if( na >= 9 ) {
 		if( le < 90 ) {
 			return 'highlight-note-h' ;
 		}
@@ -272,9 +272,9 @@ function refreshSectionFilters() {
 
     if( $scope.chapterDetails != null ) {
         $scope.filterCriteria.sectionFilters.length = 0 ;
-        for( var i=0; i<$scope.chapterDetails.sections.length; i++ ) {
-            var section = $scope.chapterDetails.sections[i] ;
-            if( section.selected == 1 ) {
+        for( let i=0; i<$scope.chapterDetails.sections.length; i++ ) {
+			const section = $scope.chapterDetails.sections[i];
+			if( section.selected === 1 ) {
                 $scope.filterCriteria.sectionFilters.push( section ) ;
             }
         }
@@ -283,17 +283,21 @@ function refreshSectionFilters() {
 
 function processNotesElements() {
 
+	if( $scope.notesElements == null || $scope.notesElements.length === 0 ) {
+		return ;
+	}
+
 	log.debug( "Processing notes elements." ) ;
 
 	// Reset all the arrrays before we fill them with filtered contents
 	$scope.linearNEGroup.setFormatter( neFormatter ) ;
 	$scope.sectionNEGroups.length = 0 ;
 
-	var sectionMap = new Map() ;
+	const sectionMap = new Map();
 
-	for( index=0; index<$scope.notesElements.length; index++ ) {
+	for( let index=0; index<$scope.notesElements.length; index++ ) {
 
-		var element = jQuery.extend( true, {}, $scope.notesElements[ index ] ) ;
+		const element = jQuery.extend(true, {}, $scope.notesElements[index]);
 
 		// Inject the formatted flag to avoid duplicate formatting
 		element.formatted = false ;
@@ -373,10 +377,10 @@ function qualifiesFilter( element ) {
 		efficiencyLabel = element.learningStats.absEfficiencyLabel ;
 	}
 
-	if( lrnEffLabelFilters.indexOf( efficiencyLabel ) != -1 ) {
+	if( lrnEffLabelFilters.indexOf( efficiencyLabel ) !== -1 ) {
 		for( let index=0; index<element.currentLevels.length; index++ ) {
 			const curLevelOfACard = element.currentLevels[index];
-			if( levelFilters.indexOf( curLevelOfACard ) != -1 ) {
+			if( levelFilters.indexOf( curLevelOfACard ) !== -1 ) {
 				return true ;
 			}
 		}

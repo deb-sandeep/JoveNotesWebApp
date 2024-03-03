@@ -542,3 +542,8 @@ table.pure-table ol {
 
 	font-family: 'Courier New';
 }
+
+blockquote {
+	font-size: 14px;
+	font-color: blue;
+}
