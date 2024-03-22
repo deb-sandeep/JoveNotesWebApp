@@ -80,14 +80,30 @@
         <div class="pull-right">
 
             <button type="button" 
+                    class="btn btn-success btn-lg"
+                    ng-click="toggleFooterDirection()"
+                    data-toggle="tooltip" data-placement="top" 
+                    title="Toggle footer direction">
+                <span class="glyphicon glyphicon-transfer"></span>
+            </button>
+
+            <button type="button"
+                    class="btn btn-warning btn-lg"
+                    ng-click="markForReview()"
+                    data-toggle="tooltip" data-placement="top"
+                    title="Mark for review">
+                <span class="glyphicon glyphicon-registration-mark"></span>
+            </button>
+
+            <button type="button"
                     class="btn btn-info btn-lg"
                     ng-click="purgeCard()"
-                    data-toggle="tooltip" data-placement="top" 
+                    data-toggle="tooltip" data-placement="top"
                     title="Purge card">
                 <span class="glyphicon glyphicon-new-window"></span>
             </button>
 
-            <button type="button" 
+            <button type="button"
                     class="btn btn-info btn-lg"
                     ng-click="increaseFontSize()"
                     data-toggle="tooltip" data-placement="top" 
@@ -328,6 +344,22 @@
                 <span class="glyphicon glyphicon-new-window"></span>
             </button>
 
+            <button type="button"
+                    class="btn btn-warning btn-lg"
+                    ng-click="markForReview()"
+                    data-toggle="tooltip" data-placement="top"
+                    title="Mark for review">
+                <span class="glyphicon glyphicon-registration-mark"></span>
+            </button>
+
+            <button type="button"
+                    class="btn btn-success btn-lg"
+                    ng-click="toggleFooterDirection()"
+                    data-toggle="tooltip" data-placement="top"
+                    title="Toggle footer direction">
+                <span class="glyphicon glyphicon-transfer"></span>
+            </button>
+
         </div>
 
         <!-- The toggle header popup -->
@@ -409,7 +441,14 @@
 <div ng-show="!questionMode && showCompactControl && gradingButtonPlacement == 'right'" 
      class="compact-right-controls">
 
-    <button type="button" 
+    <button type="button"
+            class="btn btn-lg floating-ctrl-12"
+            style="background: transparent;color:blue;"
+            ng-click="markForReview()">
+        <span class="glyphicon glyphicon-registration-mark"></span>
+    </button>
+
+    <button type="button"
             class="btn btn-lg floating-ctrl-13"
             style="background: transparent;color:red;"
             ng-click="purgeCard()">
@@ -467,7 +506,14 @@
         <span class="glyphicon glyphicon-new-window"></span>
     </button>
 
-    <button type="button" 
+    <button type="button"
+            class="btn btn-lg floating-ctrl-12"
+            style="background: transparent;color:blue;"
+            ng-click="markForReview()">
+        <span class="glyphicon glyphicon-registration-mark"></span>
+    </button>
+
+    <button type="button"
             class="btn btn-warning btn-lg floating-ctrl-21"
             ng-click="rateCard( 'P' )">
         <span class="badge {{getNextLevel( 'P')}}">
