@@ -283,7 +283,7 @@ $scope.processServerData = function( serverData ) {
     $scope.pageTitle              = jnUtil.constructPageTitle( $scope.chapterDetails ) ;
     $scope.textFormatter          = new TextFormatter( $scope.chapterDetails, null ) ;
 
-    preProcessFlashCardQuestions( $scope.questions ) ;
+    preProcessFlashCardQuestions( $scope.chapterDetails, $scope.questions ) ;
     refreshStudyStrategy( $scope.studyCriteria.strategy, true ) ;
 }
 
@@ -351,7 +351,7 @@ function fetchTodayStudyDuration() {
     }) ;
 }
 
-function preProcessFlashCardQuestions( questions ) {
+function preProcessFlashCardQuestions( chapterDetails, questions ) {
 
     for( i=0; i<questions.length; i++ ) {
 
@@ -387,7 +387,7 @@ function preProcessFlashCardQuestions( questions ) {
         processTestDataHints( question ) ;
 
         for( let j=0; j<$scope.studyStrategies.length; j++ ) {
-            $scope.studyStrategies[j].offer( question ) ;
+            $scope.studyStrategies[j].offer( chapterDetails, question ) ;
         }
     }
 }
@@ -444,7 +444,7 @@ function processTestDataHints( question ) {
 
 function refreshStudyStrategy( strategyId, forceInitialize ) {
 
-    var studyStrategy = lookupStudyStrategy( strategyId ) ;
+    const studyStrategy = lookupStudyStrategy(strategyId);
     if( forceInitialize ) {
         studyStrategy.initialize() ;
         studyStrategy.sortQuestions() ;

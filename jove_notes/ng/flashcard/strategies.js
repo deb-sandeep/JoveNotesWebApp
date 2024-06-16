@@ -6,6 +6,7 @@ function StudyStrategy( id, displayName ) {
     this.displayName = displayName ;
     this.questions = [] ;
     this.initialized = false ;
+    this.chapterDetails = null ;
 
     this.histograms = {
         typeHistogram       : [],
@@ -27,7 +28,7 @@ function StudyStrategy( id, displayName ) {
     }
 
     this.addQuestionAtLevel = function( levels, question ) {
-        if( levels.indexOf( question.learningStats.currentLevel ) != -1 ) {
+        if( levels.indexOf( question.learningStats.currentLevel ) !== -1 ) {
             this.addQuestion( question ) ;
         }        
     }
@@ -146,7 +147,7 @@ function StudyStrategy( id, displayName ) {
 
     this.prepareCardEfficiencyOptions = function () {
 
-        var optionText = [] ;
+        const optionText = [];
 
         optionText[ "A1" ] = "A1" ;
         optionText[ "A2" ] = "A2" ;
@@ -164,20 +165,20 @@ function StudyStrategy( id, displayName ) {
 
         filterOptions.length = 0 ;
 
-        for( var key in histogram ) {
+        for( const key in histogram ) {
 
             if( histogram.hasOwnProperty( key ) ) {
 
-                var count = histogram[ key ] ;
+                const count = histogram[key];
                 if( count > 0 ) {
 
-                    var name = 'Unknown Element' ;
+                    let name = 'Unknown Element';
                     if( keyNameMapping.hasOwnProperty( key ) ) {
                         name = keyNameMapping[ key ] ;
                     }
 
-                    var str = "" + count ;
-                    var pad = "000" ;
+                    let str = "" + count;
+                    const pad = "000";
                     str = pad.substring( 0, pad.length - str.length ) + str ;
                     str = str + " - " + name ;
 
@@ -249,7 +250,7 @@ function StudyStrategy( id, displayName ) {
     }
 
     this.isSSRMatured = function( question ) {
-        var thresholdDelta = this.jnUtil.getSSRThresholdDelta( question ) ;
+        const thresholdDelta = this.jnUtil.getSSRThresholdDelta(question);
         return thresholdDelta > 0 ;
     }
 
@@ -260,16 +261,38 @@ function StudyStrategy( id, displayName ) {
 
     this.isNewCard = function( question ) {
         return ( question.learningStats.currentLevel === 'NS' &&   
-                 question.learningStats.numAttempts == 0 ) ;
+                 question.learningStats.numAttempts === 0 ) ;
+    }
+
+    this.isNPTChapter = function( chapterDetails ) {
+        if( chapterDetails.subjectName === "Hindi" ) {
+            if( chapterDetails.chapterName.includes( "(wm" ) ) {
+                return true ;
+            }
+
+            // NOTE: This is an extremely yucky hack. If the system is used to teach
+            //       Hindi after 2025 March, this code needs to be refactored into
+            //       a proper design.
+            if( chapterDetails.chapterNumber === 99 ) {
+                // Chapter 99 in Hindi is for grammar
+                return true ;
+            }
+        }
+        if( chapterDetails.subjectName === "Chemistry" ) {
+            if( chapterDetails.chapterName.includes( "(equ)" ) ) {
+                return true ;
+            }
+        }
     }
 }
 
-StudyStrategy.prototype.offer = function( question ) {
+StudyStrategy.prototype.offer = function( chapterDetails, question ) {
     this.addQuestion( question ) ;
 }
 
-StudyStrategy.prototype.initialize = function() {
+StudyStrategy.prototype.initialize = function( chapterDetails ) {
     this.prepareFilterOptions() ;
+    this.chapterDetails = chapterDetails ;
     this.initialized = true ;
 }
 
@@ -283,15 +306,14 @@ function SSR_StudyStrategy() {
 
 SSR_StudyStrategy.prototype.sortQuestions = function() {
 
-
-    if( this.questions.length == 0 ) return ;
+    if( this.questions.length === 0 ) return ;
     const sorter = new QuestionSorter( this.questions ) ;
     sorter.sortByRecency() ;
 }
 
-SSR_StudyStrategy.prototype.offer = function( question ) {
-    
-    var thresholdDelta = this.jnUtil.getSSRThresholdDelta( question ) ;
+SSR_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
+
+    const thresholdDelta = this.jnUtil.getSSRThresholdDelta(question);
     if( thresholdDelta < 0 && question.learningStats.currentLevel !== 'NS' ) return ;
 
     this.addQuestion( question ) ;
@@ -309,7 +331,7 @@ BottomUpL0_StudyStrategy.prototype.sortQuestions = function() {
     this.sortQuestionsByLevel() ;
 }
 
-BottomUpL0_StudyStrategy.prototype.offer = function( question ) {
+BottomUpL0_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
     this.addQuestionAtLevel( ['NS', 'L0'], question ) ; 
 }
 
@@ -325,7 +347,7 @@ BottomUpL1_StudyStrategy.prototype.sortQuestions = function() {
     this.sortQuestionsByLevel() ;
 }
 
-BottomUpL1_StudyStrategy.prototype.offer = function( question ) {
+BottomUpL1_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
     this.addQuestionAtLevel( ['NS', 'L0', 'L1' ], question ) ; 
 }
 
@@ -341,7 +363,7 @@ BottomUpL2_StudyStrategy.prototype.sortQuestions = function() {
     this.sortQuestionsByLevel() ;
 }
 
-BottomUpL2_StudyStrategy.prototype.offer = function( question ) {
+BottomUpL2_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
     this.addQuestionAtLevel( ['NS', 'L0', 'L1', 'L2' ], question ) ; 
 }
 
@@ -357,7 +379,7 @@ BottomUpL3_StudyStrategy.prototype.sortQuestions = function() {
     this.sortQuestionsByLevel() ;
 }
 
-BottomUpL3_StudyStrategy.prototype.offer = function( question ) {
+BottomUpL3_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
     this.addQuestionAtLevel( ['NS', 'L0', 'L1', 'L2', 'L3' ], question ) ; 
 }
 
@@ -375,7 +397,7 @@ RNPT_StudyStrategy.prototype.sortQuestions = function() {
     sorter.sortByNumAttempts( true ) ;
 }
 
-RNPT_StudyStrategy.prototype.offer = function( question ) {
+RNPT_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
     if( this.isResurrected( question ) ) {
         if( question.questionType === 'fib'           || 
             question.questionType === 'true_false'    || 
@@ -387,7 +409,10 @@ RNPT_StudyStrategy.prototype.offer = function( question ) {
             question.questionType === 'equation' ) {
 
             this.addQuestion( question ) ;
-        } 
+        }
+        else if( this.isNPTChapter( chapterDetails ) ) {
+            this.addQuestion( question ) ;
+        }
     }
 }
 
@@ -405,7 +430,7 @@ RNPTQA_StudyStrategy.prototype.sortQuestions = function() {
     sorter.sortByNumAttempts( true ) ;
 }
 
-RNPTQA_StudyStrategy.prototype.offer = function( question ) {
+RNPTQA_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
     if( this.isResurrected( question ) ) {
         this.addQuestion( question ) ;
     }
@@ -425,7 +450,7 @@ NPT_StudyStrategy.prototype.sortQuestions = function() {
     sorter.sortByNumAttempts( true ) ;
 }
 
-NPT_StudyStrategy.prototype.offer = function( question ) {
+NPT_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
     if( this.isSSRMatured( question ) || this.isResurrected( question ) ) {
         if( question.questionType === 'fib'           || 
             question.questionType === 'true_false'    || 
@@ -437,7 +462,10 @@ NPT_StudyStrategy.prototype.offer = function( question ) {
             question.questionType === 'equation' ) {
 
             this.addQuestion( question ) ;
-        } 
+        }
+        else if( this.isNPTChapter( chapterDetails ) ) {
+            this.addQuestion( question ) ;
+        }
     }
 }
 
@@ -455,7 +483,7 @@ NPTQA_StudyStrategy.prototype.sortQuestions = function() {
     sorter.sortByNumAttempts( true ) ;
 }
 
-NPTQA_StudyStrategy.prototype.offer = function( question ) {
+NPTQA_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
     if( this.isSSRMatured( question ) || this.isResurrected( question ) ) {
         this.addQuestion( question ) ;
     }
@@ -475,7 +503,7 @@ PTObj_StudyStrategy.prototype.sortQuestions = function() {
     sorter.sortByNumAttempts( true ) ;
 }
 
-PTObj_StudyStrategy.prototype.offer = function( question ) {
+PTObj_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
     if( this.isNewCard( question ) ) {
         if( question.questionType === 'fib'           || 
             question.questionType === 'true_false'    || 
@@ -505,7 +533,7 @@ PTSub_StudyStrategy.prototype.sortQuestions = function() {
     sorter.sortByNumAttempts( true ) ;
 }
 
-PTSub_StudyStrategy.prototype.offer = function( question ) {
+PTSub_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
     if( this.isNewCard( question ) ) {
         if( question.questionType === 'question_answer' || 
             question.questionType === 'definition'      || 
