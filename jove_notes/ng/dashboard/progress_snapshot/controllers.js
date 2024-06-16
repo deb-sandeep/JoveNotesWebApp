@@ -41,6 +41,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
     this.preparednessScore  = 0 ;
     this.retentionScore     = 0 ;
     this.urgencyScore       = 0 ;
+    this.pctSectionsActive  = 0 ;
 
     this.chapter    = null ;
     this.chapterId  = null ;
@@ -60,7 +61,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
     }
 
     this.isChapterRow = function() {
-        return this.rowType == this.ROW_TYPE_CHAPTER ;
+        return this.rowType === this.ROW_TYPE_CHAPTER ;
     }
 
     this.addChild = function( childRow ) {
@@ -69,9 +70,9 @@ function RowData( rowType, name, rowId, parentRowId ) {
 
     this.selectionChanged = function() {
 
-        var affectedChapterIds = 
-                  this.getAffectedChaptersDueToSelectionChangeCascade( "SEL" ) ;
-        
+        const affectedChapterIds =
+            this.getAffectedChaptersDueToSelectionChangeCascade("SEL");
+
         if( affectedChapterIds.length > 0 ) {
             $http.post( "/jove_notes/api/ProgressSnapshot", {
                 'action'         : 'update_selection',
@@ -87,9 +88,9 @@ function RowData( rowType, name, rowId, parentRowId ) {
 
     this.inSyllabusSelectionChanged = function() {
 
-        var affectedChapterIds = 
-             this.getAffectedChaptersDueToSelectionChangeCascade( "SYLLABUS" ) ;
-        
+        const affectedChapterIds =
+            this.getAffectedChaptersDueToSelectionChangeCascade("SYLLABUS");
+
         if( affectedChapterIds.length > 0 ) {
             $http.post( "/jove_notes/api/ProgressSnapshot", {
                 'action'         : 'update_in_syllabus',
@@ -206,12 +207,13 @@ function RowData( rowType, name, rowId, parentRowId ) {
         this.isRowSelected          = !chapter.isDeselected ;
         this.isRowInSyllabus        = chapter.isInSyllabus ;
         this.isRowInCurrentFocus    = chapter.isCurrentFocus ;
+        this.pctSectionsActive      = chapter.pctSectionsActive ;
 
         this.urgencyScore = this.computeUrgencyScore() ;
     }
 
     this.computeUrgencyScore = function() {
-        var score = 0 ;
+        let score = 0;
         if( this.isChapterRow() && this.hasCardsAvailable() ) {
 
             score = ( this.pctNS * 12 ) + 
@@ -226,7 +228,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
 
     this.getTreeRowClass = function() {
 
-        var classStr = "treegrid-" + this.rowId ;
+        let classStr = "treegrid-" + this.rowId;
         if( this.parentRowId !== -1 ) {
             classStr += " treegrid-parent-" + this.parentRowId ;
         }
@@ -253,7 +255,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
 
     this.isTreeRowVisible = function() {
 
-        if( this.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+        if( this.rowType === RowData.prototype.ROW_TYPE_CHAPTER ) {
             // The base visibility of a chapter determined by whether its hidden
             // flag is set.
             //
@@ -275,10 +277,10 @@ function RowData( rowType, name, rowId, parentRowId ) {
             }
             return visible ;
         }
-        else if( ( this.rowType == RowData.prototype.ROW_TYPE_SUBJECT ) ||
-                 ( this.rowType == RowData.prototype.ROW_TYPE_SYLLABUS ) ) {
+        else if( ( this.rowType === RowData.prototype.ROW_TYPE_SUBJECT ) ||
+                 ( this.rowType === RowData.prototype.ROW_TYPE_SYLLABUS ) ) {
 
-            for( var i=0; i < this.children.length; i++ ) {
+            for( let i=0; i < this.children.length; i++ ) {
                 if( this.children[i].isTreeRowVisible() ) {
                     return true ;
                 }
@@ -288,8 +290,8 @@ function RowData( rowType, name, rowId, parentRowId ) {
     }
 
     this.computeSelectionState = function() {
-        if( ( this.rowType == RowData.prototype.ROW_TYPE_SUBJECT ) ||
-            ( this.rowType == RowData.prototype.ROW_TYPE_SYLLABUS ) ) {
+        if( ( this.rowType === RowData.prototype.ROW_TYPE_SUBJECT ) ||
+            ( this.rowType === RowData.prototype.ROW_TYPE_SYLLABUS ) ) {
 
             this.isRowSelected       = false ;
             this.isPartiallySelected = false ;
@@ -297,14 +299,14 @@ function RowData( rowType, name, rowId, parentRowId ) {
             this.isRowInSyllabus          = false ;
             this.isRowPartiallyInSyllabus = false ;
 
-            var numChildrenSelected          = 0 ;
-            var numChildrenPartiallySelected = 0 ;
+            let numChildrenSelected = 0;
+            let numChildrenPartiallySelected = 0;
 
-            var numChildrenInSyllabus          = 0 ;
-            var numChildrenPartiallyInSyllabus = 0 ;
+            let numChildrenInSyllabus = 0;
+            let numChildrenPartiallyInSyllabus = 0;
 
-            for( var i=0; i < this.children.length; i++ ) {
-                var child = this.children[i] ;
+            for( let i=0; i < this.children.length; i++ ) {
+                const child = this.children[i];
                 if( child.isTreeRowVisible() ) {
                     if( child.isPartiallySelected ) {
                         numChildrenPartiallySelected++ ;
@@ -438,7 +440,7 @@ $scope.deleteChapter = function( chapterId ) {
             if( okSelected ) {
                 $http.delete( "/jove_notes/api/Chapter/" + chapterId )
                      .success( function( data ){
-                        if( data != null && data.trim() == "Success" ) {
+                        if( data != null && data.trim() === "Success" ) {
                             removeChapter( chapterId ) ;
                         }
                         else {
@@ -454,73 +456,73 @@ $scope.deleteChapter = function( chapterId ) {
 
 $scope.resetLevelOfChapterCards = function( chapterId, level ) {
 
-    var selectedChapters = [] ;
+    const selectedChapters = [];
     selectedChapters.push( chapterId ) ;
     callResetLevelServerAPI( selectedChapters, level ) ;
 }
 
 $scope.resetLevelOfAllCardsForSelectedChapters = function( level ) {
 
-    var selectedChapters = getSelectedChapterIds() ;
+    const selectedChapters = getSelectedChapterIds();
     callResetLevelServerAPI( selectedChapters, level ) ;
 }
 
 $scope.tempPromotionAction = function() {
 
-    var selectedChapters = getSelectedChapterIds() ;
+    const selectedChapters = getSelectedChapterIds();
     callTempPromotionServerAPI( selectedChapters ) ;
 }
 
 $scope.launchChainedFlashcards = function( type ) {
 
-    var chapters = null ;
+    let chapters = null;
 
-    if( type == 'randomize' || 
-        type == 'ordered'   || 
-        type == 'retention' ||
-        type == 'urgency' ) {
+    if( type === 'randomize' ||
+        type === 'ordered'   ||
+        type === 'retention' ||
+        type === 'urgency' ) {
         chapters = getSelectedChapterRows() ;
     }
-    else if( type == 'current_focus' ) {
+    else if( type === 'current_focus' ) {
         chapters = getCurrentFocusChapterRows() ;
     }
-    else if( type == 'syllabus' ) {
+    else if( type === 'syllabus' ) {
         chapters = getInSyllabusChapterRows() ;
     }
 
-    if( chapters == null || chapters.length == 0 ) {
+    if( chapters == null || chapters.length === 0 ) {
         $scope.$parent.addErrorAlert( "No chapters selected or the " + 
                      "selected chapters don't have available cards." ) ;
         return ;
     }
 
-    if( type == 'randomize' ) {
+    if( type === 'randomize' ) {
         chapters.shuffle() ;
     }
-    else if( type == 'urgency' ) {
+    else if( type === 'urgency' ) {
         chapters.sort( function( c1, c2 ){
             return c2.urgencyScore - c1.urgencyScore ;
         }) ;
     }
-    else if( type == 'retention' ) {
+    else if( type === 'retention' ) {
         chapters.sort( function( c1, c2 ){
             return c1.retentionScore - c2.retentionScore ;
         }) ;
     }
-    else if( type == 'syllabus' ) {
+    else if( type === 'syllabus' ) {
         chapters.sort( function( c1, c2 ){
             return c1.preparednessScore - c2.preparednessScore ;
         }) ;
     }
 
-    var selectedChapters = [] ;
-    for( var i=0; i<chapters.length; i++ ) {
+    const selectedChapters = [];
+    for(let i=0; i<chapters.length; i++ ) {
         if( chapters[i].hasCardsAvailable() ) {
             selectedChapters.push( chapters[i].chapterId ) ;
         }
     }
 
-    var url = "/apps/jove_notes/ng/flashcard/index.php" ;
+    let url = "/apps/jove_notes/ng/flashcard/index.php";
     url += "?chapterId=" + selectedChapters.join() ;
 
     window.location.href = url ;
@@ -528,15 +530,15 @@ $scope.launchChainedFlashcards = function( type ) {
 
 $scope.toggleVisibilityInBulk = function() {
 
-    var selectedChapterRows = getSelectedChapterRows() ;
-    var visibilityData = [] ;
+    const selectedChapterRows = getSelectedChapterRows();
+    const visibilityData = [];
 
-    if( selectedChapterRows.length == 0 ) {
+    if( selectedChapterRows.length === 0 ) {
         $scope.$parent.addErrorAlert( "No chapters selected." ) ;
     }
     else {
-        for( var i=0; i<selectedChapterRows.length; i++ ) {
-            var row = selectedChapterRows[i] ;
+        for( let i=0; i<selectedChapterRows.length; i++ ) {
+            const row = selectedChapterRows[i];
             row.isHidden = !row.isHidden ;
             visibilityData.push( row.chapterId ) ;
             visibilityData.push( row.isHidden ? 1 : 0 ) ;
@@ -564,18 +566,18 @@ $scope.$on( 'onRenderComplete', function( scope ){
 
 function removeChapter( chapterId ) {
 
-    var chapterRowIndex = -1 ;
-    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
-        var rowData = $scope.progressSnapshot[i] ;
-        if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER &&
-            rowData.chapterId == chapterId ) {
+    let chapterRowIndex = -1;
+    for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
+        const rowData = $scope.progressSnapshot[i];
+        if( rowData.rowType === RowData.prototype.ROW_TYPE_CHAPTER &&
+            rowData.chapterId === chapterId ) {
 
             chapterRowIndex = i ;
             break ;
         }
     }
 
-    if( chapterRowIndex != -1 ) {
+    if( chapterRowIndex !== -1 ) {
         $scope.progressSnapshot.splice( chapterRowIndex, 1 ) ;
         recomputeStatistics() ;
     }
@@ -615,44 +617,44 @@ function prepareDataForDisplay( rawData ) {
 
 function prepareDataForDisplayGroupedBySyllabus( rawData ) {
 
-    var displayData = [] ;
-    var rowNum = 0 ;
+    const displayData = [];
+    let rowNum = 0;
 
-    for( sylIndex=0; sylIndex<rawData.length; sylIndex++ ) {
+    for( let sylIndex=0; sylIndex<rawData.length; sylIndex++ ) {
 
         rowNum++ ;
-        var syllabus = rawData[ sylIndex ] ;
-        var syllabusRD = new RowData( RowData.prototype.ROW_TYPE_SYLLABUS, 
-                                      syllabus.syllabusName, 
-                                      syllabus.syllabusName, -1 ) ;
+        const syllabus = rawData[sylIndex];
+        const syllabusRD = new RowData(RowData.prototype.ROW_TYPE_SYLLABUS,
+                                                    syllabus.syllabusName,
+                                                    syllabus.syllabusName, -1);
 
         displayData.push( syllabusRD ) ;
 
-        var numSubjectsSelected = 0 ;
+        let numSubjectsSelected = 0;
 
-        for( subIndex=0; subIndex<syllabus.subjects.length; subIndex++ ) {
+        for( let subIndex=0; subIndex<syllabus.subjects.length; subIndex++ ) {
 
             rowNum++ ;
-            var subject = syllabus.subjects[ subIndex ] ;
-            var subjectRD = new RowData( RowData.prototype.ROW_TYPE_SUBJECT, 
-                                         subject.subjectName, 
-                                         syllabus.syllabusName + "-" + subject.subjectName, 
-                                         syllabusRD.rowId ) ;
+            const subject = syllabus.subjects[subIndex];
+            const subjectRD = new RowData(RowData.prototype.ROW_TYPE_SUBJECT,
+                                                    subject.subjectName,
+                                                    syllabus.syllabusName + "-" + subject.subjectName,
+                                                    syllabusRD.rowId);
 
             syllabusRD.addChild( subjectRD ) ;
             displayData.push( subjectRD ) ;
 
-            var numChaptersSelected = 0 ;
-            for( chpIndex=0; chpIndex<subject.chapters.length; chpIndex++ ) {
+            let numChaptersSelected = 0;
+            for( let chpIndex=0; chpIndex<subject.chapters.length; chpIndex++ ) {
 
                 rowNum++ ;
-                var chapter = subject.chapters[ chpIndex  ] ;
-                var displayName = chapter.chapterNum + "." + chapter.subChapterNum + 
-                                  " - " + chapter.chapterName ;
-                var chapterRD = new RowData( RowData.prototype.ROW_TYPE_CHAPTER, 
-                                             displayName, 
-                                             chapter.chapterId, 
-                                             subjectRD.rowId ) ;
+                const chapter = subject.chapters[chpIndex];
+                const displayName = chapter.chapterNum + "." + chapter.subChapterNum +
+                                           " - " + chapter.chapterName;
+                const chapterRD = new RowData(RowData.prototype.ROW_TYPE_CHAPTER,
+                                                        displayName,
+                                                        chapter.chapterId,
+                                                        subjectRD.rowId);
 
                 chapterRD.setChapterAndParentRows( chapter, subjectRD, syllabusRD ) ;
 
@@ -675,26 +677,25 @@ function prepareDataForDisplayGroupedBySyllabus( rawData ) {
 
 function prepareDataForDisplayGroupedBySubject( rawData ) {
 
-    var syllabusRD = new RowData( RowData.prototype.ROW_TYPE_SYLLABUS, 
-                                  "Unified Syllabus", "Unified", -1 ) ; 
-    var subjectMap = {} ;
-    var displayData = [] ;
-    var rowNum = 0 ;
-
+    const syllabusRD = new RowData(RowData.prototype.ROW_TYPE_SYLLABUS,
+                                       "Unified Syllabus", "Unified", -1);
+    const subjectMap = {};
+    const displayData = [];
+    let rowNum = 0;
 
     displayData.push( syllabusRD ) ;
 
-    for( sylIndex=0; sylIndex<rawData.length; sylIndex++ ) {
+    for( let sylIndex=0; sylIndex<rawData.length; sylIndex++ ) {
 
         rowNum++ ;
-        var syllabus = rawData[ sylIndex ] ;
-        var numSubjectsSelected = 0 ;
+        const syllabus = rawData[sylIndex];
+        let numSubjectsSelected = 0;
 
-        for( subIndex=0; subIndex<syllabus.subjects.length; subIndex++ ) {
+        for( let subIndex=0; subIndex<syllabus.subjects.length; subIndex++ ) {
 
             rowNum++ ;
-            var subject = syllabus.subjects[ subIndex ] ;
-            var subjectRD = null ;
+            const subject = syllabus.subjects[subIndex];
+            let subjectRD = null;
 
             if( subjectMap[ subject.subjectName ] ) {
                 subjectRD = subjectMap[ subject.subjectName ] ;
@@ -709,17 +710,17 @@ function prepareDataForDisplayGroupedBySubject( rawData ) {
 
             syllabusRD.addChild( subjectRD ) ;
 
-            var numChaptersSelected = 0 ;
-            for( chpIndex=0; chpIndex<subject.chapters.length; chpIndex++ ) {
+            let numChaptersSelected = 0;
+            for( let chpIndex=0; chpIndex<subject.chapters.length; chpIndex++ ) {
 
                 rowNum++ ;
-                var chapter = subject.chapters[ chpIndex  ] ;
-                var displayName = chapter.chapterNum + "." + chapter.subChapterNum + 
-                                  " - " + chapter.chapterName ;
-                var chapterRD = new RowData( RowData.prototype.ROW_TYPE_CHAPTER, 
-                                             displayName, 
-                                             chapter.chapterId, 
-                                             subjectRD.rowId ) ;
+                const chapter = subject.chapters[chpIndex];
+                const displayName = chapter.chapterNum + "." + chapter.subChapterNum +
+                                           " - " + chapter.chapterName;
+                const chapterRD = new RowData(RowData.prototype.ROW_TYPE_CHAPTER,
+                    displayName,
+                    chapter.chapterId,
+                    subjectRD.rowId);
 
                 chapterRD.setChapterAndParentRows( chapter, subjectRD, syllabusRD ) ;
 
@@ -737,15 +738,15 @@ function prepareDataForDisplayGroupedBySubject( rawData ) {
         syllabusRD.isRowSelected = ( numSubjectsSelected > 0 ) ;
     }
 
-    for( var subName in subjectMap ) {
-        var subRD = subjectMap[ subName ] ;
+    for( const subName in subjectMap ) {
+        const subRD = subjectMap[subName];
         displayData.push( subRD ) ;
 
         subRD.children.sort( function( a, b ){
             return a.chapterId - b.chapterId ;
         }) ;
 
-        for( var i=0; i<subRD.children.length; i++ ) {
+        for( let i=0; i<subRD.children.length; i++ ) {
             displayData.push( subRD.children[i] ) ;
         }
     }
@@ -762,9 +763,9 @@ function recomputeStatistics() {
 
 function clearRowDataAttributes() {
 
-    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
-        var rowData = $scope.progressSnapshot[i] ;
-        if( rowData.rowType != RowData.prototype.ROW_TYPE_CHAPTER ) {
+    for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
+        const rowData = $scope.progressSnapshot[i];
+        if( rowData.rowType !== RowData.prototype.ROW_TYPE_CHAPTER ) {
 
             rowData.totalCards         = 0 ;
             rowData.notStartedCards    = 0 ;
@@ -774,6 +775,7 @@ function clearRowDataAttributes() {
             rowData.l2Cards            = 0 ;
             rowData.l3Cards            = 0 ;
             rowData.masteredCards      = 0 ;
+            rowData.pctSectionsActive = 0 ;
 
             rowData.numSSRMaturedCards           = 0 ;
             rowData.numSSRInSyllabusMaturedCards = 0 ;
@@ -786,16 +788,16 @@ function clearRowDataAttributes() {
 
 function computeAggregateFlashCardChapterList() {
 
-    var curSyllabusRD = null ;
-    var curSubjectRD  = null ;
+    let curSyllabusRD = null;
+    let curSubjectRD = null;
 
-    var chaptersForSyllabus = null ;
-    var chaptersForSubject  = null ;
+    let chaptersForSyllabus = null;
+    let chaptersForSubject = null;
 
-    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
-        var rowData = $scope.progressSnapshot[i] ;
+    for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
+        const rowData = $scope.progressSnapshot[i];
 
-        if( rowData.rowType == RowData.prototype.ROW_TYPE_SYLLABUS ) {
+        if( rowData.rowType === RowData.prototype.ROW_TYPE_SYLLABUS ) {
             if( curSubjectRD != null ) {
                 curSubjectRD.computeSelectionState() ;
             }
@@ -812,7 +814,7 @@ function computeAggregateFlashCardChapterList() {
             curSyllabusRD = rowData ;
             chaptersForSyllabus = [] ;
         }
-        else if( rowData.rowType == RowData.prototype.ROW_TYPE_SUBJECT ) {
+        else if( rowData.rowType === RowData.prototype.ROW_TYPE_SUBJECT ) {
             if( curSubjectRD != null ) {
                 if( chaptersForSubject.length > 0 ) {
                     chaptersForSubject.shuffle() ;
@@ -825,10 +827,10 @@ function computeAggregateFlashCardChapterList() {
             curSubjectRD = rowData ;
             chaptersForSubject = [] ;
         }
-        else if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+        else if( rowData.rowType === RowData.prototype.ROW_TYPE_CHAPTER ) {
             if( rowData.isTreeRowVisible() ) {
 
-                var chapter = rowData.chapter ;
+                const chapter = rowData.chapter;
 
                 updateCardCounts( chapter, rowData.subjectRD, rowData.syllabusRD ) ;
 
@@ -858,8 +860,8 @@ function computeAggregateFlashCardChapterList() {
 
 function refreshProgressBars() {
 
-    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
-        var rowData = $scope.progressSnapshot[i] ;
+    for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
+        const rowData = $scope.progressSnapshot[i];
         if( rowData.isTreeRowVisible() ) {
             drawProgressBar( "canvas-" + rowData.rowId, 
                              rowData.totalCards,
@@ -871,6 +873,11 @@ function refreshProgressBars() {
                              rowData.l3Cards,
                              rowData.masteredCards
                             ) ;
+
+            if( rowData.isChapterRow() ) {
+                drawActiveSectionsPercentage( "secActivePct-" + rowData.rowId,
+                                              rowData.pctSectionsActive ) ;
+            }
         }
     }
 }
@@ -926,10 +933,10 @@ function updateCardCounts( chapter, subjectRD, syllabusRD ) {
 
 function drawProgressBar( canvasId, total, vN, vR, v0, v1, v2, v3, v4 ) {
 
-    var c = document.getElementById( canvasId ) ;
-    var ctx = c.getContext( "2d" ) ;
+    const c = document.getElementById(canvasId);
+    const ctx = c.getContext("2d");
 
-    var widths = [] ;
+    const widths = [];
 
     widths[0] = Math.round( ( vN/total )*c.width ) ;
     widths[1] = Math.round( ( vR/total )*c.width ) ;
@@ -939,30 +946,55 @@ function drawProgressBar( canvasId, total, vN, vR, v0, v1, v2, v3, v4 ) {
     widths[5] = Math.round( ( v3/total )*c.width ) ;
     widths[6] = Math.round( ( v4/total )*c.width ) ;
 
-    var colors = [ "#FF0000", //NS
-                   "#D0D0D0", //NR
-                   "#F78383", //L0
-                   "#FAC4A0", //L1
-                   "#FFFF7F", //L2
-                   "#AAFFAA", //L3
-                   "#00FF00"  //MAS
-                ] ;
+    const colors = ["#FF0000", //NS
+                            "#D0D0D0", //NR
+                            "#F78383", //L0
+                            "#FAC4A0", //L1
+                            "#FFFF7F", //L2
+                            "#AAFFAA", //L3
+                            "#00FF00"  //MAS
+    ];
 
-    var curX = 0 ;
-    for( var i=0; i<7; i++ )  {
+    let curX = 0;
+    for( let i=0; i<7; i++ )  {
         ctx.fillStyle = colors[i] ;
         ctx.fillRect( curX, 0, widths[i], c.height ) ;
         curX += widths[i] ;
     }
 }
 
+function drawActiveSectionsPercentage( canvasId, activePct ) {
+
+    const c = document.getElementById(canvasId);
+    const ctx = c.getContext("2d");
+
+    if( activePct > 0 && activePct < 100 ) {
+        const widths = [];
+
+        widths[0] = Math.round( (activePct/100)*c.width ) ;
+        widths[1] = Math.round( (1 - activePct/100)*c.width ) ;
+
+        const colors = [
+            "#00FF00", // Active Sections
+            "#fd7676"  // Inactive sections
+        ];
+
+        let curX = 0;
+        for( let i=0; i<2; i++ )  {
+            ctx.fillStyle = colors[i] ;
+            ctx.fillRect( curX, 0, widths[i], c.height ) ;
+            curX += widths[i] ;
+        }
+    }
+}
+
 function getSelectedChapterIds() {
 
-    var chapterIds = [] ;
-    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+    const chapterIds = [];
+    for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
 
-        var rowData = $scope.progressSnapshot[i] ;
-        if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+        const rowData = $scope.progressSnapshot[i];
+        if( rowData.rowType === RowData.prototype.ROW_TYPE_CHAPTER ) {
 
             if( rowData.isTreeRowVisible() && rowData.isRowSelected ) {
                 chapterIds.push( rowData.chapterId ) ;
@@ -974,11 +1006,11 @@ function getSelectedChapterIds() {
 
 function getSelectedChapterRows() {
 
-    var selectedRows = [] ;
-    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+    const selectedRows = [];
+    for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
 
-        var rowData = $scope.progressSnapshot[i] ;
-        if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+        const rowData = $scope.progressSnapshot[i];
+        if( rowData.rowType === RowData.prototype.ROW_TYPE_CHAPTER ) {
             if( rowData.isTreeRowVisible() && 
                 rowData.isRowSelected ) {
                 selectedRows.push( rowData ) ;
@@ -994,7 +1026,7 @@ function getCurrentFocusChapterRows() {
     for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
 
         let rowData = $scope.progressSnapshot[i] ;
-        if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+        if( rowData.rowType === RowData.prototype.ROW_TYPE_CHAPTER ) {
             if( rowData.isTreeRowVisible() &&
                 rowData.isRowInCurrentFocus &&
                 rowData.hasCardsAvailable() ) {
@@ -1008,11 +1040,11 @@ function getCurrentFocusChapterRows() {
 
 function getInSyllabusChapterRows() {
 
-    var inSyllabusRows = [] ;
-    for( var i=0; i<$scope.progressSnapshot.length; i++ ) {
+    const inSyllabusRows = [];
+    for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
 
-        var rowData = $scope.progressSnapshot[i] ;
-        if( rowData.rowType == RowData.prototype.ROW_TYPE_CHAPTER ) {
+        const rowData = $scope.progressSnapshot[i];
+        if( rowData.rowType === RowData.prototype.ROW_TYPE_CHAPTER ) {
             if( rowData.isRowInSyllabus && 
                 rowData.hasCardsAvailable() ) {
 
@@ -1025,7 +1057,7 @@ function getInSyllabusChapterRows() {
 
 function callResetLevelServerAPI( selectedChapters, level ) {
 
-    if( selectedChapters.length == 0 ) {
+    if( selectedChapters.length === 0 ) {
         $scope.$parent.addErrorAlert( "No chapters selected." ) ;
     }
     else {
@@ -1049,7 +1081,7 @@ function callResetLevelServerAPI( selectedChapters, level ) {
 
 function callTempPromotionServerAPI( selectedChapters ) {
 
-    if( selectedChapters.length == 0 ) {
+    if( selectedChapters.length === 0 ) {
         $scope.$parent.addErrorAlert( "No chapters selected." ) ;
     }
     else {

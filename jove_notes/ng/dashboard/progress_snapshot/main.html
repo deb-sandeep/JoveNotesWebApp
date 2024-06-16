@@ -53,6 +53,9 @@
                 <th style="width:30px;text-align:center;">
                    <span class="glyphicon glyphicon-th"></span>
                 </th>
+                <th style="width:40px;text-align:center;">
+                    <span class="glyphicon glyphicon-barcode"></span>
+                </th>
                 <th style="width:50px">
                     <div ng-include="'/apps/jove_notes/ng/dashboard/progress_snapshot/bulk_action_menu.html'">
                     </div>
@@ -146,6 +149,10 @@
                        ng-show="rowData.isFlashcardAuthorized && rowData.hasCardsAvailable()">
                        <span class="badge L3" style="width:40px;text-align: right">{{rowData.numSSRMaturedCards}}</span>
                     </a>
+                </td>
+                <td>
+                    <canvas width='30' height='20' id='secActivePct-{{rowData.rowId}}'>
+                    </canvas>
                 </td>
                 <td style="width:50px" align="center">
                     <input id="push" type="checkbox" ng-change="rowData.selectionChanged()" 

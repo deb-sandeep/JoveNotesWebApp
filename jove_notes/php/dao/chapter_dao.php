@@ -39,7 +39,28 @@ where
 QUERY;
 
 		return parent::executeUpdate( $query ) ;
-	}	
+	}
+
+	function getChapterActiveSectionPctForChapters( $chapterIdList ) {
+
+		$chapterIds = implode( ",", $chapterIdList ) ;
+
+$query = <<< QUERY
+select
+	chapter_id, (sum(selected)/count(section))*100 as sections_active_pct
+from
+	jove_notes.chapter_section
+where
+	chapter_id in ($chapterIds)
+group by
+    chapter_id
+order by
+    chapter_id desc
+QUERY;
+
+		$colNames = [ "chapter_id", "sections_active_pct" ] ;
+		return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
+	}
 
 	function getChapterMetaData( $chapterId ) {
 

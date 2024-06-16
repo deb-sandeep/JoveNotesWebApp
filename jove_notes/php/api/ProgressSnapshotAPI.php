@@ -39,6 +39,7 @@ class ChapterProgressSnapshot {
 	public $isInSyllabus ;
 	public $preparednessScore ;
 	public $retentionScore ;
+	public $pctSectionsActive ;
 
 	function __construct( $meta ) {
 
@@ -71,6 +72,7 @@ class ChapterProgressSnapshot {
 		$this->isInSyllabus       = false ;
 		$this->preparednessScore  = 0 ;
 		$this->retentionScore     = 0 ;
+		$this->pctSectionsActive  = 0 ;
 	}
 
 	public function isUserEntitled() {
@@ -173,6 +175,7 @@ class ProgressSnapshotAPI extends API {
 			$this->associateNumResurrectedCardsWithChapters() ;
 			$this->associateUserChapterPreferences() ;
 			$this->associateChapterPreparedness() ;
+			$this->associateActiveSectionPercentage() ;
 		}
 		
 		$responseObj = $this->constructResponseObj() ;
@@ -394,6 +397,23 @@ class ProgressSnapshotAPI extends API {
 		}
 	}
 
+	private function associateActiveSectionPercentage() {
+
+		$activeSectionPercentages = $this->chapterDAO
+		                                 ->getChapterActiveSectionPctForChapters( $this->selectedChapterIdList ) ;
+
+		foreach( $activeSectionPercentages as $pctRow ) {
+
+			$chapterId      = $pctRow[ "chapter_id"          ] ;
+			$pctSecActive   = $pctRow[ "sections_active_pct" ] ;
+
+			if( array_key_exists( $chapterId, $this->chapters ) ) {
+				$chapter = &$this->chapters[ $chapterId ] ;
+				$chapter->pctSectionsActive = $pctSecActive ;
+			}
+		}
+	}
+
 	private function &constructChapterResponseObj( $chapter ) {
 
 		$responseObj = array() ;
@@ -422,6 +442,7 @@ class ProgressSnapshotAPI extends API {
 		$responseObj[ "isInSyllabus"           ] = $chapter->isInSyllabus ;
 		$responseObj[ "preparednessScore"      ] = $chapter->preparednessScore ;
 		$responseObj[ "retentionScore"         ] = $chapter->retentionScore ;
+		$responseObj[ "pctSectionsActive"      ] = $chapter->pctSectionsActive ;
 
 		return $responseObj ;
 	}
