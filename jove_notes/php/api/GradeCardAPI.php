@@ -350,6 +350,12 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 			$multFactor = $arr[ $this->requestObj->currentLevel ] ;
 
 			$this->score = ceil( ($multFactor/100)*$cardLearningSummary[ "difficulty_level" ] ) ;
+
+            if( $this->requestObj->currentLevel == 'L3' &&
+                $this->requestObj->rating == 'H' ) {
+                $this->score = min( $this->score, -150 ) ;
+            }
+
 			$this->logger->debug( "First attempt - score = $this->score" ) ;
 		}
 		else {
@@ -390,6 +396,7 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 					$penaltyPercentage = $this->requestObj->numAttempts * 15 ;
 
 					$this->score = ceil( ($penaltyPercentage/100)*$diffLevel*$jump ) ;
+                    $this->score = min( $this->score, -150 ) ;
 					
 					$this->logger->debug( "Penalty percentage = $penaltyPercentage" ) ;
 					$this->logger->debug( "Score = " . $this->score ) ;
