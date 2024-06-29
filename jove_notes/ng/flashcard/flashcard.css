@@ -250,3 +250,184 @@
     border-right: 5px solid white;
 }
 
+/* -------------------------------------------------------------------------- */
+/* Compact rating controls                                                    */
+/* -------------------------------------------------------------------------- */
+.compact-right-controls {
+    position: fixed;
+    right: 10px;
+    bottom: 70px;
+    width: 180px;
+    height: 180px;
+    margin-top: 0em;
+}
+
+.compact-left-controls {
+    position: fixed;
+    left: 10px;
+    bottom: 70px;
+    width: 180px;
+    height: 180px;
+    margin-top: 0em;
+}
+
+.floating-ctrl-11 {
+
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 50px;
+    height: 50px;
+    padding-left: 12px;
+}
+
+.floating-ctrl-12 {
+
+    position: absolute;
+    top: 5px;
+    left: 65px;
+    width: 50px;
+    height: 50px;
+    padding-left: 12px;
+}
+
+.floating-ctrl-13 {
+
+    position: absolute;
+    top: 5px;
+    left: 125px;
+    width: 50px;
+    height: 50px;
+    padding-left: 12px;
+}
+
+.floating-ctrl-21 {
+
+    position: absolute;
+    top: 65px;
+    left: 5px;
+    width: 50px;
+    height: 50px;
+    padding-left: 12px;
+}
+
+.floating-ctrl-22 {
+
+    position: absolute;
+    top: 65px;
+    left: 65px;
+    width: 50px;
+    height: 50px;
+    padding-left: 12px;
+}
+
+.floating-ctrl-23 {
+
+    position: absolute;
+    top: 65px;
+    left: 125px;
+    width: 50px;
+    height: 50px;
+    padding-left: 12px;
+}
+
+.floating-ctrl-31 {
+
+    position: absolute;
+    top: 125px;
+    left: 5px;
+    width: 50px;
+    height: 50px;
+    padding-left: 12px;
+}
+
+.floating-ctrl-32 {
+
+    position: absolute;
+    top: 125px;
+    left: 65px;
+    width: 50px;
+    height: 50px;
+    padding-left: 12px;
+}
+
+.floating-ctrl-33 {
+
+    position: absolute;
+    top: 125px;
+    left: 125px;
+    width: 50px;
+    height: 50px;
+    padding-left: 12px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Pause duration controls                                                    */
+/* -------------------------------------------------------------------------- */
+.ans-push-duration-right-controls {
+    position: fixed;
+    right: 10px;
+    bottom: 250px;
+    width: 70px;
+    height: 260px;
+    margin-top: 0em;
+}
+
+.ans-push-duration-left-controls {
+    position: fixed;
+    left: 10px;
+    bottom: 250px;
+    width: 70px;
+    height: 260px;
+    margin-top: 0em;
+}
+
+.floating-ans-push-timer-1 {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 50px;
+    height: 50px;
+    padding-top: 5px;
+    padding-left: 14px;
+    background-color: #f86d6a;
+}
+
+.floating-ans-push-timer-2 {
+    position: absolute;
+    top: 70px;
+    left: 10px;
+    width: 50px;
+    height: 50px;
+    padding-top: 5px;
+    padding-left: 14px;
+    background-color: #f89593;
+}
+
+.floating-ans-push-timer-3 {
+    position: absolute;
+    top: 130px;
+    left: 10px;
+    width: 50px;
+    height: 50px;
+    padding-top: 5px;
+    padding-left: 14px;
+    background-color: #fcb5b3;
+}
+
+.floating-ans-push-timer-4 {
+    position: absolute;
+    top: 190px;
+    left: 10px;
+    width: 50px;
+    height: 50px;
+    padding-left: -1px;
+    padding-top: 5px;
+    background-color: #ffd6d5;
+}
+
+.ans-push-time {
+    color: #6c6c6c;
+    text-align: center;
+}
+

@@ -13,7 +13,11 @@
 	      ng-show="$parent.studyCriteria.push && !pushQuestionSuccess"></span>
 	<render-flash-card-question></render-flash-card-question>
 </div>
-<hr>
+<div style="padding-top:15px;padding-bottom:15px;">
+	<div class="progress" style="height:3px;margin-bottom: 0px;">
+		<div id="ans-push-progressbar" class="progress-bar progress-bar-success" style="width: 0%"></div>
+	</div>
+</div>
 <div align="center">
 	<span class="badge muted">{{currentAnsTime | duration}}</span>
 </div>

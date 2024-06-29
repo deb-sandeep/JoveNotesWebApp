@@ -82,6 +82,10 @@ $scope.inLowerHysterisZone = false ;
 $scope.inNormalFatigueZone = false ;
 $scope.currentAnsTime = 0 ;
 
+$scope.answerPushed = false ;
+$scope.totalAnsPushTime = 0 ;
+$scope.remainingAnsPushTime = 0 ; // Time is in milliseconds
+
 // ---------------- Main logic for the controller ------------------------------
 {
     log.debug( "Executing PracticePageController." ) ;
@@ -294,13 +298,23 @@ $scope.rateCard = function( rating ) {
 }
 
 $scope.showAnswer = function() {
-
     $scope.answerChangeTrigger = "Answer" + $scope.currentQuestion.questionId ;
     $scope.questionMode = false ;
 }
 
 $scope.pushAnswer = function() {
     callRFMApiToPushAnswer( 0 ) ;
+    $scope.answerPushed = true ;
+}
+
+$scope.setAnsPushTimer = function( ansPushTime ) {
+    $scope.totalAnsPushTime = (ansPushTime+1)*1000 ;
+    $scope.remainingAnsPushTime = $scope.totalAnsPushTime ;
+    refreshAnsPushTimeProgressBar() ;
+}
+
+$scope.isRatingControlEnabled = function() {
+    return $scope.remainingAnsPushTime > 0 ;
 }
 
 $scope.alertStudent = function() {
@@ -308,7 +322,6 @@ $scope.alertStudent = function() {
 }
 
 $scope.pushQuestion = function() {
-
     $scope.pushQuestionSuccess = false ;
     $scope.$parent.purgeAllAlerts() ;
     callRFMApiToPushQuestion( 0 ) ;
@@ -316,10 +329,10 @@ $scope.pushQuestion = function() {
 
 $scope.markForReview = function() {
     callMarkForReviewAPI( $scope.currentQuestion.questionId, function( cardIds ){
-        for( var i=0; i<cardIds.length; i++ ) {
-            var markedCardId = cardIds[i] ;
-            for( var j=0; j<$scope.questionsForSession.length; j++ ) {
-                var question = $scope.questionsForSession[j] ;
+        for( let i=0; i<cardIds.length; i++ ) {
+            const markedCardId = cardIds[i];
+            for( let j=0; j<$scope.questionsForSession.length; j++ ) {
+                const question = $scope.questionsForSession[j];
                 if( question.questionId === markedCardId ) {
                     question.markedForReview = true ;
                 }
@@ -364,21 +377,21 @@ $scope.resetFontForADiv = function() {
 
 $scope.applyZoomDeltaToQFont = function() {
     if( currentFontZoomDelta !== 0 ) {
-        var qDiv = document.getElementById( "flashCardQDiv" ) ;
+        const qDiv = document.getElementById("flashCardQDiv");
         resizeFont( qDiv, currentFontZoomDelta ) ;
     }
 }
 
 $scope.applyZoomDeltaToAFont = function() {
     if( currentFontZoomDelta !== 0 ) {
-        var aDiv = document.getElementById( "flashCardADiv" ) ;
+        const aDiv = document.getElementById("flashCardADiv");
         resizeFont( aDiv, currentFontZoomDelta ) ;
     }
 }
 
 // ---------------- Private functions ------------------------------------------
 function resizeFont( domElement, magnifier ) {
-    var curSize = parseInt( $( domElement ).css( 'font-size' ) ) + magnifier ;
+    const curSize = parseInt($(domElement).css('font-size')) + magnifier;
     $( domElement ).css( 'font-size', curSize ) ;
 }
 
@@ -395,7 +408,7 @@ function loadLocalState() {
 
 function updateLearningStatsForCurrentQuestion( rating, nextLevel, timeSpent ) {
 
-    var delta = ( new Date().getTime() - currentQuestionShowStartTime - totalQuestionPauseTime )/1000 ;
+    const delta = (new Date().getTime() - currentQuestionShowStartTime - totalQuestionPauseTime) / 1000;
 
     $scope.currentQuestion.learningStats.numAttempts++ ;
     $scope.currentQuestion.learningStats.totalTimeSpent += timeSpent ;
@@ -436,6 +449,11 @@ function processNextAction( actionValue ) {
 }
 
 function showNextCard() {
+
+    $scope.answerPushed = false ;
+    $scope.totalAnsPushTime = 0 ;
+    $scope.remainingAnsPushTime = 0 ;
+    refreshAnsPushTimeProgressBar() ;
 
     if( !hasSessionEnded() ) {
 
@@ -497,6 +515,8 @@ function showNextCard() {
 }
 
 function rearrangeQuestionsForFatigueBusting() {
+    let q;
+    let i;
     if( !$scope.studyCriteria.engageFatigueBuster ) {
         return ;
     }
@@ -505,7 +525,7 @@ function rearrangeQuestionsForFatigueBusting() {
         return ;
     }
 
-    var targetQIndex = 0 ;
+    let targetQIndex = 0;
 
     if( $scope.currentFatigueLevel < FATIGUE_UPPER_HYSTERISIS_THRESHOLD && 
         $scope.currentFatigueLevel > FATIGUE_LOWER_HYSTERISIS_THRESHOLD ) {
@@ -534,10 +554,10 @@ function rearrangeQuestionsForFatigueBusting() {
     if( $scope.inUpperHysterisZone ) {
 
         // Present a question with minimum fatigue potential
-        var minFaitiguePotential = $scope.questionsForSession[0].learningStats.fatiguePotential ;
+        let minFaitiguePotential = $scope.questionsForSession[0].learningStats.fatiguePotential;
 
-        for( var i=1; i<$scope.questionsForSession.length; i++ ) {
-            var q = $scope.questionsForSession[i] ;
+        for( i = 1; i<$scope.questionsForSession.length; i++ ) {
+            q = $scope.questionsForSession[i];
             if( q.learningStats.numAttemptsInSession === 0 ) {
                 if( q.learningStats.fatiguePotential < minFaitiguePotential ) {
                     minFaitiguePotential = q.learningStats.fatiguePotential ;
@@ -549,11 +569,11 @@ function rearrangeQuestionsForFatigueBusting() {
     else if( $scope.inLowerHysterisZone ) {
 
         // Present a quesiton with maximum fatigue potential
-        var qIndexWithMaxFatiguePotential = 0 ;
-        var maxFaitiguePotential = $scope.questionsForSession[0].learningStats.fatiguePotential ;
+        const qIndexWithMaxFatiguePotential = 0;
+        let maxFaitiguePotential = $scope.questionsForSession[0].learningStats.fatiguePotential;
 
-        for( var i=1; i<$scope.questionsForSession.length; i++ ) {
-            var q = $scope.questionsForSession[i] ;
+        for(i = 1; i<$scope.questionsForSession.length; i++ ) {
+            q = $scope.questionsForSession[i];
             if( q.learningStats.numAttemptsInSession === 0 ) {
                 if( q.learningStats.fatiguePotential > maxFaitiguePotential ) {
                     maxFaitiguePotential = q.learningStats.fatiguePotential ;
@@ -572,10 +592,10 @@ function rearrangeQuestionsForFatigueBusting() {
 
 function updateProjectedTimeLeft() {
 
-    var timeLeft = 0 ;
-    for (var i = 0; i < $scope.questionsForSession.length; i++) {
-        var question= $scope.questionsForSession[i] ;
-        var avgTime = question.learningStats.averageTimeSpent ;
+    let timeLeft = 0;
+    for ( let i = 0; i < $scope.questionsForSession.length; i++) {
+        const question = $scope.questionsForSession[i];
+        let avgTime = question.learningStats.averageTimeSpent;
 
         if( avgTime <= 0 ) {
             avgTime = 30 ;
@@ -722,6 +742,12 @@ function handleTimerEvent() {
         if( resumeModalShowTime === 0 ) {
             refreshClocks() ;
             refreshCardTimeProgressBars() ;
+            if( $scope.answerPushed ) {
+                if( $scope.remainingAnsPushTime > 0 ) {
+                    $scope.remainingAnsPushTime = Math.max( $scope.remainingAnsPushTime-1000, 0 ) ;
+                    refreshAnsPushTimeProgressBar() ;
+                }
+            }
             setTimeout( handleTimerEvent, 1000 ) ;
         }
         else {
@@ -767,11 +793,15 @@ function refreshClocks() {
 
 function renderTimeMarkersForCurrentQuestion() {
 
-    var selfAvgTimePct   = (5/9)*currentQuestionAvSelfTime ;
-    var predictedTimePct = (5/9)*currentQuestionAvPredictedTime ;
+    let selfAvgTimePct = (5 / 9) * currentQuestionAvSelfTime;
+    const predictedTimePct = (5 / 9) * currentQuestionAvPredictedTime;
 
-    var mark1 = 0 ; var mark1Class = "" ; var fill1Pct = 0 ;
-    var mark2 = 0 ; var mark2Class = "" ; var fill2Pct = 0 ;
+    let mark1 = 0;
+    let mark1Class = "";
+    let fill1Pct = 0;
+    let mark2 = 0;
+    let mark2Class = "";
+    let fill2Pct = 0;
 
     if( selfAvgTimePct === 0 ) { selfAvgTimePct = predictedTimePct ; }
 
@@ -810,11 +840,11 @@ function renderTimeMarkersForCurrentQuestion() {
 
 function refreshCardTimeProgressBars() {
 
-    var delta = Math.ceil(( new Date().getTime() - currentQuestionShowStartTime - totalQuestionPauseTime )/1000) ;
+    const delta = Math.ceil((new Date().getTime() - currentQuestionShowStartTime - totalQuestionPauseTime) / 1000);
 
     if( delta > 0 ) {
 
-        var percent = (5/9)*delta ;
+        const percent = (5 / 9) * delta;
         if( percent <= 105 ) {
             $( "#curr_pb" ).css( "width", percent + "%" ) ;
         }
@@ -837,6 +867,14 @@ function refreshCardTimeProgressBars() {
             }
         }
     }
+}
+
+function refreshAnsPushTimeProgressBar() {
+    let percent = 0 ;
+    if( $scope.totalAnsPushTime > 0 ) {
+        percent = ($scope.remainingAnsPushTime / $scope.totalAnsPushTime)*100 ;
+    }
+    $( "#ans-push-progressbar" ).css( "width", percent + "%" ) ;
 }
 
 function onWindowResize() {
