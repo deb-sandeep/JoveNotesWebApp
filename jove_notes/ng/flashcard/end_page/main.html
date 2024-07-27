@@ -91,7 +91,8 @@
     </div>
 </div>
 
-<div id="practice-page-turner-host-div"
+<div ng-show="$parent.chapterIdsForNextSessions != null"
+     id="next-chapter-page-turner-host-div"
      class="page-turner-ctrl-host">
     <a type="button"
        class="page-turner-button"
@@ -115,3 +116,13 @@
         <p>
     </div>
 </div>
+
+<div ng-show="$parent.chapterIdsForNextSessions == null"
+     id="to-dashboard-page-turner-host-div"
+     class="page-turner-ctrl-host">
+    <a type="button"
+       class="page-turner-button"
+       href="/apps/jove_notes/ng/dashboard/index.php">
+    </a>
+</div>
+

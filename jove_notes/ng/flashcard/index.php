@@ -131,6 +131,13 @@ $score = $scoreDAO->getScore( ExecutionContext::getCurrentUserName() ) ;
           </div>
         </div>
       </div>
+      <div id="resume-page-turner-host-div"
+           class="page-turner-ctrl-host">
+        <button type="button"
+                class="page-turner-button"
+                ng-click="resumeSession()">
+        </button>
+      </div>
     </div>
 </body>
 
