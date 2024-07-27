@@ -11,3 +11,12 @@
 	 class="container-fluid fixedfooter"
      ng-include="'/apps/jove_notes/ng/flashcard/practice_page/footer_fragment.html'">
 </div>
+
+<div id="practice-page-turner-host-div"
+	 class="page-turner-ctrl-host">
+	<button type="button"
+			class="page-turner-button"
+			ng-click="rateCard( 'E' )"
+			ng-disabled="isRatingControlEnabled()">
+	</button>
+</div>

@@ -362,6 +362,29 @@
 }
 
 /* -------------------------------------------------------------------------- */
+/* Physical page turner control hosting divs                                  */
+/* -------------------------------------------------------------------------- */
+.page-turner-ctrl-host {
+    position: fixed;
+    right: 10px;
+    top: 300px;
+    width: 50px;
+    height: 100px;
+    margin-top: 0em;
+}
+
+.page-turner-button {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 50px;
+    height: 100px;
+    padding: 0 0 0 0px;
+    background-color: rgba(187, 250, 169, 0.27);
+    border: none !important;
+}
+
+/* -------------------------------------------------------------------------- */
 /* Pause duration controls                                                    */
 /* -------------------------------------------------------------------------- */
 .ans-push-duration-right-controls {
