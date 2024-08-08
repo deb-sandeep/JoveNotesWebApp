@@ -473,6 +473,22 @@ $scope.tempPromotionAction = function() {
     callTempPromotionServerAPI( selectedChapters ) ;
 }
 
+$scope.launchNotes = function( levels ) {
+    let chapters = null ;
+    chapters = getChapterWithCardsAtLevel( levels ) ;
+
+    const chapterIds = [];
+    for(let i=0; i<chapters.length; i++ ) {
+        chapterIds.push( chapters[i].chapterId ) ;
+    }
+
+    let url = "/apps/jove_notes/ng/notes_chained/index.php";
+    url += "?levels=" + levels.join() ;
+    url += "&chapterIds=" + chapterIds.join() ;
+
+    window.location.href = url ;
+}
+
 $scope.launchChainedFlashcards = function( type ) {
 
     let chapters = null;
@@ -1018,6 +1034,39 @@ function getSelectedChapterRows() {
         }
     }
     return selectedRows ;
+}
+
+function getChapterWithCardsAtLevel( levels ) {
+
+    let selectedChapters = [] ;
+    for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
+        let rowData = $scope.progressSnapshot[i] ;
+        if( rowData.rowType === RowData.prototype.ROW_TYPE_CHAPTER ) {
+            if( rowData.isTreeRowVisible() &&
+                rowData.isRowInCurrentFocus &&
+                rowData.hasCardsAvailable() ) {
+
+                for( let j=0; j<levels.length; j++ ) {
+                    let level = levels[j] ;
+                    let addRow = false ;
+                    switch( level ) {
+                        case 'NS':  addRow = rowData.notStartedCards > 0 ; break ;
+                        case 'L0':  addRow = rowData.l0Cards         > 0 ; break ;
+                        case 'L1':  addRow = rowData.l1Cards         > 0 ; break ;
+                        case 'L2':  addRow = rowData.l2Cards         > 0 ; break ;
+                        case 'L3':  addRow = rowData.l3Cards         > 0 ; break ;
+                        case 'MAS': addRow = rowData.masteredCards   > 0 ; break ;
+                    }
+
+                    if( addRow ) {
+                        selectedChapters.push( rowData ) ;
+                        break ;
+                    }
+                }
+            }
+        }
+    }
+    return selectedChapters ;
 }
 
 function getCurrentFocusChapterRows() {
