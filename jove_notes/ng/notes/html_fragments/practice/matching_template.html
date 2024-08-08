@@ -1,0 +1,18 @@
+<div class="panel panel-default" ng-repeat="element in ng.matchings"
+     style="page-break-inside:avoid;">
+  <div class="panel-heading">
+    <span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;
+    <span class="panel-title" ng-bind-html="element.caption"></span>
+  </div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="mcq_option_table">
+        <tr ng-repeat="pair in element.practiceData">
+            <td class="unselected"><span ng-bind-html="pair[0]"></span></td>
+            <td style="vertical-align:middle;width:150px"></td>
+            <td class="unselected"><span ng-bind-html="pair[1]"></span></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div> 

@@ -1,0 +1,25 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <span class="glyphicon glyphicon-superscript"></span>&nbsp;&nbsp;
+    <span class="panel-title">Equations</span>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-condensed table-hover">
+      <tr ng-repeat="element in ng.equations">
+          <td width="30">
+            <span><span class="glyphicon glyphicon-pushpin"></span></span>
+          </td>
+          <td>
+            <p ng-bind-html="element.equation"></p>
+            <p class="text-muted" ng-bind-html="element.description"></p>
+            <table class="table table-condensed">
+              <tr ng-repeat="symbol in element.symbols">
+                <td><span ng-bind-html="symbol[0]"></span></td>
+                <td style="color:#BBBBBB;">_______________________________________</td>
+              </tr>
+            </table>
+          </td>
+      </tr>
+    </table>
+  </div>
+</div> 

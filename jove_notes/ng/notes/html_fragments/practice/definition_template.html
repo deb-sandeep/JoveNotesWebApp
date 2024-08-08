@@ -1,0 +1,10 @@
+<div class="panel panel-info" style="page-break-inside:avoid;"
+     ng-repeat="element in ng.definitions">
+  <div class="panel-heading">
+    <span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;
+    <span class="panel-title" ng-bind-html="element.term"></span>&nbsp;&nbsp;[Definition]
+  </div>
+  <div class="panel-body">
+    <p ng-bind-html="element.ansRuler"></p>
+  </div>
+</div> 

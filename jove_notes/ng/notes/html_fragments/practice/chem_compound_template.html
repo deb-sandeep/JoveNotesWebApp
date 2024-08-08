@@ -1,0 +1,31 @@
+<div class="panel panel-warning">
+  <div class="panel-heading">
+    <span class="glyphicon glyphicon-certificate"></span>&nbsp;&nbsp;
+    <span class="panel-title">Chemical Compounds</span>
+  </div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table table-condensed table-striped table-hover">
+        <thead>
+            <tr class="default">
+                <th>Formula</th>
+                <th>Chemical Name</th>
+                <th>Common Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="element in ng.chemCompounds">
+                <td><span ng-bind-html="element.symbol"></span></td>
+                <td style="vertical-align: middle;">
+                  <span style="color:#BBBBBB" ng-bind-html="element.chemicalNamePrompt"></span>
+                </td>
+                <td style="vertical-align: middle;">
+                  <span style="color:#BBBBBB" ng-bind-html="element.commonNamePrompt"></span>
+                </td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> 

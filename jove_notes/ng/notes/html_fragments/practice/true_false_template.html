@@ -1,0 +1,17 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <span class="panel-title">True / False</span>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-condensed table-hover">
+      <tr ng-repeat="element in ng.trueFalseStatements">
+          <td width="50px">
+            <span class="glyphicon glyphicon-unchecked gi-2x" style="color:#C4C4C4"></span>
+          </td>
+          <td>
+            <p ng-bind-html="element.statement"></p>
+          </td>
+      </tr>
+    </table>
+  </div>
+</div> 
