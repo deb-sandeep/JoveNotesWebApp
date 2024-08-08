@@ -462,23 +462,21 @@ $scope.resetLevelOfChapterCards = function( chapterId, level ) {
 }
 
 $scope.resetLevelOfAllCardsForSelectedChapters = function( level ) {
-
     const selectedChapters = getSelectedChapterIds();
     callResetLevelServerAPI( selectedChapters, level ) ;
 }
 
 $scope.tempPromotionAction = function() {
-
     const selectedChapters = getSelectedChapterIds();
     callTempPromotionServerAPI( selectedChapters ) ;
 }
 
 $scope.launchNotes = function( levels ) {
-    let chapters = null ;
-    chapters = getChapterWithCardsAtLevel( levels ) ;
+
+    let chapters = getChapterWithCardsAtLevel( levels ) ;
 
     const chapterIds = [];
-    for(let i=0; i<chapters.length; i++ ) {
+    for( let i=0; i<chapters.length; i++ ) {
         chapterIds.push( chapters[i].chapterId ) ;
     }
 
@@ -1038,9 +1036,16 @@ function getSelectedChapterRows() {
 
 function getChapterWithCardsAtLevel( levels ) {
 
-    let selectedChapters = [] ;
-    for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
-        let rowData = $scope.progressSnapshot[i] ;
+    let qualifiedChapters = [] ;
+
+    let selectedChapters = getSelectedChapterRows() ;
+    if( selectedChapters.length === 0 ) {
+        selectedChapters = $scope.progressSnapshot ;
+    }
+
+    for( let i=0; i<selectedChapters.length; i++ ) {
+
+        let rowData = selectedChapters[i] ;
         if( rowData.rowType === RowData.prototype.ROW_TYPE_CHAPTER ) {
             if( rowData.isTreeRowVisible() &&
                 rowData.isRowInCurrentFocus &&
@@ -1059,14 +1064,14 @@ function getChapterWithCardsAtLevel( levels ) {
                     }
 
                     if( addRow ) {
-                        selectedChapters.push( rowData ) ;
+                        qualifiedChapters.push( rowData ) ;
                         break ;
                     }
                 }
             }
         }
     }
-    return selectedChapters ;
+    return qualifiedChapters ;
 }
 
 function getCurrentFocusChapterRows() {
