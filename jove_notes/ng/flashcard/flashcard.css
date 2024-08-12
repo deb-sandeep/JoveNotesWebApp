@@ -380,8 +380,19 @@
     width: 50px;
     height: 100px;
     padding: 0 0 0 0px;
-    background-color: rgba(187, 250, 169, 0.27);
     border: none !important;
+}
+
+.page-turner-green {
+    background-color: rgba(187, 250, 169, 0.27);
+}
+
+.page-turner-red {
+    background-color: rgba(250, 169, 169, 0.41);
+}
+
+.page-turner-darkgreen {
+    background-color: rgba(111, 189, 87, 0.67);
 }
 
 /* -------------------------------------------------------------------------- */

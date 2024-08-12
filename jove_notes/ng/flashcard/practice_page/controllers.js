@@ -16,6 +16,11 @@ const HYSTERIS_PCT = 0.25;
 const FATIGUE_UPPER_HYSTERISIS_THRESHOLD = FATIGUE_UPPER_THRESHOLD * (1 - HYSTERIS_PCT);
 const FATIGUE_LOWER_HYSTERISIS_THRESHOLD = FATIGUE_LOWER_THRESHOLD * (1 - HYSTERIS_PCT);
 
+// Constants for determining page turner button actions.
+const PTA_RATE_CARD_E   = 0 ;
+const PTA_RATE_CARD_H   = 1 ;
+const PTA_RATE_CARD_APM = 2 ;
+
 // ---------------- Local variables --------------------------------------------
 const ratingMatrix = new RatingMatrix();
 const jnUtils     = new JoveNotesUtil();
@@ -43,6 +48,8 @@ let currentTimerStage = PROGRESS_STAGE_GREEN;
 
 let initialQADivFontSize = -1;
 let currentFontZoomDelta = 0;
+
+let pageTurnerAction = PTA_RATE_CARD_E ;
 
 // ---------------- Controller variables ---------------------------------------
 $scope.showL0Header       = true ;
@@ -240,6 +247,36 @@ $scope.getNextLevel = function( rating ) {
     return "" ;
 }
 
+$scope.getPageTurnerButtonClass = function() {
+    let clsName = "page-turner-green" ;
+    switch( pageTurnerAction ) {
+        case PTA_RATE_CARD_E:
+            clsName = "page-turner-green" ;
+            break ;
+        case PTA_RATE_CARD_H:
+            clsName = "page-turner-red" ;
+            break ;
+        case PTA_RATE_CARD_APM:
+            clsName = "page-turner-darkgreen" ;
+            break ;
+    }
+    return clsName ;
+}
+
+$scope.pageTurnerButtonClicked = function() {
+    switch( pageTurnerAction ) {
+        case PTA_RATE_CARD_E:
+            $scope.rateCard( 'E' ) ;
+            break ;
+        case PTA_RATE_CARD_H:
+            $scope.rateCard( 'H' ) ;
+            break ;
+        case PTA_RATE_CARD_APM:
+            $scope.rateCard( 'APM' ) ;
+            break ;
+    }
+}
+
 $scope.rateCard = function( rating ) {
     log.debug( "Rating current card as " + rating )  ;
 
@@ -305,6 +342,7 @@ $scope.showAnswer = function() {
 $scope.pushAnswer = function() {
     callRFMApiToPushAnswer( 0 ) ;
     $scope.answerPushed = true ;
+    pageTurnerAction = PTA_RATE_CARD_H ;
 }
 
 $scope.setAnsPushTimer = function( ansPushTime ) {
@@ -453,6 +491,7 @@ function showNextCard() {
     $scope.answerPushed = false ;
     $scope.totalAnsPushTime = 0 ;
     $scope.remainingAnsPushTime = 0 ;
+
     refreshAnsPushTimeProgressBar() ;
 
     if( !hasSessionEnded() ) {
@@ -479,8 +518,8 @@ function showNextCard() {
         }
         log.debug( "Self average time = " + currentQuestionAvSelfTime + " sec." ) ;
 
-        var answerLength = $scope.currentQuestion.handler.getAnswerLength() ;
-        
+        const answerLength = $scope.currentQuestion.handler.getAnswerLength();
+
         $scope.questionMode        = true ;
         $scope.answerChangeTrigger = "" ;
         $scope.answerAlign         = ( answerLength < 100 ) ? "center" : "left" ;
@@ -496,6 +535,7 @@ function showNextCard() {
 
         renderTimeMarkersForCurrentQuestion() ;
         updateProjectedTimeLeft() ;
+        computePageTurnerAction() ;
 
         if( $scope.$parent.studyCriteria.push ) {
             log.debug( "Session is configured for remote push. " + 
@@ -511,6 +551,25 @@ function showNextCard() {
     }
     else {
         endSession() ;
+    }
+}
+
+function computePageTurnerAction() {
+    pageTurnerAction = PTA_RATE_CARD_E ;
+
+    let qType = $scope.currentQuestion.questionType ;
+    let numAttempts = $scope.currentQuestion.learningStats.numAttempts ;
+    let absEff = $scope.currentQuestion.learningStats.absoluteLearningEfficiency ;
+
+    if( qType === "multi_choice" || qType === "true_false" ) {
+        if( numAttempts >= 1 && absEff === 100 ) {
+            pageTurnerAction = PTA_RATE_CARD_APM ;
+        }
+    }
+    else if( qType === "fib" || qType === "matching" ) {
+        if( numAttempts >= 2 && absEff === 100 ) {
+            pageTurnerAction = PTA_RATE_CARD_APM ;
+        }
     }
 }
 

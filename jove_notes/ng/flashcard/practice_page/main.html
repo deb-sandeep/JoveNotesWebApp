@@ -16,7 +16,8 @@
 	 class="page-turner-ctrl-host">
 	<button type="button"
 			class="page-turner-button"
-			ng-click="rateCard( 'E' )"
+			ng-class="getPageTurnerButtonClass()"
+			ng-click="pageTurnerButtonClicked()"
 			ng-disabled="isRatingControlEnabled()">
 	</button>
 </div>
