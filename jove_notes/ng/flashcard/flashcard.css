@@ -381,6 +381,7 @@
     height: 100px;
     padding: 0 0 0 0px;
     border: none !important;
+    background-color: rgba(187, 250, 169, 0.27);
 }
 
 .page-turner-green {
