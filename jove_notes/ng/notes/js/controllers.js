@@ -195,6 +195,10 @@ $scope.toggleNotesLayout = function() {
 
 $scope.getNotesHighlightClass = function( element ) {
 
+	if( !element.hasOwnProperty( 'learningStats' ) ) {
+		return ;
+	}
+
 	let le  = element.learningStats.learningEfficiency ;
 	let ale = element.learningStats.absLearningEfficiency ;
 	let na  = element.learningStats.numAttempts ;
