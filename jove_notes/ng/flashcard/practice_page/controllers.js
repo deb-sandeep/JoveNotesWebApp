@@ -560,22 +560,25 @@ function computePageTurnerAction() {
     let qType = $scope.currentQuestion.questionType ;
     let numAttempts = $scope.currentQuestion.learningStats.numAttempts ;
     let absEff = $scope.currentQuestion.learningStats.absoluteLearningEfficiency ;
+    let numAttempsInSession = $scope.currentQuestion.learningStats.numAttemptsInSession ;
 
-    if( qType === "multi_choice" || qType === "true_false" ) {
-        if( numAttempts >= 1 && absEff === 100 ) {
-            pageTurnerAction = PTA_RATE_CARD_APM ;
+    // Compute specialized page turner action only if this is the first attempt.
+    if( numAttempsInSession === 0 ) {
+        if( qType === "multi_choice" || qType === "true_false" ) {
+            if( numAttempts >= 1 && numAttempts < 3 && absEff === 100 ) {
+                pageTurnerAction = PTA_RATE_CARD_APM ;
+            }
         }
-    }
-    else if( qType === "fib" || qType === "matching" ) {
-        if( numAttempts >= 2 && absEff === 100 ) {
-            pageTurnerAction = PTA_RATE_CARD_APM ;
+        else if( qType === "fib" || qType === "matching" ) {
+            if( numAttempts >= 2  && numAttempts < 3 && absEff === 100 ) {
+                pageTurnerAction = PTA_RATE_CARD_APM ;
+            }
         }
     }
 }
 
 function rearrangeQuestionsForFatigueBusting() {
-    let q;
-    let i;
+
     if( !$scope.studyCriteria.engageFatigueBuster ) {
         return ;
     }
@@ -584,9 +587,7 @@ function rearrangeQuestionsForFatigueBusting() {
         return ;
     }
 
-    let targetQIndex = 0;
-
-    if( $scope.currentFatigueLevel < FATIGUE_UPPER_HYSTERISIS_THRESHOLD && 
+    if( $scope.currentFatigueLevel < FATIGUE_UPPER_HYSTERISIS_THRESHOLD &&
         $scope.currentFatigueLevel > FATIGUE_LOWER_HYSTERISIS_THRESHOLD ) {
 
         $scope.inNormalFatigueZone = true ;
@@ -610,13 +611,15 @@ function rearrangeQuestionsForFatigueBusting() {
         }
     }
 
+    let targetQIndex = 0;
+
     if( $scope.inUpperHysterisZone ) {
 
         // Present a question with minimum fatigue potential
         let minFaitiguePotential = $scope.questionsForSession[0].learningStats.fatiguePotential;
 
-        for( i = 1; i<$scope.questionsForSession.length; i++ ) {
-            q = $scope.questionsForSession[i];
+        for( let i = 1; i<$scope.questionsForSession.length; i++ ) {
+            let q = $scope.questionsForSession[i];
             if( q.learningStats.numAttemptsInSession === 0 ) {
                 if( q.learningStats.fatiguePotential < minFaitiguePotential ) {
                     minFaitiguePotential = q.learningStats.fatiguePotential ;
@@ -689,21 +692,21 @@ function computeRecommendPromoteFlag() {
         return ;
     }
 
-    var recommendFlag = false ;
+    let recommendFlag = false;
+    let numTrailingERatings = 0;
+    let numHorPRatings = 0;
 
-    var temporalScores      = $scope.currentQuestion.learningStats.temporalScores ;
-    var numRatings          = temporalScores.length ;
-    var numTrailingERatings = 0 ;
-    var numHorPRatings      = 0 ;
+    const temporalScores = $scope.currentQuestion.learningStats.temporalScores;
+    const numRatings = temporalScores.length;
 
     if( temporalScores.length >= 2 ) {
 
-        var trailingEStreak = true ;
-        for( var i=temporalScores.length-1; i>=0; i-- ) {
+        let trailingEStreak = true;
+        for( let i=temporalScores.length-1; i>=0; i-- ) {
 
-            var rating = temporalScores[i] ;
+            const rating = temporalScores[i];
 
-            if( rating == "E" || rating == "A" ) {
+            if( rating === "E" || rating === "A" ) {
                 if( trailingEStreak ){ 
                     numTrailingERatings++ ;
                 }
@@ -712,7 +715,7 @@ function computeRecommendPromoteFlag() {
                 trailingEStreak = false ; 
             }
 
-            if( rating == "H" || rating == "P"   ){ 
+            if( rating === "H" || rating === "P"   ){
                 numHorPRatings++ ;        
             }
         }
@@ -725,7 +728,7 @@ function computeRecommendPromoteFlag() {
 
             // However, if the user has goofed up in the past, we reconsider our
             // stance of giving him an option to auto promote to mastered.
-            if( numHorPRatings != 0 ) {
+            if( numHorPRatings !== 0 ) {
 
                 // If he has a charred history, we recommend auto promote if he 
                 // has more than 3 consequtive E's. i.e. He can only auto promote
