@@ -10,7 +10,32 @@
 		</td>
 		<td class="form-group pad-5px" valign="top">
 			<label for="currentLevelFilter">Level:</label>
-			<select id="currentLevelFilter" 
+			&nbsp;&nbsp;
+			<input id="selectNSCardsCB"
+				   type="checkbox"
+				   ng-model="studyCriteria.selectNSCards" />
+			<label for="selectNSCardsCB"> NS</label>
+            &nbsp;
+			<input id="selectL0CardsCB"
+				   type="checkbox"
+				   ng-model="studyCriteria.selectL0Cards" />
+			<label for="selectL0CardsCB"> L0</label>
+			&nbsp;
+			<input id="selectL1CardsCB"
+				   type="checkbox"
+				   ng-model="studyCriteria.selectL1Cards" />
+			<label for="selectL1CardsCB"> L1</label>
+            &nbsp;
+			<input id="selectL2CardsCB"
+				   type="checkbox"
+				   ng-model="studyCriteria.selectL2Cards" />
+			<label for="selectL2CardsCB"> L2</label>
+            &nbsp;
+			<input id="selectL3CardsCB"
+				   type="checkbox"
+				   ng-model="studyCriteria.selectL3Cards" />
+			<label for="selectL3CardsCB"> L3</label>
+			<select id="currentLevelFilter"
 			        class="form-control" multiple="true" size="5" 
 			        ng-model="studyCriteria.currentLevelFilters"
 			        ng-options="obj.id as obj.name for obj in filterOptions.currentLevelOptions">

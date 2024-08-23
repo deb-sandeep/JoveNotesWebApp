@@ -21,6 +21,11 @@ function StudyCriteria() {
     this.engageFatigueBuster    = true ;
     this.skipNegativeGrading    = false ;
     this.forceAPMControls       = false ;
+    this.selectNSCards          = true ;
+    this.selectL0Cards          = true ;
+    this.selectL1Cards          = true ;
+    this.selectL2Cards          = true ;
+    this.selectL3Cards          = true ;
 
     this.serialize = function() {
         $.cookie.json = true ;
@@ -43,6 +48,11 @@ function StudyCriteria() {
             this.engageFatigueBuster    = crit.engageFatigueBuster ;
             this.skipNegativeGrading    = crit.skipNegativeGrading ;
             this.forceAPMControls       = crit.forceAPMControls ;
+            this.selectNSCards          = crit.selectNSCards ;
+            this.selectL0Cards          = crit.selectL0Cards ;
+            this.selectL1Cards          = crit.selectL1Cards ;
+            this.selectL2Cards          = crit.selectL2Cards ;
+            this.selectL3Cards          = crit.selectL3Cards ;
         }
     }
 
@@ -81,23 +91,23 @@ function StudyCriteria() {
             return false ;
         }
 
-        var currentLevel = question.learningStats.currentLevel ;
-        var lrnEffLabel  = question.learningStats.efficiencyLabel ;
-        var diffLabel    = question.difficultyLabel ;
-        var elementType  = question.elementType ;
+        const currentLevel = question.learningStats.currentLevel;
+        const lrnEffLabel  = question.learningStats.efficiencyLabel ;
+        const diffLabel    = question.difficultyLabel ;
+        const elementType  = question.elementType ;
 
-        var currentLevelFilters = this.currentLevelFilters ;
-        var lrnEffLabelFilters  = this.learningEfficiencyFilters ;
-        var diffLabelFilters    = this.difficultyFilters ;
-        var cardTypeFilters     = this.cardTypeFilters ;
+        const currentLevelFilters = this.currentLevelFilters ;
+        const lrnEffLabelFilters  = this.learningEfficiencyFilters ;
+        const diffLabelFilters    = this.difficultyFilters ;
+        const cardTypeFilters     = this.cardTypeFilters ;
 
-        var filteredBySelectedSections = false ;
+        let filteredBySelectedSections = false ;
 
         if( this.sectionFilters.length > 0 ) {
             if( question.section != null ) {
                 filteredBySelectedSections = true ;
-                for( var i=0; i<this.sectionFilters.length; i++ ) {
-                    var selSec = this.sectionFilters[i] ;
+                for( let i=0; i<this.sectionFilters.length; i++ ) {
+                    let selSec = this.sectionFilters[i] ;
                     if( selSec.section === question.section ) {
                         filteredBySelectedSections = false ;
                         break ;
@@ -114,7 +124,13 @@ function StudyCriteria() {
             if( currentLevelFilters.indexOf( currentLevel ) !== -1 ) {
                 if( lrnEffLabelFilters.indexOf( lrnEffLabel ) !== -1 ) {
                     if( diffLabelFilters.indexOf( diffLabel ) !== -1 ) {
-                        return true ;
+
+                        if( ( this.selectNSCards && currentLevel === 'NS' ) ||
+                            ( this.selectL0Cards && currentLevel === 'L0' ) ||
+                            ( this.selectL1Cards && currentLevel === 'L1' ) ||
+                            ( this.selectL2Cards && currentLevel === 'L2' ) ||
+                            ( this.selectL3Cards && currentLevel === 'L3' ) )
+                            return true ;
                     }
                 }
             }
@@ -185,8 +201,8 @@ $scope.projectedDuration   = 0 ;
 
 $scope.studyStrategies = [
     new SSR_StudyStrategy(),
-    new RNPT_StudyStrategy(),
-    new RNPTQA_StudyStrategy(),
+    //new RNPT_StudyStrategy(),
+    //new RNPTQA_StudyStrategy(),
     new NPT_StudyStrategy(),
     new NPTQA_StudyStrategy(),
     new PTObj_StudyStrategy(),
@@ -243,7 +259,12 @@ $scope.$watchGroup( ['studyCriteria.currentLevelFilters',
                      'studyCriteria.sortType',
                      'studyCriteria.maxResurrectedCards',
                      'studyCriteria.maxNewCards',
-                     'studyCriteria.excludeMarkedForReview'], 
+                     'studyCriteria.excludeMarkedForReview',
+                     'studyCriteria.selectNSCards',
+                     'studyCriteria.selectL0Cards',
+                     'studyCriteria.selectL1Cards',
+                     'studyCriteria.selectL2Cards',
+                     'studyCriteria.selectL3Cards'],
                     function( newVals, oldVals ) {
 
     handleFilterChange() ;

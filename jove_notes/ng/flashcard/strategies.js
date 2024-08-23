@@ -34,10 +34,10 @@ function StudyStrategy( id, displayName ) {
     }
 
     this.updateHistogramCluster = function( question ) {
-        var cardParentType  = question.elementType ;
-        var difficultyLabel = question.difficultyLabel ;
-        var currentLevel    = question.learningStats.currentLevel ;
-        var efficiencyLabel = question.learningStats.efficiencyLabel ;
+        const cardParentType = question.elementType;
+        const difficultyLabel = question.difficultyLabel;
+        const currentLevel = question.learningStats.currentLevel;
+        const efficiencyLabel = question.learningStats.efficiencyLabel;
 
         if( this.histograms.typeHistogram.hasOwnProperty( cardParentType ) ) {
             this.histograms.typeHistogram[ cardParentType ]++ ;
@@ -69,12 +69,12 @@ function StudyStrategy( id, displayName ) {
     }
 
     this.printHistogram = function() {
-        for( var histogramName in this.histograms ) {
+        for( const histogramName in this.histograms ) {
             if( this.histograms.hasOwnProperty( histogramName ) ) {
                 log.debug( "Printing histogram " + histogramName ) ;
-                var map = this.histograms[ histogramName ] ;
-                var total = 0 ;
-                for( var type in map ) {
+                const map = this.histograms[histogramName];
+                let total = 0;
+                for( const type in map ) {
                     if( map.hasOwnProperty( type ) ) {
                         log.debug( "\t" + type + " = " + map[type] ) ;
                         total += map[type] ;
@@ -94,7 +94,7 @@ function StudyStrategy( id, displayName ) {
 
     this.prepareCardTypeFilterOptions = function() {
 
-        var optionText = [] ;
+        const optionText = [];
 
         optionText[ "word_meaning"    ] = "Word Meaning" ;
         optionText[ "question_answer" ] = "Question Answer" ;
@@ -119,7 +119,7 @@ function StudyStrategy( id, displayName ) {
 
     this.prepareCardLevelOptions = function() {
 
-        var optionText = [] ;
+        const optionText = [];
 
         optionText[ "NS" ] = "Not Started" ;
         optionText[ "L0" ] = "Level 0" ;
@@ -133,7 +133,7 @@ function StudyStrategy( id, displayName ) {
 
     this.prepareCardDifficultyOptions = function () {
 
-        var optionText = [] ;
+        const optionText = [];
 
         optionText[ "VE" ] = "Very easy" ;
         optionText[ "E"  ] = "Easy" ;
@@ -297,6 +297,8 @@ StudyStrategy.prototype.initialize = function( chapterDetails ) {
 }
 
 // -----------------------------------------------------------------------------
+// SSR - Picks all the SSR matured cards
+//
 SSR_StudyStrategy.prototype = new StudyStrategy() ;
 SSR_StudyStrategy.prototype.constructor = SSR_StudyStrategy;
 
@@ -320,6 +322,8 @@ SSR_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
 }
 
 // -----------------------------------------------------------------------------
+// BOTTOM_UP_L0 - Picks up NS and L0 cards, irrespective of maturity
+//
 BottomUpL0_StudyStrategy.prototype = new StudyStrategy() ;
 BottomUpL0_StudyStrategy.prototype.constructor = BottomUpL0_StudyStrategy ;
 
@@ -336,6 +340,8 @@ BottomUpL0_StudyStrategy.prototype.offer = function( chapterDetails, question ) 
 }
 
 // -----------------------------------------------------------------------------
+// BOTTOM_UP_L1 - Picks up NS, L0 and L1 cards, irrespective of maturity
+//
 BottomUpL1_StudyStrategy.prototype = new StudyStrategy() ;
 BottomUpL1_StudyStrategy.prototype.constructor = BottomUpL1_StudyStrategy ;
 
@@ -352,6 +358,8 @@ BottomUpL1_StudyStrategy.prototype.offer = function( chapterDetails, question ) 
 }
 
 // -----------------------------------------------------------------------------
+// BOTTOM_UP_L2 - Picks up NS, L0, L1 and L2 cards, irrespective of maturity
+//
 BottomUpL2_StudyStrategy.prototype = new StudyStrategy() ;
 BottomUpL2_StudyStrategy.prototype.constructor = BottomUpL2_StudyStrategy ;
 
@@ -368,6 +376,8 @@ BottomUpL2_StudyStrategy.prototype.offer = function( chapterDetails, question ) 
 }
 
 // -----------------------------------------------------------------------------
+// BOTTOM_UP_L3 - Picks up NS, L0, L1, L2 and L3 cards, irrespective of maturity
+//
 BottomUpL3_StudyStrategy.prototype = new StudyStrategy() ;
 BottomUpL3_StudyStrategy.prototype.constructor = BottomUpL3_StudyStrategy ;
 
@@ -384,59 +394,10 @@ BottomUpL3_StudyStrategy.prototype.offer = function( chapterDetails, question ) 
 }
 
 // -----------------------------------------------------------------------------
-RNPT_StudyStrategy.prototype = new StudyStrategy() ;
-RNPT_StudyStrategy.prototype.constructor = RNPT_StudyStrategy ;
-
-function RNPT_StudyStrategy() {
-    StudyStrategy.call( this, "RNPT", "NPT (Resurrected)" ) ;
-}
-
-RNPT_StudyStrategy.prototype.sortQuestions = function() {
-    if( this.questions.length === 0 ) return ;
-    const sorter = new QuestionSorter( this.questions ) ;
-    sorter.sortByNumAttempts( true ) ;
-}
-
-RNPT_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
-    if( this.isResurrected( question ) ) {
-        if( question.questionType === 'fib'           || 
-            question.questionType === 'true_false'    || 
-            question.questionType === 'matching'      || 
-            question.questionType === 'image_label'   || 
-            question.questionType === 'multi_choice'  || 
-            question.questionType === 'chem_equation' ||
-            question.questionType === 'chem_compound' ||
-            question.questionType === 'equation' ) {
-
-            this.addQuestion( question ) ;
-        }
-        else if( this.isNPTChapter( chapterDetails ) ) {
-            this.addQuestion( question ) ;
-        }
-    }
-}
-
-// -----------------------------------------------------------------------------
-RNPTQA_StudyStrategy.prototype = new StudyStrategy() ;
-RNPTQA_StudyStrategy.prototype.constructor = RNPTQA_StudyStrategy ;
-
-function RNPTQA_StudyStrategy() {
-    StudyStrategy.call( this, "RNPTQA", "NPTQA (Resurrected)" ) ;
-}
-
-RNPTQA_StudyStrategy.prototype.sortQuestions = function() {
-    if( this.questions.length === 0 ) return ;
-    const sorter = new QuestionSorter( this.questions ) ;
-    sorter.sortByNumAttempts( true ) ;
-}
-
-RNPTQA_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
-    if( this.isResurrected( question ) ) {
-        this.addQuestion( question ) ;
-    }
-}
-
-// -----------------------------------------------------------------------------
+// NPT - Non Prime Time
+// Picks up all SSR matured or Resurrected cards which qualify the NPT criteria
+// , i.e. essentially light weight, objective cards.
+//
 NPT_StudyStrategy.prototype = new StudyStrategy() ;
 NPT_StudyStrategy.prototype.constructor = NPT_StudyStrategy ;
 
@@ -470,6 +431,10 @@ NPT_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
 }
 
 // -----------------------------------------------------------------------------
+// NPTQA - Non Prime Time Question Answer
+// Picks up all SSR matured or Resurrected cards without any further filtering.
+// Note that this strategy will also pick up the NPT cards.
+//
 NPTQA_StudyStrategy.prototype = new StudyStrategy() ;
 NPTQA_StudyStrategy.prototype.constructor = NPTQA_StudyStrategy ;
 
@@ -490,6 +455,9 @@ NPTQA_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
 }
 
 // -----------------------------------------------------------------------------
+// PTObj - Prime Time Objective
+// Picks up all objective new cards.
+//
 PTObj_StudyStrategy.prototype = new StudyStrategy() ;
 PTObj_StudyStrategy.prototype.constructor = PTObj_StudyStrategy ;
 
@@ -520,6 +488,9 @@ PTObj_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
 }
 
 // -----------------------------------------------------------------------------
+// PTSub - Prime Time Subjective
+// Picks up all subjective new cards.
+//
 PTSub_StudyStrategy.prototype = new StudyStrategy() ;
 PTSub_StudyStrategy.prototype.constructor = PTSub_StudyStrategy ;
 
@@ -545,4 +516,56 @@ PTSub_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
     }
 }
 
+// -----------------------------------------------------------------------------
+RNPT_StudyStrategy.prototype = new StudyStrategy() ;
+RNPT_StudyStrategy.prototype.constructor = RNPT_StudyStrategy ;
+
+function RNPT_StudyStrategy() {
+    StudyStrategy.call( this, "RNPT", "NPT (Resurrected)" ) ;
+}
+
+RNPT_StudyStrategy.prototype.sortQuestions = function() {
+    if( this.questions.length === 0 ) return ;
+    const sorter = new QuestionSorter( this.questions ) ;
+    sorter.sortByNumAttempts( true ) ;
+}
+
+RNPT_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
+    if( this.isResurrected( question ) ) {
+        if( question.questionType === 'fib'           ||
+            question.questionType === 'true_false'    ||
+            question.questionType === 'matching'      ||
+            question.questionType === 'image_label'   ||
+            question.questionType === 'multi_choice'  ||
+            question.questionType === 'chem_equation' ||
+            question.questionType === 'chem_compound' ||
+            question.questionType === 'equation' ) {
+
+            this.addQuestion( question ) ;
+        }
+        else if( this.isNPTChapter( chapterDetails ) ) {
+            this.addQuestion( question ) ;
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+RNPTQA_StudyStrategy.prototype = new StudyStrategy() ;
+RNPTQA_StudyStrategy.prototype.constructor = RNPTQA_StudyStrategy ;
+
+function RNPTQA_StudyStrategy() {
+    StudyStrategy.call( this, "RNPTQA", "NPTQA (Resurrected)" ) ;
+}
+
+RNPTQA_StudyStrategy.prototype.sortQuestions = function() {
+    if( this.questions.length === 0 ) return ;
+    const sorter = new QuestionSorter( this.questions ) ;
+    sorter.sortByNumAttempts( true ) ;
+}
+
+RNPTQA_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
+    if( this.isResurrected( question ) ) {
+        this.addQuestion( question ) ;
+    }
+}
 
