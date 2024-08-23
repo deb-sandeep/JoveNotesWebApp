@@ -491,28 +491,22 @@ PTObj_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
 // PTSub - Prime Time Subjective
 // Picks up all subjective new cards.
 //
-PTSub_StudyStrategy.prototype = new StudyStrategy() ;
-PTSub_StudyStrategy.prototype.constructor = PTSub_StudyStrategy ;
+PT_StudyStrategy.prototype = new StudyStrategy() ;
+PT_StudyStrategy.prototype.constructor = PT_StudyStrategy ;
 
-function PTSub_StudyStrategy() {
-    StudyStrategy.call( this, "PTSub", "Prime Time (Subjective)" ) ;
+function PT_StudyStrategy() {
+    StudyStrategy.call( this, "PT", "Prime Time" ) ;
 }
 
-PTSub_StudyStrategy.prototype.sortQuestions = function() {
+PT_StudyStrategy.prototype.sortQuestions = function() {
     if( this.questions.length === 0 ) return ;
     const sorter = new QuestionSorter( this.questions ) ;
     sorter.sortByNumAttempts( true ) ;
 }
 
-PTSub_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
+PT_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
     if( this.isNewCard( question ) ) {
-        if( question.questionType === 'question_answer' || 
-            question.questionType === 'definition'      || 
-            question.questionType === 'rtc'             || 
-            question.questionType === 'word_meaning' ) {
-
-            this.addQuestion( question ) ;
-        } 
+        this.addQuestion( question ) ;
     }
 }
 
