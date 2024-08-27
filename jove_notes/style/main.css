@@ -14,6 +14,13 @@ blockquote {
 	background-color: #F3F3F3;
 	font-style: italic;
 	text-align: left;
+	padding:1px 1px 1px 10px ;
+	margin:1px;
+}
+
+blockquote > p {
+	margin:2px;
+	padding:2px;
 }
 
 p {

@@ -309,8 +309,7 @@ function SSR_StudyStrategy() {
 SSR_StudyStrategy.prototype.sortQuestions = function() {
 
     if( this.questions.length === 0 ) return ;
-    const sorter = new QuestionSorter( this.questions ) ;
-    sorter.sortByRecency() ;
+    this.sortQuestionsByLevel() ;
 }
 
 SSR_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
