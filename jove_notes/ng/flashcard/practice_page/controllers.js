@@ -20,6 +20,8 @@ const FATIGUE_LOWER_HYSTERISIS_THRESHOLD = FATIGUE_LOWER_THRESHOLD * (1 - HYSTER
 const PTA_RATE_CARD_E   = 0 ;
 const PTA_RATE_CARD_H   = 1 ;
 const PTA_RATE_CARD_APM = 2 ;
+const PTA_RATE_CARD_MAS = 3 ; // We are at L3 and this press will master the card. No different than
+                              // E except that it enables us to give a separate visual rep to the button.
 
 // ---------------- Local variables --------------------------------------------
 const ratingMatrix = new RatingMatrix();
@@ -257,6 +259,7 @@ $scope.getPageTurnerButtonClass = function() {
             clsName = "page-turner-red" ;
             break ;
         case PTA_RATE_CARD_APM:
+        case PTA_RATE_CARD_MAS:
             clsName = "page-turner-darkgreen" ;
             break ;
     }
@@ -266,6 +269,7 @@ $scope.getPageTurnerButtonClass = function() {
 $scope.pageTurnerButtonClicked = function() {
     switch( pageTurnerAction ) {
         case PTA_RATE_CARD_E:
+        case PTA_RATE_CARD_MAS:
             $scope.rateCard( 'E' ) ;
             break ;
         case PTA_RATE_CARD_H:
@@ -561,10 +565,14 @@ function computePageTurnerAction() {
     let numAttempts = $scope.currentQuestion.learningStats.numAttempts ;
     let absEff = $scope.currentQuestion.learningStats.absoluteLearningEfficiency ;
     let numAttempsInSession = $scope.currentQuestion.learningStats.numAttemptsInSession ;
+    let curLevel = $scope.currentQuestion.learningStats.currentLevel ;
 
     // Compute specialized page turner action only if this is the first attempt.
     if( numAttempsInSession === 0 ) {
-        if( qType === "multi_choice" || qType === "true_false" ) {
+        if( curLevel === 'L3' ) {
+            pageTurnerAction = PTA_RATE_CARD_MAS ;
+        }
+        else if( qType === "multi_choice" || qType === "true_false" ) {
             if( numAttempts >= 1 && numAttempts < 3 && absEff === 100 ) {
                 pageTurnerAction = PTA_RATE_CARD_APM ;
             }

@@ -10,7 +10,7 @@ pre {
 }
 
 blockquote {
-	font-size: 16px;
+	font-size: 14px;
 	background-color: #F3F3F3;
 	font-style: italic;
 	text-align: left;
@@ -441,7 +441,7 @@ table.pure-table ol {
 }
 
 blockquote {
-	font-size: 16px;
+	font-size: 14px;
 	font-color: blue;
 	text-align: left;
 }
