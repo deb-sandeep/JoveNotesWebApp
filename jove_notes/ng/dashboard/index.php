@@ -28,7 +28,9 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
     <link rel="stylesheet" type="text/css" href="/lib-ext/bootstrap-3.3.4/angular/calendar/angular-bootstrap-calendar.min.css" >
     <link rel="stylesheet" type="text/css" href="/lib-ext/bootstrap-3.3.4/angular/colorpicker/colorpicker.min.css" >
 
+    <link rel="stylesheet" type="text/css" href="/apps/jove_notes/ng/dashboard/dashboard.css" >
     <link rel="stylesheet" type="text/css" href="/apps/jove_notes/ng/dashboard/calendar/settings.css" >
+    <link rel="stylesheet" type="text/css" href="/apps/jove_notes/ng/notes/css/notes.css" >
     <link rel="stylesheet" type="text/css" href="/apps/jove_notes/ng/notes/css/notes.css" >
 
     <script src="/lib-ext/angular/angular-ui-indeterminate.min.js"></script>

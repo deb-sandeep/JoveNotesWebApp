@@ -275,6 +275,16 @@ function RowData( rowType, name, rowId, parentRowId ) {
             if( $scope.showHiddenChapters || this.isRowInSyllabus ) {
                 visible = true ;
             }
+
+            if( $scope.showOnlyChaptersWithNSCards && this.notStartedCards === 0 ) {
+                visible = false ;
+            }
+            if( $scope.showOnlyChaptersWithNRCards && this.resurrectedCards === 0 ) {
+                visible = false ;
+            }
+            if( $scope.showOnlyChaptersWithL0Cards && this.l0Cards === 0 ) {
+                visible = false ;
+            }
             return visible ;
         }
         else if( ( this.rowType === RowData.prototype.ROW_TYPE_SUBJECT ) ||
@@ -352,6 +362,10 @@ $scope.showOnlyCurrentFocus      = false ;
 $scope.showPercentage            = false ;
 $scope.progressSnapshot          = null ;
 $scope.alreadyFetchedAllChapters = false ;
+
+$scope.showOnlyChaptersWithNSCards = false ;
+$scope.showOnlyChaptersWithNRCards = false ;
+$scope.showOnlyChaptersWithL0Cards = false ;
 
 refreshData() ;
 
@@ -577,6 +591,27 @@ $scope.$on( 'onRenderComplete', function( scope ){
     recomputeStatistics() ;
     $scope.$digest() ;
 } ) ;
+
+$scope.toggleLevelFilter = function( level ) {
+    if( level === 'L0' ) {
+        $scope.showOnlyChaptersWithL0Cards = !$scope.showOnlyChaptersWithL0Cards ;
+    }
+    else if( level === 'NR' ) {
+        $scope.showOnlyChaptersWithNRCards = !$scope.showOnlyChaptersWithNRCards ;
+    }
+    else if( level === 'NS' ) {
+        $scope.showOnlyChaptersWithNSCards = !$scope.showOnlyChaptersWithNSCards ;
+    }
+}
+
+$scope.getLevelFilterCellClass = function( level ) {
+    if( ( level === 'L0' && $scope.showOnlyChaptersWithL0Cards ) ||
+        ( level === 'NS' && $scope.showOnlyChaptersWithNSCards ) ||
+        ( level === 'NR' && $scope.showOnlyChaptersWithNRCards ) ) {
+        return "hdr-level-selected" ;
+    }
+    return "" ;
+}
 
 function removeChapter( chapterId ) {
 

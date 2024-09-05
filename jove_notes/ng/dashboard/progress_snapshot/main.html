@@ -79,9 +79,15 @@
                     <table class="dashboard-stats">
                         <tr ng-if="!showPercentage">
                             <td class="text-right TOT">T  </td>
-                            <td class="text-right L0" >NS </td>
-                            <td class="text-right NR" >NR </td>
-                            <td class="text-right L0" >L0 </td>
+                            <td class="text-right L0" ng-class="getLevelFilterCellClass('NS')">
+                                <span ng-click="toggleLevelFilter( 'NS' )">NS</span>
+                            </td>
+                            <td class="text-right NR" ng-class="getLevelFilterCellClass('NR')" >
+                                <span ng-click="toggleLevelFilter( 'NR' )">NR</span>
+                            </td>
+                            <td class="text-right L0" ng-class="getLevelFilterCellClass('L0')" >
+                                <span ng-click="toggleLevelFilter( 'L0' )">L0</span>
+                            </td>
                             <td class="text-right L1" >L1 </td>
                             <td class="text-right L2" >L2 </td>
                             <td class="text-right L3" >L3 </td>
