@@ -285,6 +285,9 @@ function RowData( rowType, name, rowId, parentRowId ) {
             if( $scope.showOnlyChaptersWithL0Cards && this.l0Cards === 0 ) {
                 visible = false ;
             }
+            if( $scope.showOnlyChaptersWithL1Cards && this.l1Cards === 0 ) {
+                visible = false ;
+            }
             return visible ;
         }
         else if( ( this.rowType === RowData.prototype.ROW_TYPE_SUBJECT ) ||
@@ -366,6 +369,7 @@ $scope.alreadyFetchedAllChapters = false ;
 $scope.showOnlyChaptersWithNSCards = false ;
 $scope.showOnlyChaptersWithNRCards = false ;
 $scope.showOnlyChaptersWithL0Cards = false ;
+$scope.showOnlyChaptersWithL1Cards = false ;
 
 refreshData() ;
 
@@ -596,6 +600,9 @@ $scope.toggleLevelFilter = function( level ) {
     if( level === 'L0' ) {
         $scope.showOnlyChaptersWithL0Cards = !$scope.showOnlyChaptersWithL0Cards ;
     }
+    else if( level === 'L1' ) {
+        $scope.showOnlyChaptersWithL1Cards = !$scope.showOnlyChaptersWithL1Cards ;
+    }
     else if( level === 'NR' ) {
         $scope.showOnlyChaptersWithNRCards = !$scope.showOnlyChaptersWithNRCards ;
     }
@@ -606,6 +613,7 @@ $scope.toggleLevelFilter = function( level ) {
 
 $scope.getLevelFilterCellClass = function( level ) {
     if( ( level === 'L0' && $scope.showOnlyChaptersWithL0Cards ) ||
+        ( level === 'L1' && $scope.showOnlyChaptersWithL1Cards ) ||
         ( level === 'NS' && $scope.showOnlyChaptersWithNSCards ) ||
         ( level === 'NR' && $scope.showOnlyChaptersWithNRCards ) ) {
         return "hdr-level-selected" ;
