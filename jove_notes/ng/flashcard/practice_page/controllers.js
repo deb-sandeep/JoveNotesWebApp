@@ -224,6 +224,13 @@ $scope.purgeCard = function() {
     showNextCard() ;
 }
 
+$scope.moveCurrentCardToEnd = function() {
+
+    $scope.questionsForSession.shift() ;
+    $scope.questionsForSession.splice( $scope.questionsForSession.length, 0, $scope.currentQuestion ) ;
+    showNextCard() ;
+}
+
 $scope.purgeNotAttemptedCards = function() {
 
     for( let i = $scope.questionsForSession.length-1; i >= 0; i-- ) {
@@ -485,7 +492,7 @@ function updateRatings( rating ) {
 function processNextAction( actionValue ) {
 
     if( actionValue !== -1 ) {
-        var newPos = $scope.questionsForSession.length * actionValue + 1 ;
+        const newPos = $scope.questionsForSession.length * actionValue + 1;
         $scope.questionsForSession.splice( newPos, 0, $scope.currentQuestion ) ;
     }
 }
