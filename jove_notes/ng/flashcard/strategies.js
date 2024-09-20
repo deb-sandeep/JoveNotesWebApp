@@ -423,6 +423,11 @@ NPT_StudyStrategy.prototype.offer = function( chapterDetails, question ) {
 
             this.addQuestion( question ) ;
         }
+        else if( question.questionType === 'question_answer' &&
+                 question.elementType === 'chem_equation' ) {
+
+            this.addQuestion( question ) ;
+        }
         else if( this.isNPTChapter( chapterDetails ) ) {
             this.addQuestion( question ) ;
         }
