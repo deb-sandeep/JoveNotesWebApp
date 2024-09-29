@@ -512,22 +512,9 @@ function showNextCard() {
         rearrangeQuestionsForFatigueBusting() ;
 
         $scope.currentQuestion = $scope.questionsForSession[0] ;
-
         $scope.currentQuestion.handler.initialize( $scope ) ;
 
-        currentQuestionAvPredictedTime = diffAvgTimeManager.getPredictedAverageTime( $scope.currentQuestion ) ;
-        log.debug( "Predicted average time = " + currentQuestionAvPredictedTime + " sec." ) ;
-
-        currentQuestionAvSelfTime = 0 ;
-        if( $scope.currentQuestion.learningStats.numAttempts > 0 ) {
-            currentQuestionAvSelfTime = $scope.currentQuestion.learningStats.totalTimeSpent / 
-                                        $scope.currentQuestion.learningStats.numAttempts ;
-            currentQuestionAvSelfTime = Math.ceil( currentQuestionAvSelfTime ) ;
-        }
-        else {
-            currentQuestionAvSelfTime = currentQuestionAvPredictedTime ;
-        }
-        log.debug( "Self average time = " + currentQuestionAvSelfTime + " sec." ) ;
+        computeAvgSelfAndPredictedTimes() ;
 
         const answerLength = $scope.currentQuestion.handler.getAnswerLength();
 
@@ -563,6 +550,28 @@ function showNextCard() {
     else {
         endSession() ;
     }
+}
+
+function computeAvgSelfAndPredictedTimes() {
+
+    currentQuestionAvSelfTime = 0 ;
+    currentQuestionAvPredictedTime = diffAvgTimeManager.getPredictedAverageTime( $scope.currentQuestion ) ;
+    statisticalAvgTime = diffAvgTimeManager.getStatisticalAverageTime( $scope.currentQuestion ) ;
+
+    if( $scope.currentQuestion.learningStats.numAttempts > 0 ) {
+        currentQuestionAvSelfTime = $scope.currentQuestion.learningStats.totalTimeSpent /
+            $scope.currentQuestion.learningStats.numAttempts ;
+        currentQuestionAvSelfTime = Math.ceil( currentQuestionAvSelfTime ) ;
+    }
+    else {
+        currentQuestionAvSelfTime = currentQuestionAvPredictedTime ;
+    }
+
+    currentQuestionAvSelfTime = Math.max( currentQuestionAvSelfTime, statisticalAvgTime ) ;
+    currentQuestionAvPredictedTime = Math.max( currentQuestionAvPredictedTime, statisticalAvgTime ) ;
+
+    log.debug( "Predicted average time = " + currentQuestionAvPredictedTime + " sec." ) ;
+    log.debug( "Self average time      = " + currentQuestionAvSelfTime + " sec." ) ;
 }
 
 function computePageTurnerAction() {
@@ -812,7 +821,6 @@ function computeSessionCards() {
     $scope.$parent.sessionStats.numCards     = $scope.questionsForSession.length ;
     $scope.$parent.sessionStats.numCardsLeft = $scope.questionsForSession.length ;
 }
-
 
 function handleTimerEvent() {
     if( sessionActive ) {

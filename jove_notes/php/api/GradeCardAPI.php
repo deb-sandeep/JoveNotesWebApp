@@ -273,12 +273,12 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 
 		if( $overshootPct > 0.25 ) {
 
-			if      ( $overshootPct > 1.0 ) { $penalty = $this->score * 0.6 ; }
-			else if ( $overshootPct > 0.8 ) { $penalty = $this->score * 0.5 ; }
-			else if ( $overshootPct > 0.7 ) { $penalty = $this->score * 0.4 ; }
-			else if ( $overshootPct > 0.6 ) { $penalty = $this->score * 0.3 ; }
-			else if ( $overshootPct > 0.5 ) { $penalty = $this->score * 0.2 ; }
-			else                            { $penalty = $this->score * 0.1 ; }
+			if      ( $overshootPct > 1.0 ) { $penalty = $this->score * 0.50 ; }
+			else if ( $overshootPct > 0.8 ) { $penalty = $this->score * 0.35 ; }
+			else if ( $overshootPct > 0.7 ) { $penalty = $this->score * 0.25 ; }
+			else if ( $overshootPct > 0.6 ) { $penalty = $this->score * 0.15 ; }
+			else if ( $overshootPct > 0.5 ) { $penalty = $this->score * 0.10 ; }
+			else                            { $penalty = $this->score * 0.005 ; }
 
 			if( $this->score < 0 ) {
 				$this->score += $penalty ;
@@ -289,12 +289,11 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 		}
 		else if( $overshootPct < 0 ) {
 			// If student has answered faster than the average time, we should
-			// reward him as a percentage of the score earned
-
+			// reward him/her as a percentage of the score earned
 			if      ( $overshootPct < -0.5 ) { $penalty = $this->score * 0.25  ; }
-			else if ( $overshootPct < -0.4 ) { $penalty = $this->score * 0.2   ; }
+			else if ( $overshootPct < -0.4 ) { $penalty = $this->score * 0.20  ; }
 			else if ( $overshootPct < -0.3 ) { $penalty = $this->score * 0.15  ; }
-			else if ( $overshootPct < -0.2 ) { $penalty = $this->score * 0.1   ; }
+			else if ( $overshootPct < -0.2 ) { $penalty = $this->score * 0.10  ; }
 			else if ( $overshootPct < -0.1 ) { $penalty = $this->score * 0.05  ; }
 			else                             { $penalty = $this->score * 0.025 ; }
 
@@ -340,10 +339,10 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 
 		if( $this->requestObj->numAttempts == 1 ) {
 			$scoreMatrix = array(
-			   "E"=>array( "NS"=>  80, "L0"=>  70, "L1"=>  50, "L2"=>  40, "L3"=>  20 ),
-			   "A"=>array( "NS"=>  50, "L0"=>  40, "L1"=>  20, "L2"=>  10, "L3"=> -10 ),
-			   "P"=>array( "NS"=>  20, "L0"=> -80, "L1"=>-100, "L2"=>-125, "L3"=>-150 ),
-			   "H"=>array( "NS"=> -25, "L0"=>-100, "L1"=>-175, "L2"=>-200, "L3"=>-250 )
+			   "E"=>array( "NS"=> 100, "L0"=>  80, "L1"=>  60, "L2"=>  40, "L3"=>  20 ),
+			   "A"=>array( "NS"=>  75, "L0"=>  60, "L1"=>  40, "L2"=>  20, "L3"=>   0 ),
+			   "P"=>array( "NS"=>  25, "L0"=> -25, "L1"=> -75, "L2"=>-125, "L3"=>-175 ),
+			   "H"=>array( "NS"=> -25, "L0"=>-100, "L1"=>-150, "L2"=>-200, "L3"=>-250 )
 			) ;
 
 			$arr        = $scoreMatrix[ $this->requestObj->rating ] ;
@@ -353,7 +352,7 @@ class GradeCardAPI extends AbstractJoveNotesAPI {
 
             if( $this->requestObj->currentLevel == 'L3' &&
                 $this->requestObj->rating == 'H' ) {
-                $this->score = min( $this->score, -150 ) ;
+                $this->score = min( $this->score, -100 ) ;
             }
 
 			$this->logger->debug( "First attempt - score = $this->score" ) ;

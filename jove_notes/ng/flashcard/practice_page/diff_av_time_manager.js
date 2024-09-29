@@ -34,11 +34,38 @@
  */
 function DifficultyAverageTimeManager( baseData ) {
 
+	this.getStatisticalAverageTime = function( question ) {
+
+		const questionType = question.questionType;
+		if( questionType === QuestionTypes.prototype.QT_FIB ) {
+			return 10 ;
+		}
+		else if( questionType === QuestionTypes.prototype.QT_QA ) {
+			return 30 ;
+		}
+		else if( questionType === QuestionTypes.prototype.QT_TF ) {
+			return 10 ;
+		}
+		else if( questionType === QuestionTypes.prototype.QT_MATCHING ) {
+			return 15 ;
+		}
+		else if( questionType === QuestionTypes.prototype.QT_IMGLABEL ) {
+			return 15 ;
+		}
+		else if( questionType === QuestionTypes.prototype.QT_SPELLBEE ) {
+			return 15 ;
+		}
+		else if( questionType === QuestionTypes.prototype.QT_MULTI_CHOICE ) {
+			return 10 ;
+		}
+		return 30 ;
+	}
+
 	this.getPredictedAverageTime = function( question ) {
 
 		// NOTE: values will never be null. This is ensured by the getValuesArray
 		// which returns an empty array in case the question type is not found
-		var values = getValuesArray( question.questionType ) ;
+		const values = getValuesArray(question.questionType);
 		return getAverageTime( question, values ) ;
 	} ;
 
@@ -51,20 +78,20 @@ function DifficultyAverageTimeManager( baseData ) {
 			return ;
 		}
 
-		var values = getValuesArray( question.questionType ) ;
+		const values = getValuesArray(question.questionType);
 
 		if( values.length == 0 ) {
 			values.push( [ question.difficultyLevel, 1, timeTaken ] ) ;
 		}
 		else {
-			for( var i=0; i<values.length; i++ ) {
+			for(let i=0; i<values.length; i++ ) {
 
-				var currentDiffLevel = values[i][0] ;
-				var currentAvgTime   = values[i][2] ;
+				const currentDiffLevel = values[i][0];
+				const currentAvgTime = values[i][2];
 
 				if( currentDiffLevel == question.difficultyLevel ) {
-					var totalTime = ( values[i][1] * values[i][2] ) + timeTaken ;
-					var newAvg    = totalTime / ( values[i][1] + 1 ) ;
+					const totalTime = (values[i][1] * values[i][2]) + timeTaken;
+					const newAvg = totalTime / (values[i][1] + 1);
 					values[i][1] = values[i][1] + 1 ;
 					values[i][2] = newAvg ;
 					break ;
@@ -83,21 +110,22 @@ function DifficultyAverageTimeManager( baseData ) {
 
 	function getAverageTime( question, values ) {
 
-		var difficultyLevel     = question.difficultyLevel ;
-		var prevToLastDiffLevel = 0 ;
-		var prevToLastAvgTime   = 0 ;
-		var lastDiffLevel       = 0 ;
-		var lastAvgTime         = 0 ;
-		var avgTime             = -1 ;
+		const difficultyLevel   = question.difficultyLevel ;
+
+		let prevToLastDiffLevel = 0;
+		let prevToLastAvgTime   = 0;
+		let lastDiffLevel       = 0;
+		let lastAvgTime         = 0;
+		let avgTime             = -1;
 
 		if( values.length == 0 ) {
-			return getStatisticalAverageTime( question ) ;
+			return this.getStatisticalAverageTime( question ) ;
 		}
 
-		for( var i=0; i<values.length; i++ ) {
+		for( let i=0; i<values.length; i++ ) {
 
-			var currentDiffLevel = values[i][0] ;
-			var currentAvgTime   = values[i][2] ;
+			const currentDiffLevel = values[i][0];
+			const currentAvgTime = values[i][2];
 
 			if( currentDiffLevel == difficultyLevel ) {
 				avgTime = currentAvgTime ;
@@ -115,7 +143,7 @@ function DifficultyAverageTimeManager( baseData ) {
 				          ( difficultyLevel - lastDiffLevel ) + lastAvgTime ;
 
 				values.push( [ difficultyLevel, 0, avgTime ] ) ;
-				values.sort( function( a, b ){ a[0] - b[0] ; } ) ;
+				values.sort( function( a, b ){ return ( a[0] - b[0] ) ; } ) ;
 				break ;
 			}
 		}
@@ -127,37 +155,10 @@ function DifficultyAverageTimeManager( baseData ) {
 			          ( difficultyLevel - lastDiffLevel ) + lastAvgTime ;
 
 			values.push( [ difficultyLevel, 0, avgTime ] ) ;
-			values.sort( function( a, b ){ a[0] - b[0] ; } ) ;
+			values.sort( function( a, b ){ return (a[0] - b[0]) ; } ) ;
 		}
 
 		return Math.ceil( avgTime ) ;
-	}
-
-	function getStatisticalAverageTime( question ) {
-
-	    var questionType = question.questionType ;
-	    if( questionType == QuestionTypes.prototype.QT_FIB ) {
-	        return 15 ;
-	    }
-	    else if( questionType == QuestionTypes.prototype.QT_QA ) {
-	        return 30 ;
-	    }
-	    else if( questionType == QuestionTypes.prototype.QT_TF ) {
-	        return 20 ;
-	    }
-	    else if( questionType == QuestionTypes.prototype.QT_MATCHING ) {
-	        return 15 ;
-	    }
-	    else if( questionType == QuestionTypes.prototype.QT_IMGLABEL ) {
-	        return 15 ;
-	    }
-	    else if( questionType == QuestionTypes.prototype.QT_SPELLBEE ) {
-	        return 15 ;
-	    }
-	    else if( questionType == QuestionTypes.prototype.QT_MULTI_CHOICE ) {
-	        return 15 ;
-	    }
-        return 30 ;
 	}
 }
 
