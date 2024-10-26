@@ -438,6 +438,14 @@ $scope.applyZoomDeltaToAFont = function() {
     }
 }
 
+$scope.getPredictedOutcomeBadgeClass = function( outcome ) {
+    return outcome === 1 ? "outcome-correct" : "outcome-wrong" ;
+}
+
+$scope.getOutcomeText = function( outcome ) {
+    return outcome === 1 ? "✔" : "✘" ;
+}
+
 // ---------------- Private functions ------------------------------------------
 function resizeFont( domElement, magnifier ) {
     const curSize = parseInt($(domElement).css('font-size')) + magnifier;

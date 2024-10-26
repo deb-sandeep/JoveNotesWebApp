@@ -12,15 +12,17 @@ class ChapterPreparednessDAO extends AbstractDAO {
 $query = <<< QUERY
 select chapter_id, 
        student_name, 
-       preparedness_score, 
+       practice_level,
        retention_score
 from jove_notes.chapter_preparedness
 where
     student_name = '$userName'
 QUERY;
 
-        $colNames = [ "chapter_id", "student_name", 
-                      "preparedness_score", "retention_score" ] ;
+        $colNames = [ "chapter_id",
+                      "student_name",
+                      "practice_level",
+                      "retention_score" ] ;
         return parent::getResultAsAssociativeArray( $query, $colNames, false ) ;
     }
 }

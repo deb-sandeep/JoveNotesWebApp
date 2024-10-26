@@ -47,10 +47,10 @@
                         <span class="glyphicon glyphicon-file"></span>L1
                     </button>
                 </th>
-                <!--
                 <th style="width:30px;text-align:center;">
-                   <span class="glyphicon glyphicon-thumbs-up"></span>
+                   <span class="glyphicon glyphicon-signal"></span>
                 </th>
+                <!--
                 <th style="width:30px;text-align:center;">
                    <span class="glyphicon glyphicon-adjust"></span>
                 </th>
@@ -123,7 +123,7 @@
                 ng-class="rowData.getTreeRowClass()"
                 ng-show="rowData.isTreeRowVisible()"
                 on-render-complete> 
-                <td> 
+                <td ng-class="rowData.getPracticeLevelChapterNameClass()">
                     <span ng-show="rowData.isNotesAuthorized">
                         <a href="/apps/jove_notes/ng/notes/index.php?chapterId={{rowData.chapterId}}">
                         {{rowData.name}}&nbsp;
@@ -139,18 +139,14 @@
                         {{rowData.name}}
                     </span>
                 </td>
-                <!--
                 <td>
-                    <span ng-show="rowData.isChapterRow()"
-                          class="badge L1">{{rowData.retentionScore}}
+                    <span ng-show="rowData.isChapterRow() && rowData.practiceLevel !== 'CUR'"
+                          class="badge" ng-class="rowData.getPracticeLevelClass()">
+                        {{rowData.practiceLevel}}
                     </span>
                 </td>
+                <!--
                 <td>
-                    <span ng-show="rowData.isChapterRow() && rowData.isRowInSyllabus"
-                          class="badge L0">{{rowData.preparednessScore}}
-                    </span>
-                    -->
-                    <!--
                     <span class="badge L0">
                         {{rowData.totalCards - rowData.masteredCards}}
                     </span>

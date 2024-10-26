@@ -194,6 +194,16 @@ p {
 	min-width: 30px;
 }
 
+.outcome-correct {
+	background-color: #59982b !important;
+	min-width: 30px;
+}
+
+.outcome-wrong {
+	background-color: #962f2f !important;
+	min-width: 30px;
+}
+
 .A1 {
 	background-color: #00FB2B !important;
 	color: #393939;
@@ -444,4 +454,42 @@ blockquote {
 	font-size: 14px;
 	font-color: blue;
 	text-align: left;
+}
+
+.practice-cur {
+	font-weight: normal;
+	font-family: monospace;
+	background-color: #f87373;
+}
+
+.practice-r1 {
+	font-weight: normal;
+	font-family: monospace;
+	background-color: #b9fafc;
+	color: #0d4d50;
+}
+
+.practice-r2 {
+	font-weight: normal;
+	font-family: monospace;
+	background-color: #5bab47;
+}
+
+.practice-r3 {
+	font-weight: normal;
+	font-family: monospace;
+	background-color: #41f318;
+	color: #134407;
+}
+
+.practice-r1-name {
+	background-color: #b9fafc;
+}
+
+.practice-r2-name {
+	background-color: #b2faa9;
+}
+
+.practice-r3-name {
+	background-color: #91fa83;
 }

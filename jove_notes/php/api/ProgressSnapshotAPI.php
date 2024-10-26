@@ -37,8 +37,8 @@ class ChapterProgressSnapshot {
     public $isCurrentFocus ;
 	public $isDeselected ;
 	public $isInSyllabus ;
-	public $preparednessScore ;
 	public $retentionScore ;
+    public $practiceLevel ;
 	public $pctSectionsActive ;
 
 	function __construct( $meta ) {
@@ -70,8 +70,8 @@ class ChapterProgressSnapshot {
         $this->isCurrentFocus     = false ;
 		$this->isDeselected       = true ;
 		$this->isInSyllabus       = false ;
-		$this->preparednessScore  = 0 ;
 		$this->retentionScore     = 0 ;
+        $this->practiceLevel      = "CUR" ;
 		$this->pctSectionsActive  = 0 ;
 	}
 
@@ -373,7 +373,7 @@ class ProgressSnapshotAPI extends API {
 				if( $isInSyllabus == 1 ) {
 					$chapter->isInSyllabus = true ;
 				}
-				$chapter->isDeselected = $isDeselected == 1 ? true : false ;
+				$chapter->isDeselected = $isDeselected == 1 ;
 			}
 		}
 	}
@@ -385,14 +385,18 @@ class ProgressSnapshotAPI extends API {
 
 		foreach( $prepValues as $preparedness ) {
 
-			$chapterId = $preparedness[ "chapter_id"         ] ;
-			$prepValue = $preparedness[ "preparedness_score" ] ;
-			$retention = $preparedness[ "retention_score" ] ;
+			$chapterId     = $preparedness[ "chapter_id"      ] ;
+            $practiceLevel = $preparedness[ "practice_level"  ] ;
+			$retention     = $preparedness[ "retention_score" ] ;
 
 			if( array_key_exists( $chapterId, $this->chapters ) ) {
 				$chapter = &$this->chapters[ $chapterId ] ;
-				$chapter->preparednessScore = $prepValue ;
 				$chapter->retentionScore = $retention ;
+                $chapter->practiceLevel = $practiceLevel ;
+
+                if( $chapter->practiceLevel == null ) {
+                    $chapter->practiceLevel = "CUR" ;
+                }
 			}
 		}
 	}
@@ -440,8 +444,8 @@ class ProgressSnapshotAPI extends API {
         $responseObj[ "isCurrentFocus"         ] = $chapter->isCurrentFocus ;
 		$responseObj[ "isDeselected"           ] = $chapter->isDeselected ;
 		$responseObj[ "isInSyllabus"           ] = $chapter->isInSyllabus ;
-		$responseObj[ "preparednessScore"      ] = $chapter->preparednessScore ;
 		$responseObj[ "retentionScore"         ] = $chapter->retentionScore ;
+		$responseObj[ "practiceLevel"          ] = $chapter->practiceLevel ;
 		$responseObj[ "pctSectionsActive"      ] = $chapter->pctSectionsActive ;
 
 		return $responseObj ;

@@ -32,7 +32,7 @@ class BatchRobotAPI extends API {
         $action     = NULL ;
         $entityName = $request->getPathComponent( 0 ) ;
 
-        $this->logger->debug( "POST Request is for entity '$entityName'" ) ;
+        $this->logger->info( "POST Request is for entity '$entityName'" ) ;
         if( $entityName == 'UpdateLearningStats' ) {
             $action = new UpdateLearningStatsAction() ;
         }        

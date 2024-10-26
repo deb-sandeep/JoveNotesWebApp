@@ -95,7 +95,9 @@
             <span class="badge C1" ng-show="currentQuestion.markedForReview">Review</span>
             <span class="badge muted">{{currentQuestion.learningStats.absoluteLearningEfficiency}} %</span>
             <span class="badge muted">R {{currentQuestion.learningStats.retentionValue}}</span>
-            <span class="badge muted">P {{currentQuestion.learningStats.preparednessValue}}</span>
+            <span class="badge" ng-class="getPredictedOutcomeBadgeClass( currentQuestion.learningStats.predictedOutcome )">
+                {{getOutcomeText( currentQuestion.learningStats.predictedOutcome ) }}
+            </span>
 
             <span ng-show="inUpperHysterisZone" class="badge VH">F {{currentFatigueLevel}}</span>
             <span ng-show="inLowerHysterisZone" class="badge VE">F {{currentFatigueLevel}}</span>

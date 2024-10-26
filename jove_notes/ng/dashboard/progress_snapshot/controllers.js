@@ -38,8 +38,8 @@ function RowData( rowType, name, rowId, parentRowId ) {
 
     this.numSSRMaturedCards = 0 ;
     this.numSSRInSyllabusMaturedCards = 0 ;
-    this.preparednessScore  = 0 ;
     this.retentionScore     = 0 ;
+    this.practiceLevel      = null ;
     this.urgencyScore       = 0 ;
     this.pctSectionsActive  = 0 ;
 
@@ -196,8 +196,8 @@ function RowData( rowType, name, rowId, parentRowId ) {
         this.numSSRMaturedCards           = chapter.numSSRMaturedCards ;
         this.numSSRInSyllabusMaturedCards = chapter.isInSyllabus ? this.numSSRMaturedCards : 0 ;
 
-        this.preparednessScore      = chapter.preparednessScore ;
         this.retentionScore         = chapter.retentionScore ;
+        this.practiceLevel          = chapter.practiceLevel ;
 
         this.isNotesAuthorized      = chapter.isNotesAuthorized ;
         this.isFlashcardAuthorized  = chapter.isFlashcardAuthorized ;
@@ -354,6 +354,38 @@ function RowData( rowType, name, rowId, parentRowId ) {
                 }
             }
         }
+    }
+
+    this.getPracticeLevelClass = function() {
+        if( this.practiceLevel === "CUR" ) {
+            return "practice-cur" ;
+        }
+        else if( this.practiceLevel === "R-1" ) {
+            return "practice-r1" ;
+        }
+        else if( this.practiceLevel === "R-2" ) {
+            return "practice-r2" ;
+        }
+        else {
+            return "practice-r3" ;
+        }
+    }
+
+    this.getPracticeLevelChapterNameClass = function() {
+
+        if( this.practiceLevel == null ) {
+            return "" ;
+        }
+        else if( this.practiceLevel === "R-1" ) {
+            return "practice-r1-name" ;
+        }
+        else if( this.practiceLevel === "R-2" ) {
+            return "practice-r2-name" ;
+        }
+        else if( this.practiceLevel.startsWith( "R-" ) ) {
+            return "practice-r3-name" ;
+        }
+        return "" ;
     }
 }
 
@@ -536,14 +568,9 @@ $scope.launchChainedFlashcards = function( type ) {
             return c2.urgencyScore - c1.urgencyScore ;
         }) ;
     }
-    else if( type === 'retention' ) {
+    else if( type === 'retention' || type === 'syllabus' ) {
         chapters.sort( function( c1, c2 ){
             return c1.retentionScore - c2.retentionScore ;
-        }) ;
-    }
-    else if( type === 'syllabus' ) {
-        chapters.sort( function( c1, c2 ){
-            return c1.preparednessScore - c2.preparednessScore ;
         }) ;
     }
 

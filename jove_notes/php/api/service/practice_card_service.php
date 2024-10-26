@@ -271,7 +271,7 @@ class PracticeCardService {
         $learningStats[ "currentLevel"       ] = $card[ "current_level" ] ;
         $learningStats[ "temporalScores"     ] = str_split( $card[ "temporal_ratings" ] ) ;
         $learningStats[ "retentionValue"     ] = $card[ "retention_value" ] ; 
-        $learningStats[ "preparednessValue"  ] = $card[ "exam_preparedness_value" ] ; 
+        $learningStats[ "predictedOutcome"   ] = $card[ "predicted_outcome_next_attempt" ] ;
         $learningStats[ "lastAttemptTime"    ] = $lastAttemptTime ;
         $learningStats[ "totalTimeSpent"     ] = $card[ "total_time_spent" ] ;
 
