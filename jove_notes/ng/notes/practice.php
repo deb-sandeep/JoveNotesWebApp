@@ -61,6 +61,7 @@ define( "NAVBAR_FRAGMENT_PATH", DOCUMENT_ROOT . "/apps/jove_notes/ng/notes/notes
     var userName = '<?php echo ExecutionContext::getCurrentUserName() ?>' ;
     var chapterId = <?php echo $_REQUEST[ 'chapterId' ] ?> ;
     </script>
+
 </head>
 
 <body ng-controller="NotesController" onload="MathJax.Hub.Queue( ['Typeset', MathJax.Hub] )">

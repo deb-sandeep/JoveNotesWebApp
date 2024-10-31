@@ -1,5 +1,4 @@
 // =============================================================================
-// =============================================================================
 // Note that the notes filter options do not have the current level options.
 // Remember that notes and cards are separate entities, where cards are 
 // derived from notes. The learning efficiency and difficulty level of notes
@@ -54,6 +53,7 @@ function NotesFilterOptions() {
     ] ;
 }
 
+// =============================================================================
 function ExerciseFilterOptions() {
 
     this.levelOptions = [
@@ -70,7 +70,6 @@ function ExerciseFilterOptions() {
     ] ;
 }
 
-// =============================================================================
 // =============================================================================
 function RatingMatrix() {
 
@@ -190,10 +189,7 @@ function RatingMatrix() {
 }
 
 // =============================================================================
-// =============================================================================
-
 function JoveNotesUtil() {
-// -----------------------------------------------------------------------------
 /**
  * This function takes the code of the function body as a string and returns
  * an instance of the function. This function returns null in case the 
@@ -589,7 +585,6 @@ this.getRecencyInDays = function( question ) {
 }
 
 // ----------------------- Private functions for JoveNoteUtils -----------------
-
 function isDebug() {
     return typeof __debug__ != 'undefined';
 
@@ -601,7 +596,109 @@ function clearCanvas( canvasId ) {
     context.clearRect( 0, 0, canvas.width, canvas.height ) ;
 }
 
-// ------------------- JoveNotesUtil ends --------------------------------------
+}
+
+// =============================================================================
+function LocalStorageUtil() {
+
+    this.REMOTE_FLASH_PAGE = "remote-flash" ;
+    this.NOTES_PAGE = "notes" ;
+    this.CHAINED_NOTES_PAGE = "chained-notes" ;
+    this.PRINT_NOTES_PAGE = "print-notes" ;
+    this.REVIEW_NOTES_PAGE = "review-notes-page" ;
+
+    this.PAGE_TYPES = [
+        this.REMOTE_FLASH_PAGE,
+        this.NOTES_PAGE,
+        this.PRINT_NOTES_PAGE,
+        this.REVIEW_NOTES_PAGE
+    ] ;
+
+    this.store = function( key, valueStr ) {
+        localStorage.setItem( key, valueStr ) ;
+    }
+
+    this.storeObject = function( key, object ) {
+        let jsonString = JSON.stringify( object ) ;
+        localStorage.setItem( key, jsonString ) ;
+    }
+
+    this.load = function( key ) {
+        return localStorage.getItem( key ) ;
+    }
+
+    this.loadObject = function( key ) {
+        let storedStr = this.load( key ) ;
+        if( storedStr != null ) {
+            return JSON.parse( storedStr ) ;
+        }
+        return null ;
+    }
+
+    this.delete = function( key ) {
+        localStorage.removeItem( key ) ;
+    }
+
+    this.deleteAll = function() {
+        localStorage.clear() ;
+    }
+
+    this.getNumKeys = function() {
+        return localStorage.length ;
+    }
+
+    this.getKey = function( index ) {
+        return localStorage.key( index ) ;
+    }
+
+    this.getAllKeys = function() {
+        let keys = [] ;
+        for( let i=0; i<this.getNumKeys(); i++ ) {
+            keys.push( this.getKey( i ) ) ;
+        }
+        return keys ;
+    }
+
+    this.storeTabOpenInfo = function( pageType, uniqueKey=null ) {
+        let key = "open-tab." + pageType ;
+        if( uniqueKey !== null && uniqueKey !== '' ) {
+            key += '.' + uniqueKey ;
+        }
+        this.storeObject( key, {
+            pageType: pageType,
+            uniqueKey: uniqueKey
+        }) ;
+    }
+
+    this.deleteTabOpenInfo = function( pageType, uniqueKey=null ) {
+        let key = "open-tab." + pageType ;
+        if( uniqueKey !== null && uniqueKey !== '' ) {
+            key += '.' + uniqueKey ;
+        }
+        this.delete( key ) ;
+    }
+
+    this.isRemoteFlashPageOpen = function() {
+        let keys = this.getAllKeys() ;
+        for( let i=0; i<keys.length; i++ ) {
+            if( keys[i].startsWith( "open-tab." + this.REMOTE_FLASH_PAGE ) ) {
+                return true ;
+            }
+        }
+        return false ;
+    }
+
+    this.isAnyPageOpen = function( pageTypes ) {
+        let keys = this.getAllKeys() ;
+        for( let i=0; i<keys.length; i++ ) {
+            for( let j=0; j<this.PAGE_TYPES.length; j++ ) {
+                if( keys[i].startsWith( "open-tab." + this.PAGE_TYPES[j] ) ) {
+                    return true ;
+                }
+            }
+        }
+        return false ;
+    }
 }
 
 /**
@@ -611,3 +708,4 @@ function clearCanvas( canvasId ) {
 function playSoundClip( clipPath ) {
     new JoveNotesUtil().playSoundClip( clipPath ) ;
 }
+

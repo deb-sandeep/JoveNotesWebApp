@@ -89,6 +89,23 @@ define( "NAVBAR_FRAGMENT_PATH",   DOCUMENT_ROOT . "/apps/jove_notes/ng/notes_cha
     }
     ?>
     </script>
+
+    <script>
+        let storage = new LocalStorageUtil() ;
+        window.addEventListener( 'load', (event)=>{
+            if( storage.isRemoteFlashPageOpen() ) {
+                alert( "Close remote flash page first." ) ;
+                window.open( "/apps/jove_notes/ng/dashboard/index.php#/ProgressSnapshot", "_self" ) ;
+            }
+            else {
+                storage.storeTabOpenInfo( storage.CHAINED_NOTES_PAGE ) ;
+            }
+        }) ;
+        window.addEventListener( 'beforeunload', (event)=>{
+            storage.deleteTabOpenInfo( storage.CHAINED_NOTES_PAGE ) ;
+        }) ;
+    </script>
+
 </head>
 
 <body ng-controller="ChainedNotesController" onload="MathJax.Hub.Queue( ['Typeset', MathJax.Hub] )">

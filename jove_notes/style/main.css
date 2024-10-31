@@ -197,11 +197,13 @@ p {
 .outcome-correct {
 	background-color: #59982b !important;
 	min-width: 30px;
+	color: white;
 }
 
 .outcome-wrong {
 	background-color: #962f2f !important;
 	min-width: 30px;
+	color: white;
 }
 
 .A1 {
