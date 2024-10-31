@@ -90,6 +90,9 @@ $pageConfig = array(
         window.addEventListener( 'beforeunload', (event)=>{
             storage.deleteTabOpenInfo( storage.REMOTE_FLASH_PAGE ) ;
         }) ;
+        window.addEventListener( 'pagehide', (event)=>{
+            storage.deleteTabOpenInfo( storage.REMOTE_FLASH_PAGE ) ;
+        }) ;
     </script>
 </head>
 

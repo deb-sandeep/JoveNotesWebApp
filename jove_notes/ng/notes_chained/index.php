@@ -101,7 +101,10 @@ define( "NAVBAR_FRAGMENT_PATH",   DOCUMENT_ROOT . "/apps/jove_notes/ng/notes_cha
                 storage.storeTabOpenInfo( storage.CHAINED_NOTES_PAGE ) ;
             }
         }) ;
-        window.addEventListener( 'beforeunload', (event)=>{
+        window.addEventListener( 'unload', (event)=>{
+            storage.deleteTabOpenInfo( storage.CHAINED_NOTES_PAGE ) ;
+        }) ;
+        window.addEventListener( 'pagehide', (event)=>{
             storage.deleteTabOpenInfo( storage.CHAINED_NOTES_PAGE ) ;
         }) ;
     </script>
