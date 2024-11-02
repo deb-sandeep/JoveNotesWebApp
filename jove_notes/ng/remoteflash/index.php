@@ -79,7 +79,7 @@ $pageConfig = array(
     <script>
         let storage = new LocalStorageUtil() ;
         window.addEventListener( 'load', (event)=>{
-            if( storage.isAnyPageOpen( [storage.NOTES_PAGE, storage.PRINT_NOTES_PAGE, storage.REVIEW_NOTES_PAGE] ) ) {
+            if( storage.isAnyPageOpen( [storage.NOTES_PAGE, storage.PRINT_NOTES_PAGE, storage.CHAINED_NOTES_PAGE] ) ) {
                 alert( "Close all notes, print notes and review notes pages first." ) ;
                 window.open( "/apps/jove_notes/ng/dashboard/index.php#/ProgressSnapshot", "_self" ) ;
             }
@@ -91,6 +91,9 @@ $pageConfig = array(
             storage.deleteTabOpenInfo( storage.REMOTE_FLASH_PAGE ) ;
         }) ;
         window.addEventListener( 'pagehide', (event)=>{
+            storage.deleteTabOpenInfo( storage.REMOTE_FLASH_PAGE ) ;
+        }) ;
+        window.addEventListener( 'beforeunload', (event)=>{
             storage.deleteTabOpenInfo( storage.REMOTE_FLASH_PAGE ) ;
         }) ;
     </script>

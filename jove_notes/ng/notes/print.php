@@ -79,6 +79,9 @@ define( "NAVBAR_FRAGMENT_PATH", DOCUMENT_ROOT . "/apps/jove_notes/ng/notes/notes
         window.addEventListener( 'pagehide', (event)=>{
             storage.deleteTabOpenInfo( storage.PRINT_NOTES_PAGE, chapterId ) ;
         }) ;
+        window.addEventListener( 'beforeunload', (event)=>{
+            storage.deleteTabOpenInfo( storage.PRINT_NOTES_PAGE, chapterId ) ;
+        }) ;
     </script>
 </head>
 

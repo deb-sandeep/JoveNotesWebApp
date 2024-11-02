@@ -553,6 +553,9 @@ $scope.launchChainedFlashcards = function( type ) {
     else if( type === 'syllabus' ) {
         chapters = getInSyllabusChapterRows() ;
     }
+    else if( type === 'revision' ) {
+        chapters = getRevisionChapterRows() ;
+    }
 
     if( chapters == null || chapters.length === 0 ) {
         $scope.$parent.addErrorAlert( "No chapters selected or the " + 
@@ -1177,6 +1180,24 @@ function getInSyllabusChapterRows() {
         }
     }
     return inSyllabusRows ;
+}
+
+function getRevisionChapterRows() {
+
+    const revisionRows = [];
+    for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
+
+        const rowData = $scope.progressSnapshot[i];
+        if( rowData.rowType === RowData.prototype.ROW_TYPE_CHAPTER ) {
+            if( rowData.isTreeRowVisible() &&
+                ( rowData.practiceLevel != null && rowData.practiceLevel.startsWith( 'R-' ) ) &&
+                rowData.hasCardsAvailable() ) {
+
+                revisionRows.push( rowData ) ;
+            }
+        }
+    }
+    return revisionRows ;
 }
 
 function callResetLevelServerAPI( selectedChapters, level ) {
