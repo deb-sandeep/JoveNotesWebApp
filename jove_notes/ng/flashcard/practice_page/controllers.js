@@ -585,6 +585,7 @@ function computeAvgSelfAndPredictedTimes() {
 function computePageTurnerAction() {
     pageTurnerAction = PTA_RATE_CARD_E ;
 
+    let elementType = $scope.currentQuestion.elementType ;
     let qType = $scope.currentQuestion.questionType ;
     let numAttempts = $scope.currentQuestion.learningStats.numAttempts ;
     let absEff = $scope.currentQuestion.learningStats.absoluteLearningEfficiency ;
@@ -597,12 +598,17 @@ function computePageTurnerAction() {
             pageTurnerAction = PTA_RATE_CARD_MAS ;
         }
         else if( qType === "multi_choice" || qType === "true_false" ) {
-            if( numAttempts >= 1 && numAttempts < 3 && absEff === 100 ) {
+            if( numAttempts >= 1 && absEff === 100 ) {
                 pageTurnerAction = PTA_RATE_CARD_APM ;
             }
         }
         else if( qType === "fib" || qType === "matching" ) {
-            if( numAttempts >= 2  && numAttempts < 3 && absEff === 100 ) {
+            if( numAttempts >= 2 && absEff === 100 ) {
+                pageTurnerAction = PTA_RATE_CARD_APM ;
+            }
+        }
+        else if( qType === 'question_answer' && elementType === 'chem_equation' ) {
+            if( numAttempts >= 2 && absEff === 100 ) {
                 pageTurnerAction = PTA_RATE_CARD_APM ;
             }
         }
