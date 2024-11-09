@@ -1156,7 +1156,8 @@ function getCurrentFocusChapterRows() {
         if( rowData.rowType === RowData.prototype.ROW_TYPE_CHAPTER ) {
             if( rowData.isTreeRowVisible() &&
                 rowData.isRowInCurrentFocus &&
-                rowData.hasCardsAvailable() ) {
+                rowData.hasCardsAvailable() &&
+                !rowData.practiceLevel.startsWith( 'R-' ) ) {
 
                 currentFocusRows.push( rowData ) ;
             }
