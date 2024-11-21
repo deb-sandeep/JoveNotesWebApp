@@ -825,8 +825,13 @@ function prepareDataForDisplayGroupedBySubject( rawData ) {
         syllabusRD.isRowSelected = ( numSubjectsSelected > 0 ) ;
     }
 
-    for( const subName in subjectMap ) {
-        const subRD = subjectMap[subName];
+    let entries = Object.entries( subjectMap ) ;
+    entries.shuffle() ;
+
+    for( let i=0; i<entries.length; i++ ) {
+        const subName = entries[i][0] ;
+        const subRD = entries[i][1] ;
+
         displayData.push( subRD ) ;
 
         subRD.children.sort( function( a, b ){
