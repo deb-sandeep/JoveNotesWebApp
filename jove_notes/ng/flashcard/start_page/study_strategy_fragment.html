@@ -40,18 +40,27 @@
 </div>
 
 <div class="form-group pad-10px">
+    <input id="excludeLT24HrsAttempts"
+           type="checkbox"
+           ng-model="studyCriteria.excludeLT24HrsAttempts" />
+    <label for="excludeLT24HrsAttempts"> Exclude &lt;24 Hrs attempts</label>
+</div>
+
+<div class="form-group pad-10px">
     <input id="excludeMarkedForReview" 
            type="checkbox" 
            ng-model="studyCriteria.excludeMarkedForReview" />
     <label for="excludeMarkedForReview"> Exclude marked for review</label>
 </div>
 
+<!--
 <div class="form-group pad-10px">
     <input id="skipNegativeGrading" 
            type="checkbox" 
            ng-model="studyCriteria.skipNegativeGrading" />
     <label for="skipNegativeGrading"> Skip negative grading</label>
 </div>
+-->
 
 <div class="form-group pad-10px">
     <input id="forceAPMControls" 

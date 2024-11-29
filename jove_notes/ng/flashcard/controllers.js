@@ -19,6 +19,7 @@ function StudyCriteria() {
     this.assistedStudy          = false ;
     this.excludeMarkedForReview = true ;
     this.engageFatigueBuster    = true ;
+    this.excludeLT24HrsAttempts = true ;
     this.skipNegativeGrading    = false ;
     this.forceAPMControls       = false ;
     this.selectNSCards          = true ;
@@ -34,7 +35,7 @@ function StudyCriteria() {
 
     this.deserialize = function() {
         $.cookie.json = true ;
-        var crit = $.cookie( 'studyCriteria' ) ;
+        const crit = $.cookie('studyCriteria');
         if( typeof crit != 'undefined' ) {
             this.maxCards               = crit.maxCards ;
             this.maxTime                = crit.maxTime ;
@@ -42,6 +43,7 @@ function StudyCriteria() {
             this.maxNewCards            = crit.maxNewCards ;
             this.strategy               = crit.strategy ;
             this.sortType               = crit.sortType ;
+            this.excludeLT24HrsAttempts = crit.excludeLT24HrsAttempts ;
             this.push                   = crit.push ;
             this.assistedStudy          = crit.assistedStudy ;
             this.excludeMarkedForReview = crit.excludeMarkedForReview ;
@@ -87,22 +89,26 @@ function StudyCriteria() {
 
     this.matchesFilter = function( question ) {
 
-        if( this.excludeMarkedForReview && question.markedForReview===1 ) {
-            return false ;
-        }
-
-        const currentLevel = question.learningStats.currentLevel;
-        const lrnEffLabel  = question.learningStats.efficiencyLabel ;
-        const diffLabel    = question.difficultyLabel ;
-        const elementType  = question.elementType ;
+        const currentLevel  = question.learningStats.currentLevel;
+        const lrnEffLabel   = question.learningStats.efficiencyLabel ;
+        const recencyInDays = question.learningStats.recencyInDays ;
+        const diffLabel     = question.difficultyLabel ;
+        const elementType   = question.elementType ;
 
         const currentLevelFilters = this.currentLevelFilters ;
         const lrnEffLabelFilters  = this.learningEfficiencyFilters ;
         const diffLabelFilters    = this.difficultyFilters ;
         const cardTypeFilters     = this.cardTypeFilters ;
 
-        let filteredBySelectedSections = false ;
+        if( this.excludeMarkedForReview && question.markedForReview===1 ) {
+            return false ;
+        }
 
+        if( this.excludeLT24HrsAttempts && recencyInDays < 1 ) {
+            return false ;
+        }
+
+        let filteredBySelectedSections = false ;
         if( this.sectionFilters.length > 0 ) {
             if( question.section != null ) {
                 filteredBySelectedSections = true ;
@@ -141,7 +147,7 @@ function StudyCriteria() {
 }
 
 // ---------------- Local variables --------------------------------------------
-var jnUtil = new JoveNotesUtil() ;
+    const jnUtil = new JoveNotesUtil();
 
 // ---------------- Controller variables ---------------------------------------
 $scope.alerts = [] ;
@@ -264,9 +270,9 @@ $scope.$watchGroup( ['studyCriteria.currentLevelFilters',
                      'studyCriteria.selectL0Cards',
                      'studyCriteria.selectL1Cards',
                      'studyCriteria.selectL2Cards',
-                     'studyCriteria.selectL3Cards'],
+                     'studyCriteria.selectL3Cards',
+                     'studyCriteria.excludeLT24HrsAttempts'],
                     function( newVals, oldVals ) {
-
     handleFilterChange() ;
 } ) ;
 
@@ -458,7 +464,7 @@ function associateHandler( question ) {
 function processTestDataHints( question ) {
 
     if( question.learningStats.hasOwnProperty( '_testLATLag' ) ) {
-        var numMillisLag = question.learningStats._testLATLag * 24 * 60 * 60 * 1000 ;
+        const numMillisLag = question.learningStats._testLATLag * 24 * 60 * 60 * 1000;
         question.learningStats.lastAttemptTime = new Date().getTime() + numMillisLag ;
     }
 }
@@ -539,6 +545,8 @@ function handleFilterChange() {
     $scope.filteredCards = $scope.selectedStudyStrategy
                                  .getFilteredCards( $scope.studyCriteria ) ;
     $scope.totalCards = $scope.filteredCards.length ;
+    $scope.studyCriteria.serialize() ;
+
     computeProjectedDuration( $scope.filteredCards ) ;
     updateSelectedCardStatistics( $scope.filteredCards ) ;
 }
