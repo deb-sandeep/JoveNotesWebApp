@@ -278,6 +278,9 @@ function StudyStrategy( id, displayName ) {
                 return true ;
             }
         }
+        else if( chapterDetails.subjectName === "English Grammar" ) {
+            return true ;
+        }
         if( chapterDetails.subjectName === "Chemistry" ) {
             if( chapterDetails.chapterName.includes( "(equ)" ) ) {
                 return true ;
