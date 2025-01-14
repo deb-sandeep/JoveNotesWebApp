@@ -83,6 +83,7 @@
                     <table class="dashboard-stats">
                         <tr ng-if="!showPercentage">
                             <td class="text-right TOT">T  </td>
+                            <td class="text-right NR" >ACT</td>
                             <td class="text-right L0" ng-class="getLevelFilterCellClass('NS')">
                                 <span ng-click="toggleLevelFilter( 'NS' )">NS</span>
                             </td>
@@ -101,6 +102,7 @@
                         </tr>
                         <tr ng-if="showPercentage">
                             <td class="text-right TOT">T  </td>
+                            <td class="text-right NR" >AC%</td>
                             <td class="text-right L0" >NS%</td>
                             <td class="text-right NR" >NR%</td>
                             <td class="text-right L0" >L0%</td>
@@ -199,8 +201,9 @@
                 <td>
                     <table class="dashboard-stats">
                         <tr ng-if="!showPercentage">
-                            <td class="text-right TOT">{{rowData.totalCards      }}</td>
-                            <td class="text-right NR" 
+                            <td class="text-right TOT">{{rowData.totalCards }}</td>
+                            <td class="text-right NR" >{{rowData.totalCards - rowData.masteredCards }}</td>
+                            <td class="text-right NR"
                                 style="color:red !important;background-color:#dedede !important;">
                                 {{rowData.notStartedCards }}
                             </td>
@@ -213,7 +216,8 @@
                         </tr>
                         <tr ng-if="showPercentage">
                             <td class="text-right TOT">{{rowData.totalCards}}</td>
-                            <td class="text-right NR" 
+                            <td class="text-right NR" >{{(rowData.totalCards - rowData.masteredCards)*100/rowData.totalCards | number:0 }}</td>
+                            <td class="text-right NR"
                                 style="color:red !important;background-color:#dedede !important;">
                                 {{rowData.pctNS*100  | number:0}}
                             </td>
