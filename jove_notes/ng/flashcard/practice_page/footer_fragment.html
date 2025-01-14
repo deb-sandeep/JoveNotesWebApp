@@ -104,6 +104,14 @@
                 <span class="glyphicon glyphicon-new-window"></span>
             </button>
 
+            <button type="button" class="btn btn-success btn-lg"
+                    ng-click="rateCard( 'APMNS' )"
+                    data-toggle="tooltip" data-placement="top"
+                    title="Auto promote to mastered">
+                <span class="glyphicon glyphicon-education"></span>
+                <span class="glyphicon glyphicon-education"></span>
+            </button>
+
             <button type="button"
                     class="btn btn-info btn-lg"
                     ng-click="increaseFontSize()"
@@ -333,7 +341,7 @@
                 <span class="glyphicon glyphicon-pause"></span>
             </button>
 
-            <button type="button" 
+            <button type="button"
                     class="btn btn-info btn-lg"
                     ng-click="increaseFontSize()"
                     data-toggle="tooltip" data-placement="top" 
@@ -349,7 +357,15 @@
                 <span class="glyphicon glyphicon-minus-sign"></span>
             </button>
 
-            <button type="button" 
+            <button type="button" class="btn btn-success btn-lg"
+                    ng-click="rateCard( 'APMNS' )"
+                    data-toggle="tooltip" data-placement="top"
+                    title="Auto promote to mastered">
+                <span class="glyphicon glyphicon-education"></span>
+                <span class="glyphicon glyphicon-education"></span>
+            </button>
+
+            <button type="button"
                     class="btn btn-info btn-lg"
                     ng-click="purgeCard()"
                     ng-disabled="isRatingControlEnabled()"
