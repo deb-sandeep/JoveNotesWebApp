@@ -6,7 +6,6 @@
 | ---------- | --------------------------------- |
 | Web Server | Apache (brew httpd)               |
 | Runtime    | PHP                               |
-| Cache      | Memcached                         |
 | Database   | MySQL                             |
 | Frontend   | PHPAppFramework + JoveNotesWebApp |
 | Rendering  | MathJax                           |
@@ -103,7 +102,7 @@ touch /var/log/php.log
 
 
 
-## 7. Environment Variable for DB Password
+## 7. Environment Variables
 
 ### 1) Create a dedicated env include file
 
@@ -112,6 +111,11 @@ sudo mkdir -p /opt/homebrew/etc/httpd/conf.d
 sudo tee /opt/homebrew/etc/httpd/conf.d/jovenotes-env.conf >/dev/null <<'CONF'
 # JoveNotes / PHPAppFramework environment
 SetEnv DB_PASSWORD <password>
+
+# DB_HOST controls which database server the app connects to.
+# If not set, defaults to "localhost" (JEE database on local machine).
+# Set to the Optiplex IP to point the app at the K10 historical archive.
+# SetEnv DB_HOST <optiplex-ip>
 CONF
 ```
 
@@ -160,7 +164,6 @@ Expected:
 ## 12. Start Services
 
 ```
-brew services start memcached
 brew services start php
 brew services start httpd
 ```
@@ -179,7 +182,6 @@ brew services list
 | ----------------- | ------------------- |
 | Apache running    | Port 8081           |
 | PHP module loaded | phpinfo() works     |
-| memcached running | brew services list  |
 | MySQL accessible  | root login works    |
 | Media symlinked   | workspace visible   |
 | DB imported       | App loads dashboard |
