@@ -14,7 +14,7 @@ $logger = Logger::getLogger( "GLOBAL_UT_LOGGER" ) ;
 function initializeDBConn() {
 
 	global $dbConn, $logger ;
-	$dbConn = mysqli_connect( "localhost", "root", getenv( "DB_PASSWORD") ) ;
+	$dbConn = mysqli_connect( getenv( "DB_HOST" ) ?: "localhost", getenv( "DB_USER" ) ?: "root", getenv( "DB_PASSWORD") ) ;
 	if( mysqli_connect_errno() ) {
 	    throw new Exception( "Failed to connect to MySQL: " . mysqli_connect_error() ) ;
 	}
