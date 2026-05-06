@@ -3,7 +3,6 @@
 ```
 Apache (8081)
    ↳ PHP 8.5
-       ↳ Memcached (igbinary serializer)
        ↳ MySQL 8.4
 ```
 
@@ -115,93 +114,7 @@ error_reporting = E_ALL & ~E_DEPRECATED
 
 
 
-## 3. Memcached + igbinary
-
-### Install daemon + libraries
-
-```
-brew install memcached libmemcached zlib
-brew services start memcached
-```
-
-Verify daemon:
-
-```
-lsof -iTCP:11211 -sTCP:LISTEN
-```
-
-
-
-### Install igbinary
-
-```
-pecl install igbinary
-```
-
-Verify:
-
-```
-php -m | grep igbinary
-```
-
-
-
-### Install memcached extension
-
-Important configure decisions:
-
-| Prompt           | Choice                                 |
-| ---------------- | -------------------------------------- |
-| libmemcached dir | Enter                                  |
-| zlib dir         | `/opt/homebrew/opt/zlib` (if required) |
-| fastlz           | no                                     |
-| igbinary         | yes                                    |
-| msgpack          | no                                     |
-| json             | no                                     |
-| server protocol  | no                                     |
-| sasl             | no                                     |
-| sessions         | yes                                    |
-
-If zlib error appears:
-
-```
-export CPPFLAGS="-I/opt/homebrew/opt/zlib/include"
-export LDFLAGS="-L/opt/homebrew/opt/zlib/lib"
-export PKG_CONFIG_PATH="/opt/homebrew/opt/zlib/lib/pkgconfig"
-
-pecl install memcached
-```
-
-Verify:
-
-```
-php -m | egrep 'memcached|igbinary'
-php --ri memcached | grep serializer
-```
-
-Expected:
-
-```
-memcached.serializer => igbinary => igbinary
-```
-
-
-
-#### Runtime Validation
-
-```
-php -r '$m=new Memcached(); $m->addServer("127.0.0.1",11211); $m->set("k","v",60); echo $m->get("k"), PHP_EOL;'
-```
-
-Expected:
-
-```
-v
-```
-
-
-
-## 4. Apache ↔ PHP Integration
+## 3. Apache ↔ PHP Integration
 
 Add to the end of httpd.conf: `/opt/homebrew/etc/httpd/httpd.conf`
 
@@ -251,7 +164,7 @@ rm /opt/homebrew/var/www/_php_test.php
 
 
 
-## 5. MySQL 8.4
+## 4. MySQL 8.4
 
 #### Status
 
@@ -307,13 +220,10 @@ Remove the test file:
 
 # Final Infrastructure State
 
-| Component         | Status          |
-| ----------------- | --------------- |
-| Apache            | Running on 8081 |
-| PHP               | 8.5.x           |
-| Memcached daemon  | Running (11211) |
-| PHP memcached ext | Installed       |
-| igbinary          | Enabled         |
-| MySQL             | 8.4.x           |
-| PHP mysqli        | Working         |
+| Component  | Status          |
+| ---------- | --------------- |
+| Apache     | Running on 8081 |
+| PHP        | 8.5.x           |
+| MySQL      | 8.4.x           |
+| PHP mysqli | Working         |
 

@@ -16,7 +16,6 @@ PHPAF_HOME  = ~/projects/jovenotes/PHPAppFramework
 >
 > - Apache (brew httpd)
 > - PHP + PECL extensions
-> - Memcached
 > - All symlinks created in `/opt/homebrew/var/www`
 > - Optional: Local project clones and media workspace
 
@@ -31,7 +30,6 @@ PHPAF_HOME  = ~/projects/jovenotes/PHPAppFramework
 ```
 brew services stop httpd
 brew services stop php
-brew services stop memcached
 ```
 
 Verify:
@@ -39,7 +37,6 @@ Verify:
 ```
 brew services list
 lsof -i :8081
-lsof -i :11211
 ```
 
 Expected:
@@ -47,7 +44,6 @@ Expected:
 ```
 httpd     stopped
 php       stopped
-memcached stopped
 ```
 
 ------
@@ -89,11 +85,9 @@ Should return nothing.
 
 ## 2. Remove PHP + Extensions
 
-### Uninstall PECL libraries and PHP
+### Uninstall PHP
 
 ```
-pecl uninstall igbinary
-pecl uninstall memcached
 brew uninstall php
 ```
 
@@ -126,32 +120,7 @@ Should return: command not found.
 
 
 
-## 3. Remove Memcached
-
-### Uninstall
-
-```
-brew uninstall memcached
-brew uninstall libmemcached
-```
-
-### Remove LaunchAgent
-
-```
-rm ~/Library/LaunchAgents/homebrew.mxcl.memcached.plist
-```
-
-### Verify
-
-```
-lsof -iTCP:11211 -sTCP:LISTEN
-```
-
-Should return nothing.
-
-
-
-## 4. [Optional] Remove JoveNotes Application Code
+## 3. [Optional] Remove JoveNotes Application Code
 
 ```
 rm -rf ~/projects/jovenotes/JoveNotesWebApp
@@ -160,7 +129,7 @@ rm -rf ~/projects/jovenotes/PHPAppFramework
 
 
 
-## 5. [Optional] Remove Media Workspace
+## 4. [Optional] Remove Media Workspace
 
 ```
 rm -rf ~/softwares/workspace/jove_notes_media
@@ -168,7 +137,7 @@ rm -rf ~/softwares/workspace/jove_notes_media
 
 
 
-## 6. [Optional] Remove MathJax (if copied manually)
+## 5. [Optional] Remove MathJax (if copied manually)
 
 If inside:
 
@@ -186,7 +155,7 @@ rm -rf ~/projects/jovenotes/PHPAppFramework/lib-ext/MathJax
 
 
 
-## 7. Remove Brew Residual Dependencies (Optional Deep Clean)
+## 6. Remove Brew Residual Dependencies (Optional Deep Clean)
 
 To remove unused dependencies:
 
@@ -197,12 +166,11 @@ brew cleanup
 
 
 
-## 8. Final Validation Checklist
+## 7. Final Validation Checklist
 
 | Component | Validation Command    | Expected           |
 | --------- | --------------------- | ------------------ |
 | Apache    | `curl localhost:8081` | Connection refused |
 | PHP       | `php -v`              | command not found  |
-| Memcached | `lsof -i :11211`      | empty              |
 | Services  | `brew services list`  | none running       |
 
