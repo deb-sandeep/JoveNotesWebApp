@@ -87,12 +87,15 @@
         </div>         
         <div style="height: 5px;"></div>
         <div class="col-sm-12 small">
+            <!--
             <span class="badge {{currentQuestion.difficultyLabel}}">{{currentQuestion.difficultyLabel}}</span>
+            -->
             <span class="badge {{currentQuestion.learningStats.currentLevel}}">{{currentQuestion.learningStats.currentLevel}}</span>
             <span class="badge {{currentQuestion.learningStats.efficiencyLabel}}">{{currentQuestion.learningStats.efficiencyLabel}}</span>
             <span class="badge muted">{{currentQuestion.learningStats.numAttempts}}</span>
             <span class="badge muted">{{currentQuestion.learningStats.lastAttemptTime | elapsedDuration}}</span>
             <span class="badge C1" ng-show="currentQuestion.markedForReview">Review</span>
+            <!--
             <span class="badge muted">{{currentQuestion.learningStats.absoluteLearningEfficiency}} %</span>
             <span class="badge muted">R {{currentQuestion.learningStats.retentionValue}}</span>
             <span class="badge" ng-class="getPredictedOutcomeBadgeClass( currentQuestion.learningStats.predictedOutcome )">
@@ -102,6 +105,7 @@
             <span ng-show="inUpperHysterisZone" class="badge VH">F {{currentFatigueLevel}}</span>
             <span ng-show="inLowerHysterisZone" class="badge VE">F {{currentFatigueLevel}}</span>
             <span ng-show="inNormalFatigueZone" class="badge muted">F {{currentFatigueLevel}}</span>
+            -->
 
             <table class="temporal">
                 <tr>

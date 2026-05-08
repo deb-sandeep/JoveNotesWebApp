@@ -33,6 +33,8 @@
  * difficulty levels.
  */
 function DifficultyAverageTimeManager( baseData ) {
+	
+	const self = this ;
 
 	this.getStatisticalAverageTime = function( question ) {
 
@@ -74,13 +76,13 @@ function DifficultyAverageTimeManager( baseData ) {
 		// As an APMNS rated card implies the student has not expended any 
 		// effort, it should not influence the average time. Hence, we consider
 		// the time taken to be zero in case the card is rated APMNS
-		if( rating == 'APMNS' ) {
+		if( rating === 'APMNS' ) {
 			return ;
 		}
 
 		const values = getValuesArray(question.questionType);
 
-		if( values.length == 0 ) {
+		if( values.length === 0 ) {
 			values.push( [ question.difficultyLevel, 1, timeTaken ] ) ;
 		}
 		else {
@@ -89,7 +91,7 @@ function DifficultyAverageTimeManager( baseData ) {
 				const currentDiffLevel = values[i][0];
 				const currentAvgTime = values[i][2];
 
-				if( currentDiffLevel == question.difficultyLevel ) {
+				if( currentDiffLevel === question.difficultyLevel ) {
 					const totalTime = (values[i][1] * values[i][2]) + timeTaken;
 					const newAvg = totalTime / (values[i][1] + 1);
 					values[i][1] = values[i][1] + 1 ;
@@ -118,8 +120,8 @@ function DifficultyAverageTimeManager( baseData ) {
 		let lastAvgTime         = 0;
 		let avgTime             = -1;
 
-		if( values.length == 0 ) {
-			return this.getStatisticalAverageTime( question ) ;
+		if( values.length === 0 ) {
+			return self.getStatisticalAverageTime( question ) ;
 		}
 
 		for( let i=0; i<values.length; i++ ) {
@@ -127,7 +129,7 @@ function DifficultyAverageTimeManager( baseData ) {
 			const currentDiffLevel = values[i][0];
 			const currentAvgTime = values[i][2];
 
-			if( currentDiffLevel == difficultyLevel ) {
+			if( currentDiffLevel === difficultyLevel ) {
 				avgTime = currentAvgTime ;
 				break ;
 			}
@@ -148,7 +150,7 @@ function DifficultyAverageTimeManager( baseData ) {
 			}
 		}
 
-		if( avgTime == -1 ) {
+		if( avgTime === -1 ) {
 
 			avgTime = ( ( lastAvgTime - prevToLastAvgTime ) / 
 				        ( lastDiffLevel - prevToLastDiffLevel ) ) * 
