@@ -100,12 +100,14 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
   	Snapshot
   	</a>
 
+    <!--
     <a type="button" class="btn btn-default btn-md" 
        href="#Redeem" 
        ng-class="getBtnActiveClass( 'Reports' )"
        ng-click="setActiveReport( 'Reports' )">
   	Redeem Points
   	</a>
+    -->
 
     <a type="button" class="btn btn-default btn-md" 
        href="#Pivots" 
@@ -121,24 +123,28 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
     Notes Review
     </a>
 
-    <a type="button" class="btn btn-default btn-md" 
+    <!--
+    <a type="button" class="btn btn-default btn-md"
        href="#Exercises" 
        ng-class="getBtnActiveClass( 'Exercises' )"
        ng-click="setActiveReport( 'Exercises' )">
     Exercises
     </a>
+    -->
 
     <a type="button" class="btn btn-info btn-md" 
        href="/apps/jove_notes/ng/remoteflash/index.php">
     Remote Flash
     </a>
 
-    <a type="button" class="btn btn-default btn-md" 
+    <!--
+    <a type="button" class="btn btn-default btn-md"
        href="#Calendar" 
        ng-class="getBtnActiveClass( 'Calendar' )"
        ng-click="setActiveReport( 'Calendar' )">
       <span class="glyphicon glyphicon-calendar"></span>
     </a>
+    -->
 
   	<div class="ng-view"></div>	
 </body>

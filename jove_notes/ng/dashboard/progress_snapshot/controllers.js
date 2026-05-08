@@ -966,10 +966,12 @@ function refreshProgressBars() {
                              rowData.masteredCards
                             ) ;
 
+            /*
             if( rowData.isChapterRow() ) {
                 drawActiveSectionsPercentage( "secActivePct-" + rowData.rowId,
                                               rowData.pctSectionsActive ) ;
             }
+            */
         }
     }
 }

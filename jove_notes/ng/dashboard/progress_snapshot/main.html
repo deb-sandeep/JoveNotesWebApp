@@ -51,9 +51,11 @@
                         <span class="glyphicon glyphicon-file"></span>L1
                     </button>
                 </th>
+                <!--
                 <th style="width:30px;text-align:center;">
                    <span class="glyphicon glyphicon-signal"></span>
                 </th>
+                -->
                 <!--
                 <th style="width:30px;text-align:center;">
                    <span class="glyphicon glyphicon-adjust"></span>
@@ -69,16 +71,20 @@
                 <th style="width:30px;text-align:center;">
                    <span class="glyphicon glyphicon-th"></span>
                 </th>
+                <!--
                 <th style="width:40px;text-align:center;">
                     <span class="glyphicon glyphicon-barcode"></span>
                 </th>
+                -->
                 <th style="width:50px">
                     <div ng-include="'/apps/jove_notes/ng/dashboard/progress_snapshot/bulk_action_menu.html'">
                     </div>
                 </th>
+                <!--
                 <th style="width:40px" class="text-center">P</th>
-                <th class="text-center">Meter</th>
-                <th></th>
+                -->
+                <th class="text-center" style="width: 160px;">Meter</th>
+                <th style="width:40px;"></th>
                 <th>
                     <table class="dashboard-stats">
                         <tr ng-if="!showPercentage">
@@ -145,12 +151,14 @@
                         {{rowData.name}}
                     </span>
                 </td>
+                <!--
                 <td>
                     <span ng-show="rowData.isChapterRow() && rowData.practiceLevel !== 'CUR'"
                           class="badge" ng-class="rowData.getPracticeLevelClass()">
                         {{rowData.practiceLevel}}
                     </span>
                 </td>
+                -->
                 <!--
                 <td>
                     <span class="badge L0">
@@ -172,92 +180,96 @@
                        <span class="badge L3" style="width:40px;text-align: right">{{rowData.numSSRMaturedCards}}</span>
                     </a>
                 </td>
-                <td>
-                    <canvas width='30' height='20' id='secActivePct-{{rowData.rowId}}'>
-                    </canvas>
-                </td>
-                <td style="width:50px" align="center">
-                    <input id="push" type="checkbox" ng-change="rowData.selectionChanged()" 
-                           ng-model="rowData.isRowSelected"
-                           ui-indeterminate="rowData.isPartiallySelected" />
-                </td>
-                <td>
-                    <div class="projected-marks">
-                    {{rowData.projectedMarks | number:0}}
-                    </div>
-                </td>
-                <td class="text-center">
-                    <canvas width='100' height='20' id='canvas-{{rowData.rowId}}'>
-                    </canvas>
-                </td>
-                <td>
-                    <a type="button" class="btn btn-default btn-xs"
-                       ng-show="rowData.rowType == 2"
-                       ng-click="rowData.toggleVisibility()">
-                        <span class="glyphicon glyphicon-eye-close" style="color:red"   ng-hide="rowData.isHidden"></span>
-                        <span class="glyphicon glyphicon-eye-open"  style="color:green" ng-show="rowData.isHidden"></span>
-                    </a>
-                </td>
-                <td>
-                    <table class="dashboard-stats">
-                        <tr ng-if="!showPercentage">
-                            <td class="text-right TOT">{{rowData.totalCards }}</td>
-                            <td class="text-right NR" >{{rowData.totalCards - rowData.masteredCards }}</td>
-                            <td class="text-right NR"
-                                style="color:red !important;background-color:#dedede !important;">
-                                {{rowData.notStartedCards }}
-                            </td>
-                            <td class="text-right NR" >{{rowData.resurrectedCards}}</td>
-                            <td class="text-right L0" >{{rowData.l0Cards         }}</td>
-                            <td class="text-right L1" >{{rowData.l1Cards         }}</td>
-                            <td class="text-right L2" >{{rowData.l2Cards         }}</td>
-                            <td class="text-right L3" >{{rowData.l3Cards         }}</td>
-                            <td class="text-right MAS">{{rowData.masteredCards   }}</td>
-                        </tr>
-                        <tr ng-if="showPercentage">
-                            <td class="text-right TOT">{{rowData.totalCards}}</td>
-                            <td class="text-right NR" >{{(rowData.totalCards - rowData.masteredCards)*100/rowData.totalCards | number:0 }}</td>
-                            <td class="text-right NR"
-                                style="color:red !important;background-color:#dedede !important;">
-                                {{rowData.pctNS*100  | number:0}}
-                            </td>
-                            <td class="text-right NR" >{{rowData.pctNR*100  | number:0}}</td>
-                            <td class="text-right L0" >{{rowData.pctL0*100  | number:0}}</td>
-                            <td class="text-right L1" >{{rowData.pctL1*100  | number:0}}</td>
-                            <td class="text-right L2" >{{rowData.pctL2*100  | number:0}}</td>
-                            <td class="text-right L3" >{{rowData.pctL3*100  | number:0}}</td>
-                            <td class="text-right MAS">{{rowData.pctMAS*100 | number:0}}</td>
-                        </tr>
-                    </table>
-                </td>
-                <td style="width:50px" align="center">
-                    <a type="button" class="btn btn-default btn-xs"
-                       ng-show="(rowData.rowType == 2) && (rowData.totalCards != 0) && (rowData.totalCards == rowData.masteredCards)"
-                       ng-click="resetLevelOfChapterCards( rowData.chapterId, 'NS' )">
-                        <span class="glyphicon glyphicon-refresh" style="color:green"</span>
-                    </a>
-                </td>
-                <td>
-                    <a href="/apps/jove_notes/ng/flashcard/index.php?chapterId={{rowData.chapterId}}"
-                       ng-show="rowData.isFlashcardAuthorized && rowData.hasCardsAvailable() && rowData.isRowInSyllabus">
-                        <span class="badge L3" style="width:40px;text-align: right">{{rowData.numSSRInSyllabusMaturedCards}}</span>
-                    </a>
-                </td>
-                <td style="width:50px" align="center">
-                    <input id="push" type="checkbox"
-                           ng-change="rowData.inSyllabusSelectionChanged()"
-                           ng-model="rowData.isRowInSyllabus"
-                           ui-indeterminate="rowData.isRowPartiallyInSyllabus" />
-                </td>
-                <!--
-                <td>
-                    <a type="button" class="btn btn-default btn-xs"
-                       ng-show="rowData.isDeleteAuthorized"
-                       ng-click="deleteChapter( rowData.chapterId )">
-                        <span class="glyphicon glyphicon-remove" style="color:red"></span>
-                    </a>
-                </td>
-                -->
+              <!--
+              <td>
+                  <canvas width='30' height='20' id='secActivePct-{{rowData.rowId}}'>
+                  </canvas>
+              </td>
+              -->
+              <td style="width:50px" align="center">
+                  <input id="push" type="checkbox" ng-change="rowData.selectionChanged()"
+                         ng-model="rowData.isRowSelected"
+                         ui-indeterminate="rowData.isPartiallySelected" />
+              </td>
+              <!--
+              <td>
+                  <div class="projected-marks">
+                  {{rowData.projectedMarks | number:0}}
+                  </div>
+              </td>
+              -->
+              <td class="text-center">
+                  <canvas width='150' height='20' id='canvas-{{rowData.rowId}}'>
+                  </canvas>
+              </td>
+              <td>
+                  <a type="button" class="btn btn-default btn-xs"
+                     ng-show="rowData.rowType == 2"
+                     ng-click="rowData.toggleVisibility()">
+                      <span class="glyphicon glyphicon-eye-close" style="color:red"   ng-hide="rowData.isHidden"></span>
+                      <span class="glyphicon glyphicon-eye-open"  style="color:green" ng-show="rowData.isHidden"></span>
+                  </a>
+              </td>
+              <td>
+                  <table class="dashboard-stats">
+                      <tr ng-if="!showPercentage">
+                          <td class="text-right TOT">{{rowData.totalCards }}</td>
+                          <td class="text-right NR" >{{rowData.totalCards - rowData.masteredCards }}</td>
+                          <td class="text-right NR"
+                              style="color:red !important;background-color:#dedede !important;">
+                              {{rowData.notStartedCards }}
+                          </td>
+                          <td class="text-right NR" >{{rowData.resurrectedCards}}</td>
+                          <td class="text-right L0" >{{rowData.l0Cards         }}</td>
+                          <td class="text-right L1" >{{rowData.l1Cards         }}</td>
+                          <td class="text-right L2" >{{rowData.l2Cards         }}</td>
+                          <td class="text-right L3" >{{rowData.l3Cards         }}</td>
+                          <td class="text-right MAS">{{rowData.masteredCards   }}</td>
+                      </tr>
+                      <tr ng-if="showPercentage">
+                          <td class="text-right TOT">{{rowData.totalCards}}</td>
+                          <td class="text-right NR" >{{(rowData.totalCards - rowData.masteredCards)*100/rowData.totalCards | number:0 }}</td>
+                          <td class="text-right NR"
+                              style="color:red !important;background-color:#dedede !important;">
+                              {{rowData.pctNS*100  | number:0}}
+                          </td>
+                          <td class="text-right NR" >{{rowData.pctNR*100  | number:0}}</td>
+                          <td class="text-right L0" >{{rowData.pctL0*100  | number:0}}</td>
+                          <td class="text-right L1" >{{rowData.pctL1*100  | number:0}}</td>
+                          <td class="text-right L2" >{{rowData.pctL2*100  | number:0}}</td>
+                          <td class="text-right L3" >{{rowData.pctL3*100  | number:0}}</td>
+                          <td class="text-right MAS">{{rowData.pctMAS*100 | number:0}}</td>
+                      </tr>
+                  </table>
+              </td>
+              <td style="width:50px" align="center">
+                  <a type="button" class="btn btn-default btn-xs"
+                     ng-show="(rowData.rowType == 2) && (rowData.totalCards != 0) && (rowData.totalCards == rowData.masteredCards)"
+                     ng-click="resetLevelOfChapterCards( rowData.chapterId, 'NS' )">
+                      <span class="glyphicon glyphicon-refresh" style="color:green"</span>
+                  </a>
+              </td>
+              <td>
+                  <a href="/apps/jove_notes/ng/flashcard/index.php?chapterId={{rowData.chapterId}}"
+                     ng-show="rowData.isFlashcardAuthorized && rowData.hasCardsAvailable() && rowData.isRowInSyllabus">
+                      <span class="badge L3" style="width:40px;text-align: right">{{rowData.numSSRInSyllabusMaturedCards}}</span>
+                  </a>
+              </td>
+              <td style="width:50px" align="center">
+                  <input id="push" type="checkbox"
+                         ng-change="rowData.inSyllabusSelectionChanged()"
+                         ng-model="rowData.isRowInSyllabus"
+                         ui-indeterminate="rowData.isRowPartiallyInSyllabus" />
+              </td>
+              <!--
+              <td>
+                  <a type="button" class="btn btn-default btn-xs"
+                     ng-show="rowData.isDeleteAuthorized"
+                     ng-click="deleteChapter( rowData.chapterId )">
+                      <span class="glyphicon glyphicon-remove" style="color:red"></span>
+                  </a>
+              </td>
+              -->
             </tr>   
         </tbody>
     </table>
