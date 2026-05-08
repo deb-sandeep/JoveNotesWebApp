@@ -12,8 +12,10 @@ Import order matters — `jove_notes` has foreign keys referencing `user.user`, 
 ### On local Mac — export
 
 ```
-mysqldump -u root -p --databases user > /tmp/user_with_data.sql
-mysqldump -u root -p --no-data --databases jove_notes > /tmp/jove_notes_schema.sql
+mysqldump -u root -p --column-statistics=0 --databases user > /tmp/user_with_data.sql
+mysqldump -u root -p --column-statistics=0 --no-data --databases jove_notes \
+  | sed 's/ AUTO_INCREMENT=[0-9]*//g' \
+  > /tmp/jove_notes_schema.sql
 ```
 
 ### Transfer to Pi
