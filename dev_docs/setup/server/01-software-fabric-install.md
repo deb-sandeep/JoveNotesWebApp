@@ -223,7 +223,20 @@ Virtual host / port config:
 Key changes to default site (`/etc/apache2/sites-enabled/000-default.conf`):
 
 ```
-DocumentRoot /var/www/html
+DocumentRoot /var/www
+```
+
+Remove the default `html` directory:
+
+```
+sudo rm -rf /var/www/html
+```
+
+Suppress FQDN warning:
+
+```
+echo "ServerName localhost" | sudo tee /etc/apache2/conf-available/servername.conf
+sudo a2enconf servername
 ```
 
 Enable required modules:
@@ -249,7 +262,7 @@ Expected: `HTTP/1.1 200 OK`
 ### Installation
 
 ```
-sudo apt install php libapache2-mod-php php-mysqli
+sudo apt install php libapache2-mod-php php-mysqli php-xml
 ```
 
 `libapache2-mod-php` wires PHP into Apache as a module (equivalent of `mod_php` on local).
