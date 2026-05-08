@@ -140,12 +140,6 @@
                         <a href="/apps/jove_notes/ng/notes/index.php?chapterId={{rowData.chapterId}}">
                         {{rowData.name}}&nbsp;
                         </a>
-                        <span ng-if="rowData.chapter.notesCompleted"
-                              class="glyphicon glyphicon-ok-circle"
-                              style="color: green"/>
-                        <span ng-if="!rowData.chapter.notesCompleted"
-                              class="glyphicon glyphicon-remove-circle"
-                              style="color: red"/>
                     </span>
                     <span ng-show="!rowData.isNotesAuthorized">
                         {{rowData.name}}
