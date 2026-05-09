@@ -11,7 +11,20 @@ git clone https://github.com/deb-sandeep/PHPAppFramework.git
 
 
 
-## 2. Create symbolic links in `/var/www`
+## 2. Deploy MathJax
+
+MathJax is not committed to Git (large footprint, gitignored via `lib-ext/.gitignore`).
+On the server it is deployed by running `jn-deploy-webapp` from the local Mac, which
+rsyncs the entire `PHPAppFramework/lib-ext/MathJax4/` directory to the Pi.
+
+If setting up a fresh server before the first deploy, run `jn-deploy-webapp` from the
+local Mac after completing section 1 above — MathJax4 will be included automatically.
+
+There is no manual install step required on the server itself.
+
+
+
+## 3. Create symbolic links in `/var/www`
 
 ```
 mkdir -p /home/sandeep/projects/workspace/downloads
@@ -28,7 +41,7 @@ sudo ln -s -T /home/sandeep/projects/workspace/jove_notes_media/ /var/www/apps/j
 
 
 
-## 3. Configure Apache
+## 4. Configure Apache
 
 ### Replace the default virtual host
 
@@ -111,7 +124,7 @@ sudo systemctl restart apache2
 
 
 
-## 4. Configure PHP
+## 5. Configure PHP
 
 ### log4php include path
 

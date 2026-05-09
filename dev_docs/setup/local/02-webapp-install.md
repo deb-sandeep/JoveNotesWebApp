@@ -8,7 +8,7 @@
 | Runtime    | PHP                               |
 | Database   | MySQL                             |
 | Frontend   | PHPAppFramework + JoveNotesWebApp |
-| Rendering  | MathJax                           |
+| Rendering  | MathJax 4 (locally hosted)        |
 
 Runs entirely from:
 
@@ -44,14 +44,21 @@ git clone https://github.com/deb-sandeep/PHPAppFramework.git
 
 ## 4. Install MathJax
 
-MathJax is not committed to Git (large footprint). Its there in backup hard disk. Note that an old version is being used, so new downloads might not be compatible. Unarchive MathJax in the `PHPAppFramework/lib-ext` directory
+MathJax is not committed to Git (large footprint, gitignored via `lib-ext/.gitignore`).
+Install via npm into a temp directory and copy the output into `lib-ext`:
 
 ```
-cd ~/projects/jovenotes/PHPAppFramework/lib-ext
-scp user@prod-server:~/Downloads/MathJax.tar .
-tar -xvf MathJax.tar
-rm MathJax.tar
+mkdir -p /tmp/mathjax_install && cd /tmp/mathjax_install
+npm install mathjax
+cp -r node_modules/mathjax/ ~/projects/jovenotes/PHPAppFramework/lib-ext/MathJax4/
 ```
+
+The key file served to browsers is `lib-ext/MathJax4/tex-svg.js`. The subdirectories
+(`input/`, `output/`, `sre/`, etc.) are loaded dynamically by MathJax at runtime and
+must also be present.
+
+On the Pi server, MathJax4 is deployed automatically by `jn-deploy-webapp` (rsync),
+so no separate install step is needed there.
 
 
 
