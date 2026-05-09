@@ -21,7 +21,7 @@ notesApp.directive( 'renderImageLabel', function( $sce ) {
 			var answerUI = handler.getAnswerUI() ;
 			element.empty() ;
 			element.append( answerUI ) ;
-			MathJax.Hub.Queue( ["Typeset", MathJax.Hub, answerUI] ) ;
+			MathJax.typesetPromise( [answerUI] ) ;
         }
 	} ;
 }) ;
@@ -50,7 +50,7 @@ notesApp.directive( 'renderPracticeImageLabel', function( $sce ) {
 			recurseAndCleanHanlders( questionUI ) ;
 			element.empty() ;
 			element.append( questionUI ) ;
-			MathJax.Hub.Queue( ["Typeset", MathJax.Hub, questionUI] ) ;
+			MathJax.typesetPromise( [questionUI] ) ;
 
 			function recurseAndCleanHanlders( obj ) {
 				if( 'onclick' in obj ) {

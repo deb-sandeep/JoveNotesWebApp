@@ -11,10 +11,7 @@ $pageConfig = array(
 
 <head>
     <?php include( HEAD_CONTENT_FILE ); ?>
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({ TeX: { extensions: ["mhchem.js"] }});
-    </script>
-    <script type="text/javascript" src="/lib-ext/MathJax/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
+    <?php include( MATHJAX_INCLUDE_FILE ); ?>
 
     <script src="/apps/jove_notes/ng/editutils/controllers.js"></script>    
     <script src="/apps/jove_notes/ng/editutils/directives.js"></script>    

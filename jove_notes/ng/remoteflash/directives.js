@@ -55,7 +55,7 @@ remoteFlashCardApp.directive( 'renderRemoteFlashCardQuestion', function() {
 					element.append( questionUI ) ;
 
 					handler.initializeQuestionUI() ;
-					MathJax.Hub.Queue( ["Typeset", MathJax.Hub, questionUI] ) ;
+					MathJax.typesetPromise( [questionUI] ) ;
 					element.find( 'pre code' ).each( function(i, block) {
 						hljs.highlightBlock( block ) ;
 					});
@@ -87,7 +87,7 @@ remoteFlashCardApp.directive( 'renderRemoteFlashCardAnswer', function() {
 					element.append( answerUI ) ;
 
 					handler.initializeAnswerUI() ;
-					MathJax.Hub.Queue( ["Typeset", MathJax.Hub, answerUI] ) ;
+					MathJax.typesetPromise( [answerUI] ) ;
 					element.find( 'pre code' ).each( function(i, block) {
 						hljs.highlightBlock( block ) ;
 					});

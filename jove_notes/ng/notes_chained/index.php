@@ -54,13 +54,7 @@ define( "NAVBAR_FRAGMENT_PATH",   DOCUMENT_ROOT . "/apps/jove_notes/ng/notes_cha
     <link rel='stylesheet' href='/apps/jove_notes/ng/flashcard/flashcard.css'>
     <link rel='stylesheet' href='/apps/jove_notes/ng/notes/css/notes.css'>
 
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({ 
-            TeX: { extensions: ["mhchem.js"] },
-            displayAlign: "left"
-        });
-    </script>
-    <script src="/lib-ext/MathJax/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
+    <?php include( MATHJAX_LEFT_ALIGN_INCLUDE_FILE ); ?>
     <script src="/lib-ext/math/math.min.js"></script>    
 
     <script src="/apps/jove_notes/ng/_common/jove_notes_utils.js"></script>    
@@ -114,7 +108,7 @@ define( "NAVBAR_FRAGMENT_PATH",   DOCUMENT_ROOT . "/apps/jove_notes/ng/notes_cha
 
 </head>
 
-<body ng-controller="ChainedNotesController" onload="MathJax.Hub.Queue( ['Typeset', MathJax.Hub] )">
+<body ng-controller="ChainedNotesController">
 
     <?php include( NAVBAR_FRAGMENT_PATH ) ; ?>
     <?php include( ALERT_DIV_FILE ) ; ?>

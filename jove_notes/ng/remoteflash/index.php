@@ -40,10 +40,7 @@ $pageConfig = array(
         }        
     </style>
 
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({ TeX: { extensions: ["mhchem.js"] }});
-    </script>
-    <script type="text/javascript" src="/lib-ext/MathJax/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
+    <?php include( MATHJAX_INCLUDE_FILE ); ?>
 
     <link rel='stylesheet' href='/lib-ext/pure/tables.css'>
     <link rel='stylesheet' href='/apps/jove_notes/ng/flashcard/flashcard.css'>

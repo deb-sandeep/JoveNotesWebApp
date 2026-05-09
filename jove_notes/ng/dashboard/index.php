@@ -54,13 +54,7 @@ define( "NAVBAR_FRAGMENT_PATH", PHP_FRAGMENT_PATH . "/dashboard_navbar.php" ) ;
     <script src="/lib-ext/daterangepicker/daterangepicker.js"></script> 
     <link rel="stylesheet" href="/lib-ext/daterangepicker/daterangepicker-bs3.css">
 
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({ 
-            TeX: { extensions: ["mhchem.js"] },
-            displayAlign: "left"
-        });
-    </script>
-    <script src="/lib-ext/MathJax/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
+    <?php include( MATHJAX_LEFT_ALIGN_INCLUDE_FILE ); ?>
     <script src="/lib-ext/math/math.min.js"></script>    
     <script src="/lib-ext/bootstrap-3.3.4/angular/calendar/angular-bootstrap-calendar-tpls.min.js"></script>
     <script src="/lib-ext/bootstrap-3.3.4/angular/colorpicker/bootstrap-colorpicker-module.min.js"></script>

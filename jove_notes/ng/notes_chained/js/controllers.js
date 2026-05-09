@@ -213,7 +213,7 @@ notesApp.controller( 'ChainedNotesController', function( $scope, $http, $sce, $l
 		}) ;
 
 		setTimeout( function(){
-			MathJax.Hub.Queue( [ "Typeset", MathJax.Hub ] )
+			MathJax.typesetPromise() ;
 		}, 100 ) ;
 	}
 

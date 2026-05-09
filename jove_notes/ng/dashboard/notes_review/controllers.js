@@ -93,7 +93,7 @@ function processNotesElements() {
     }
 
     setTimeout( function(){
-        MathJax.Hub.Queue( [ "Typeset", MathJax.Hub ] ) 
+        MathJax.typesetPromise() ;
     }, 100 ) ;  
     setTimeout( hljs.initHighlighting, 100 ) ;
 }

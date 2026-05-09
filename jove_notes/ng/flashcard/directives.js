@@ -57,7 +57,7 @@ flashCardApp.directive( 'renderFlashCardQuestion', function() {
 					element.append( questionUI ) ;
 
 					handler.initializeQuestionUI() ;
-					MathJax.Hub.Queue( ["Typeset", MathJax.Hub, element.get(0)] ) ;
+					MathJax.typesetPromise( [element.get(0)] ) ;
 
 					element.find( 'pre code' ).each( function(i, block) {
 						hljs.highlightBlock( block ) ;
@@ -93,7 +93,7 @@ flashCardApp.directive( 'renderFlashCardAnswer', function() {
 					element.append( answerUI ) ;
 
 					handler.initializeAnswerUI() ;
-					MathJax.Hub.Queue( ["Typeset", MathJax.Hub, element.get(0)] ) ;
+					MathJax.typesetPromise( [element.get(0)] ) ;
 
 					element.find( 'pre code' ).each( function(i, block) {
 						hljs.highlightBlock( block ) ;

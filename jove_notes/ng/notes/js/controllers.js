@@ -340,7 +340,7 @@ function processNotesElements() {
 	}) ;
 
  	setTimeout( function(){
- 		MathJax.Hub.Queue( [ "Typeset", MathJax.Hub ] ) 
+ 		MathJax.typesetPromise() ;
  	}, 100 ) ;
 }
 

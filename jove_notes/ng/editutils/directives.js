@@ -24,7 +24,7 @@ editUtilsApp.directive( 'renderLatex', function() {
 				element.empty() ;
 				element.append( dom ) ;
 
-				MathJax.Hub.Queue( ["Typeset", MathJax.Hub, dom ] ) ;
+				MathJax.typesetPromise( [dom] ) ;
 			}
         }
 	} ;

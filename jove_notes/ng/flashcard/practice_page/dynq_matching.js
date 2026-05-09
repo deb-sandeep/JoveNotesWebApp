@@ -84,7 +84,7 @@ function MatchQuestionManager( questionObj, textFormatter, $scope ) {
 				                         answeredAnswers[i] ) ;
 		}
 
-		MathJax.Hub.Queue( ["Typeset", MathJax.Hub, divDOM] ) ;
+		MathJax.typesetPromise( [divDOM] ) ;
 	} ;
 
 	this.renderUnansweredQuestion = function( rowIndex, question, answer ) {
