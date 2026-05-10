@@ -108,12 +108,16 @@ sudo usermod -aG sandeep www-data
 chmod g+x /home/sandeep
 ```
 
-### Export DB_PASSWORD for Apache
+### Export environment variables for Apache
 
 Append to `/etc/apache2/envvars`:
 
 ```
 export DB_PASSWORD=<password>
+
+# SConsole integration — base URL of the SConsole server.
+# If not set, the SConsole bridge is automatically disabled (no-op).
+export SCONSOLE_BASE_URL=http://192.168.0.161:8080
 ```
 
 ### Restart Apache

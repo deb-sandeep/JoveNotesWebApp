@@ -24,8 +24,9 @@ const PTA_RATE_CARD_MAS = 3 ; // We are at L3 and this press will master the car
                               // E except that it enables us to give a separate visual rep to the button.
 
 // ---------------- Local variables --------------------------------------------
-const ratingMatrix = new RatingMatrix();
-const jnUtils     = new JoveNotesUtil();
+const ratingMatrix    = new RatingMatrix();
+const jnUtils         = new JoveNotesUtil();
+const sConsoleBridge  = new SConsoleBridge( sConsoleBaseUrl ) ;
 const sessionStartTime = new Date().getTime();
 
 let currentQuestionShowStartTime   = 0;
@@ -129,6 +130,8 @@ $scope.remainingAnsPushTime = 0 ; // Time is in milliseconds
         // in case push is configured. If push is not configured, the callback 
         // would be called without publishing any message to the server.
         callRFMApiToPublisStartSession( function(){
+
+            sConsoleBridge.startSession( $scope.$parent.chapterDetails, sessionStartTime ) ;
 
             log.debug( "Starting timer." ) ;
             setTimeout( handleTimerEvent, 1000 ) ;
@@ -803,6 +806,7 @@ function endSession() {
     ] ;
     $scope.$parent.learningCurveData.push( currentSnapshot ) ;
 
+    sConsoleBridge.endSession() ;
     $location.path( "/EndPage" ) ;
 }
 
@@ -839,6 +843,7 @@ function computeSessionCards() {
 function handleTimerEvent() {
     if( sessionActive ) {
         if( resumeModalShowTime === 0 ) {
+            sConsoleBridge.tick() ;
             refreshClocks() ;
             refreshCardTimeProgressBars() ;
             if( $scope.answerPushed ) {

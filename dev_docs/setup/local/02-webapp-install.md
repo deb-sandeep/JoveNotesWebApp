@@ -123,6 +123,10 @@ SetEnv DB_PASSWORD <password>
 # If not set, defaults to "localhost" (JEE database on local machine).
 # Set to the Optiplex IP to point the app at the K10 historical archive.
 # SetEnv DB_HOST <optiplex-ip>
+
+# SConsole integration — base URL of the SConsole server.
+# If not set, the SConsole bridge is automatically disabled (no-op).
+SetEnv SCONSOLE_BASE_URL http://192.168.0.165:8080
 CONF
 ```
 

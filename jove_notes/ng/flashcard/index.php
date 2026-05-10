@@ -92,15 +92,17 @@ $score = $scoreDAO->getScore( ExecutionContext::getCurrentUserName() ) ;
     <script src="/apps/jove_notes/ng/flashcard/filtered_card_stats.js"></script> 
 
     <script src="/apps/jove_notes/ng/flashcard/start_page/controllers.js"></script>
+    <script src="/apps/jove_notes/ng/flashcard/sconsole_bridge.js"></script>
     <script src="/apps/jove_notes/ng/flashcard/practice_page/controllers.js"></script>
     <script src="/apps/jove_notes/ng/flashcard/end_page/controllers.js"></script>
 
     <script>
-    var userName  = '<?php echo ExecutionContext::getCurrentUserName() ?>' ;
-    var firstShow = <?php echo $firstShow ?> ;
-    var chapterId = <?php echo $chapterIdForThisSession ?> ;
-    var sessionId = <?php echo $sessionId ?> ;
-    var userScore = <?php echo $score ?> ;
+    var userName        = '<?php echo ExecutionContext::getCurrentUserName() ?>' ;
+    var firstShow       = <?php echo $firstShow ?> ;
+    var chapterId       = <?php echo $chapterIdForThisSession ?> ;
+    var sessionId       = <?php echo $sessionId ?> ;
+    var userScore       = <?php echo $score ?> ;
+    var sConsoleBaseUrl = '<?php echo SCONSOLE_BASE_URL ?>' ;
     <?php
     if( $chapterIdsForNextSessions != null ) {
         echo "var chapterIdsForNextSessions = [" . implode( ",", $chapterIdsForNextSessions ) . "] ;\n" ;
