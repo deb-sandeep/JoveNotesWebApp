@@ -1,7 +1,7 @@
     <script>
       window.MathJax = {
-        loader: { load: ['[tex]/mhchem'] },
-        tex:    { packages: {'[+]': ['mhchem']} },
+        loader: { load: ['[tex]/mhchem', '[tex]/physics'] },
+        tex:    { packages: {'[+]': ['mhchem', 'physics']} },
         svg:    { displayAlign: 'left' }
       };
     </script>
