@@ -524,6 +524,10 @@ $scope.tempPromotionAction = function() {
 $scope.launchNotes = function( levels ) {
 
     let chapters = getChapterWithCardsAtLevel( levels ) ;
+    if( chapters == null || chapters.length === 0 ) {
+        alert( "No relevant chapters found. Please check criteria" ) ;
+        return ;
+    }
 
     const chapterIds = [];
     for( let i=0; i<chapters.length; i++ ) {
