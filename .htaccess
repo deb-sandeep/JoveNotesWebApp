@@ -1,0 +1,8 @@
+# Make browsers revalidate static assets on every load. Unchanged files get a
+# cheap 304 (via ETag/Last-Modified), changed files are picked up immediately
+# without a hard reload. Covers Angular templates loaded via templateUrl too.
+<IfModule mod_headers.c>
+    <FilesMatch "\.(js|css|html)$">
+        Header set Cache-Control "no-cache"
+    </FilesMatch>
+</IfModule>

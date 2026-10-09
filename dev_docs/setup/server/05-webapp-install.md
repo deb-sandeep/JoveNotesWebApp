@@ -98,6 +98,17 @@ Find:
 
 Change `AllowOverride None` to `AllowOverride All`.
 
+### Enable mod_headers
+
+The app's `.htaccess` sets `Cache-Control: no-cache` on JS/CSS/HTML so that
+browsers pick up deployed changes without a hard reload. This needs
+`mod_headers`, which is not enabled by default on Debian:
+
+```
+sudo a2enmod headers
+sudo systemctl restart apache2
+```
+
 ### Grant www-data access to home directory
 
 Apache runs as `www-data`. Since the symlinks in `/var/www` point into

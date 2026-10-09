@@ -4,6 +4,7 @@ dashboardApp.controller( 'ProgressSnapshotController', function( $scope, $http )
 RowData.prototype.ROW_TYPE_SYLLABUS = 0 ;
 RowData.prototype.ROW_TYPE_SUBJECT  = 1 ;
 RowData.prototype.ROW_TYPE_CHAPTER  = 2 ;
+RowData.prototype.ROW_TYPE_TOPIC    = 3 ; // Groups chapters with the same chapter number
 
 function RowData( rowType, name, rowId, parentRowId ) {
 
@@ -45,6 +46,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
 
     this.chapter    = null ;
     this.chapterId  = null ;
+    this.topicRD    = null ;
     this.subjectRD  = null ;
     this.syllabusRD = null ;
 
@@ -163,11 +165,20 @@ function RowData( rowType, name, rowId, parentRowId ) {
         recomputeStatistics() ;
     }
 
-    this.setChapterAndParentRows = function( chapter, subjectRD, syllabusRD ) {
+    this.getAncestorRows = function() {
+        const ancestors = [ this.subjectRD, this.syllabusRD ] ;
+        if( this.topicRD != null ) {
+            ancestors.unshift( this.topicRD ) ;
+        }
+        return ancestors ;
+    }
+
+    this.setChapterAndParentRows = function( chapter, topicRD, subjectRD, syllabusRD ) {
 
         this.chapter     = chapter ;
         this.chapterId   = chapter.chapterId ;
 
+        this.topicRD     = topicRD ;
         this.subjectRD   = subjectRD ;
         this.syllabusRD  = syllabusRD ;
 
@@ -290,9 +301,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
             }
             return visible ;
         }
-        else if( ( this.rowType === RowData.prototype.ROW_TYPE_SUBJECT ) ||
-                 ( this.rowType === RowData.prototype.ROW_TYPE_SYLLABUS ) ) {
-
+        else {
             for( let i=0; i < this.children.length; i++ ) {
                 if( this.children[i].isTreeRowVisible() ) {
                     return true ;
@@ -303,8 +312,7 @@ function RowData( rowType, name, rowId, parentRowId ) {
     }
 
     this.computeSelectionState = function() {
-        if( ( this.rowType === RowData.prototype.ROW_TYPE_SUBJECT ) ||
-            ( this.rowType === RowData.prototype.ROW_TYPE_SYLLABUS ) ) {
+        if( !this.isChapterRow() ) {
 
             this.isRowSelected       = false ;
             this.isPartiallySelected = false ;
@@ -709,11 +717,9 @@ function prepareDataForDisplay( rawData ) {
 function prepareDataForDisplayGroupedBySyllabus( rawData ) {
 
     const displayData = [];
-    let rowNum = 0;
 
     for( let sylIndex=0; sylIndex<rawData.length; sylIndex++ ) {
 
-        rowNum++ ;
         const syllabus = rawData[sylIndex];
         const syllabusRD = new RowData(RowData.prototype.ROW_TYPE_SYLLABUS,
                                                     syllabus.syllabusName,
@@ -725,7 +731,6 @@ function prepareDataForDisplayGroupedBySyllabus( rawData ) {
 
         for( let subIndex=0; subIndex<syllabus.subjects.length; subIndex++ ) {
 
-            rowNum++ ;
             const subject = syllabus.subjects[subIndex];
             const subjectRD = new RowData(RowData.prototype.ROW_TYPE_SUBJECT,
                                                     subject.subjectName,
@@ -735,27 +740,9 @@ function prepareDataForDisplayGroupedBySyllabus( rawData ) {
             syllabusRD.addChild( subjectRD ) ;
             displayData.push( subjectRD ) ;
 
-            let numChaptersSelected = 0;
-            for( let chpIndex=0; chpIndex<subject.chapters.length; chpIndex++ ) {
-
-                rowNum++ ;
-                const chapter = subject.chapters[chpIndex];
-                const displayName = chapter.chapterNum + "." + chapter.subChapterNum +
-                                           " - " + chapter.chapterName;
-                const chapterRD = new RowData(RowData.prototype.ROW_TYPE_CHAPTER,
-                                                        displayName,
-                                                        chapter.chapterId,
-                                                        subjectRD.rowId);
-
-                chapterRD.setChapterAndParentRows( chapter, subjectRD, syllabusRD ) ;
-
-                subjectRD.addChild( chapterRD ) ;
-                displayData.push( chapterRD ) ;
-
-                if( !chapterRD.isHidden && chapterRD.isRowSelected ) {
-                    numChaptersSelected++ ;
-                }
-            }
+            const numChaptersSelected = addChapterRows( syllabus, subject, 
+                                                        subjectRD, syllabusRD ) ;
+            pushChildRows( subjectRD, displayData ) ;
 
             subjectRD.isRowSelected = ( numChaptersSelected > 0 ) ;
             if( subjectRD.isRowSelected ) numSubjectsSelected++ ;
@@ -772,19 +759,16 @@ function prepareDataForDisplayGroupedBySubject( rawData ) {
                                        "Unified Syllabus", "Unified", -1);
     const subjectMap = {};
     const displayData = [];
-    let rowNum = 0;
 
     displayData.push( syllabusRD ) ;
 
     for( let sylIndex=0; sylIndex<rawData.length; sylIndex++ ) {
 
-        rowNum++ ;
         const syllabus = rawData[sylIndex];
         let numSubjectsSelected = 0;
 
         for( let subIndex=0; subIndex<syllabus.subjects.length; subIndex++ ) {
 
-            rowNum++ ;
             const subject = syllabus.subjects[subIndex];
             let subjectRD = null;
 
@@ -797,30 +781,11 @@ function prepareDataForDisplayGroupedBySubject( rawData ) {
                                          syllabusRD.name + "-" + subject.subjectName, 
                                          syllabusRD.rowId ) ;
                 subjectMap[ subject.subjectName ] = subjectRD ;
+                syllabusRD.addChild( subjectRD ) ;
             }
 
-            syllabusRD.addChild( subjectRD ) ;
-
-            let numChaptersSelected = 0;
-            for( let chpIndex=0; chpIndex<subject.chapters.length; chpIndex++ ) {
-
-                rowNum++ ;
-                const chapter = subject.chapters[chpIndex];
-                const displayName = chapter.chapterNum + "." + chapter.subChapterNum +
-                                           " - " + chapter.chapterName;
-                const chapterRD = new RowData(RowData.prototype.ROW_TYPE_CHAPTER,
-                    displayName,
-                    chapter.chapterId,
-                    subjectRD.rowId);
-
-                chapterRD.setChapterAndParentRows( chapter, subjectRD, syllabusRD ) ;
-
-                subjectRD.addChild( chapterRD ) ;
-
-                if( !chapterRD.isHidden && chapterRD.isRowSelected ) {
-                    numChaptersSelected++ ;
-                }
-            }
+            const numChaptersSelected = addChapterRows( syllabus, subject, 
+                                                        subjectRD, syllabusRD ) ;
 
             subjectRD.isRowSelected = ( numChaptersSelected > 0 ) ;
             if( subjectRD.isRowSelected ) numSubjectsSelected++ ;
@@ -833,21 +798,88 @@ function prepareDataForDisplayGroupedBySubject( rawData ) {
     entries.shuffle() ;
 
     for( let i=0; i<entries.length; i++ ) {
-        const subName = entries[i][0] ;
         const subRD = entries[i][1] ;
 
         displayData.push( subRD ) ;
 
         subRD.children.sort( function( a, b ){
-            return a.chapterId - b.chapterId ;
+            return a.sortKey - b.sortKey ;
         }) ;
-
-        for( let i=0; i<subRD.children.length; i++ ) {
-            displayData.push( subRD.children[i] ) ;
-        }
+        pushChildRows( subRD, displayData ) ;
     }
 
     return displayData ;
+}
+
+// Adds the chapters of the given subject as children of subjectRD. Chapters 
+// sharing a chapter number (= SConsole topic id) are grouped under a topic 
+// row if there are more than one of them. Returns the number of selected
+// chapters.
+function addChapterRows( syllabus, subject, subjectRD, syllabusRD ) {
+
+    const topicGroups = new Map() ;
+    for( let chpIndex=0; chpIndex<subject.chapters.length; chpIndex++ ) {
+        const chapter = subject.chapters[chpIndex];
+        if( !topicGroups.has( chapter.chapterNum ) ) {
+            topicGroups.set( chapter.chapterNum, [] ) ;
+        }
+        topicGroups.get( chapter.chapterNum ).push( chapter ) ;
+    }
+
+    let numChaptersSelected = 0;
+
+    topicGroups.forEach( function( chapters, chapterNum ) {
+
+        let topicRD = null ;
+        let parentRD = subjectRD ;
+
+        if( chapters.length > 1 ) {
+            const topicName = chapters[0].topicName || ( "Topic " + chapterNum ) ;
+            topicRD = new RowData( RowData.prototype.ROW_TYPE_TOPIC,
+                                   chapterNum + " - " + topicName + 
+                                   " (" + chapters.length + ")",
+                                   syllabus.syllabusName + "-" + subject.subjectName + 
+                                   "-T" + chapterNum,
+                                   subjectRD.rowId ) ;
+            topicRD.sortKey = Number.MAX_SAFE_INTEGER ;
+            subjectRD.addChild( topicRD ) ;
+            parentRD = topicRD ;
+        }
+
+        for( let i=0; i<chapters.length; i++ ) {
+
+            const chapter = chapters[i];
+            const displayName = chapter.chapterNum + "." + chapter.subChapterNum +
+                                       " - " + chapter.chapterName;
+            const chapterRD = new RowData(RowData.prototype.ROW_TYPE_CHAPTER,
+                                                    displayName,
+                                                    chapter.chapterId,
+                                                    parentRD.rowId);
+
+            chapterRD.setChapterAndParentRows( chapter, topicRD, subjectRD, syllabusRD ) ;
+            chapterRD.sortKey = chapter.chapterId ;
+            parentRD.addChild( chapterRD ) ;
+
+            if( topicRD != null ) {
+                topicRD.sortKey = Math.min( topicRD.sortKey, chapterRD.sortKey ) ;
+            }
+
+            if( !chapterRD.isHidden && chapterRD.isRowSelected ) {
+                numChaptersSelected++ ;
+            }
+        }
+    }) ;
+
+    return numChaptersSelected ;
+}
+
+// Pushes the descendants of parentRD into displayData in tree order.
+function pushChildRows( parentRD, displayData ) {
+    for( let i=0; i<parentRD.children.length; i++ ) {
+        const child = parentRD.children[i] ;
+        displayData.push( child ) ;
+        pushChildRows( child, displayData ) ;
+    }
 }
 
 function recomputeStatistics() {
@@ -884,73 +916,46 @@ function clearRowDataAttributes() {
 
 function computeAggregateFlashCardChapterList() {
 
-    let curSyllabusRD = null;
-    let curSubjectRD = null;
-
-    let chaptersForSyllabus = null;
-    let chaptersForSubject = null;
+    // Row id of an aggregate row -> chapter ids (with SSR matured cards) under it
+    const aggregateChapterIds = {} ;
 
     for( let i=0; i<$scope.progressSnapshot.length; i++ ) {
         const rowData = $scope.progressSnapshot[i];
 
-        if( rowData.rowType === RowData.prototype.ROW_TYPE_SYLLABUS ) {
-            if( curSubjectRD != null ) {
-                curSubjectRD.computeSelectionState() ;
-            }
+        if( rowData.isChapterRow() && rowData.isTreeRowVisible() ) {
 
-            if( curSyllabusRD != null ) {
-                if( chaptersForSyllabus.length > 0 ) {
-                    chaptersForSyllabus.shuffle() ;
-                    curSyllabusRD.chapterId = chaptersForSyllabus.join() ;
-                    curSyllabusRD.isFlashcardAuthorized = true ;
-                }
+            const chapter = rowData.chapter;
+            const ancestors = rowData.getAncestorRows() ;
 
-                curSyllabusRD.computeSelectionState() ;
-            }
-            curSyllabusRD = rowData ;
-            chaptersForSyllabus = [] ;
-        }
-        else if( rowData.rowType === RowData.prototype.ROW_TYPE_SUBJECT ) {
-            if( curSubjectRD != null ) {
-                if( chaptersForSubject.length > 0 ) {
-                    chaptersForSubject.shuffle() ;
-                    curSubjectRD.chapterId = chaptersForSubject.join() ;
-                    curSubjectRD.isFlashcardAuthorized = true ;
-                }
+            for( let j=0; j<ancestors.length; j++ ) {
+                const ancestorRD = ancestors[j] ;
 
-                curSubjectRD.computeSelectionState() ;
-            }
-            curSubjectRD = rowData ;
-            chaptersForSubject = [] ;
-        }
-        else if( rowData.rowType === RowData.prototype.ROW_TYPE_CHAPTER ) {
-            if( rowData.isTreeRowVisible() ) {
-
-                const chapter = rowData.chapter;
-
-                updateCardCounts( chapter, rowData.subjectRD, rowData.syllabusRD ) ;
+                updateCardCounts( chapter, ancestorRD ) ;
 
                 if( chapter.isFlashcardAuthorized && chapter.numSSRMaturedCards > 0 ) {
-                    chaptersForSubject.push( chapter.chapterId ) ;
-                    chaptersForSyllabus.push( chapter.chapterId ) ;
+                    if( !aggregateChapterIds[ ancestorRD.rowId ] ) {
+                        aggregateChapterIds[ ancestorRD.rowId ] = [] ;
+                    }
+                    aggregateChapterIds[ ancestorRD.rowId ].push( chapter.chapterId ) ;
                 }
             }
         }
     }
 
-    curSubjectRD.computeSelectionState() ;
-    curSyllabusRD.computeSelectionState() ;
+    // Children always follow their parents in progressSnapshot. Iterating in 
+    // reverse ensures a row's selection state is computed after its children's.
+    for( let i=$scope.progressSnapshot.length-1; i>=0; i-- ) {
+        const rowData = $scope.progressSnapshot[i];
 
-    if( chaptersForSyllabus.length > 0 ) {
-        chaptersForSyllabus.shuffle() ;
-        curSyllabusRD.chapterId = chaptersForSyllabus.join() ;
-        curSyllabusRD.isFlashcardAuthorized = true ;
-    }
-
-    if( chaptersForSubject.length > 0 ) {
-        chaptersForSubject.shuffle() ;
-        curSubjectRD.chapterId = chaptersForSubject.join() ;
-        curSubjectRD.isFlashcardAuthorized = true ;
+        if( !rowData.isChapterRow() ) {
+            const chapterIds = aggregateChapterIds[ rowData.rowId ] ;
+            if( chapterIds ) {
+                chapterIds.shuffle() ;
+                rowData.chapterId = chapterIds.join() ;
+                rowData.isFlashcardAuthorized = true ;
+            }
+            rowData.computeSelectionState() ;
+        }
     }
 }
 
@@ -980,53 +985,30 @@ function refreshProgressBars() {
     }
 }
 
-function updateCardCounts( chapter, subjectRD, syllabusRD ) {
+function updateCardCounts( chapter, aggregateRD ) {
 
-    subjectRD.totalCards          += chapter.totalCards ;
-    subjectRD.notStartedCards     += chapter.notStartedCards ;
-    subjectRD.resurrectedCards    += chapter.nrCards ;
-    subjectRD.l0Cards             += chapter.l0Cards ;
-    subjectRD.l1Cards             += chapter.l1Cards ;
-    subjectRD.l2Cards             += chapter.l2Cards ;
-    subjectRD.l3Cards             += chapter.l3Cards ;
-    subjectRD.masteredCards       += chapter.masteredCards ;
+    aggregateRD.totalCards          += chapter.totalCards ;
+    aggregateRD.notStartedCards     += chapter.notStartedCards ;
+    aggregateRD.resurrectedCards    += chapter.nrCards ;
+    aggregateRD.l0Cards             += chapter.l0Cards ;
+    aggregateRD.l1Cards             += chapter.l1Cards ;
+    aggregateRD.l2Cards             += chapter.l2Cards ;
+    aggregateRD.l3Cards             += chapter.l3Cards ;
+    aggregateRD.masteredCards       += chapter.masteredCards ;
 
-    subjectRD.pctNS                = subjectRD.notStartedCards / subjectRD.totalCards ;
-    subjectRD.pctNR                = subjectRD.resurrectedCards/ subjectRD.totalCards ;
-    subjectRD.pctL0                = subjectRD.l0Cards         / subjectRD.totalCards ;
-    subjectRD.pctL1                = subjectRD.l1Cards         / subjectRD.totalCards ;
-    subjectRD.pctL2                = subjectRD.l2Cards         / subjectRD.totalCards ;
-    subjectRD.pctL3                = subjectRD.l3Cards         / subjectRD.totalCards ;
-    subjectRD.pctMAS               = subjectRD.masteredCards   / subjectRD.totalCards ;
-    subjectRD.projectedMarks       = ( subjectRD.pctMAS + subjectRD.pctL3 + 
-                                       subjectRD.pctL2*0.75 + subjectRD.pctL1*0.5 + 
-                                       subjectRD.pctL0*0.25 )*100 ;
+    aggregateRD.pctNS                = aggregateRD.notStartedCards / aggregateRD.totalCards ;
+    aggregateRD.pctNR                = aggregateRD.resurrectedCards/ aggregateRD.totalCards ;
+    aggregateRD.pctL0                = aggregateRD.l0Cards         / aggregateRD.totalCards ;
+    aggregateRD.pctL1                = aggregateRD.l1Cards         / aggregateRD.totalCards ;
+    aggregateRD.pctL2                = aggregateRD.l2Cards         / aggregateRD.totalCards ;
+    aggregateRD.pctL3                = aggregateRD.l3Cards         / aggregateRD.totalCards ;
+    aggregateRD.pctMAS               = aggregateRD.masteredCards   / aggregateRD.totalCards ;
+    aggregateRD.projectedMarks       = ( aggregateRD.pctMAS + aggregateRD.pctL3 + 
+                                         aggregateRD.pctL2*0.75 + aggregateRD.pctL1*0.5 + 
+                                         aggregateRD.pctL0*0.25 )*100 ;
 
-    subjectRD.numSSRMaturedCards           += chapter.numSSRMaturedCards ;
-    subjectRD.numSSRInSyllabusMaturedCards += chapter.isInSyllabus ? chapter.numSSRMaturedCards : 0 ;
-
-    syllabusRD.totalCards         += chapter.totalCards ;
-    syllabusRD.notStartedCards    += chapter.notStartedCards ;
-    syllabusRD.resurrectedCards   += chapter.nrCards ;
-    syllabusRD.l0Cards            += chapter.l0Cards ;
-    syllabusRD.l1Cards            += chapter.l1Cards ;
-    syllabusRD.l2Cards            += chapter.l2Cards ;
-    syllabusRD.l3Cards            += chapter.l3Cards ;
-    syllabusRD.masteredCards      += chapter.masteredCards ;
-
-    syllabusRD.pctNS               = syllabusRD.notStartedCards / syllabusRD.totalCards ;
-    syllabusRD.pctNR               = syllabusRD.resurrectedCards / syllabusRD.totalCards ;
-    syllabusRD.pctL0               = syllabusRD.l0Cards         / syllabusRD.totalCards ;
-    syllabusRD.pctL1               = syllabusRD.l1Cards         / syllabusRD.totalCards ;
-    syllabusRD.pctL2               = syllabusRD.l2Cards         / syllabusRD.totalCards ;
-    syllabusRD.pctL3               = syllabusRD.l3Cards         / syllabusRD.totalCards ;
-    syllabusRD.pctMAS              = syllabusRD.masteredCards   / syllabusRD.totalCards ;
-    syllabusRD.projectedMarks      = ( syllabusRD.pctMAS + syllabusRD.pctL3 + 
-                                       syllabusRD.pctL2*0.75 + syllabusRD.pctL1*0.5 + 
-                                       syllabusRD.pctL0*0.25 )*100 ;
-
-    syllabusRD.numSSRMaturedCards += chapter.numSSRMaturedCards ;
-    syllabusRD.numSSRInSyllabusMaturedCards += chapter.isInSyllabus ? chapter.numSSRMaturedCards : 0 ;
+    aggregateRD.numSSRMaturedCards           += chapter.numSSRMaturedCards ;
+    aggregateRD.numSSRInSyllabusMaturedCards += chapter.isInSyllabus ? chapter.numSSRMaturedCards : 0 ;
 }
 
 function drawProgressBar( canvasId, total, vN, vR, v0, v1, v2, v3, v4 ) {

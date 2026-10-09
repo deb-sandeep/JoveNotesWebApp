@@ -569,6 +569,22 @@ CREATE TABLE `student_score` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `topic_master`
+--
+
+DROP TABLE IF EXISTS `topic_master`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `topic_master` (
+  `topic_id` int NOT NULL COMMENT 'Same as sconsolenxt.topic_master.id and chapter.chapter_num',
+  `syllabus_name` varchar(64) NOT NULL COMMENT 'SConsole syllabus name, e.g. IIT Chemistry',
+  `section` varchar(64) NOT NULL,
+  `topic_name` varchar(256) NOT NULL,
+  PRIMARY KEY (`topic_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Topic names imported from SConsole. See topic_master_data.sql';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `user_chapter_preferences`
 --
 

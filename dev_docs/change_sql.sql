@@ -500,3 +500,16 @@ insert into user.user_roles
 ( user_name, role_name )
 values
 ( 'Munni', 'JN_CLASS_X_USER' ) ;
+
+-- ==============================================================================
+-- Topic master - topic names imported from SConsole (sconsolenxt.topic_master).
+-- Used by the dashboard to group multiple chapters of the same topic.
+-- Data is loaded via dev_docs/setup/db/topic_master_data.sql
+
+CREATE TABLE jove_notes.topic_master (
+  `topic_id` int NOT NULL COMMENT 'Same as sconsolenxt.topic_master.id and chapter.chapter_num',
+  `syllabus_name` varchar(64) NOT NULL COMMENT 'SConsole syllabus name, e.g. IIT Chemistry',
+  `section` varchar(64) NOT NULL,
+  `topic_name` varchar(256) NOT NULL,
+  PRIMARY KEY (`topic_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Topic names imported from SConsole. See topic_master_data.sql';

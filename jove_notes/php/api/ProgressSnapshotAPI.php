@@ -6,6 +6,7 @@ require_once( APP_ROOT      . "/php/dao/user_chapter_preferences_dao.php" ) ;
 require_once( DOCUMENT_ROOT . "/lib-app/php/services/user_preference_service.php" ) ;
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/chapter_preparedness_request_queue_dao.php" ) ;
 require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/chapter_preparedness_dao.php" ) ;
+require_once( DOCUMENT_ROOT . "/apps/jove_notes/php/dao/topic_master_dao.php" ) ;
 
 class ChapterProgressSnapshot {
 
@@ -17,6 +18,7 @@ class ChapterProgressSnapshot {
 	public $chapterNum ;
 	public $subChapterNum ;
 	public $chapterName ;
+	public $topicName ;
     public $notesCompleted ;
 	public $numCards ;
 
@@ -51,6 +53,7 @@ class ChapterProgressSnapshot {
 		$this->subChapterNum = $meta[ "sub_chapter_num" ] ;
 		$this->chapterName   = $meta[ "chapter_name"    ] ;
         $this->notesCompleted= $meta[ "notes_completed" ] ;
+		$this->topicName     = null ;
 		$this->numCards      = $meta[ "num_cards"       ] ;
 
 		$this->isNotesAuthorized      = Authorizer::hasAccess( $this->guard, "NOTES" ) ;
@@ -176,6 +179,7 @@ class ProgressSnapshotAPI extends API {
 			$this->associateUserChapterPreferences() ;
 			$this->associateChapterPreparedness() ;
 			$this->associateActiveSectionPercentage() ;
+			$this->associateTopicNames() ;
 		}
 		
 		$responseObj = $this->constructResponseObj() ;
@@ -418,6 +422,24 @@ class ProgressSnapshotAPI extends API {
 		}
 	}
 
+	// Topic ids are SConsole topic ids, which are the same as chapter numbers.
+	// A topic applies only if its SConsole syllabus matches the chapter's
+	// subject ("IIT <subject>", same convention as the SConsole bridge).
+	private function associateTopicNames() {
+
+		$topicDAO = new TopicMasterDAO() ;
+		$topicMap = $topicDAO->getTopicMap() ;
+
+		foreach( $this->chapters as $chapter ) {
+			if( array_key_exists( $chapter->chapterNum, $topicMap ) ) {
+				$topic = $topicMap[ $chapter->chapterNum ] ;
+				if( $topic[ "syllabus_name" ] == "IIT " . $chapter->subjectName ) {
+					$chapter->topicName = $topic[ "topic_name" ] ;
+				}
+			}
+		}
+	}
+
 	private function &constructChapterResponseObj( $chapter ) {
 
 		$responseObj = array() ;
@@ -426,6 +448,7 @@ class ProgressSnapshotAPI extends API {
 		$responseObj[ "chapterNum"             ] = $chapter->chapterNum ;
 		$responseObj[ "subChapterNum"          ] = $chapter->subChapterNum ;
 		$responseObj[ "chapterName"            ] = $chapter->chapterName ;
+		$responseObj[ "topicName"              ] = $chapter->topicName ;
         $responseObj[ "notesCompleted"         ] = $chapter->notesCompleted ;
 		$responseObj[ "isNotesAuthorized"      ] = $chapter->isNotesAuthorized ;
 		$responseObj[ "isFlashcardAuthorized"  ] = $chapter->isFlashcardAuthorized ;
