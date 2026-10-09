@@ -103,8 +103,11 @@ include_path=".:/opt/homebrew/var/www/lib-ext/php"
 
 Setup `/var/log/php.log`
 
+`/var/log` is root-owned on macOS and Homebrew httpd runs as your user, so the file must be pre-created and owned by you:
+
 ```
-touch /var/log/php.log
+sudo touch /var/log/php.log
+sudo chown $(whoami):staff /var/log/php.log
 ```
 
 
@@ -127,6 +130,10 @@ SetEnv DB_PASSWORD <password>
 # SConsole integration — base URL of the SConsole server.
 # If not set, the SConsole bridge is automatically disabled (no-op).
 SetEnv SCONSOLE_BASE_URL http://192.168.0.165:8080
+
+# Single user mode — skip the login page and auto-login as this user.
+# If not set, the normal login page (and token expiry) applies.
+SetEnv AUTO_LOGIN_USER Munni
 CONF
 ```
 

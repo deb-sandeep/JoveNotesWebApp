@@ -118,6 +118,10 @@ export DB_PASSWORD=<password>
 # SConsole integration — base URL of the SConsole server.
 # If not set, the SConsole bridge is automatically disabled (no-op).
 export SCONSOLE_BASE_URL=http://192.168.0.161:8080
+
+# Single user mode — skip the login page and auto-login as this user.
+# If not set, the normal login page (and token expiry) applies.
+export AUTO_LOGIN_USER=Munni
 ```
 
 ### Restart Apache
